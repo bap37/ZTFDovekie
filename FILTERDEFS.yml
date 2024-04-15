@@ -1,0 +1,152 @@
+survmap: {'PS1':'PS1',
+          'DES':'DES',
+          'ZTF':'ZTF',
+          'CFA3S':'CFA3_4shooter',
+          'CFA3K':'CFA4_p1',
+          'CSP':'CSP',
+          'SDSS':'SDSS',
+          'Foundation':'Foundation',
+          'SNLS':'SNLS',
+          'PS1SN':'PS1SN',
+}
+
+
+survmap4shift: {'PS1':'PS1',
+                'DES':'DES',
+                'ZTF':'ZTF',
+                'CFA3S':'CFA3_4shooter',
+                'CFA3K':'CFA4natp1',
+                'CSP':'CSP',
+                'SDSS':'SDSS',
+                'Foundation':'Foundation',
+                'PS1SN':'PS1SN',
+}
+
+
+survfiltmap: {'PS1':'PS1',
+              'DES':'DES5YR_AB',
+              'ZTF':'ZTF',
+              'CFA3S':'CFA3_4shooter_native',
+              'CFA3K':'CFA4_p1',
+              'CSP':'CSP_TAMU_20180316',
+              'SDSS':'SDSS',
+              'Foundation':'Foundation',
+              'PS1SN':'PS1SN_AB'
+}
+
+
+obssurvmap: {'PS1':'PS1',
+             'DES':'DES5YR_AB',
+             'ZTF':'ZTF',
+             'CFA3S':'CFA3_4shooter_nat',
+             'CFA3K':'CFA3_keplercam_nat',
+             'CSP':'CSPDR3nat',
+             'SDSS':'SDSS_AB',
+             'Foundation':'Foundation_AB',
+             'PS1SN':'PS1SN_AB',
+} 
+
+revobssurvmap: {'PS1':'PS1',
+                'DES5YR':'DES',
+                'ZTF':'ZTF',
+                'CFA3S':'CFA3S',
+                'CFA3K':'CFA3K',
+                'CSP':'CSPDR3nat',
+                'SDSS':'SDSS',
+                'Foundation':'Foundation',
+                'PS1SN':'PS1SN'
+}
+
+
+revobssurvmapforsnana: { 'PS1':'PS1',
+                         'DES5YR':'DES', 
+                         'ZTF':'ZTF', 
+                         'CFA3S':'CFA3S',
+                         'CFA3K':'CFA3K',
+                         'CSP':'CSPDR3nat',
+                         'SDSS':'SDSS',
+                         'Foundation':'Foundation',
+                         'PS1SN':'PS1'}
+
+survcolormin: {'DES':.075,
+               'ZTF':0.0, 
+               'CFA3S':0,
+               'CFA3K':0,
+               'CSP':0,
+               'SDSS':.25,
+               'Foundation':0,
+               'PS1SN':0}
+
+survcolormax: {'DES':10.075,
+               'ZTF':10,  
+               'CFA3S':10,
+               'CFA3K':10,
+               'CSP':10,
+               'SDSS':10.25,
+               'Foundation':10,
+               'PS1SN':10,
+}
+
+synth_gi_range: {'dilloncalspec':[-9.25,9.5],
+                  'stis_ngsl_v2':[-9.25,9.9]}
+
+obsfilts: {'PS1':  ['g','r','i','z'],
+           'DES':  ['g','r','i','z'],
+           'ZTF':  ['g', 'r', 'i'],
+           'CFA3_4shooter': ['B','V','R','I'],
+           'CFA3_KEPLERCAM': ['B','V','r','i'],
+           'CSP': ['g','r','i','B','V','o','m','n'],
+           'SDSS': ['g','r','i','z'],
+           'Foundation': ['g','r','i','z'],
+           'PS1SN':  ['g','r','i','z'],
+ }
+
+snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
+             'DES' : {'g':'g','r':'r','i':'i','z':'z'},
+             'ZTF':     {'g':'g', 'r':'r', 'i':'i'},
+             'CFA3S': {'B':'B','V':'V','R':'R','I':'I'},
+             'CFA3K': {'B':'B','V':'V','r':'r','i':'i'},
+             'CSP': {'g':'g','r':'r','i':'i','B':'B','V':'V','o':'o','m':'m','n':'n'},
+             'SDSS': {'g':'g','r':'r','i':'i','z':'z'},
+             'Foundation': {'g':'g','r':'r','i':'i','z':'z'},
+             'PS1SN': {'g':'g','r':'r','i':'i','z':'z'},
+ }
+
+
+snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
+              'DES' : {'g':'g','r':'r','i':'i','z':'z'},
+              'ZTF':     {'g':'g', 'r':'r', 'i':'i'},
+              'CFA3S': {'B':'B','V':'V','R':'R','I':'I'},
+              'CFA3K': {'B':'B','V':'V','r':'r','i':'i'},
+              'CSP': {'u':'u','g':'g','r':'r','i':'i','B':'B','V':'V','o':'o','m':'m','n':'n'},
+              'SDSS': {'g':'g','r':'r','i':'i','z':'z'},
+              'Foundation': {'g':'g','r':'r','i':'i','z':'z'},
+              'PS1SN': {'g':'g','r':'r','i':'i','z':'z'},
+ }
+
+
+relativeweights: {
+    'PS1'   :  1,
+    'DES' :     1,
+    'ZTF'    : 1,
+    'CFA3S':    1,
+    'CFA3K':    1,
+    'CSP':   1,
+    'SDSS':     1,
+    'Foundation': 1,
+    'PS1SN':     1,
+}
+
+errfloors: {
+    'DES' :     .005,
+    'PS1'    :    0.005,
+    'ZTF'    :    0.005,
+    'CFA3S':    .01,
+    'CFA3K':    .01,
+    'CSP':   .01,
+    'SDSS':    .005,
+    'Foundation': 0.005,
+    'PS1SN': 0.005,
+
+}
+
