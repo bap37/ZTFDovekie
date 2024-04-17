@@ -1,49 +1,60 @@
 survmap: {'PS1':'PS1',
           'DES':'DES',
           'ZTF':'ZTF',
-          'CFA3S':'CFA3_4shooter',
-          'CFA3K':'CFA4_p1',
+          'CFA3S':'CFA3S',
+          'CFA3K':'CFA3K',
           'CSP':'CSP',
           'SDSS':'SDSS',
           'Foundation':'Foundation',
           'SNLS':'SNLS',
           'PS1SN':'PS1SN',
+          'ZTFS':'ZTFS',
+          'ZTFD':'ZTFD'
 }
-
+#ZTFS/ZTFD are future proof for the single and double coating respectively
 
 survmap4shift: {'PS1':'PS1',
                 'DES':'DES',
                 'ZTF':'ZTF',
-                'CFA3S':'CFA3_4shooter',
-                'CFA3K':'CFA4natp1',
+                'CFA3S':'CFA3S',
+                'CFA3K':'CFA3K',
                 'CSP':'CSP',
                 'SDSS':'SDSS',
                 'Foundation':'Foundation',
                 'PS1SN':'PS1SN',
+                'ZTFS':'ZTFS',
+                'ZTFD':'ZTFD',
+                'SNLS':'SNLS',
 }
 
 
 survfiltmap: {'PS1':'PS1',
-              'DES':'DES5YR_AB',
+              'DES':'DES',
               'ZTF':'ZTF',
-              'CFA3S':'CFA3_4shooter_native',
-              'CFA3K':'CFA4_p1',
-              'CSP':'CSP_TAMU_20180316',
+              'CFA3S':'CFA3S',
+              'CFA3K':'CFA3K',
+              'CSP':'CSP_TAMU',
               'SDSS':'SDSS',
               'Foundation':'Foundation',
-              'PS1SN':'PS1SN_AB'
+              'PS1SN':'PS1SN',
+              'ZTFS':'ZTFS',
+              'ZTFD':'ZTFD',
+              'SNLS':'SNLS',
 }
 
 
 obssurvmap: {'PS1':'PS1',
-             'DES':'DES5YR_AB',
+             'DES':'DES',
              'ZTF':'ZTF',
-             'CFA3S':'CFA3_4shooter_nat',
-             'CFA3K':'CFA3_keplercam_nat',
+             'CFA3S':'CFA3S',
+             'CFA3K':'CFA3K',
              'CSP':'CSPDR3nat',
-             'SDSS':'SDSS_AB',
-             'Foundation':'Foundation_AB',
-             'PS1SN':'PS1SN_AB',
+             'SDSS':'SDSS',
+             'Foundation':'Foundation',
+             'PS1SN':'PS1SN',
+             'ZTFS':'ZTFS',
+             'ZTFD':'ZTFD',
+             'SNLS':'SNLS',
 } 
 
 revobssurvmap: {'PS1':'PS1',
@@ -54,7 +65,10 @@ revobssurvmap: {'PS1':'PS1',
                 'CSP':'CSPDR3nat',
                 'SDSS':'SDSS',
                 'Foundation':'Foundation',
-                'PS1SN':'PS1SN'
+                'PS1SN':'PS1SN',
+                'ZTFS':'ZTFS',
+                'ZTFD':'ZTFD',
+                'SNLS':'SNLS',
 }
 
 
@@ -66,7 +80,13 @@ revobssurvmapforsnana: { 'PS1':'PS1',
                          'CSP':'CSPDR3nat',
                          'SDSS':'SDSS',
                          'Foundation':'Foundation',
-                         'PS1SN':'PS1'}
+                         'PS1SN':'PS1',
+                         'ZTFS':'ZTFS',
+                         'ZTFD':'ZTFD',
+                         'SNLS':'SNLS',
+
+}
+
 
 survcolormin: {'DES':.075,
                'ZTF':0.0, 
@@ -75,7 +95,11 @@ survcolormin: {'DES':.075,
                'CSP':0,
                'SDSS':.25,
                'Foundation':0,
-               'PS1SN':0}
+               'PS1SN':0,
+               'ZTFS':0,
+               'ZTFD':0,
+               'SNLS':.25,
+}
 
 survcolormax: {'DES':10.075,
                'ZTF':10,  
@@ -85,20 +109,27 @@ survcolormax: {'DES':10.075,
                'SDSS':10.25,
                'Foundation':10,
                'PS1SN':10,
+               'ZTFS':10,
+               'ZTFD':10,
+               'SNLS':10.25,
+
 }
 
-synth_gi_range: {'dilloncalspec':[-9.25,9.5],
+synth_gi_range: {'calspec23':[-9.25,9.5],
                   'stis_ngsl_v2':[-9.25,9.9]}
 
 obsfilts: {'PS1':  ['g','r','i','z'],
            'DES':  ['g','r','i','z'],
            'ZTF':  ['g', 'r', 'i'],
-           'CFA3_4shooter': ['B','V','R','I'],
-           'CFA3_KEPLERCAM': ['B','V','r','i'],
+           'CFA3S': ['B','V','R','I'],
+           'CFA3K': ['B','V','r','i'],
            'CSP': ['g','r','i','B','V','o','m','n'],
            'SDSS': ['g','r','i','z'],
            'Foundation': ['g','r','i','z'],
            'PS1SN':  ['g','r','i','z'],
+           'ZTFS':  ['g', 'r', 'i'],
+           'ZTFD':  ['g', 'r', 'i'],
+           'SNLS': ['g','r','i','z'],
  }
 
 snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
@@ -110,6 +141,9 @@ snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
              'SDSS': {'g':'g','r':'r','i':'i','z':'z'},
              'Foundation': {'g':'g','r':'r','i':'i','z':'z'},
              'PS1SN': {'g':'g','r':'r','i':'i','z':'z'},
+             'ZTFS':     {'g':'g', 'r':'r', 'i':'i'},
+             'ZTFD':     {'g':'g', 'r':'r', 'i':'i'},
+             'SNLS': {'g':'g','r':'r','i':'i','z':'z'},
  }
 
 
@@ -122,9 +156,12 @@ snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
               'SDSS': {'g':'g','r':'r','i':'i','z':'z'},
               'Foundation': {'g':'g','r':'r','i':'i','z':'z'},
               'PS1SN': {'g':'g','r':'r','i':'i','z':'z'},
+              'ZTFS':     {'g':'g', 'r':'r', 'i':'i'},
+              'ZTFD':     {'g':'g', 'r':'r', 'i':'i'},
+              'SNLS': {'g':'g','r':'r','i':'i','z':'z'},
  }
 
-
+#Will need to fix the ZTFS/ZTFD weights at some point
 relativeweights: {
     'PS1'   :  1,
     'DES' :     1,
@@ -135,7 +172,11 @@ relativeweights: {
     'SDSS':     1,
     'Foundation': 1,
     'PS1SN':     1,
+    'ZTFS':      0.5,
+    'ZTFD':      0.5,
+    'SNLS': 1,
 }
+
 
 errfloors: {
     'DES' :     .005,
@@ -147,6 +188,8 @@ errfloors: {
     'SDSS':    .005,
     'Foundation': 0.005,
     'PS1SN': 0.005,
-
+    'ZTFS'  : 0.005,
+    'ZTFD'  : 0.005,
+    'SNLS'  : 0.005,
 }
 

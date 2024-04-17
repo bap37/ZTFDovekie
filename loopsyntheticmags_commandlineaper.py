@@ -9,23 +9,27 @@ from scipy import interpolate
 
 #Adding these fuckers one at a time
 survs = [
-  'PS1',
+  'PS1SN',
   'DES',
   'ZTF',
   'CSP',
   'SDSS',
   'Foundation',
-  'SNLS'
+  'SNLS',
+  'CFA3S',
+  'CFA3K',
 ]
 
 kcorpaths = [
   'kcor/PS1s_RS14_PS1_tonry/',
   'kcor/DES/',
   'kcor/ZTF/',
-  'kcor/CSP_TAMU_20180316/',
+  'kcor/CSP_TAMU/',
   'kcor/SDSS/',
   'kcor/PS1s_RS14_PS1_tonry/',
   'kcor/SNLS/',
+  'kcor/CFA3_4shooter_native/',
+  'kcor/CFA3_KEPLERCAM/',
 ]
 
 kcors = [
@@ -35,7 +39,10 @@ kcors = [
   'CSPDR3_excalin.input',
   'SDSS_kcor.input',
   'PS1_excalinaper_+30A.input',
-  'SNLS_excalin.input'
+  'SNLS_excalin.input',
+  'CFA3_4shooter_excalin.input',
+  'CFA3_KEPLERCAM_excalin.input',
+
 ]
 
 
@@ -43,32 +50,14 @@ filtpaths = [
   'filters/PS1s_RS14_PS1_tonry/',
   'filters/DES-SN3YR_DECam/',
   'filters/ZTF/',
-  'filters/CSP_TAMU_20180316/',
+  'filters/CSP_TAMU/',
   'filters/SDSS_Doi2010_CCDAVG/',
   'filters/PS1s_RS14_PS1_tonry/',
   'filters/SNLS3-Megacam/',
+  'filters/CFA3_native/',
+  'filters/CFA3_native/',
 ]
 
-
-filttranss = [
-  ['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
-  ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
-  ['g_ztf+25.dat', 'r_ztf.dat', 'i_ztf.dat'],
-  ['u_tel_ccd_atm_ext_1.2.dat','g_tel_ccd_atm_ext_1.2.dat','r_tel_ccd_atm_ext_1.2.dat','i_tel_ccd_atm_ext_1.2.dat','B_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','V_LC3009_tel_ccd_atm_ext_1.2.dat','V_LC3014_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','Y_SWO_TAM_scan_atm.dat','Y_DUP_TAM_scan_atm.dat','Jrc1_SWO_TAM_scan_atm.dat','Jrc2_SWO_TAM_scan_atm.dat','H_SWO_TAM_scan_atm.dat','H_DUP_TAM_scan_atm.dat'],
-  ['G.dat','R.dat','I.dat','Z.dat','g.dat','r.dat','i.dat','z.dat'],
-  ['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
-   ['effMEGACAM-g.dat','effMEGACAM-r.dat','effMEGACAM-i.dat','effMEGACAM-z.dat'],
-]
-
-filtsurvss = [
-  ['PS1','PS1','PS1','PS1'],
-  ['DES','DES','DES','DES'],
-  ['ZTF', 'ZTF', 'ZTF'],
-  ['CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3','CSPDR3'],
-  ['SDSS','SDSS','SDSS','SDSS','SDSS','SDSS','SDSS','SDSS'],
-  ['PS1', 'PS1', 'PS1', 'PS1'],
-  ['SNLS', 'SNLS', 'SNLS', 'SNLS'],
-]
 
 shiftfiltss = [
   ['g','r','i','z'],
@@ -78,6 +67,9 @@ shiftfiltss = [
   ['G','R','I','Z','g','r','i','z'],
   ['g', 'r', 'i', 'z'],
   ['g', 'r', 'i', 'z'],
+  ['B', 'V', 'R', 'I'],
+  ['U','B','V','r','i'],
+
 ]
 
 
@@ -87,7 +79,10 @@ namedfiltss = [
   ['g', 'r', 'i'],
   ['u','g','r','i','B','V','o','m','n','Y','y'],
   ['G','R','I','Z','g','r','i','z'],
-  ['g', 'r', 'i', 'z'],
+  ['g', 'r', 'i', 'z'],  
+  ['B', 'V', 'R', 'I'],
+  ['U','B','V','r','i'],
+
 ]
 
 
@@ -99,6 +94,9 @@ obsfiltss = [
   ['G','R','I','Z','g','r','i','z'],
   ['g','r','i','z'],
   ['g','r','i','z'],
+  ['B', 'V', 'R', 'I'],
+  ['U','B','V','r','i'],
+
 ]
 
 
@@ -128,13 +126,14 @@ if __name__ == '__main__':
       
     if kcorpath[-1] == '/': kcorpath=kcorpath[:-1]
     
-    #for shift in np.arange(-80,-30,5):
+    #for shift in np.arange(-30,40,10):
     for shift in [0]:
-      version = kcorpath.split('/')[1]
+      #version = kcorpath.split('/')[1] #This is where the fuckery gets written out
+      version = surv
       print(f'starting shift = {shift}')
 
       ngsl_files = glob('spectra/stis_ngsl_v2/*.fits')#[:5]
-      dillon_calspec_files = glob('spectra/dilloncalspec/*.fits')
+      dillon_calspec_files = glob('spectra/calspec23/*.fits')
       allfiles = ngsl_files
       allfiles.extend(dillon_calspec_files)
       speccats = [fn.split('/')[1] for fn in allfiles]
@@ -194,13 +193,13 @@ if __name__ == '__main__':
         vals=['99' for n in range(len(obsfilts))]
         for gg in g:
           for iii, obsf in enumerate(obsfilts):
-            if (f'{surv}_{obsf}' in gg):
+            if (f'{surv}-{obsf}' in gg):
               if ('BD17' in gg.split()[2]):
                 try:
                   vals[iii]=gg.split()[6]
                 except:
                   vals[0] == 99
-        print(vals)
+        print(vals, cat)
         if vals[0]!='99':
           bd.write(' '.join([surv,version,ngslf,cat,str(round(shift,3)),'']))
           bd.write(' '.join(vals)+'\n')
