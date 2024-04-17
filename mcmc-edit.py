@@ -6,6 +6,8 @@ import numpy as np
 import os
 from scipy.optimize import curve_fit
 from glob import glob
+import sys
+sys.path.insert(1, 'scripts/')
 from helpers import *
 import time
 import pickle
@@ -27,12 +29,13 @@ global synthdict
 #search for "TODO"
 isshift = False
 
+
 jsonload = 'FILTERDEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
 survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors = prep_config(config)
 
 
-obscolors_by_survey = {'PS1':['PS1_g','PS1_i']} #dodgy, feel like this should be tonry
+obscolors_by_survey = {'PS1':['PS1-g','PS1-i']} #dodgy, feel like this should be tonry
 
 filter_means = pd.read_csv('filter_means.csv') 
 
@@ -58,8 +61,8 @@ def get_all_shifts(surveys): #acquires all the surveys and collates them. Notabl
             try:
                 tdf = pd.read_csv(f,delim_whitespace=True)      
                 if 'PS1_' in f:
-                    tdf = tdf[-1*tdf['PS1_g']+tdf['PS1_i']>.25]
-                    tdf = tdf[-1*tdf['PS1_g']+tdf['PS1_i']<1.6]
+                    tdf = tdf[-1*tdf['PS1-g']+tdf['PS1-i']>.25]
+                    tdf = tdf[-1*tdf['PS1-g']+tdf['PS1-i']<1.6]
 
                 dfl.append(tdf)
             except:
@@ -82,7 +85,11 @@ def get_all_obsdfs(surveys, redo=False): #TODO - better checks on IRSA loading a
     surveydfs_wext = {}
     for survey in surveys:
         if survey == 'PS1': continue
-        obsdf = pd.read_csv('output_observed_apermags+AV/%s_observed.csv'%obssurvmap[survey])
+        try:
+            obsdf = pd.read_csv('output_observed_apermags+AV/%s_observed.csv'%obssurvmap[survey])
+        except FileNotFoundError:
+            print('Nope')
+            quit()
         surveydfs[survey] = obsdf
         if redo:
             print(f"Starting IRSA query for {survey}. If nothing is printing that's probably fine.")
@@ -92,34 +99,34 @@ def get_all_obsdfs(surveys, redo=False): #TODO - better checks on IRSA loading a
             obsdf = surveydfs_wext[survey]
             print(f"Finished performing IRSA query for {survey}")
             if survey == 'CFA1': #maybe set this to ZTF ? 
-                obsdf = obsdf[(obsdf['PS1_g']-obsdf['PS1_g_AV']-obsdf['PS1_i']+obsdf['PS1_i_AV'])<1.6]
+                obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV']-obsdf['PS1-i']+obsdf['PS1-i_AV'])<1.6]
             else:
-                obsdf = obsdf[(obsdf['PS1_g']-obsdf['PS1_g_AV']-obsdf['PS1_i']+obsdf['PS1_i_AV'])<1.]
-            obsdf = obsdf[(obsdf['PS1_g']-obsdf['PS1_g_AV']-obsdf['PS1_i']+obsdf['PS1_i_AV'])>.25]
-            obsdf = obsdf[obsdf['PS1_g']-obsdf['PS1_g_AV']>14.3] #from dan via eddy schlafly
-            obsdf = obsdf[obsdf['PS1_r']-obsdf['PS1_r_AV']>14.4]
-            obsdf = obsdf[obsdf['PS1_i']-obsdf['PS1_i_AV']>14.6]
-            obsdf = obsdf[obsdf['PS1_z']-obsdf['PS1_z_AV']>14.1]
-            obsdf = obsdf[(obsdf['PS1_g']-obsdf['PS1_g_AV'])-
-                          (obsdf['PS1_i']-obsdf['PS1_i_AV']) < survcolormax[survey]]
-            obsdf = obsdf[(obsdf['PS1_g']-obsdf['PS1_g_AV'])-
-                          (obsdf['PS1_i']-obsdf['PS1_i_AV']) > survcolormin[survey]]
+                obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV']-obsdf['PS1-i']+obsdf['PS1-i_AV'])<1.]
+            obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV']-obsdf['PS1-i']+obsdf['PS1-i_AV'])>.25]
+            obsdf = obsdf[obsdf['PS1-g']-obsdf['PS1-g_AV']>14.3] #from dan via eddy schlafly
+            obsdf = obsdf[obsdf['PS1-r']-obsdf['PS1-r_AV']>14.4]
+            obsdf = obsdf[obsdf['PS1-i']-obsdf['PS1-i_AV']>14.6]
+            obsdf = obsdf[obsdf['PS1-z']-obsdf['PS1-z_AV']>14.1]
+            obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
+                          (obsdf['PS1-i']-obsdf['PS1-i_AV']) < survcolormax[survey]]
+            obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
+                          (obsdf['PS1-i']-obsdf['PS1-i_AV']) > survcolormin[survey]]
             surveydfs_wext[survey] = obsdf
             obsdf.to_csv('output_observed_apermags+AV/%s_observed.csv'%obssurvmap[survey], header=True, index=False, float_format='%g')
         else:
             obsdf = pd.read_csv('output_observed_apermags+AV/%s_observed.csv'%obssurvmap[survey])
-            if "PS1_g_AV" not in list(obsdf):
+            if "PS1-g_AV" not in list(obsdf):
                 print(f"output_observed_apermags+AV/{obssurvmap[survey]}_observed.csv is missing the required IRSA dust maps. Rerun the command with additional argument --IRSA \n quitting.")
                 quit()
 
-            obsdf = obsdf[obsdf['PS1_g']-obsdf['PS1_g_AV']>14.3]
-            obsdf = obsdf[obsdf['PS1_r']-obsdf['PS1_r_AV']>14.4]
-            obsdf = obsdf[obsdf['PS1_i']-obsdf['PS1_i_AV']>14.6]
-            obsdf = obsdf[obsdf['PS1_z']-obsdf['PS1_z_AV']>14.1]
-            obsdf = obsdf[(obsdf['PS1_g']-obsdf['PS1_g_AV'])-
-                          (obsdf['PS1_i']-obsdf['PS1_i_AV']) < survcolormax[survey]]
-            obsdf = obsdf[(obsdf['PS1_g']-obsdf['PS1_g_AV'])-
-                          (obsdf['PS1_i']-obsdf['PS1_i_AV']) > survcolormin[survey]]
+            obsdf = obsdf[obsdf['PS1-g']-obsdf['PS1-g_AV']>14.3]
+            obsdf = obsdf[obsdf['PS1-r']-obsdf['PS1-r_AV']>14.4]
+            obsdf = obsdf[obsdf['PS1-i']-obsdf['PS1-i_AV']>14.6]
+            obsdf = obsdf[obsdf['PS1-z']-obsdf['PS1-z_AV']>14.1]
+            obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
+                          (obsdf['PS1-i']-obsdf['PS1-i_AV']) < survcolormax[survey]]
+            obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
+                          (obsdf['PS1-i']-obsdf['PS1-i_AV']) > survcolormin[survey]]
 
             surveydfs_wext[survey] = obsdf
 
@@ -140,27 +147,27 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         npoints = 0
     
         #changed these to underscores
-        longfilta = survfiltmap[colorsurvab]+'_'+colorfilta
-        longfiltb = survfiltmap[colorsurvab]+'_'+colorfiltb
-        longfilt1 = survfiltmap[surv1]+'_'+yfilt1
-        longfilt2 = survfiltmap[surv2]+'_'+yfilt2
+        longfilta = survfiltmap[colorsurvab]+'-'+colorfilta
+        longfiltb = survfiltmap[colorsurvab]+'-'+colorfiltb
+        longfilt1 = survfiltmap[surv1]+'-'+yfilt1
+        longfilt2 = survfiltmap[surv2]+'-'+yfilt2
 
     
-        obslongfilta = obssurvmap[colorsurvab]+'_'+colorfilta
-        obslongfiltb = obssurvmap[colorsurvab]+'_'+colorfiltb
-        obslongfilt1 = obssurvmap[surv1]+'_'+yfilt1 
+        obslongfilta = obssurvmap[colorsurvab]+'-'+colorfilta
+        obslongfiltb = obssurvmap[colorsurvab]+'-'+colorfiltb
+        obslongfilt1 = obssurvmap[surv1]+'-'+yfilt1 
         if ('KAIT' in surv2.upper()) | ('NICKEL' in surv2.upper()):
-            obslongfilt2 = obssurvmap[surv2]+'_'+snanafilts[surv2][yfilt2]
+            obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
         elif ('CSP' in surv2.upper()):
-            obslongfilt2 = obssurvmap[surv2]+'_'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
+            obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
         elif ('ASASSN' in surv2.upper()):
-            obslongfilt2 = obssurvmap[surv2]+'_'+snanafilts[surv2][yfilt2]
+            obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
         else:
-            obslongfilt2 = obssurvmap[surv2]+'_'+yfilt2 #
+            obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
 
         if first:
             obsdf = obsdfs[surv2] #grabs the observed points from the relevant survey
-            if DEBUG: print(obsdf.columns)
+            if DEBUG: print(obsdf.columns, surv2)
             yr=obsdf[obslongfilt1]-obsdf[obslongfilt2] #observed filter1 - observed filter 2 
             wwyr = np.abs(yr)<1 #only uses things lower than 1
             datacolor = (obsdf[obslongfilta][wwyr]-obsdf[obslongfilta+"_AV"][wwyr])-(obsdf[obslongfiltb][wwyr]-obsdf[obslongfiltb+"_AV"][wwyr])
@@ -269,17 +276,17 @@ def unwravel_params(params,surveynames,fixsurveynames):
             
             filt = snanafiltsr[survey][ofilt]
             #if ('PS1' not in survey) | (filt!='g'):
-            paramsdict[survey+'_'+filt+'_offset'] = params[i]
+            paramsdict[survey+'-'+filt+'_offset'] = params[i]
             if (params[i]<-1.5) | (params[i]>1.5): outofbounds=True
-            paramsnames.append(survey+'_'+filt+'_offset')
+            paramsnames.append(survey+'-'+filt+'_offset')
             i+=1
 
     for survey in fixsurveynames:
         filts = obsfilts[survmap[survey]]
         for ofilt in filts:
             filt = snanafiltsr[survey][ofilt]
-            paramsdict[survey+'_'+filt+'_offset'] = 0
-            paramsnames.append(survey+'_'+filt+'_offset')
+            paramsdict[survey+'-'+filt+'_offset'] = 0
+            paramsnames.append(survey+'-'+filt+'_offset')
 
     return paramsdict,outofbounds,paramsnames
 
@@ -323,51 +330,94 @@ def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, re
     #I think this fucked me up again :p
 
     #Only documenting this one, the rest share the same setup. 
-    surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1']) #always PS1
-    surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
-    filtas.extend([    'g',    'g',    'g',    'g']) #first filter for colour
-    filtbs.extend([    'r',    'i',    'i',    'i']) #second filter for colour
-    filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
-    filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
+    if "DES" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1']) #always PS1
+        surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
+        filtas.extend([    'g',    'g',    'g',    'g']) #first filter for colour
+        filtbs.extend([    'r',    'i',    'i',    'i']) #second filter for colour
+        filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
+        filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
     
-    surv1s.extend([    'PS1',    'PS1',    'PS1',    'PS1',    'PS1',   'PS1',   'PS1',   'PS1'])
-    surv2s.extend([ 'CSP', 'CSP', 'CSP', 'CSP', 'CSP','CSP','CSP','CSP'])
-    filtas.extend([      'g',      'g',      'g',      'g',      'g',     'g',     'g',     'g'])
-    filtbs.extend([      'r',      'i',      'i',      'r',      'i',     'i',     'i',     'i'])
-    filt1s.extend([      'g',      'r',      'i',      'g',      'r',     'r',     'r',     'r'])
-    filt2s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
+    if "CSP" in surveys_for_chisq:
+        surv1s.extend([    'PS1',    'PS1',    'PS1',    'PS1',    'PS1',   'PS1',   'PS1',   'PS1'])
+        surv2s.extend([ 'CSP', 'CSP', 'CSP', 'CSP', 'CSP','CSP','CSP','CSP'])
+        filtas.extend([      'g',      'g',      'g',      'g',      'g',     'g',     'g',     'g'])
+        filtbs.extend([      'r',      'i',      'i',      'r',      'i',     'i',     'i',     'i'])
+        filt1s.extend([      'g',      'r',      'i',      'g',      'r',     'r',     'r',     'r'])
+        filt2s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
 
-    
-    surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-    surv2s.extend([ 'PS1SN', 'PS1SN', 'PS1SN', 'PS1SN'])
-    filtas.extend([    'g',    'g',    'g',    'r'])
-    filtbs.extend([    'r',    'i',    'i',    'z'])
-    filt1s.extend([    'g',    'r',    'i',    'z'])
-    filt2s.extend([    'g',    'r',    'i',    'z'])
+    if "PS1SN" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend([ 'PS1SN', 'PS1SN', 'PS1SN', 'PS1SN'])
+        filtas.extend([    'g',    'g',    'g',    'r'])
+        filtbs.extend([    'r',    'i',    'i',    'z'])
+        filt1s.extend([    'g',    'r',    'i',    'z'])
+        filt2s.extend([    'g',    'r',    'i',    'z'])
 
-    
-
-    surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-    surv2s.extend([ 'Foundation', 'Foundation', 'Foundation', 'Foundation'])
-    filtas.extend([    'g',    'g',    'g',    'r'])
-    filtbs.extend([    'r',    'i',    'i',    'z'])
-    filt1s.extend([    'g',    'r',    'i',    'z'])
-    filt2s.extend([    'g',    'r',    'i',    'z'])
+    if "Foundation" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend([ 'Foundation', 'Foundation', 'Foundation', 'Foundation'])
+        filtas.extend([    'g',    'g',    'g',    'r'])
+        filtbs.extend([    'r',    'i',    'i',    'z'])
+        filt1s.extend([    'g',    'r',    'i',    'z'])
+        filt2s.extend([    'g',    'r',    'i',    'z'])
    
- 
-    surv1s.extend([  'PS1',  'PS1',  'PS1'])
-    surv2s.extend([ 'ZTF', 'ZTF', 'ZTF'])
-    filtas.extend([    'g',    'g',    'g'])
-    filtbs.extend([    'r',    'i',    'i'])
-    filt1s.extend([    'g',    'r',    'i'])
-    filt2s.extend([    'g',    'r',    'i'])
+    if "ZTF" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1'])
+        surv2s.extend([ 'ZTF', 'ZTF', 'ZTF'])
+        filtas.extend([    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'i'])
+        filt2s.extend([    'g',    'r',    'i'])
 
-    surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-    surv2s.extend([ 'SDSS', 'SDSS', 'SDSS', 'SDSS'])
-    filtas.extend([    'g',    'g',    'g',    'i'])
-    filtbs.extend([    'r',    'i',    'i',    'z'])
-    filt1s.extend([    'g',    'r',    'i',    'z'])
-    filt2s.extend([    'g',    'r',    'i',    'z'])
+    if "ZTFS" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1'])
+        surv2s.extend([ 'ZTFS', 'ZTFS', 'ZTFS'])
+        filtas.extend([    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'i'])
+        filt2s.extend([    'g',    'r',    'i'])
+
+    if "ZTFD" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1'])
+        surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
+        filtas.extend([    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'i'])
+        filt2s.extend([    'g',    'r',    'i'])
+
+    if "SDSS" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend([ 'SDSS', 'SDSS', 'SDSS', 'SDSS'])
+        filtas.extend([    'g',    'g',    'g',    'i'])
+        filtbs.extend([    'r',    'i',    'i',    'z'])
+        filt1s.extend([    'g',    'r',    'i',    'z'])
+        filt2s.extend([    'g',    'r',    'i',    'z'])
+
+    if "SNLS" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend([ 'SNLS', 'SNLS', 'SNLS', 'SNLS'])
+        filtas.extend([    'g',    'g',    'g',    'r'])
+        filtbs.extend([    'r',    'i',    'i',    'z'])
+        filt1s.extend([    'g',    'r',    'i',    'z'])
+        filt2s.extend([    'g',    'r',    'i',    'z'])
+
+    if "CFA3S" in surveys_for_chisq:
+        surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
+        surv2s.extend([ 'CFA3S', 'CFA3S', 'CFA3S', 'CFA3S'])
+        filtas.extend([     'g',     'g',     'g',     'g'])
+        filtbs.extend([     'r',     'i',     'i',     'i'])
+        filt1s.extend([     'g',     'r',     'r',     'i'])
+        filt2s.extend([     'B',     'V',    'R',     'I'])
+
+    if "CFA3K" in surveys_for_chisq:
+        surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
+        surv2s.extend([ 'CFA3K', 'CFA3K', 'CFA3K', 'CFA3K'])
+        filtas.extend([     'g',     'g',     'g',     'g'])
+        filtbs.extend([     'r',     'i',     'i',     'i'])
+        filt1s.extend([     'g',     'r',     'r',     'i'])
+        filt2s.extend([     'B',     'V',     'r',     'i'])
+
     
     offsetsdict = {}
     shiftssdict = {}
@@ -378,17 +428,17 @@ def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, re
     chi2v = []
     for surv1,surv2,filta,filtb,filt1,filt2 in zip(surv1s,surv2s,filtas,filtbs,filt1s,filt2s):
         chi2,npoints,cats,popts,pcovs,obsdict,synthdict,off = getchi_forone(paramsdict,surveydata,obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,
-                                                      off1=paramsdict[surv1+'_'+filt1+'_offset'],
-                                                      off2=paramsdict[surv2+'_'+filt2+'_offset'],
-                                                      offa=paramsdict[surv1+'_'+filta+'_offset'],
-                                                      offb=paramsdict[surv1+'_'+filtb+'_offset'],
+                                                      off1=paramsdict[surv1+'-'+filt1+'_offset'],
+                                                      off2=paramsdict[surv2+'-'+filt2+'_offset'],
+                                                      offa=paramsdict[surv1+'-'+filta+'_offset'],
+                                                      offb=paramsdict[surv1+'-'+filtb+'_offset'],
                                                       doplot=doplot,subscript=subscript,first=first,
                                                       obsdict=obsdict,synthdict=synthdict)
         chi2v.append(chi2)
         totalchisq+=chi2
         if first: 
-            paramsdict[surv2+'_'+filt2+'_preoffset'] = off
-            paramsdict[surv1+'_'+filt1+'_preoffset'] = 0
+            paramsdict[surv2+'-'+filt2+'_preoffset'] = off
+            paramsdict[surv1+'-'+filt1+'_preoffset'] = 0
     lp = lnprior(paramsdict)
     if doplot:
         print('Likelihood %.2f -chisq/2 %.2f lp %.2f'%(lp -.5*totalchisq,-.5*totalchisq,lp))
@@ -402,17 +452,17 @@ def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, re
 def lnprior(paramsdict):
 
     priordict = { 
-        'PS1_g_offset':[0,.02],
-        'PS1_r_offset':[0,.02],
-        'PS1_i_offset':[0,.02],
-        'PS1_z_offset':[0,.02],
+        'PS1-g_offset':[0,.02],
+        'PS1-r_offset':[0,.02],
+        'PS1-i_offset':[0,.02],
+        'PS1-z_offset':[0,.02],
+
+        }
     
-        'DES_g_offset':[0,.01],
-        'DES_r_offset':[0,.01],
-        'DES_i_offset':[0,.01],
-        'DES_z_offset':[0,.01],
-                
-    }
+#        'DES-g_offset':[0,.01],
+#        'DES-r_offset':[0,.01],
+#        'DES-i_offset':[0,.01],
+#        'DES-z_offset':[0,.01],
 
     '''
         'DES_g_lamshift':[0,20],
@@ -488,9 +538,9 @@ if __name__ == "__main__":
 
     print('reading in survey data')
 
-    surveys_for_chisq = ['CSP', 'DES', 'PS1', 'ZTF', 'SDSS', 'PS1SN', 'Foundation'] 
+    surveys_for_chisq = ['PS1', 'ZTF', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S'] 
     #  ^ This controls both the surveys that will be used in the mcmc and also those that you will be grabbing IRSA from. When in IRSA mode, be very careful! 
-    #surveys_for_chisq = ['PS1', 'Foundation'] #keep this one around for quick IRSA updates!
+    #surveys_for_chisq = ['PS1', 'CFA3K', 'PS1SN'] #keep this one around for quick IRSA updates!
     fixsurveynames = []
 
     surveydata = get_all_shifts(surveys_for_chisq)
@@ -523,11 +573,10 @@ if __name__ == "__main__":
     pdict,obsdict,synthdict = full_likelihood(pos,subscript='beforeaper_v8_150',doplot=True,first=True)
     prepos = []
 
-
     for s in surveys_for_chisq:
         ofs = obsfilts[survmap[s]]
         for of in ofs:
-            prepos.append(pdict[s+'_'+snanafiltsr[s][of]+'_preoffset'])
+            prepos.append(pdict[s+'-'+snanafiltsr[s][of]+'_preoffset'])
     prepos = np.array(prepos)
     offsets,obsdict,synthdict = full_likelihood(-1*prepos,subscript='preoffsetsaper_v8_150',doplot=True,first=True)
     

@@ -7,3 +7,5 @@ sed -i 's\ZTF-i\ZTF_i\g' synth_ZTF_shift*
 sed -i 's\316-\316_\g'   synth_CSP_shift*
 
 sed -i 's\SDSS-\SDSS_\g' synth_SDSS_shift*
+
+sed -i 's\SNLS-\SNLS_\g' synth_SNLS_shift*

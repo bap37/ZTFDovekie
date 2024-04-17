@@ -15,11 +15,11 @@ print(t.columns)
 
 xx = (t['ZTF_ZTF_g']>10) &(t['ZTF_ZTF_r']>10) &(t['ZTF_ZTF_i']>10) & (t['gMeanPSFMag'] > 10)
 
-colnames = ['%s_g'%system,'%s_r'%system,'%s_i'%system,
-            'PS1_g','PS1_r','PS1_i','PS1_z','RA','DEC']
+colnames = ['%s-g'%system,'%s-r'%system,'%s-i'%system,
+            'PS1-g','PS1-r','PS1-i','PS1-z','RA','DEC']
 collists = [t['ZTF_ZTF_g'][xx],t['ZTF_ZTF_r'][xx],t['ZTF_ZTF_i'][xx],
             t['gMeanApMag'][xx],t['rMeanApMag'][xx],t['iMeanApMag'][xx],t['zMeanApMag'][xx],
             t['raMean'][xx],t['decMean'][xx]]
 outfile = 'output_observed_apermags/'+system+'_observed.csv'
-wo.write(system+'_AB',colnames,collists,outfile)
+wo.write(system,colnames,collists,outfile)
 
