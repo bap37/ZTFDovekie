@@ -193,6 +193,7 @@ if __name__ == '__main__':
         vals=['99' for n in range(len(obsfilts))]
         for gg in g:
           for iii, obsf in enumerate(obsfilts):
+            if surv == "Foundation": surv = "PS1SN"
             if (f'{surv}-{obsf}' in gg):
               if ('BD17' in gg.split()[2]):
                 try:
@@ -200,9 +201,10 @@ if __name__ == '__main__':
                 except:
                   vals[0] == 99
         print(vals, cat)
+        vals = np.array(vals).astype(float); vals = -1*vals ;
         if vals[0]!='99':
           bd.write(' '.join([surv,version,ngslf,cat,str(round(shift,3)),'']))
-          bd.write(' '.join(vals)+'\n')
+          bd.write(' '.join(vals.astype(str))+'\n')
       bd.close()
       
     
