@@ -3,14 +3,12 @@ import matplotlib
 matplotlib.use('Agg')
 import pylab as plt
 import numpy as np
-import os
+import os, sys
 from scipy.optimize import curve_fit
 from glob import glob
-import sys
 sys.path.insert(1, 'scripts/')
 from helpers import *
-import time
-import pickle
+import time, pickle
 import emcee
 from astroquery.irsa_dust import IrsaDust
 import astropy.coordinates as coord
@@ -24,7 +22,6 @@ global surveydata
 global obsdfs    
 global obsdict
 global synthdict
-
 
 #search for "TODO"
 isshift = False
@@ -50,21 +47,21 @@ tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFIL
 def get_all_shifts(surveys): #acquires all the surveys and collates them. Notably from magsaper ??
     surveydfs = {}
     for survey in surveys:
-        files = glob('output_synthetic_magsaper/synth_%s_shift_*.000.txt'%survmap4shift[survey]) #originally just the 0 shift
+        files = glob('output_synthetic_flipsaper/synth_%s_shift_*.000.txt'%survmap4shift[survey]) #originally just the 0 shift
         print(files)
         if len(files) > 1:
             print("Picking up shifts!")
             isshift = True
         #mags aper is the aperture mag from PS1, important to keep around
-
         dfl = []
         for f in files:
             try:
                 tdf = pd.read_csv(f,delim_whitespace=True)      
+                for x in list(tdf):
+                    if "-" in x: tdf[x] = -1*tdf[x] ;
                 if 'PS1_' in f:
                     tdf = tdf[-1*tdf['PS1-g']+tdf['PS1-i']>.25]
                     tdf = tdf[-1*tdf['PS1-g']+tdf['PS1-i']<1.6]
-
                 dfl.append(tdf)
             except:
                 print('WARNING: Could not read in ',f) 
@@ -81,7 +78,7 @@ def get_all_shifts(surveys): #acquires all the surveys and collates them. Notabl
             surveydfs[survey] = pd.merge(surveydfs[survey],surveydfs['PS1'],left_on='standard',right_on='standard',suffixes=('','_b'))
     return surveydfs
     
-def get_all_obsdfs(surveys, redo=False, fakes=False): #TODO - better checks on IRSA loading and such
+def get_all_obsdfs(surveys, redo=False, fakes=False): 
     surveydfs = {}
     surveydfs_wext = {}
     for survey in surveys:
@@ -156,12 +153,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         obslongfilta = obssurvmap[colorsurvab]+'-'+colorfilta
         obslongfiltb = obssurvmap[colorsurvab]+'-'+colorfiltb
         obslongfilt1 = obssurvmap[surv1]+'-'+yfilt1 
-        if ('KAIT' in surv2.upper()) | ('NICKEL' in surv2.upper()):
-            obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
-        elif ('CSP' in surv2.upper()):
+        if ('CSP' in surv2.upper()):
             obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
-        elif ('ASASSN' in surv2.upper()):
-            obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
         else:
             obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
 
@@ -506,8 +499,9 @@ def prep_config(args):
     REDO = args.IRSA #yes I know there's a discrepancy in naming here
     MCMC = args.MCMC
     DEBUG = args.DEBUG
+    FAKES = args.FAKES
 
-    return REDO, MCMC, DEBUG
+    return REDO, MCMC, DEBUG, FAKES
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -526,6 +520,10 @@ def get_args():
     parser.add_argument("--DEBUG", help = msg, action="store_true")
     parser.set_defaults(DEBUG=False)
 
+    msg = "Default False. Grabs fake stars to test recovery of input parameters."
+    parser.add_argument("--FAKES", help = msg, action='store_true')
+    parser.set_defaults(FAKES=False)
+
     args = parser.parse_args()
     return args
 
@@ -533,7 +531,7 @@ def get_args():
 if __name__ == "__main__":
 
     args = get_args()
-    REDO, MCMC, DEBUG = prep_config(args)
+    REDO, MCMC, DEBUG, FAKES = prep_config(args)
 
     print('reading in survey data')
 
@@ -543,7 +541,7 @@ if __name__ == "__main__":
     fixsurveynames = []
 
     surveydata = get_all_shifts(surveys_for_chisq)
-    obsdfs = get_all_obsdfs(surveys_for_chisq, REDO)
+    obsdfs = get_all_obsdfs(surveys_for_chisq, REDO, FAKES)
     print('got all survey data')
 
     if REDO:
