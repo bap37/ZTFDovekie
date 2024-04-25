@@ -12,7 +12,7 @@ survs = [
   'PS1SN',
   'DES',
   'ZTF',
-  'CSP',
+  'CSP_TAMU',
   'SDSS',
   'Foundation',
   'SNLS',
@@ -108,6 +108,9 @@ if __name__ == '__main__':
 
   print(range(len(survs)))
   print(len(survs),len(kcorpaths),len(kcors),len(shiftfiltss),len(obsfiltss))
+
+  print("WARNING!")
+  print("The magnitudes you will see may appear to be negative. They will be written out as positive values.")
 
   try:
     index = sys.argv[1]
@@ -206,5 +209,5 @@ if __name__ == '__main__':
           bd.write(' '.join([surv,version,ngslf,cat,str(round(shift,3)),'']))
           bd.write(' '.join(vals.astype(str))+'\n')
       bd.close()
-      
+  print("The magnitudes you saw may appear to have been negative. They should have been written out as positive values.")
     

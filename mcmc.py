@@ -47,7 +47,7 @@ tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFIL
 def get_all_shifts(surveys): #acquires all the surveys and collates them. Notably from magsaper ??
     surveydfs = {}
     for survey in surveys:
-        files = glob('output_synthetic_flipsaper/synth_%s_shift_*.000.txt'%survmap4shift[survey]) #originally just the 0 shift
+        files = glob('output_synthetic_magsaper/synth_%s_shift_*.000.txt'%survmap4shift[survey]) #originally just the 0 shift
         print(files)
         if len(files) > 1:
             print("Picking up shifts!")
@@ -56,7 +56,7 @@ def get_all_shifts(surveys): #acquires all the surveys and collates them. Notabl
         dfl = []
         for f in files:
             try:
-                tdf = pd.read_csv(f,delim_whitespace=True)      
+                tdf = pd.read_csv(f,sep=" ") #formerly delim_whitespace      
                 for x in list(tdf):
                     if "-" in x: tdf[x] = -1*tdf[x] ;
                 if 'PS1_' in f:
@@ -113,18 +113,9 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
                 quit()
             surveydfs[survey] = obsdf
             if "PS1-g_AV" not in list(obsdf):
-                print(f"output_observed_apermags+AV/{obssurvmap[survey]}_observed.csv is missing the required IRSA dust maps. Rerun the command with additional argument --IRSA \n quitting.")
+                print(f"output_observed_apermags+AV/{survname}_observed.csv is missing the required IRSA dust maps. Rerun the command with additional argument --IRSA \n quitting.")
                 quit()
-
-            obsdf = obsdf[obsdf['PS1-g']-obsdf['PS1-g_AV']>14.3]
-            obsdf = obsdf[obsdf['PS1-r']-obsdf['PS1-r_AV']>14.4]
-            obsdf = obsdf[obsdf['PS1-i']-obsdf['PS1-i_AV']>14.6]
-            obsdf = obsdf[obsdf['PS1-z']-obsdf['PS1-z_AV']>14.1]
-            obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
-                          (obsdf['PS1-i']-obsdf['PS1-i_AV']) < survcolormax[survey]]
-            obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
-                          (obsdf['PS1-i']-obsdf['PS1-i_AV']) > survcolormin[survey]]
-
+                #copy of quality cuts used to live here.
             surveydfs_wext[survey] = obsdf
 
     return surveydfs_wext
