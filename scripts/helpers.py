@@ -214,7 +214,7 @@ def create_likelihoodhistory(fullsamples, poss, ll, surveys_for_chisq, fixsurvey
 
     plt.figure(figsize=(8,6))
     plt.plot(steps,chi2s,lw=3)
-    plt.xlabel('Step')
+    plt.xlabel('Step - arbitrary')
     plt.ylabel('Log Likelihood')
     plt.savefig('likelihoodhistory.png')
     print('upload likelihoodhistory.png')
