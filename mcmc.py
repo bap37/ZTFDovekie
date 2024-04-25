@@ -123,7 +123,7 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
 def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colorfiltb,yfilt1,yfilt2,
                   shifta=0,shiftb=0,shift1=0,shift2=0,off1=0,off2=0,offa=0,offb=0,
                   calspecslope=0,calspecmeanlambda=4383.15,ngslslope=0,ngslmeanlambda=5507.09,
-                  obsdict=None,synthdict=None,doplot=False,subscript='',first=False): #where the magic happens I suppose
+                  obsdict=None,synthdict=None,doplot=False,subscript='',first=False, outputdir='synthetic'): #where the magic happens I suppose
 
     ssurv2 = survmap[surv2]
     df2x = surveydata[surv2]
@@ -240,8 +240,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
                 plt.xlabel('%s - %s'%(obslongfilta,obslongfiltb))
                 plt.ylabel('%s - %s'%(obslongfilt1,obslongfilt2))
                 plt.legend()
-                plt.savefig('plots/synthetic/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript))
-                print('upload plots/synthetic/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript))
+                plt.savefig('plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript))
+                print('upload plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript))
 
     return chi2,npoints,cats,popts,pcovs,obsdict,synthdict,chires
 
@@ -274,7 +274,7 @@ def unwravel_params(params,surveynames,fixsurveynames):
 
     return paramsdict,outofbounds,paramsnames
 
-def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None,surveydatain=None,obsdfin=None,doplot=False,subscript='',debug=False,first=False):
+def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None,surveydatain=None,obsdfin=None,doplot=False,subscript='',debug=False,first=False, outputdir='synthetic'):
     global surveys_for_chisq
     surveys_for_chisq = surveys_for_chisqin
     global fixsurveynames
@@ -283,10 +283,10 @@ def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None
     surveydata = surveydatain
     global obsdfs
     obsdfs = obsdfin
-    chi2,chi2v = full_likelihood(params,doplot=doplot,subscript=subscript,first=first, remote=True)
+    chi2,chi2v = full_likelihood(params,doplot=doplot,subscript=subscript,first=first, remote=True, outputdir=outputdir)
     return chi2,chi2v
 
-def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, remote=False):
+def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, remote=False, outputdir='synthetic'):
 
     if first:
         global obsdict
@@ -411,13 +411,8 @@ def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, re
     weightsum = 0
     chi2v = []
     for surv1,surv2,filta,filtb,filt1,filt2 in zip(surv1s,surv2s,filtas,filtbs,filt1s,filt2s):
-        chi2,npoints,cats,popts,pcovs,obsdict,synthdict,off = getchi_forone(paramsdict,surveydata,obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,
-                                                      off1=paramsdict[surv1+'-'+filt1+'_offset'],
-                                                      off2=paramsdict[surv2+'-'+filt2+'_offset'],
-                                                      offa=paramsdict[surv1+'-'+filta+'_offset'],
-                                                      offb=paramsdict[surv1+'-'+filtb+'_offset'],
-                                                      doplot=doplot,subscript=subscript,first=first,
-                                                      obsdict=obsdict,synthdict=synthdict)
+        chi2,npoints,cats,popts,pcovs,obsdict,synthdict,off = getchi_forone(paramsdict,surveydata,obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'],doplot=doplot,subscript=subscript,first=first,obsdict=obsdict,synthdict=synthdict,outputdir=outputdir)
+        
         chi2v.append(chi2) #Would like to add the survey info as well
         totalchisq+=chi2
         if first: 
@@ -526,8 +521,9 @@ if __name__ == "__main__":
 
     print('reading in survey data')
 
-    surveys_for_chisq = ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
+    #surveys_for_chisq = ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
     #  ^ This controls both the surveys that will be used in the mcmc and also those that you will be grabbing IRSA from. When in IRSA mode, be very careful! 
+    surveys_for_chisq = ['PS1', 'PS1SN', 'Foundation']
     #surveys_for_chisq = ['PS1', 'CFA3K', 'PS1SN'] #keep this one around for quick IRSA updates!
     fixsurveynames = []
 
@@ -588,6 +584,7 @@ if __name__ == "__main__":
         quit()
 
     from multiprocessing import Pool
+    from datetime import date
 
     with Pool() as pool:
         sampler = emcee.EnsembleSampler(nwalkers, ndim, full_likelihood, pool=pool)
@@ -596,4 +593,6 @@ if __name__ == "__main__":
             sampler.run_mcmc(pos, 100, progress=True)
             samples = sampler.get_chain()
             pos = samples[-1,:,:]
-            np.savez('TEST.npz',samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
+            outname = "-".join(str(x) for x in surveys_for_chisq)
+            outname += str(date.today())
+            np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
