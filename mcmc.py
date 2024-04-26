@@ -521,8 +521,8 @@ if __name__ == "__main__":
 
     print('reading in survey data')
 
-    surveys_for_chisq = ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
-    #  ^ This controls both the surveys that will be used in the mcmc and also those that you will be grabbing IRSA from. When in IRSA mode, be very careful! 
+    surveys_for_chisq = config['surveys_for_dovekie']
+    outname = config['chainsfile']
     #surveys_for_chisq = ['PS1', 'CFA3K', 'PS1SN'] #keep this one around for quick IRSA updates!
     fixsurveynames = []
 
@@ -533,9 +533,6 @@ if __name__ == "__main__":
     if REDO:
         print("Done acquiring IRSA maps. Quitting now to avoid confusion.")
         quit()
-
-    #surv1='CSP'
-    #surv2='SDSS'  
 
     nparams=0
     pos = []
@@ -592,6 +589,4 @@ if __name__ == "__main__":
             sampler.run_mcmc(pos, 100, progress=True)
             samples = sampler.get_chain()
             pos = samples[-1,:,:]
-            outname = "-".join(str(x) for x in surveys_for_chisq)
-            outname += str(date.today())
             np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)

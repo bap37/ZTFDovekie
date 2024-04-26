@@ -1,5 +1,9 @@
 
+#Which surveys mcmc.py will investigate
+surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
 
+#Where the chains are saved to
+chainsfile: 'TEST.npz'
 
 ####### Below here, only madness lies, unless you want to add another survey.
 ####### In which case go ahead, but it's ugly.
