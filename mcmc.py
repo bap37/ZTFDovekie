@@ -28,7 +28,7 @@ isshift = False
 global DEBUG
 DEBUG = False
 
-jsonload = 'FILTERDEFS.yml' #where all the important but unwieldy dictionaries live
+jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
 survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors = prep_config(config)
 
@@ -521,9 +521,8 @@ if __name__ == "__main__":
 
     print('reading in survey data')
 
-    #surveys_for_chisq = ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
+    surveys_for_chisq = ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
     #  ^ This controls both the surveys that will be used in the mcmc and also those that you will be grabbing IRSA from. When in IRSA mode, be very careful! 
-    surveys_for_chisq = ['PS1', 'PS1SN', 'Foundation']
     #surveys_for_chisq = ['PS1', 'CFA3K', 'PS1SN'] #keep this one around for quick IRSA updates!
     fixsurveynames = []
 

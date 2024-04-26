@@ -1,137 +1,60 @@
 import astropy
 from astropy.io import fits
-import os
 import numpy as np
 from glob import glob
-import os
-import sys
+import os, sys
 from scipy import interpolate
+sys.path.insert(1, 'scripts/')
+from helpers import load_config
+import argparse
 
-#Adding these fuckers one at a time
-survs = [
-  'PS1SN',
-  'DES',
-  'ZTF',
-  'CSP_TAMU',
-  'SDSS',
-  'Foundation',
-  'SNLS',
-  'CFA3S',
-  'CFA3K',
-]
+jsonload = "DOVEKIE_DEFS.yml"
+config = load_config(jsonload)
 
-kcorpaths = [
-  'kcor/PS1s_RS14_PS1_tonry/',
-  'kcor/DES/',
-  'kcor/ZTF/',
-  'kcor/CSP_TAMU/',
-  'kcor/SDSS/',
-  'kcor/PS1s_RS14_PS1_tonry/',
-  'kcor/SNLS/',
-  'kcor/CFA3_4shooter_native/',
-  'kcor/CFA3_KEPLERCAM/',
-]
+def get_args():
+  parser = argparse.ArgumentParser()
 
-kcors = [
-  'PS1_excalinaper_+30A.input',
-  'DECam_excalin.input',
-  'ZTF_excalin.input',
-  'CSPDR3_excalin.input',
-  'SDSS_kcor.input',
-  'PS1_excalinaper_+30A.input',
-  'SNLS_excalin.input',
-  'CFA3_4shooter_excalin.input',
-  'CFA3_KEPLERCAM_excalin.input',
+  msg = "HELP menu for config options"
 
-]
+  msg = "Default -9, which will only output the list of available surveys. Integer number corresponding to the survey in the code printout."
+  parser.add_argument("--SURVEY", help=msg, type=int, default=-9)
 
-
-filtpaths = [
-  'filters/PS1s_RS14_PS1_tonry/',
-  'filters/DES-SN3YR_DECam/',
-  'filters/ZTF/',
-  'filters/CSP_TAMU/',
-  'filters/SDSS_Doi2010_CCDAVG/',
-  'filters/PS1s_RS14_PS1_tonry/',
-  'filters/SNLS3-Megacam/',
-  'filters/CFA3_native/',
-  'filters/CFA3_native/',
-]
-
-
-shiftfiltss = [
-  ['g','r','i','z'],
-  ['g','r','i','z'],
-  ['g', 'r', 'i'],
-  ['u','g','r','i','B','V','o','m','n','Y','y'],
-  ['G','R','I','Z','g','r','i','z'],
-  ['g', 'r', 'i', 'z'],
-  ['g', 'r', 'i', 'z'],
-  ['B', 'V', 'R', 'I'],
-  ['U','B','V','r','i'],
-
-]
-
-
-namedfiltss = [
-  ['g','r','i','z'],
-  ['g','r','i','z'],
-  ['g', 'r', 'i'],
-  ['u','g','r','i','B','V','o','m','n','Y','y'],
-  ['G','R','I','Z','g','r','i','z'],
-  ['g', 'r', 'i', 'z'],  
-  ['B', 'V', 'R', 'I'],
-  ['U','B','V','r','i'],
-
-]
-
-
-obsfiltss = [
-  ['g','r','i','z'],
-  ['g','r','i','z'],
-  ['g', 'r', 'i'],
-  ['u','g','r','i','B','V','o','m','n','Y','y'],
-  ['G','R','I','Z','g','r','i','z'],
-  ['g','r','i','z'],
-  ['g','r','i','z'],
-  ['B', 'V', 'R', 'I'],
-  ['U','B','V','r','i'],
-
-]
-
-
+  msg = 'Default -9. If unspecified, will not shift any filters. If specified, please use something corresponding to "np.arange(minval, maxval, binsize)" where you fill out the argument appropriately. \nIn command line, proper quotations around the np.arange are very important!'
+  parser.add_argument("--SHIFT", help=msg, type=str, default="-9")
+  args = parser.parse_args()
+  return args
 
 
 parallel = '1'
 if __name__ == '__main__':
 
-
-  print(range(len(survs)))
-  print(len(survs),len(kcorpaths),len(kcors),len(shiftfiltss),len(obsfiltss))
-
   print("WARNING!")
   print("The magnitudes you will see may appear to be negative. They will be written out as positive values.")
 
-  try:
-    index = sys.argv[1]
-    #parallel = str(sys.argv[2])
-  except:
+  args = get_args()
+  if args.SURVEY == -9:
     for ind, surv,kcorpath,kcor,shiftfilts,obsfilts in zip(
-        range(len(survs)),survs,kcorpaths,kcors,shiftfiltss,obsfiltss):
+        range(len(config['survs'])),config['survs'],config['kcorpaths'],config['kcors'],config['shiftfiltss'],config['obsfiltss']):
       print(ind,surv)
-    print('please call with parallelization arg like so:\npython loopsyntheticmags.py 2 1')
+    print('please call with integer arg like so:\npython loopsyntheticmags.py X')
     sys.exit()
+  else:
+    index = args.SURVEY
+
+  if args.SHIFT != "-9":
+    shifts = eval(args.SHIFT)
+  else:
+    shifts = [0]
 
   for ind, surv,kcorpath,kcor,shiftfilts,obsfilts in zip(
-        range(len(survs)),survs,kcorpaths,kcors,shiftfiltss,obsfiltss):
+        range(len(config['survs'])),config['survs'],config['kcorpaths'],config['kcors'],config['shiftfiltss'],config['obsfiltss']):
     print(ind,surv)
     if ind != float(index): continue
       
     if kcorpath[-1] == '/': kcorpath=kcorpath[:-1]
     
     #for shift in np.arange(-30,40,10):
-    for shift in [0]:
-      #version = kcorpath.split('/')[1] #This is where the fuckery gets written out
+    for shift in shifts:
       version = surv
       print(f'starting shift = {shift}')
 
