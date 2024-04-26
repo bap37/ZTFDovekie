@@ -5,12 +5,14 @@ surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP'
 #Where the chains are saved to
 chainsfile: 'TEST.npz'
 
-####### Below here, only madness lies, unless you want to add another survey.
+####### Below here, only madness lies, unless you want to add another survey. 
 ####### In which case go ahead, but it's ugly.
-##############################################################################
+######################################################
+# There are three blocks of code definitions here. I've done my best to ensure no overlaps in definitions, but nothing is perfect. Make sure your survey is represented in each block, which is delineated with "START:"
+#######################################
 
 ############################################
-############## loop synthetic mags code
+############## START: loopsyntheticmags_commandlineaper.py
 ############################################
 
 survs: ['PS1SN',
@@ -94,7 +96,7 @@ obsfiltss: [['g','r','i','z'],
 ]
 
 ###############################################
-############## Dovekie.py starts here
+############## START: Dovekie.py 
 ###############################################
 
 survmap: {'PS1':'PS1',
@@ -288,3 +290,20 @@ errfloors: {
     'SNLS'  : 0.005,
 }
 
+##############################################
+#############START: filtmeans.py
+##############################################
+
+#PS1SN, DES, ZTF, CSP, SDSS, Foundation, SNLS, CFA3S, CFA3K
+
+filttranss: [['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
+             ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
+             ['ztfg1.dat+-20' ,'ztfr1.dat', 'ztfi1.dat'],
+             ['u_tel_ccd_atm_ext_1.2.dat','g_tel_ccd_atm_ext_1.2.dat','r_tel_ccd_atm_ext_1.2.dat','i_tel_ccd_atm_ext_1.2.dat','B_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','V_LC3009_tel_ccd_atm_ext_1.2.dat','V_LC3014_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','Y_SWO_TAM_scan_atm.dat','Y_DUP_TAM_scan_atm.dat','Jrc1_SWO_TAM_scan_atm.dat','Jrc2_SWO_TAM_scan_atm.dat','H_SWO_TAM_scan_atm.dat','H_DUP_TAM_scan_atm.dat'],
+             ['G.dat','R.dat','I.dat','Z.dat','g.dat','r.dat','i.dat','z.dat'],
+             ['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
+             ['effMEGACAM-g.dat','effMEGACAM-r.dat','effMEGACAM-i.dat','effMEGACAM-z.dat'],
+             ['SNLS3_4shooter2_U.dat', 'SNLS3_4shooter2_B.dat', 'SNLS3_4shooter2_V.dat', 'SNLS3_4shooter2_R.dat', 'SNLS3_4shooter2_I.dat'], 
+             ['SNLS3_Keplercam_U_modtran.dat', 'SNLS3_Keplercam_B_modtran.dat', 'SNLS3_Keplercam_V_modtran.dat', 'SNLS3_Keplercam_r_modtran.dat', 'SNLS3_Keplercam_i_modtran.dat'],
+
+]
