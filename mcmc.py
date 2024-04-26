@@ -44,20 +44,19 @@ tableout = open('preoffsetsaper.dat','w')
 tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
 
 
-def get_all_shifts(surveys): #acquires all the surveys and collates them. Notably from magsaper ??
+def get_all_shifts(surveys): #acquires all the surveys and collates them. 
     surveydfs = {}
     for survey in surveys:
-        files = glob('output_synthetic_magsaper/synth_%s_shift_*.000.txt'%survmap4shift[survey]) #originally just the 0 shift
+        files = glob('output_synthetic_magsaper/synth_%s_shift_*.000.txt'%survmap4shift[survey]) #TODO - better determination of whether or not there are lambda shifts and what to do if there are
         print(files)
         if len(files) > 1:
             print("Picking up shifts!")
             isshift = True
-        #mags aper is the aperture mag from PS1, important to keep around
         dfl = []
         for f in files:
             try:
                 tdf = pd.read_csv(f,sep=" ") #formerly delim_whitespace      
-                for x in list(tdf):
+                for x in list(tdf): #Converts the mags into the weird negative space that the code expects.
                     if "-" in x: tdf[x] = -1*tdf[x] ;
                 if 'PS1_' in f:
                     tdf = tdf[-1*tdf['PS1-g']+tdf['PS1-i']>.25]
@@ -65,14 +64,14 @@ def get_all_shifts(surveys): #acquires all the surveys and collates them. Notabl
                 dfl.append(tdf)
             except:
                 print('WARNING: Could not read in ',f) 
-        df = pd.concat(dfl, axis=0, ignore_index=True)
-        df = df.sort_values(by=['standard','shift'])
+        df = pd.concat(dfl, axis=0, ignore_index=True) ; df = df.sort_values(by=['standard','shift'])
+
         if len(df) < 2:
             print("You have an empty dataframe!")
             quit()
 
         surveydfs[survey] = df
-
+    #First for loop ends here.
     for survey in surveys:
         if survey != 'PS1':
             surveydfs[survey] = pd.merge(surveydfs[survey],surveydfs['PS1'],left_on='standard',right_on='standard',suffixes=('','_b'))
@@ -111,6 +110,7 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
             except FileNotFoundError:
                 print(f'For whatever reason, {realdirname}+AV/{survname} does not exist.')
                 quit()
+
             surveydfs[survey] = obsdf
             if "PS1-g_AV" not in list(obsdf):
                 print(f"output_observed_apermags+AV/{survname}_observed.csv is missing the required IRSA dust maps. Rerun the command with additional argument --IRSA \n quitting.")
@@ -135,14 +135,11 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         npoints = 0
     
         #changed these back to dashes
-        longfilta = survfiltmap[colorsurvab]+'-'+colorfilta
-        longfiltb = survfiltmap[colorsurvab]+'-'+colorfiltb
-        longfilt1 = survfiltmap[surv1]+'-'+yfilt1
-        longfilt2 = survfiltmap[surv2]+'-'+yfilt2
+        longfilta = survfiltmap[colorsurvab]+'-'+colorfilta ; longfiltb = survfiltmap[colorsurvab]+'-'+colorfiltb
+        longfilt1 = survfiltmap[surv1]+'-'+yfilt1 ; longfilt2 = survfiltmap[surv2]+'-'+yfilt2
 
     
-        obslongfilta = obssurvmap[colorsurvab]+'-'+colorfilta
-        obslongfiltb = obssurvmap[colorsurvab]+'-'+colorfiltb
+        obslongfilta = obssurvmap[colorsurvab]+'-'+colorfilta ; obslongfiltb = obssurvmap[colorsurvab]+'-'+colorfiltb
         obslongfilt1 = obssurvmap[surv1]+'-'+yfilt1 
         if ('CSP' in surv2.upper()):
             obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
@@ -172,12 +169,13 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
                 ww = (df2['standard_catagory']==cat) & \
                    (~np.isnan(df2[longfilt2].astype('float'))) & \
                    (~np.isnan(df2[longfilt1].astype('float')))
-                modelfilta = df2[longfilta][ww]
-                modelfiltb = df2[longfiltb][ww]
-                modelfilt1 = df2[longfilt1][ww]
-                modelfilt2 = df2[longfilt2][ww]
+
+                modelfilta = df2[longfilta][ww] ; modelfiltb = df2[longfiltb][ww]
+                modelfilt1 = df2[longfilt1][ww] ; modelfilt2 = df2[longfilt2][ww]
+
                 modelcolor = -1*df2[longfilta][ww]+offa+df2[longfiltb][ww]-offb
                 modelres = -1*df2[longfilt1][ww]+off1+df2[longfilt2][ww]-off2
+
                 ww2 = (modelcolor > synth_gi_range[cat][0]) & (modelcolor < synth_gi_range[cat][1])
 
                 synthdict[surv2+obslongfilt1+obslongfilt2][cat]['modelfilta'] = modelfilta[ww2].astype('float')
@@ -202,10 +200,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
             if doplot:
                 modelress.append(modelres.astype('float'))
                 modelcolors.append(modelcolor.astype('float'))
-                xds.extend(xd)
-                yds.extend(yd)
-                xdsc.append(xd)
-                ydsc.append(yd)
+                xds.extend(xd) ; yds.extend(yd)
+                xdsc.append(xd); ydsc.append(yd)
                 cats.append(cat)
                 popts.append(popt)
                 pcovs.append(pcov)
