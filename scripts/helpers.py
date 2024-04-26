@@ -37,7 +37,7 @@ def prep_config(config):
     errfloors = config['errfloors']
     return survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors
 
-jsonload = 'FILTERDEFS.yml' #where all the important but unwieldy dictionaries live
+jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
 survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors = prep_config(config)
 
@@ -128,8 +128,8 @@ def create_cov(labels, flat_samples):
     plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = True
     plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = False
 
-    im = ax.matshow(cov)
-    fig.colorbar(im)
+    im = ax.matshow(cov, cmap='cividis')
+    fig.colorbar(im, cmap='cividis')
 
     ax.set_xticks(np.arange(len(labels)))
     ax.set_yticks(np.arange(len(labels)))
@@ -153,8 +153,8 @@ def create_corr(c):
     plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = True
     plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = False
 
-    im = ax.matshow(corr)
-    fig.colorbar(im)
+    im = ax.matshow(corr, cmap='cividis')
+    fig.colorbar(im, cmap='cividis')
 
     ax.set_xticks(np.arange(len(labels)))
     ax.set_yticks(np.arange(len(labels)))
