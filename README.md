@@ -28,8 +28,9 @@ Unfortunately, changing the surveys that will be fit requires tinkering with the
 REGENERATE SYNTHETIC MAGNITUDES:
 1. run `python loopsyntheticmags_commandlineaper.py` without any commands. This will give a list of available surveys to process, with an associated integer.
 2. choose the survey integer and run `python loopsyntheticmags_commandlineaper.py INT` where INT is your desired number.
+3. If you desire a shift be applied to the filters, add the `--SHIFT "np.arange(minval,maxval,binsize)"` key in the command line, which will apply shifts based on your input.
 
 Some general notes: 
 synth_PS1_shift... and synth_PS1SN_shift... are identical, and synth_PS1_shift **should not be touched**. 
-I will work on upgrading the filter-shift methodology, but right now it does not cleanly generate any angstrom-shifts to be applied to the filters. This can be done by tinkering with the internal code, but I don't recommend it. 
+
 
