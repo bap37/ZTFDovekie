@@ -15,7 +15,7 @@ def loadsynthphot(fname):
     result=np.genfromtxt(fname,names=True,dtype=None,encoding='utf-8',delimiter=' ')
     for key,type in result.dtype.descr:
         if type=='<f8':
-            result[key]*=-1
+            result[key]*=1
     return result
 
 
