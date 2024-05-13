@@ -122,7 +122,7 @@ class survey:
         #Use bayesian factor analysis to reduce the dimensionality of the synthetic photometry
         self.means=np.mean(mags,axis=1)
         mags-=self.means[:,np.newaxis]
-        synth_factors,_,_,_=bfa(mags, 2, 10000,)
+        synth_factors,coords,_,_=bfa(mags, 2, 10000,)
         #Renormalize factors
         synth_factors[:,1]=(synth_factors[:,1]-synth_factors[self.magind,1]/synth_factors[self.magind,0] *synth_factors[:,0])
         synth_factors[:,1]=-synth_factors[:,1]/synth_factors[self.colorind,1]
