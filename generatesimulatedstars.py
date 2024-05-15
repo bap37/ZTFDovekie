@@ -7,6 +7,7 @@ from scipy import stats
 import csv
 import os
 import json
+from functools import reduce
 
 from functools import reduce
 
