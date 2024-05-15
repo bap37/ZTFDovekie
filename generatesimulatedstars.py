@@ -8,7 +8,7 @@ import csv
 import os
 import json
 
-
+from functools import reduce
 
 def loadsynthphot(fname):
     
@@ -113,6 +113,7 @@ class survey:
         
         
         self.magind,self.colorind=magcolorinds
+        assert(self.magind!=self.colorind)
         #If it's a PS1 survey, the synthetic photometry will be identical to PS1, so don't regress on identical data
         if self.isps1survey: 
             mags=np.array([survsynth[x] for x in filtnames])
@@ -122,11 +123,11 @@ class survey:
         #Use bayesian factor analysis to reduce the dimensionality of the synthetic photometry
         self.means=np.mean(mags,axis=1)
         mags-=self.means[:,np.newaxis]
-        synth_factors,_,_,_=bfa(mags, 2, 10000,)
+        synth_factors,coords,_,_=bfa(mags, 2, 10000,)
         #Renormalize factors
         synth_factors[:,1]=(synth_factors[:,1]-synth_factors[self.magind,1]/synth_factors[self.magind,0] *synth_factors[:,0])
         synth_factors[:,1]=-synth_factors[:,1]/synth_factors[self.colorind,1]
-        synth_factors[:,self.magind]*=np.std(coords,axis=1)[self.magind]
+        synth_factors[:,0]*=np.std(coords,axis=1)[0]
         self.synth_factors=synth_factors
         self.offsets=np.concatenate([survoffsets,ps1offsets] )
         
@@ -146,7 +147,7 @@ class survey:
             #Draw magnitude and color
             mag=self.magdist()
             color=self.colordist()
-            coords=(np.random.normal(), color)
+            coords=(0, color)
             #Generate  magnitudes from factor analysis
             mags=self.synth_factors@ np.array(coords)+self.means
             mags+= mag-mags[self.magind]
@@ -184,172 +185,169 @@ class survey:
 
 
 
-survnames=['CFA3K','CFA3S','CSPDR3nat', 'DES','Foundation','PS1SN','SDSS','SNLS','ZTF']
 
-surveys={}
-
-ps1offsets=np.random.normal(0,0.01,4)
-survoffsets={'PS1':ps1offsets }
-ps1synth=loadsynthphot('output_synthetic_magsaper/synth_PS1_shift_0.000.txt')
-cut=(ps1synth['standard_catagory']=='calspec23')& ( ps1synth['PS1g']-ps1synth['PS1r'] > -1 ) &(ps1synth['PS1g']-ps1synth['PS1r'] <.8)
-
-
-def getdata(survname):
+def main():
+    survnames=['CFA3K','CFA3S','CSPDR3nat', 'DES','Foundation','PS1SN','SDSS','SNLS','ZTF']
     
-    synth=loadsynthphot(f'output_synthetic_magsaper/synth_{survname}_shift_0.000.txt')
-    obs=np.genfromtxt(f'output_observed_apermags+AV/{survname}_observed.csv',names=True,dtype=None,encoding='utf-8',delimiter=',')
-    return synth,obs
+    surveys={}
+    
+    ps1offsets=np.random.normal(0,0.01,4)
+    survoffsets={'PS1':ps1offsets }
+    ps1synth=loadsynthphot('output_synthetic_magsaper/synth_PS1_shift_0.000.txt')
+    cut=(ps1synth['standard_catagory']=='calspec23')& ( ps1synth['PS1g']-ps1synth['PS1r'] > -1 ) &(ps1synth['PS1g']-ps1synth['PS1r'] <.8)
+    
+    
+    def getdata(survname):
+        
+        synth=loadsynthphot(f'output_synthetic_magsaper/synth_{survname}_shift_0.000.txt')
+        obs=np.genfromtxt(f'output_observed_apermags+AV/{survname}_observed.csv',names=True,dtype=None,encoding='utf-8',delimiter=',')
+        return synth,obs
+    ###########################################################################
+    
+    #Initialize survey objects
+    name='SNLS'
+    synth,obs=getdata(name)
+    survoffsets[name]= np.random.normal(0,0.01,4)
+    surv=survey(lambda obs=obs: stats.gaussian_kde(obs['SNLSg']).resample(1)[0][0],lambda : np.random.uniform(0,.5)+.2,
+          
+          (0,1),['SNLS'+x for x in 'griz'],obs, synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
+    
+    surveys[name]=surv
+    
+    name='SDSS'
+    synth,obs=getdata(name)
+    survoffsets[name]= np.random.normal(0,0.01,4)
+    surv=survey(lambda obs=obs: stats.gaussian_kde(obs['SDSSg']).resample(1)[0][0],  stats.exponnorm(1.8564479517780803, 0.4772301484843199, 0.07070238022618985).rvs ,
+          
+          (0,1),[name+x for x in 'griz'],obs, synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
+    surveys[name]=surv
+    
+    name='CFA3K'
+    filts=[name+x for x in 'UBVri']
+    synth,obs=getdata(name)
+    obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA3KU']-obs['CFA3KB'] > -.5) & (obs['CFA3KU']-obs['CFA3KB'] < 20)
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+    surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA3KB']).resample(1)[0][0],  stats.uniform(.25,.3).rvs ,
+          (1,2),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
+    surveys[name]=surv
+    
+    name='CFA3S'
+    filts=[name+x for x in 'BVRI']
+    
+    synth,obs=getdata(name)
+    obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA3SR']-obs['CFA3SI'] > -.2)& (obs['CFA3SB']-obs['CFA3SV'] > .3)
+    
+    
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+    surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA3SB']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,
+          
+          (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
+    surveys[name]=surv
+    
+    name='CSPDR3nat'
+    
+    
+    synth=loadsynthphot(f'output_synthetic_magsaper/synth_CSP_shift_0.000.txt')
+    obs=np.genfromtxt(f'output_observed_apermags+AV/CSPDR3nat_observed.csv',names=True,dtype=None,encoding='utf-8',delimiter=',')
+    synth=np.array(list(synth), dtype=[(x.replace('CSP_TAMU',name),synth.dtype.fields[x][0]) for x in synth.dtype.fields])
+    filts=[name+x for x in 'BVgri']
+    
+    obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['CFA3SR']-obs['CFA3SI'] > -.2)& (obs['CFA3SB']-obs['CFA3SV'] > .3)
+    
+    
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+    surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CSPDR3natB']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,
+          
+          (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
+    surveys[name]=surv
+    
+    name='DES'
+    filts=[name+x for x in 'griz']
+    
+    synth,obs=getdata(name)
+    obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['DESg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
+    
+    
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+    surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,
+          
+          (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
+    surveys[name]=surv
+    
+    name='Foundation'
+    filts=[name+x for x in 'griz']
+    synth,obs=getdata(name)
+    nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
+    obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
+    
+    
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+    surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['Foundationg']).resample(1)[0][0],  stats.uniform(.25,.4).rvs ,
+          
+          (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],ps1offsets ,True)
+    surveys[name]=surv
+    
+    name='PS1SN'
+    filts=[name+x for x in 'griz']
+    synth,obs=getdata(name)
+    synth=np.array(list(synth), dtype=[(x.replace('Foundation',name),synth.dtype.fields[x][0]) for x in synth.dtype.fields])
+    nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
+    obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
+    
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+    surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['PS1SNg']).resample(1)[0][0],  stats.uniform(.25,.6).rvs ,
+          
+          (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],ps1offsets ,True)
+    surveys[name]=surv
+    
+    name='DES'
+    filts=[name+x for x in 'griz']
+    synth,obs=getdata(name)
+    nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
+    obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+    surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.uniform(.4,.5).rvs ,
+          (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],ps1offsets )
+    surveys[name]=surv
+    
+    name='ZTF'
+    filts=[name+x for x in 'gri']
+    synth,obs=getdata(name)
+    nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
+    
+    obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
+    
+    
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+    surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,
+          
+          (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],ps1offsets )
+    surveys[name]=surv
+    
+    ###########################################################################
+    
+    
+    for name in surveys:
+        surv=surveys[name]
+        simdata=surv.genstar(obs.size)
+        with open(f'output_simulated_apermags+AV/{name}_simobserved.csv', 'w') as csvfile:
+            out = csv.writer(csvfile, delimiter=',')
+            dashednames=[x[:-1]+'-'+x[-1] for x in simdata.dtype.names]
+            out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames])
+            for row in simdata:
+                out.writerow([name]+list(row)+[99,99]+list(row))
+    
+    ###########################################################################
+    
+    
+    offsetdict={'PS1':dict(zip(['PS1'+x for x in 'griz'] ,survoffsets['PS1']))}
+    for surv in surveys:
+        offsetdict[surv]=dict(zip(surveys[surv].filtnames,survoffsets[surv]))
+    
+    with open('output_simulated_apermags+AV/simmedoffsets.json','w') as file:
+        file.write(json.dumps(offsetdict))
 
 
-###########################################################################
-
-#Initialize survey objects
-name='SNLS'
-synth,obs=getdata(name)
-survoffsets[name]= np.random.normal(0,0.01,4)
-surv=survey(lambda obs=obs: stats.gaussian_kde(obs['SNLSg']).resample(1)[0][0],lambda : np.random.uniform(0,.5)+.2,
-      
-      (0,1),['SNLS'+x for x in 'griz'],obs, synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
-
-surveys[name]=surv
-
-name='SDSS'
-synth,obs=getdata(name)
-survoffsets[name]= np.random.normal(0,0.01,4)
-surv=survey(lambda obs=obs: stats.gaussian_kde(obs['SDSSg']).resample(1)[0][0],  stats.exponnorm(1.8564479517780803, 0.4772301484843199, 0.07070238022618985).rvs ,
-      
-      (0,1),[name+x for x in 'griz'],obs, synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
-surveys[name]=surv
-
-name='CFA3K'
-filts=[name+x for x in 'UBVri']
-
-synth,obs=getdata(name)
-obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA3KU']-obs['CFA3KB'] > -.5) & (obs['CFA3KU']-obs['CFA3KB'] < 20)
-
-survoffsets[name]= np.random.normal(0,0.01,len(filts))
-surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA3KB']).resample(1)[0][0],  stats.uniform(.25,.3).rvs ,
-      
-      (1,2),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
-surveys[name]=surv
-
-name='CFA3S'
-filts=[name+x for x in 'BVRI']
-
-synth,obs=getdata(name)
-obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA3SR']-obs['CFA3SI'] > -.2)& (obs['CFA3SB']-obs['CFA3SV'] > .3)
-
-
-survoffsets[name]= np.random.normal(0,0.01,len(filts))
-surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA3SB']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,
-      
-      (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
-surveys[name]=surv
-
-name='CSPDR3nat'
-
-
-synth=loadsynthphot(f'output_synthetic_magsaper/synth_CSP_shift_0.000.txt')
-obs=np.genfromtxt(f'output_observed_apermags+AV/CSPDR3nat_observed.csv',names=True,dtype=None,encoding='utf-8',delimiter=',')
-synth=np.array(list(synth), dtype=[(x.replace('CSP_TAMU',name),synth.dtype.fields[x][0]) for x in synth.dtype.fields])
-filts=[name+x for x in 'BVgri']
-
-obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['CFA3SR']-obs['CFA3SI'] > -.2)& (obs['CFA3SB']-obs['CFA3SV'] > .3)
-
-
-survoffsets[name]= np.random.normal(0,0.01,len(filts))
-surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CSPDR3natB']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,
-      
-      (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
-surveys[name]=surv
-
-name='DES'
-filts=[name+x for x in 'griz']
-
-synth,obs=getdata(name)
-obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['DESg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-
-
-survoffsets[name]= np.random.normal(0,0.01,len(filts))
-surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,
-      
-      (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],ps1offsets )
-surveys[name]=surv
-
-name='Foundation'
-filts=[name+x for x in 'griz']
-synth,obs=getdata(name)
-nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
-obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-
-
-survoffsets[name]= np.random.normal(0,0.01,len(filts))
-surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['Foundationg']).resample(1)[0][0],  stats.uniform(.25,.4).rvs ,
-      
-      (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],ps1offsets ,True)
-surveys[name]=surv
-
-name='PS1SN'
-filts=[name+x for x in 'griz']
-synth,obs=getdata(name)
-synth=np.array(list(synth), dtype=[(x.replace('Foundation',name),synth.dtype.fields[x][0]) for x in synth.dtype.fields])
-nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
-obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-
-survoffsets[name]= np.random.normal(0,0.01,len(filts))
-surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['PS1SNg']).resample(1)[0][0],  stats.uniform(.25,.6).rvs ,
-      
-      (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],ps1offsets ,True)
-surveys[name]=surv
-
-name='DES'
-filts=[name+x for x in 'griz']
-synth,obs=getdata(name)
-nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
-obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-survoffsets[name]= np.random.normal(0,0.01,len(filts))
-surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.uniform(.4,.5).rvs ,
-      (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],ps1offsets )
-surveys[name]=surv
-
-name='ZTF'
-filts=[name+x for x in 'gri']
-synth,obs=getdata(name)
-nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
-
-obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-
-
-survoffsets[name]= np.random.normal(0,0.01,len(filts))
-surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,
-      
-      (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],ps1offsets )
-surveys[name]=surv
-
-###########################################################################
-
-
-for name in surveys:
-    surv=surveys[name]
-    simdata=surv.genstar(obs.size)
-    with open(f'output_simulated_apermags+AV/{name}_simobserved.csv', 'w') as csvfile:
-        out = csv.writer(csvfile, delimiter=',')
-        dashednames=[x[:-1]+'-'+x[-1] for x in simdata.dtype.names]
-        out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames])
-        for row in simdata:
-            out.writerow([name]+list(row)+[99,99]+list(row))
-
-###########################################################################
-
-
-offsetdict={'PS1':dict(zip(['PS1'+x for x in 'griz'] ,survoffsets['PS1']))}
-for surv in surveys:
-    offsetdict[surv]=dict(zip(surveys[surv].filtnames,survoffsets[surv]))
-
-with open('output_simulated_apermags+AV/simmedoffsets.json','w') as file:
-    file.write(json.dumps(offsetdict))
-
-
-
+if __name__=='__main__': main()
 
 
