@@ -218,27 +218,49 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
 
         if doplot:
             plt.clf()
-            plt.figure(figsize=(6,6))
-            plt.scatter(xds,yds,
-                    color='k',alpha=.5,label='Observed Mags Chisq %.2f'%(chi2),s=5,zorder=9999)
+            fig, ax = plt.subplots(figsize=(6,6))
+            ax.scatter(xds,yds,
+                    color='k',alpha=.3, edgecolor=None, label='Observed Mags Chisq %.2f'%(chi2),s=5,zorder=5)
             _,_,sigmad,_,data_popt,data_pcov = itersigmacut_linefit(np.array(xds),np.array(yds),niter=1,nsigma=5)
             data_slope=data_popt[0] ; data_slope_err = (data_pcov[0,0]**2+sigmad**2)**.5
             ndata = len(datares)
 
-            for cat,popt,pcov,mc,mr in zip(cats,popts,pcovs,modelcolors,modelress):
+            ax.plot(xds, line(np.array(xds),data_popt[0],data_popt[1]), c="k", lw=4, zorder=20)
+
+
+            #here starts the two synthetics
+            coloors = ['goldenrod', "#0C6291"]
+            for cat,popt,pcov,mc,mr,cool in zip(cats,popts,pcovs,modelcolors,modelress,coloors):
                 offmean = np.mean(line(xd,popt[0],popt[1]) - yd)
                 offmed = np.median(line(xd,popt[0],popt[1]) - yd)
                 synth_slope = popt[0]
                 synth_slope_err = pcov[0,0]
                 sigma = (data_slope-synth_slope)/np.sqrt(data_slope_err**2+synth_slope_err**2)
-                plt.plot(xd,line(xd,popt[0],popt[1]),label='Synthetic Pred: %s\nOffMean: %.3f\nOffMedian: %.3f\n'%(cat,offmean,offmed))
-                plt.scatter(mc,mr,alpha=.9,s=4)
-                tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.1f\t%.1f\n'%(surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,cat,offmean,ndata,data_slope,data_slope_err,synth_slope,synth_slope_err,sigma,shift))  
-                plt.legend()
-                plt.xlabel('%s - %s'%(obslongfilta,obslongfiltb))
-                plt.ylabel('%s - %s'%(obslongfilt1,obslongfilt2))
-                plt.legend()
-                plt.savefig('plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript))
+
+                ## Start plots here
+                ax.plot(xd,line(xd,popt[0],popt[1]),
+                        lw=2, c=cool, zorder=19,
+                        label='Synthetic Pred: %s\nOffMean: %.3f\nOffMedian: %.3f\n'%(cat,offmean,offmed)) #lines
+                ax.scatter(mc, mr, alpha=.3, s=5, edgecolor=None, zorder=10, c=cool) #Points
+                ax.legend(framealpha=0)
+                ax.set_xlabel(f'{obslongfilta} - {obslongfiltb}', alpha=0.8)
+                ax.set_ylabel(f'{obslongfilt1} - {obslongfilt2}', alpha=0.8)
+
+                labels = np.quantile(xds, np.arange(0, 1.1, 0.2))
+                ax.set_xticks(ticks=labels)
+                ax.set_xticklabels(np.around(labels,2), rotation=90)
+                labels = np.quantile(np.array(yds), np.arange(0, 1.1, 0.2))
+                ax.set_yticks(ticks=labels)
+                ax.set_yticklabels(labels=np.around(labels,2))
+                for speen in ['right', 'top', 'left', 'bottom']:
+                    ax.spines[speen].set_visible(False)
+
+
+                ## End plot stuff
+                plt.savefig('plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript), bbox_inches="tight")
+
+                tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.1f\t%.1f\n'%(surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,cat,offmean,ndata,data_slope,data_slope_err,synth_slope,synth_slope_err,sigma,shift))
+
                 print('upload plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript))
 
     plt.close('all') #BRODIE - hopefully this doesn't break plots
