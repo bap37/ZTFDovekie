@@ -1,0 +1,18 @@
+DOCUMENTATION:
+    PURPOSE: DECam filter transmissions for Y3A2 (DES3YR and DES5YR)
+    REF: 
+    - AUTHOR:  Burke et al, 2018 (FGCM calibration)
+      ADS:     https://ui.adsabs.harvard.edu/abs/2018AJ....155...41B
+    INTENT:  Nominal
+    USAGE_KEY:  FILTER
+    USAGE_CODE: kcor.exe
+    VALIDATE_SCIENCE: used in DES-SN3YR cosmology analysis
+    ATMOSPHERE:  includes airmass = 1.2
+    LEAKAGE:  none, based on vendor measurement of small filter piece
+    NOTES
+    - trans functions from Y3A2
+    - from slack message with Eli on May 12 2021
+    VERSIONS:
+    - AUTHOR: E.Rykoff
+      DATE:  2021
+DOCUMENTATION_END:
