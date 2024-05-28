@@ -1,0 +1,4 @@
+
+for f in *ZTF*; do 
+  cp "$f" "${f/ZTFDD/ZTFS}"
+done
