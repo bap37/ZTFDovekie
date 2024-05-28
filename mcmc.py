@@ -146,9 +146,9 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         else:
             obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
 
-        if first:
+        if first: #looks like the data information is calculated once at the start, and then not again. 
             obsdf = obsdfs[surv2] #grabs the observed points from the relevant survey
-            if DEBUG: print(obsdf.columns, surv2)
+            if DEBUG: print(obsdf.columns, surv2) ; 
             yr=obsdf[obslongfilt1]-obsdf[obslongfilt2] #observed filter1 - observed filter 2 
             wwyr = np.abs(yr)<1 #only uses things lower than 1
             datacolor = (obsdf[obslongfilta][wwyr]-obsdf[obslongfilta+"_AV"][wwyr])-(obsdf[obslongfiltb][wwyr]-obsdf[obslongfiltb+"_AV"][wwyr])
@@ -157,6 +157,7 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
             obsdict[surv2+obslongfilt1+obslongfilt2] = {}
             obsdict[surv2+obslongfilt1+obslongfilt2]['datacolor'] = datacolor
             obsdict[surv2+obslongfilt1+obslongfilt2]['datares'] =datares
+            
             xd,yd,sigmadata,yresd,poptd,pcovd = itersigmacut_linefit(datacolor.astype('float'),
                                                                  datares.astype('float'),
                                                                  niter=2,nsigma=3)    
@@ -165,7 +166,7 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
             synthdict[surv2+obslongfilt1+obslongfilt2] = {}
             for cat in np.unique(df2['standard_catagory']):
                 synthdict[surv2+obslongfilt1+obslongfilt2][cat] = {}
-                if DEBUG: print(df2.columns, surv2, surv1) 
+                if DEBUG: print(df2.columns, surv2, surv1, np.unique(df2['standard_catagory'])) 
                 ww = (df2['standard_catagory']==cat) & \
                    (~np.isnan(df2[longfilt2].astype('float'))) & \
                    (~np.isnan(df2[longfilt1].astype('float')))
@@ -187,7 +188,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
             datares = obsdict[surv2+obslongfilt1+obslongfilt2]['datares']
             sigmadata = obsdict[surv2+obslongfilt1+obslongfilt2]['sigmadata']
 
-        #End of "if first" statement. 
+        #End of "if first" statement.
+ 
         cats, popts, pcovs, modelcolors, modelress, dataress, datacolors, modellines, lines, resres, reserr, xds, ms, yds, xdsc, ydsc =  ([] for i in range(16))
 
         for cat in np.unique(df2['standard_catagory']):
@@ -207,43 +209,67 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
                 pcovs.append(pcov)
         
         
-            reserr = datares*0+sigmadata/np.sqrt(len(datares)) #uhhh why is datares multiplied by 0 
+            #reserr = datares*0+sigmadata/np.sqrt(len(datares)) #uhhh why is datares multiplied by 0 
             dms = datares - line(datacolor,popt[0],popt[1])
             chires = np.mean(dms)
             chireserrsq = (sigmadata/np.sqrt(len(datares)))**2+errfloors[surv2]**2
-            chi2 += chires**2/chireserrsq/2
+            chi2 += (chires**2)/(chireserrsq)/2 #they didn't, but geez is (chires**2/chireserrsq/2) unclear
 
-        #print(chi2)
 
         if doplot:
             plt.clf()
-            plt.scatter(xds,yds,
-                    color='k',alpha=.5,label='Observed Mags Chisq %.2f'%(chi2),s=5,zorder=9999)
+            fig, ax = plt.subplots(figsize=(6,6))
+            ax.scatter(xds,yds,
+                    color='k',alpha=.3, edgecolor=None, label='Observed Mags Chisq %.2f'%(chi2),s=5,zorder=5)
             _,_,sigmad,_,data_popt,data_pcov = itersigmacut_linefit(np.array(xds),np.array(yds),niter=1,nsigma=5)
             data_slope=data_popt[0] ; data_slope_err = (data_pcov[0,0]**2+sigmad**2)**.5
             ndata = len(datares)
 
-            for cat,popt,pcov,mc,mr in zip(cats,popts,pcovs,modelcolors,modelress):
+            ax.plot(xds, line(np.array(xds),data_popt[0],data_popt[1]), c="k", lw=4, zorder=20)
+
+
+            #here starts the two synthetics
+            coloors = ['goldenrod', "#0C6291"]
+            for cat,popt,pcov,mc,mr,cool in zip(cats,popts,pcovs,modelcolors,modelress,coloors):
                 offmean = np.mean(line(xd,popt[0],popt[1]) - yd)
                 offmed = np.median(line(xd,popt[0],popt[1]) - yd)
                 synth_slope = popt[0]
                 synth_slope_err = pcov[0,0]
                 sigma = (data_slope-synth_slope)/np.sqrt(data_slope_err**2+synth_slope_err**2)
-                plt.plot(xd,line(xd,popt[0],popt[1]),label='Synthetic Pred: %s\nOffMean: %.3f\nOffMedian: %.3f\n'%(cat,offmean,offmed))
-                plt.scatter(mc,mr,alpha=.9,s=4)
-                tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.1f\t%.1f\n'%(surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,cat,offmean,ndata,data_slope,data_slope_err,synth_slope,synth_slope_err,sigma,shift))  
-                plt.legend()
-                plt.xlabel('%s - %s'%(obslongfilta,obslongfiltb))
-                plt.ylabel('%s - %s'%(obslongfilt1,obslongfilt2))
-                plt.legend()
-                plt.savefig('plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript))
+
+                ## Start plots here
+                ax.plot(xd,line(xd,popt[0],popt[1]),
+                        lw=2, c=cool, zorder=19,
+                        label='Synthetic Pred: %s\nOffMean: %.3f\nOffMedian: %.3f\n'%(cat,offmean,offmed)) #lines
+                ax.scatter(mc, mr, alpha=.3, s=5, edgecolor=None, zorder=10, c=cool) #Points
+                ax.legend(framealpha=0)
+                ax.set_xlabel(f'{obslongfilta} - {obslongfiltb}', alpha=0.8)
+                ax.set_ylabel(f'{obslongfilt1} - {obslongfilt2}', alpha=0.8)
+
+                labels = np.quantile(xds, np.arange(0, 1.1, 0.2))
+                ax.set_xticks(ticks=labels)
+                ax.set_xticklabels(np.around(labels,2), rotation=90)
+                labels = np.quantile(np.array(yds), np.arange(0, 1.1, 0.2))
+                ax.set_yticks(ticks=labels)
+                ax.set_yticklabels(labels=np.around(labels,2))
+                for speen in ['right', 'top', 'left', 'bottom']:
+                    ax.spines[speen].set_visible(False)
+
+
+                ## End plot stuff
+                plt.savefig('plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript), bbox_inches="tight")
+
+                tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.1f\t%.1f\n'%(surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,cat,offmean,ndata,data_slope,data_slope_err,synth_slope,synth_slope_err,sigma,shift))
+
                 print('upload plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript))
 
+    plt.close('all') #BRODIE - hopefully this doesn't break plots
     return chi2,npoints,cats,popts,pcovs,obsdict,synthdict,chires
 
 #plotcomp2 used to live here
 
 def unwravel_params(params,surveynames,fixsurveynames):
+    
     i = 0
     outofbounds = False
     paramsdict = {}
@@ -251,9 +277,8 @@ def unwravel_params(params,surveynames,fixsurveynames):
     for survey in surveynames:
         if survey in fixsurveynames: continue
         filts = obsfilts[survmap[survey]]
-        
+
         for ofilt in filts:
-            
             filt = snanafiltsr[survey][ofilt]
             #if ('PS1' not in survey) | (filt!='g'):
             paramsdict[survey+'-'+filt+'_offset'] = params[i]
@@ -270,7 +295,7 @@ def unwravel_params(params,surveynames,fixsurveynames):
 
     return paramsdict,outofbounds,paramsnames
 
-def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None,surveydatain=None,obsdfin=None,doplot=False,subscript='',debug=False,first=False, outputdir='synthetic'):
+def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None,surveydatain=None,obsdfin=None,doplot=False,subscript='',debug=False,first=False, outputdir='synthetic', override=False):
     global surveys_for_chisq
     surveys_for_chisq = surveys_for_chisqin
     global fixsurveynames
@@ -279,10 +304,15 @@ def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None
     surveydata = surveydatain
     global obsdfs
     obsdfs = obsdfin
+
+    if override:
+        paramsdict, obsdict, synthdict = full_likelihood(params,doplot=doplot,subscript=subscript,first=first, remote=True, outputdir=outputdir, override=override)
+        return paramsdict, obsdict, synthdict
+    
     chi2,chi2v = full_likelihood(params,doplot=doplot,subscript=subscript,first=first, remote=True, outputdir=outputdir)
     return chi2,chi2v
 
-def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, remote=False, outputdir='synthetic'):
+def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, remote=False, outputdir='synthetic',override=False):
 
     if first:
         global obsdict
@@ -354,7 +384,7 @@ def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, re
         surv1s.extend([  'PS1',  'PS1',  'PS1'])
         surv2s.extend([ 'ZTFS', 'ZTFS', 'ZTFS'])
         filtas.extend([    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i'])
+        filtbs.extend([    'r',    'i',    'i']) #originally r,i,i
         filt1s.extend([    'g',    'r',    'i'])
         filt2s.extend([    'g',    'r',    'i'])
 
@@ -362,7 +392,7 @@ def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, re
         surv1s.extend([  'PS1',  'PS1',  'PS1'])
         surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
         filtas.extend([    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i'])
+        filtbs.extend([    'r',    'i',    'i']) #originally r,i,i
         filt1s.extend([    'g',    'r',    'i'])
         filt2s.extend([    'g',    'r',    'i'])
 
@@ -408,20 +438,24 @@ def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, re
     chi2v = []
     for surv1,surv2,filta,filtb,filt1,filt2 in zip(surv1s,surv2s,filtas,filtbs,filt1s,filt2s):
         chi2,npoints,cats,popts,pcovs,obsdict,synthdict,off = getchi_forone(paramsdict,surveydata,obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'],doplot=doplot,subscript=subscript,first=first,obsdict=obsdict,synthdict=synthdict,outputdir=outputdir)
-        
+     
+        #print(f'{surv2} chi2 for {filt1},{filt2} with offset {off} = {chi2}')
+
         chi2v.append(chi2) #Would like to add the survey info as well
         totalchisq+=chi2
         if first: 
             paramsdict[surv2+'-'+filt2+'_preoffset'] = off
             paramsdict[surv1+'-'+filt1+'_preoffset'] = 0
     lp = lnprior(paramsdict)
+
+    if override:
+        return paramsdict, obsdict, synthdict
     if doplot:
         print('Likelihood %.2f -chisq/2 %.2f lp %.2f'%(lp -.5*totalchisq,-.5*totalchisq,lp))
     if remote:
         return lp -.5*totalchisq, chi2v
     if first:
         return paramsdict, obsdict, synthdict
-        
     return lp -.5*totalchisq
 
 def lnprior(paramsdict):
@@ -526,6 +560,8 @@ if __name__ == "__main__":
     obsdfs = get_all_obsdfs(surveys_for_chisq, REDO, FAKES)
     print('got all survey data')
 
+    if DEBUG: print(obsdfs)
+
     if REDO:
         print("Done acquiring IRSA maps. Quitting now to avoid confusion.")
         quit()
@@ -558,7 +594,13 @@ if __name__ == "__main__":
     
     ###########################
 
-    pos = np.random.randn(2*nparams, nparams)/100
+    
+
+    walkfactor = 3
+    #pos = np.random.randn(walkfactor*nparams, nparams)/10 #I think walkers is 2x dimensions 
+    #nwalkers, ndim = pos.shape
+
+    pos = walker_maker(nparams, prepos, walkfactor)
     nwalkers, ndim = pos.shape
 
     _,_,labels=unwravel_params(pos[0,:],surveys_for_chisq,fixsurveynames)
@@ -582,7 +624,10 @@ if __name__ == "__main__":
         sampler = emcee.EnsembleSampler(nwalkers, ndim, full_likelihood, pool=pool)
         #start = time.time()
         for i in range(1000):
-            sampler.run_mcmc(pos, 100, progress=True)
+            if i == 0:
+                sampler.run_mcmc(pos, 100, progress=True)
+            else:
+                sampler.run_mcmc(None, 100, progress=True)
             samples = sampler.get_chain()
             pos = samples[-1,:,:]
             np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)

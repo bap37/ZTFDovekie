@@ -117,10 +117,12 @@ if __name__ == '__main__':
         
         g=open('logs/kcor_%s.log'%(surv),'r').readlines()
         vals=['99' for n in range(len(obsfilts))]
+        searchsurv = surv
         for gg in g:
           for iii, obsf in enumerate(obsfilts):
-            if surv == "Foundation": surv = "PS1SN"
-            if (f'{surv}-{obsf}' in gg):
+            if surv == "Foundation": searchsurv = "PS1SN"
+            elif "ZTF" in surv: searchsurv = "ZTF"
+            if (f'{searchsurv}-{obsf}' in gg):
               if ('BD17' in gg.split()[2]):
                 try:
                   vals[iii]=gg.split()[6]
