@@ -14,6 +14,9 @@ from astroquery.irsa_dust import IrsaDust
 import astropy.coordinates as coord
 import astropy.units as u
 from scipy import interpolate
+from jax.scipy.optimize import minimize as jmin
+from jax import numpy as jnp
+
 
 def load_config(config_path):
     with open(config_path, "r") as cfgfile:
@@ -73,12 +76,31 @@ def get_extinction(survdict):
 
 def myround(x, base=5):
     return base * round(x/base)
+    
+    
+def itersigmacut_linefit_jax(x,y,cut,niter=3,nsigma=4):
+    returnx = x
+    returny = y
+    
+    for i in range(niter):
+        result = jmin(lambda pars: (((line(returnx,pars[0],pars[1],)-returny)*cut)**2).sum(), 
+                               x0=jnp.array([0.,0.]), method='BFGS'
+                            )
+        popt, pcov = result.x, result.hess_inv
+        yres = returny-line(returnx,popt[0],popt[1])
+        stdev = jnp.std(yres,where=cut) 
+        cut= (jnp.abs(yres)<nsigma*stdev ) & cut
+        returnx = returnx*(cut)
+        returny = returny*(cut)
+    return returnx,returny,stdev,yres,popt,pcov
+
 
 def itersigmacut_linefit(x,y,niter=3,nsigma=4):
     returnx = x
     returny = y
     
     for i in range(niter):
+    
         popt, pcov = curve_fit(line, 
                                returnx,
                                returny,
