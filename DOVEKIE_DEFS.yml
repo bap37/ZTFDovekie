@@ -1,9 +1,10 @@
 
-#Which surveys mcmc.py will investigate
-surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
+##Which surveys mcmc.py will investigate
+surveys_for_dovekie: ['PS1', 'ZTFD', 'ZTFS', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S'] 
+
 
 #Where the chains are saved to
-chainsfile: 'TEST.npz'
+chainsfile: 'FULL_SPLITZTF-LONG.npz'
 
 ####### Below here, only madness lies, unless you want to add another survey. 
 ####### In which case go ahead, but it's ugly.
@@ -24,6 +25,8 @@ survs: ['PS1SN',
         'SNLS',
         'CFA3S',
         'CFA3K',
+        'ZTFS',
+        'ZTFD',
 ]
 
 kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
@@ -35,6 +38,8 @@ kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
             'kcor/SNLS/',
             'kcor/CFA3_4shooter_native/',
             'kcor/CFA3_KEPLERCAM/',
+            'kcor/ZTF/',
+            'kcor/ZTF/',
 ]
 
 kcors: ['PS1_excalinaper_+30A.input',
@@ -46,6 +51,8 @@ kcors: ['PS1_excalinaper_+30A.input',
         'SNLS_excalin.input',
         'CFA3_4shooter_excalin.input',
         'CFA3_KEPLERCAM_excalin.input',
+        'ZTFS_excalin.input',
+        'ZTFD_excalin.input',
 ]
 
 
@@ -58,6 +65,8 @@ filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
             'filters/SNLS3-Megacam/',
             'filters/CFA3_native/',
             'filters/CFA3_native/',
+            'filters/ZTF/',
+            'filters/ZTF/',
 ]
 
 
@@ -70,6 +79,8 @@ shiftfiltss: [['g','r','i','z'],
               ['g', 'r', 'i', 'z'],
               ['B', 'V', 'R', 'I'],
               ['U','B','V','r','i'],
+              ['g', 'r', 'i'],
+              ['g', 'r', 'i'],
 ]
 
 
@@ -81,6 +92,8 @@ namedfiltss: [['g','r','i','z'],
               ['g', 'r', 'i', 'z'],  
               ['B', 'V', 'R', 'I'],
               ['U','B','V','r','i'],
+              ['g', 'r', 'i'],
+              ['g', 'r', 'i'],
 ]
 
 
@@ -93,6 +106,8 @@ obsfiltss: [['g','r','i','z'],
             ['g','r','i','z'],
             ['B', 'V', 'R', 'I'],
             ['U','B','V','r','i'],
+            ['g', 'r', 'i'],
+            ['g', 'r', 'i'],
 ]
 
 ###############################################
@@ -147,7 +162,7 @@ obssurvmap: {'PS1':'PS1',
              'ZTF':'ZTF',
              'CFA3S':'CFA3S',
              'CFA3K':'CFA3K',
-             'CSP':'CSPDR3nat',
+             'CSP':'CSP',
              'SDSS':'SDSS',
              'Foundation':'Foundation',
              'PS1SN':'PS1SN',
@@ -157,11 +172,11 @@ obssurvmap: {'PS1':'PS1',
 } 
 
 revobssurvmap: {'PS1':'PS1',
-                'DES5YR':'DES',
+                'DES':'DES',
                 'ZTF':'ZTF',
                 'CFA3S':'CFA3S',
                 'CFA3K':'CFA3K',
-                'CSP':'CSPDR3nat',
+                'CSP':'CSP', 
                 'SDSS':'SDSS',
                 'Foundation':'Foundation',
                 'PS1SN':'PS1SN',
@@ -169,22 +184,23 @@ revobssurvmap: {'PS1':'PS1',
                 'ZTFD':'ZTFD',
                 'SNLS':'SNLS',
 }
+#formerly a CSPDR3nat
 
 revobssurvmapforsnana: { 'PS1':'PS1',
-                         'DES5YR':'DES', 
+                         'DES':'DES', 
                          'ZTF':'ZTF', 
                          'CFA3S':'CFA3S',
                          'CFA3K':'CFA3K',
-                         'CSP':'CSPDR3nat',
+                         'CSP':'CSP',
                          'SDSS':'SDSS',
                          'Foundation':'Foundation',
                          'PS1SN':'PS1',
-                         'ZTFS':'ZTFS',
-                         'ZTFD':'ZTFD',
+                         'ZTFS':'ZTF',
+                         'ZTFD':'ZTF',
                          'SNLS':'SNLS',
 
 }
-
+#formerly a CSPDR3nat
 survcolormin: {'DES':.075,
                'ZTF':0.0, 
                'CFA3S':0,
