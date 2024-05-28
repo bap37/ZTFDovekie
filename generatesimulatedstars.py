@@ -201,6 +201,7 @@ class survey:
 def generatesurveyoffsets():
     ps1offsets=np.random.normal(0,0.01,4)
     survoffsets={'PS1':ps1offsets }
+
     name='SNLS'
     survoffsets[name]= np.random.normal(0,0.01,4)
     
@@ -292,7 +293,6 @@ def getsurveygenerators(survoffsets):
     obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['DESg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
     surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.uniform(.3,.3).rvs ,    
           (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'] )
-    #surv.variance=0
     surveys[name]=surv
     
     name='Foundation'
@@ -345,7 +345,7 @@ def main():
             out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames])
             for row in simdata:
                 out.writerow([name]+list(row)+[99,99]+ [0]*len(row))
-    
+
 ###########################################################################
     
     
@@ -353,7 +353,7 @@ def main():
     for name in surveys:
         offsetdict[name]=dict(zip(surveys[name].filtnames,survoffsets[name]))
     
-    with open('output_simulated_apermags+AV/simmedoffsets.json','w') as file:
+    with open('output_fake_apermags+AV/simmedoffsets.json','w') as file:
         file.write(json.dumps(offsetdict))
 
 
