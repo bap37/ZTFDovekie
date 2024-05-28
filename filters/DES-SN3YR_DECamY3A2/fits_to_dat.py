@@ -1,0 +1,5 @@
+from astropy.table import Table
+for filt in ['g','r','i','z']:
+    print(filt)
+    t = Table.read('y3a2_standard_throughput_%s.fits'%filt)
+    t.write('y3a2_standard_throughput_%s.dat'%filt, format='pandas.csv', sep=' ', header=False)
