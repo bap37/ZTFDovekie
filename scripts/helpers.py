@@ -112,6 +112,16 @@ def itersigmacut_linefit(x,y,niter=3,nsigma=4):
         returny = returny[np.abs(yres)<nsigma*stdev]
     return returnx,returny,stdev,yres,popt,pcov
 
+def walker_maker(nparams, prepos, walkfactor=2):  
+    pos = (0.01 * np.random.randn(nparams*walkfactor, nparams))
+    for entry in range(nparams):                              
+        prepos = list(prepos)
+        pos[:,entry] = np.random.normal(np.array(prepos*walkfactor), 0.001) 
+    return pos
+    #END input_cleaner
+
+
+
 ################# plotoffsets.py lives below
 
 def create_chains(labels, samples, ndim=10):
@@ -242,3 +252,18 @@ def create_likelihoodhistory(fullsamples, poss, ll, surveys_for_chisq, fixsurvey
     print('upload likelihoodhistory.png')
     return "Done" 
 
+def create_latex(infile, outfile):
+    header = """\\begin{table}
+    \centering
+    \caption{}
+    \label{tab:model_params}
+    \\begin{tabular}{cc}
+        \hline \n"""
+    df = pd.read_csv(infile, sep=' ')
+    with open(outfile, "w") as f2:
+        f2.write(header)
+        for i, row in df.iterrows():
+            f2.write(f"{row.SURVEYFILT} & ${row.OFFSET} \pm {row.OFFSETERR}$ \\\\ \n")
+
+        f2.write("\end{tabular}\n")
+        f2.write("\end{table}")
