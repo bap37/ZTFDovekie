@@ -340,6 +340,7 @@ def full_likelihood(params,doplot=False,subscript='',debug=False,first=False, re
     #I think this fucked me up again :p
 
     #Only documenting this one, the rest share the same setup. 
+    #Read each column (not row) to understand. First entry below is g-r (PS1) vs delta-g (PS1-DES)
     if "DES" in surveys_for_chisq:
         surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1']) #always PS1
         surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
@@ -465,7 +466,14 @@ def lnprior(paramsdict):
         'PS1-r_offset':[0,.02],
         'PS1-i_offset':[0,.02],
         'PS1-z_offset':[0,.02],
-
+        'PS1SN-g_offset':[0,.01],
+        'PS1SN-r_offset':[0,.01],
+        'PS1SN-i_offset':[0,.01],
+        'PS1SN-z_offset':[0,.01],
+        'DES-g_offset':[0,.01],
+        'DES-r_offset':[0,.01],
+        'DES-i_offset':[0,.01],
+        'DES-z_offset':[0,.01],
         }
     
 #        'DES-g_offset':[0,.01],
