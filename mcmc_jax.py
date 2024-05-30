@@ -215,7 +215,7 @@ def unwravel_params(params,surveynames,fixsurveynames):
 
     return paramsdict,outofbounds,paramsnames
 
-def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None,surveydatain=None,obsdfin=None):
+def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None,surveydatain=None,obsdfin=None,*args,**kwargs):
     global surveys_for_chisq
     surveys_for_chisq = surveys_for_chisqin
     global fixsurveynames
@@ -224,10 +224,10 @@ def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None
     surveydata = surveydatain
     global obsdfs
     obsdfs = obsdfin
-    chi2,chi2v = full_likelihood(params)
+    chi2,chi2v = full_likelihood(params,*args,**kwargs)
     return chi2,chi2v
 
-def full_likelihood(params, doplot=False, subscript=False):
+def full_likelihood(params):
     chisqtot=0
     paramsdict,outofbounds,paramsnames = unwravel_params(params,surveys_for_chisq,fixsurveynames)
 
@@ -339,25 +339,6 @@ def full_likelihood(params, doplot=False, subscript=False):
     weightsum = 0
     chi2v = []
 
-    #####Start plotting stuff
-    if doplot:
-        global obsdict
-        global synthdict
-        obsdict = {}
-        synthdict = {}
-
-        for surv1,surv2,filta,filtb,filt1,filt2 in zip(surv1s,surv2s,filtas,filtbs,filt1s,filt2s):
-            chi2,npoints,cats,popts,pcovs,obsdict,synthdict,off = plot_forone(paramsdict,surveydata,obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'],doplot=doplot,subscript=subscript,first=True,obsdict=obsdict,synthdict=synthdict,outputdir=outputdir)
-
-            chi2v.append(chi2) #Would like to add the survey info as well
-            totalchisq+=chi2
-            if first: 
-                paramsdict[surv2+'-'+filt2+'_preoffset'] = off
-                paramsdict[surv1+'-'+filt1+'_preoffset'] = 0
-
-    return print('Likelihood %.2f -chisq/2 %.2f lp %.2f'%(lp -.5*totalchisq,-.5*totalchisq,lp))
-
-    ####End plotting stuff
     passsurvey={surv:{name: surveydata[surv][name].values for name in list(surveydata[surv])  if surveydata[surv][name].dtype in [np.dtype(int), np.dtype(float)] } for surv in surveydata}
     for surv in surveydata: 
         passsurvey[surv]['standard_catagory'] = surveydata[surv]['standard_catagory'].values=='calspec23'
@@ -437,68 +418,9 @@ def plot_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colorf
         chi2 = 0
         npoints = 0
     
-        #changed these back to dashes
-        longfilta = survfiltmap[colorsurvab]+'-'+colorfilta ; longfiltb = survfiltmap[colorsurvab]+'-'+colorfiltb
-        longfilt1 = survfiltmap[surv1]+'-'+yfilt1 ; longfilt2 = survfiltmap[surv2]+'-'+yfilt2
-        obslongfilta = obssurvmap[colorsurvab]+'-'+colorfilta ; obslongfiltb = obssurvmap[colorsurvab]+'-'+colorfiltb
-        obslongfilt1 = obssurvmap[surv1]+'-'+yfilt1 
-        if ('CSP' in surv2.upper()):
-            obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
-        else:
-            obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
-
-        if first: #looks like the data information is calculated once at the start, and then not again. 
-            obsdf = obsdfs[surv2] #grabs the observed points from the relevant survey
-            if DEBUG: print(obsdf.columns, surv2) ; 
-            yr=obsdf[obslongfilt1]-obsdf[obslongfilt2] #observed filter1 - observed filter 2 
-            wwyr = np.abs(yr)<1 #only uses things lower than 1
-            datacolor = (obsdf[obslongfilta][wwyr]-obsdf[obslongfilta+"_AV"][wwyr])-(obsdf[obslongfiltb][wwyr]-obsdf[obslongfiltb+"_AV"][wwyr])
-            datares = obsdf[obslongfilt1][wwyr]-obsdf[obslongfilt1+'_AV'][wwyr]-(obsdf[obslongfilt2][wwyr]-obsdf[obslongfilt2+'_AV'][wwyr])
-        
-            obsdict[surv2+obslongfilt1+obslongfilt2] = {}
-            obsdict[surv2+obslongfilt1+obslongfilt2]['datacolor'] = datacolor
-            obsdict[surv2+obslongfilt1+obslongfilt2]['datares'] =datares
-            
-            xd,yd,sigmadata,yresd,poptd,pcovd = itersigmacut_linefit(datacolor.astype('float'),
-                                                                 datares.astype('float'),
-                                                                 niter=2,nsigma=3)    
-            obsdict[surv2+obslongfilt1+obslongfilt2]['sigmadata'] = sigmadata
-
-            synthdict[surv2+obslongfilt1+obslongfilt2] = {}
-            for cat in np.unique(df2['standard_catagory']):
-                synthdict[surv2+obslongfilt1+obslongfilt2][cat] = {}
-                if DEBUG: print(df2.columns, surv2, surv1, np.unique(df2['standard_catagory'])) 
-                ww = (df2['standard_catagory']==cat) & \
-                   (~np.isnan(df2[longfilt2].astype('float'))) & \
-                   (~np.isnan(df2[longfilt1].astype('float')))
-
-                modelfilta = df2[longfilta][ww] ; modelfiltb = df2[longfiltb][ww]
-                modelfilt1 = df2[longfilt1][ww] ; modelfilt2 = df2[longfilt2][ww]
-
-                modelcolor = -1*df2[longfilta][ww]+offa+df2[longfiltb][ww]-offb
-                modelres = -1*df2[longfilt1][ww]+off1+df2[longfilt2][ww]-off2
-
-                ww2 = (modelcolor > synth_gi_range[cat][0]) & (modelcolor < synth_gi_range[cat][1])
-
-                synthdict[surv2+obslongfilt1+obslongfilt2][cat]['modelfilta'] = modelfilta[ww2].astype('float')
-                synthdict[surv2+obslongfilt1+obslongfilt2][cat]['modelfiltb'] = modelfiltb[ww2].astype('float')
-                synthdict[surv2+obslongfilt1+obslongfilt2][cat]['modelfilt1'] = modelfilt1[ww2].astype('float')
-                synthdict[surv2+obslongfilt1+obslongfilt2][cat]['modelfilt2'] = modelfilt2[ww2].astype('float')
-        else:
-            datacolor = obsdict[surv2+obslongfilt1+obslongfilt2]['datacolor']
-            datares = obsdict[surv2+obslongfilt1+obslongfilt2]['datares']
-            sigmadata = obsdict[surv2+obslongfilt1+obslongfilt2]['sigmadata']
-
-        #End of "if first" statement.
  
-        cats, popts, pcovs, modelcolors, modelress, dataress, datacolors, modellines, lines, resres, reserr, xds, ms, yds, xdsc, ydsc =  ([] for i in range(16))
 
         for cat in np.unique(df2['standard_catagory']):
-            modelcolor = -1*synthdict[surv2+obslongfilt1+obslongfilt2][cat]['modelfilta']+offa+\
-                        synthdict[surv2+obslongfilt1+obslongfilt2][cat]['modelfiltb']-offb
-            modelres = -1*synthdict[surv2+obslongfilt1+obslongfilt2][cat]['modelfilt1']+off1+\
-                        synthdict[surv2+obslongfilt1+obslongfilt2][cat]['modelfilt2']-off2-0.0065
-            x,y,sigmamodel,yres,popt,pcov = itersigmacut_linefit(modelcolor,modelres,niter=1,nsigma=3)
 
             if doplot:
                 modelress.append(modelres.astype('float'))
@@ -509,12 +431,6 @@ def plot_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colorf
                 popts.append(popt)
                 pcovs.append(pcov)
         
-            dms = datares - line(datacolor,popt[0],popt[1])
-            chires = np.mean(dms)
-            chireserrsq = (sigmadata/np.sqrt(len(datares)))**2+errfloors[surv2]**2
-            chi2 += (chires**2)/(chireserrsq)/2 #they didn't, but geez is (chires**2/chireserrsq/2) unclear
-
-
         if doplot:
             plt.clf()
             fig, ax = plt.subplots(figsize=(6,6))
