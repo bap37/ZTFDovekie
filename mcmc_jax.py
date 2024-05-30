@@ -18,6 +18,8 @@ import argparse
 from functools import partial
 import jax
 from jax import numpy as jnp
+from jax import random as random
+from jaxnuts.sampler import NUTS
 
 global surveys_for_chisq
 global fixsurveynames
@@ -43,8 +45,6 @@ filter_means = pd.read_csv('filter_means.csv')
 filter_means = filter_means.set_index(['SURVEYFILTER']).to_dict()['MEANLAMBDA ']
 
 
-tableout = open('preoffsetsaper.dat','w')
-tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
 
 
 def get_all_shifts(surveys): #acquires all the surveys and collates them. 
@@ -169,14 +169,16 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         modelfilta = df2[longfilta] ; modelfiltb = df2[longfiltb]
         modelfilt1 = df2[longfilt1] ; modelfilt2 = df2[longfilt2]
         
-        modelcolor = -1*modelfilta+offa+\
-                    modelfiltb-offb
-        modelres = -1*modelfilt1+off1+\
-                    modelfilt2-off2-0.0065
+        modelcolor = -1*modelfilta+\
+                    modelfiltb
+        modelres = -1*modelfilt1+\
+                    modelfilt2
+        
         synthcut = (modelcolor > synth_gi_range[(['calspec23','stis_ngsl_v2'][i]) ][0]) & (modelcolor < synth_gi_range[['calspec23','stis_ngsl_v2'][i]][1]) & synthcut
 
         x,y,sigmamodel,yres,popt,pcov = itersigmacut_linefit_jax(modelcolor,modelres,synthcut,niter=1,nsigma=3)
-        dms = datares - line(datacolor,popt[0],popt[1])
+        
+        dms = datares - line(datacolor,popt[0],popt[1] + off2-off1 - popt[0]* (offb-offa))
         #WHY IS THIS A MEAN
         chires = jnp.mean(dms,where=datacut)
         chireserrsq = (sigmadata/jnp.sqrt((datacut.sum())))**2+errfloors[surv2]**2
@@ -214,19 +216,18 @@ def unwravel_params(params,surveynames,fixsurveynames):
 
     return paramsdict,outofbounds,paramsnames
 
-# def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None,surveydatain=None,obsdfin=None,doplot=False,subscript='',debug=False,first=False, outputdir='synthetic'):
-#     global surveys_for_chisq
-#     surveys_for_chisq = surveys_for_chisqin
-#     global fixsurveynames
-#     fixsurveynames = fixsurveynamesin
-#     global surveydata
-#     surveydata = surveydatain
-#     global obsdfs
-#     obsdfs = obsdfin
-#     chi2,chi2v = full_likelihood(params,doplot=doplot,subscript=subscript,first=first, remote=True, outputdir=outputdir)
-#     return chi2,chi2v
+def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None,surveydatain=None,obsdfin=None):
+    global surveys_for_chisq
+    surveys_for_chisq = surveys_for_chisqin
+    global fixsurveynames
+    fixsurveynames = fixsurveynamesin
+    global surveydata
+    surveydata = surveydatain
+    global obsdfs
+    obsdfs = obsdfin
+    chi2,chi2v = full_likelihood(params,doplot=doplot,subscript=subscript,first=first, remote=True, outputdir=outputdir)
+    return chi2,chi2v
 
-@jax.jit
 def full_likelihood(params):
 
     chisqtot=0
@@ -335,11 +336,7 @@ def full_likelihood(params):
         filtbs.extend([     'r',     'i',     'i',     'i'])
         filt1s.extend([     'g',     'r',     'r',     'i'])
         filt2s.extend([     'B',     'V',     'r',     'i'])
-
     
-    offsetsdict = {}
-    shiftssdict = {}
-
     totalchisq = 0
 
     weightsum = 0
@@ -438,6 +435,10 @@ def get_args():
     msg = "Default False. Grabs fake stars to test recovery of input parameters."
     parser.add_argument("--FAKES", help = msg, action='store_true')
     parser.set_defaults(FAKES=False)
+    
+    parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=0.6)
+    
+    parser.add_argument("--n_adaptive", help = "Number of steps to adapt MCMC hyperparameters", type=int, default=2000)
 
     args = parser.parse_args()
     return args
@@ -447,6 +448,8 @@ if __name__ == "__main__":
 
     args = get_args()
     REDO, MCMC, DEBUG, FAKES = prep_config(args)
+    tableout = open('preoffsetsaper.dat','w')
+    tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
 
     print('reading in survey data')
 
@@ -478,23 +481,21 @@ if __name__ == "__main__":
 
     #### TESTING ###############
     
-    pos = np.array(pos)
-    pdict = full_likelihood(pos)
-    prepos = []
-
-    for s in surveys_for_chisq:
-        ofs = obsfilts[survmap[s]]
-        for of in ofs:
-            prepos.append(pdict[s+'-'+snanafiltsr[s][of]+'_preoffset'])
-    prepos = np.array(prepos)
-    offsets = full_likelihood(-1*prepos)
+#     pos = np.array(pos)
+#     pdict = full_likelihood(pos)
+#     prepos = []
+# 
+#     for s in surveys_for_chisq:
+#         ofs = obsfilts[survmap[s]]
+#         for of in ofs:
+#             prepos.append(pdict[s+'-'+snanafiltsr[s][of]+'_preoffset'])
+#     prepos = np.array(prepos)
+#     offsets = full_likelihood(-1*prepos)
     
     ###########################
 
-    pos = np.random.randn(2*nparams, nparams)/100
-    nwalkers, ndim = pos.shape
 
-    _,_,labels=unwravel_params(pos[0,:],surveys_for_chisq,fixsurveynames)
+    _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
 
     tableout.close()
 
@@ -508,14 +509,18 @@ if __name__ == "__main__":
         print("You are currently grabbing all the shifted values, quitting!")
         quit()
 
-    from multiprocessing import Pool
-    from datetime import date
 
-    with Pool() as pool:
-        sampler = emcee.EnsembleSampler(nwalkers, ndim, full_likelihood, pool=pool)
-        #start = time.time()
-        for i in range(1000):
-            sampler.run_mcmc(pos, 100, progress=True)
-            samples = sampler.get_chain()
-            pos = samples[-1,:,:]
-            np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
+    key=random.PRNGKey(34581339453)
+    initkey, samplekey= random.split(key)
+    n_samples = 5000
+    n_burnin = args.n_adaptive
+    theta0 = random.normal(initkey, shape=(nparams,))*0.01
+    target = args.target_acceptance
+    
+    sampler = NUTS(theta0, logp=full_likelihood, target_acceptance=target, M_adapt=n_burnin)
+    key, samples, step_size = sampler.sample(n_samples, samplekey)
+    loglikes=jax.vmap(full_likelihood,in_axes=0)(samples)
+    np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
+    
+    
+    
