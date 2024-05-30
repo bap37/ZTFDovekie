@@ -121,7 +121,6 @@ if __name__ == '__main__':
         for gg in g:
           for iii, obsf in enumerate(obsfilts):
             if surv == "Foundation": searchsurv = "PS1SN"
-            elif "ZTF" in surv: searchsurv = "ZTF"
             if (f'{searchsurv}-{obsf}' in gg):
               if ('BD17' in gg.split()[2]):
                 try:
