@@ -4,22 +4,55 @@ import sys
 sys.path.insert(1, 'scripts/')
 import write_obs_output as wo
 
-system = 'ZTF'
+system = 'ZTFS'
 
-#5YR,ZTF_g,ZTF_r,ZTF_i,PS1_g,PS1_r,PS1_i,PS1_z,RA,DEC
+#print("Hello! Applying a cut on the two ZTF samples to limit the calibration stars to 1K.")
 
 from astropy.table import Table
-t = Table.read('newcatalog/PS1_in_ZTF.fits')
+t = Table.read('newcatalog/PS1_in_ZTFS.fits')
 
 print(t.columns)
 
+#t = t[0:1000]
+
 xx = (t['ZTF_ZTF_g']>10) &(t['ZTF_ZTF_r']>10) &(t['ZTF_ZTF_i']>10) & (t['gMeanPSFMag'] > 10)
 
-colnames = ['%s-g'%system,'%s-r'%system,'%s-i'%system,
+colnames = ['ZTFS-g','ZTFS-r','ZTFS-i',
             'PS1-g','PS1-r','PS1-i','PS1-z','RA','DEC']
 collists = [t['ZTF_ZTF_g'][xx],t['ZTF_ZTF_r'][xx],t['ZTF_ZTF_i'][xx],
             t['gMeanApMag'][xx],t['rMeanApMag'][xx],t['iMeanApMag'][xx],t['zMeanApMag'][xx],
             t['raMean'][xx],t['decMean'][xx]]
+
+collists = [t['ZTF_ZTF_g'][xx],t['ZTF_ZTF_r'][xx],t['ZTF_ZTF_i'][xx],
+            t['gMeanPSFMag'][xx],t['rMeanPSFMag'][xx],t['iMeanPSFMag'][xx],t['zMeanPSFMag'][xx],
+            t['raMean'][xx],t['decMean'][xx]]
+
 outfile = 'output_observed_apermags/'+system+'_observed.csv'
+#outfile = 'output_observed_apermags/'+system+'_PSF_observed.csv'
+
+wo.write(system,colnames,collists,outfile)
+
+print("Done with ZTF-single coated")
+
+system = 'ZTFD'
+
+t = Table.read('newcatalog/PS1_in_ZTFD.fits')
+
+print(t.columns)
+#t = t[0:1000]
+
+xx = (t['ZTF_ZTF_g']>10) &(t['ZTF_ZTF_r']>10) &(t['ZTF_ZTF_i']>10) & (t['gMeanPSFMag'] > 10)
+
+colnames = ['ZTFD-g','ZTFD-r','ZTFD-i',
+            'PS1-g','PS1-r','PS1-i','PS1-z','RA','DEC']
+collists = [t['ZTF_ZTF_g'][xx],t['ZTF_ZTF_r'][xx],t['ZTF_ZTF_i'][xx],
+            t['gMeanApMag'][xx],t['rMeanApMag'][xx],t['iMeanApMag'][xx],t['zMeanApMag'][xx],
+            t['raMean'][xx],t['decMean'][xx]]
+collists = [t['ZTF_ZTF_g'][xx],t['ZTF_ZTF_r'][xx],t['ZTF_ZTF_i'][xx],
+            t['gMeanPSFMag'][xx],t['rMeanPSFMag'][xx],t['iMeanPSFMag'][xx],t['zMeanPSFMag'][xx],
+            t['raMean'][xx],t['decMean'][xx]]
+
+outfile = 'output_observed_apermags/'+system+'_observed.csv'
+#outfile = 'output_observed_apermags/'+system+'_PSF_observed.csv'
 wo.write(system,colnames,collists,outfile)
 
