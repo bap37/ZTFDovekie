@@ -357,10 +357,10 @@ def full_likelihood(params):
 def lnprior(paramsdict):
 
     priordict = { 
-        'PS1-g_offset':[0,.02],
-        'PS1-r_offset':[0,.02],
-        'PS1-i_offset':[0,.02],
-        'PS1-z_offset':[0,.02],
+        'PS1-g_offset':[0,.01],
+        'PS1-r_offset':[0,.01],
+        'PS1-i_offset':[0,.01],
+        'PS1-z_offset':[0,.01],
 
         }
     
@@ -436,9 +436,10 @@ def get_args():
     parser.add_argument("--FAKES", help = msg, action='store_true')
     parser.set_defaults(FAKES=False)
     
-    parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=0.6)
+    parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=0.95)
     
     parser.add_argument("--n_adaptive", help = "Number of steps to adapt MCMC hyperparameters", type=int, default=2000)
+    parser.add_argument("--output", help = "Path to write output chains to (.npz format)", type=str, default=None)
 
     args = parser.parse_args()
     return args
@@ -454,7 +455,8 @@ if __name__ == "__main__":
     print('reading in survey data')
 
     surveys_for_chisq = config['surveys_for_dovekie']
-    outname = config['chainsfile']
+    if args.output is None: outname = config['chainsfile']
+    else: outname= args.output
     #surveys_for_chisq = ['PS1', 'CFA3K', 'PS1SN'] #keep this one around for quick IRSA updates!
     fixsurveynames = []
 
