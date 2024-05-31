@@ -20,13 +20,8 @@ import jax
 from jax import numpy as jnp
 from jax import random as random
 from jaxnuts.sampler import NUTS
-
-global surveys_for_chisq
-global fixsurveynames
-global surveydata
-global obsdfs    
-global obsdict
-global synthdict
+from collections import namedtuple
+from os import path
 
 #search for "TODO"
 isshift = False
@@ -35,7 +30,7 @@ DEBUG = False
 
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
-survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors = prep_config(config)
+survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors ,target , n_burnin= prep_config(config)
 
 
 obscolors_by_survey = {'PS1':['PS1-g','PS1-i']} #dodgy, feel like this should be tonry
@@ -45,7 +40,11 @@ filter_means = pd.read_csv('filter_means.csv')
 filter_means = filter_means.set_index(['SURVEYFILTER']).to_dict()['MEANLAMBDA ']
 
 
-
+chi2result=namedtuple('chi2result',['chi2','datax','datay','synthxs','synthys',
+     'data_popt','data_pcov','cats','synthpopts',
+     'synthpcovs','modelcolors','modelress','sigmasynth','sigmadata',
+     'obslongfilt1','obslongfilt2','obslongfilta','obslongfiltb',
+     'surv1','colorfilta','colorfiltb','yfilt1','surv2','yfilt2','shift'])
 
 def get_all_shifts(surveys): #acquires all the surveys and collates them. 
     surveydfs = {}
@@ -131,10 +130,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     ssurv2 = survmap[surv2]
     df2 = surveydata[surv2]
     shift=df2['shift'][0]
-    cats, popts, pcovs, modelcolors, modelress, dataress, datacolors, modellines, lines, resres, reserr, xds, ms, yds, xdsc, ydsc =  ([] for i in range(16))
 
     chi2 = 0
-    jnpoints = 0
 
     #changed these back to dashes
     longfilta = survfiltmap[colorsurvab]+'-'+colorfilta ; longfiltb = survfiltmap[colorsurvab]+'-'+colorfiltb
@@ -154,10 +151,15 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     datacolor = (obsdf[obslongfilta] -obsdf[obslongfilta+"_AV"])-(obsdf[obslongfiltb]-obsdf[obslongfiltb+"_AV"])
     datares = obsdf[obslongfilt1]-obsdf[obslongfilt1+'_AV']-(obsdf[obslongfilt2]-obsdf[obslongfilt2+'_AV'])
 
-    xd,yd,sigmadata,yresd,poptd,pcovd = itersigmacut_linefit_jax(datacolor.astype('float'),
+    datax,datay,sigmadata,yresd,data_popt,data_pcov = itersigmacut_linefit_jax(datacolor.astype('float'),
                                                          datares.astype('float'), datacut,
-                                                         niter=2,nsigma=3)    
+                                                         niter=2,nsigma=3)
+
+    synthxs,synthys, cats,synthpopts,synthpcovs,modelcolors,modelress =  ([] for i in range(7))
+
+    
     for i,cat in enumerate((df2['standard_catagory'],~df2['standard_catagory'])):
+        catname=['calspec23','stis_ngsl_v2'][i]
         if DEBUG: print(df2.columns, surv2, surv1) 
         synthcut = (cat) & \
            (~jnp.isnan(df2[longfilt2].astype('float'))) & \
@@ -171,20 +173,36 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         modelres = -1*modelfilt1+\
                     modelfilt2
         
-        synthcut = (modelcolor > synth_gi_range[(['calspec23','stis_ngsl_v2'][i]) ][0]) & (modelcolor < synth_gi_range[['calspec23','stis_ngsl_v2'][i]][1]) & synthcut
+        synthcut = (modelcolor > synth_gi_range[(catname) ][0]) & (modelcolor < synth_gi_range[catname][1]) & synthcut
 
-        x,y,sigmamodel,yres,popt,pcov = itersigmacut_linefit_jax(modelcolor,modelres,synthcut,niter=1,nsigma=3)
+
+        synthx,synthy,sigmamodel,yres,popt,pcov = itersigmacut_linefit_jax(modelcolor,modelres,synthcut,niter=1,nsigma=3)
+        popt=jnp.array([popt[0],popt[1] + off2-off1 - popt[0]* (offb-offa)])
+        synthxs.append(synthx); synthys.append(synthy)
+    
+        modelress.append(modelres +off2-off1)
+        modelcolors.append(modelcolor + offb-offa)
+        cats.append(catname)
+        synthpopts.append(popt)
+        synthpcovs.append(pcov)
         
-        dms = datares - line(datacolor,popt[0],popt[1] + off2-off1 - popt[0]* (offb-offa))
+        dms = datares - line(datacolor,*popt)
         #WHY IS THIS A MEAN
         chires = jnp.mean(dms,where=datacut)
         chireserrsq = (sigmadata/jnp.sqrt((datacut.sum())))**2+errfloors[surv2]**2
         chi2 += (chires**2/chireserrsq)
 
-    
+     
+   
     
     #print(chi2)
-    return chi2,jnpoints,cats,popts,pcovs,chires
+    return chi2result(chi2=chi2,datax=datax,datay=datay,synthxs=synthxs,synthys=synthys,
+     data_popt=data_popt,data_pcov=data_pcov,sigmadata=sigmadata, cats=cats,synthpopts=synthpopts,
+     synthpcovs=synthpcovs,sigmasynth=sigmamodel,modelcolors=modelcolors,modelress=modelress,
+     surv1=surv1,colorfilta=colorfilta,colorfiltb=colorfiltb,yfilt1=yfilt1,surv2=surv2,yfilt2=yfilt2,
+     
+     shift=shift,
+     obslongfilt1=obslongfilt1,obslongfilt2=obslongfilt2,obslongfilta=obslongfilta,obslongfiltb=obslongfiltb)
 
 #plotcomp2 used to live here
 
@@ -215,22 +233,11 @@ def unwravel_params(params,surveynames,fixsurveynames):
 
     return paramsdict,outofbounds,paramsnames
 
-def remote_full_likelihood(params,surveys_for_chisqin=None,fixsurveynamesin=None,surveydatain=None,obsdfin=None,*args,**kwargs):
-    global surveys_for_chisq
-    surveys_for_chisq = surveys_for_chisqin
-    global fixsurveynames
-    fixsurveynames = fixsurveynamesin
-    global surveydata
-    surveydata = surveydatain
-    global obsdfs
-    obsdfs = obsdfin
-    chi2,chi2v = full_likelihood(params,*args,**kwargs)
-    return chi2,chi2v
 
-def full_likelihood(params):
+def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None):
     chisqtot=0
     paramsdict,outofbounds,paramsnames = unwravel_params(params,surveys_for_chisq,fixsurveynames)
-
+    if doplot and tableout is None: raise ValueError('No table file provided')
     lp= jax.lax.cond(outofbounds, lambda : -np.inf, lambda :0.)
 
     surv1s = []
@@ -344,10 +351,12 @@ def full_likelihood(params):
         passsurvey[surv]['standard_catagory'] = surveydata[surv]['standard_catagory'].values=='calspec23'
     passobsdfs={surv:{name: obsdfs[surv][name].values for name in list(obsdfs[surv]) if obsdfs[surv][name].dtype in [np.dtype(int), np.dtype(float)] } for surv in obsdfs}
     for surv1,surv2,filta,filtb,filt1,filt2 in zip(surv1s,surv2s,filtas,filtbs,filt1s,filt2s):
-        chi2,npoints,cats,popts,pcovs,off = getchi_forone(paramsdict,passsurvey, passobsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
-        
-        chi2v.append(chi2) #Would like to add the survey info as well
-        totalchisq+=chi2
+        chi2results = getchi_forone(paramsdict,passsurvey, passobsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,
+                                off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
+                                offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
+        if doplot: plot_forone(chi2results,subscript,outputdir,tableout)
+        chi2v.append(chi2results.chi2) #Would like to add the survey info as well
+        totalchisq+=chi2results.chi2
     lp += lnprior(paramsdict)
     return lp -.5*totalchisq
 
@@ -404,79 +413,55 @@ def lnprior(paramsdict):
     return lp
 
 ##Put old ugly code with plotting in here
-def plot_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colorfiltb,yfilt1,yfilt2,
-                  shifta=0,shiftb=0,shift1=0,shift2=0,off1=0,off2=0,offa=0,offb=0,
-                  calspecslope=0,calspecmeanlambda=4383.15,ngslslope=0,ngslmeanlambda=5507.09,
-                  obsdict=None,synthdict=None,doplot=False,subscript='',first=False, outputdir='synthetic'): 
+def plot_forone(result,subscript, outputdir,tableout): 
 
-    ssurv2 = survmap[surv2]
-    df2x = surveydata[surv2]
-
-    for shift in np.unique(df2x['shift'].values):
-        df2 = df2x.loc[df2x['shift'] == shift]
-
-        chi2 = 0
-        npoints = 0
     
- 
+    plt.clf()
+    fig, ax = plt.subplots(figsize=(6,6))
+    ax.scatter(result.datax,result.datay,
+            color='k',alpha=.3, edgecolor=None, label='Observed Mags Chisq %.2f'%(result.chi2),s=5,zorder=5)
+    data_slope=result.data_popt[0] ; data_slope_err = (result.data_pcov[0,0]**2+result.sigmadata**2)**.5
+    
+    ax.plot(result.datax, line(np.array(result.datax),result.data_popt[0],result.data_popt[1]), c="k", lw=4, zorder=20)
+    #here starts the two synthetics
+    linecolors = ['goldenrod', "#0C6291"]
+    for cat,popt,pcov,mc,mr,linecolor in zip(result.cats,result.synthpopts,result.synthpcovs
+                                            ,result.modelcolors,result.modelress,linecolors):
+        offmean = np.mean(line(result.datax,popt[0],popt[1]) - result.datay)
+        offmed = np.median(line(result.datax,popt[0],popt[1]) - result.datay)
+        synth_slope = popt[0]
+        synth_slope_err = pcov[0,0]
+        sigma = (data_slope-synth_slope)/np.sqrt(data_slope_err**2+synth_slope_err**2)
 
-        for cat in np.unique(df2['standard_catagory']):
+        ## Start plots here
+        ax.plot(result.datax,line(result.datax,popt[0],popt[1]),
+                lw=2, c=linecolor, zorder=19,
+                label='Synthetic Pred: %s\nOffMean: %.3f\nOffMedian: %.3f\n'%(cat,offmean,offmed)) #lines
+        ax.scatter(mc, mr, alpha=.3, s=5, edgecolor=None, zorder=10, c=linecolor) #Points
+        ax.legend(framealpha=0)
+        ax.set_xlabel(f'{result.obslongfilta} - {result.obslongfiltb}', alpha=0.8)
+        ax.set_ylabel(f'{result.obslongfilt1} - {result.obslongfilt2}', alpha=0.8)
 
-            if doplot:
-                modelress.append(modelres.astype('float'))
-                modelcolors.append(modelcolor.astype('float'))
-                xds.extend(xd) ; yds.extend(yd)
-                xdsc.append(xd); ydsc.append(yd)
-                cats.append(cat)
-                popts.append(popt)
-                pcovs.append(pcov)
-        
-        if doplot:
-            plt.clf()
-            fig, ax = plt.subplots(figsize=(6,6))
-            ax.scatter(xds,yds,
-                    color='k',alpha=.3, edgecolor=None, label='Observed Mags Chisq %.2f'%(chi2),s=5,zorder=5)
-            _,_,sigmad,_,data_popt,data_pcov = itersigmacut_linefit(np.array(xds),np.array(yds),niter=1,nsigma=5)
-            data_slope=data_popt[0] ; data_slope_err = (data_pcov[0,0]**2+sigmad**2)**.5
-            ndata = len(datares)
+        labels = np.quantile(result.datax, np.arange(0, 1.1, 0.2))
+        ax.set_xticks(ticks=labels)
+        ax.set_xticklabels(np.around(labels,2), rotation=90)
+        labels = np.quantile(result.datay, np.arange(0, 1.1, 0.2))
+        ax.set_yticks(ticks=labels)
+        ax.set_yticklabels(labels=np.around(labels,2))
+        for speen in ['right', 'top', 'left', 'bottom']:
+            ax.spines[speen].set_visible(False)
 
-            ax.plot(xds, line(np.array(xds),data_popt[0],data_popt[1]), c="k", lw=4, zorder=20)
-            #here starts the two synthetics
-            coloors = ['goldenrod', "#0C6291"]
-            for cat,popt,pcov,mc,mr,cool in zip(cats,popts,pcovs,modelcolors,modelress,coloors):
-                offmean = np.mean(line(xd,popt[0],popt[1]) - yd)
-                offmed = np.median(line(xd,popt[0],popt[1]) - yd)
-                synth_slope = popt[0]
-                synth_slope_err = pcov[0,0]
-                sigma = (data_slope-synth_slope)/np.sqrt(data_slope_err**2+synth_slope_err**2)
+        ## End plot stuff
 
-                ## Start plots here
-                ax.plot(xd,line(xd,popt[0],popt[1]),
-                        lw=2, c=cool, zorder=19,
-                        label='Synthetic Pred: %s\nOffMean: %.3f\nOffMedian: %.3f\n'%(cat,offmean,offmed)) #lines
-                ax.scatter(mc, mr, alpha=.3, s=5, edgecolor=None, zorder=10, c=cool) #Points
-                ax.legend(framealpha=0)
-                ax.set_xlabel(f'{obslongfilta} - {obslongfiltb}', alpha=0.8)
-                ax.set_ylabel(f'{obslongfilt1} - {obslongfilt2}', alpha=0.8)
+        tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.1f\t%.1f\n'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,cat,offmean,result.datax.size,data_slope,data_slope_err,synth_slope,synth_slope_err,sigma,result.shift))
+    fname='overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,'all',subscript)
+    if outputdir: outpath= path.join('plots',path.join(outputdir, fname))
+    else: outpath=path.join('plots',fname)
+    plt.savefig(outpath, bbox_inches="tight")
 
-                labels = np.quantile(xds, np.arange(0, 1.1, 0.2))
-                ax.set_xticks(ticks=labels)
-                ax.set_xticklabels(np.around(labels,2), rotation=90)
-                labels = np.quantile(np.array(yds), np.arange(0, 1.1, 0.2))
-                ax.set_yticks(ticks=labels)
-                ax.set_yticklabels(labels=np.around(labels,2))
-                for speen in ['right', 'top', 'left', 'bottom']:
-                    ax.spines[speen].set_visible(False)
-
-                ## End plot stuff
-                plt.savefig('plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript), bbox_inches="tight")
-
-                tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.1f\t%.1f\n'%(surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,cat,offmean,ndata,data_slope,data_slope_err,synth_slope,synth_slope_err,sigma,shift))
-
-                print('upload plots/%s/overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(outputdir,surv1,colorfilta,colorfiltb,yfilt1,surv2,yfilt2,'all',subscript))
+    print(f'upload {outpath}')
 
     plt.close('all') #BRODIE - hopefully this doesn't break plots
-    return chi2,npoints,cats,popts,pcovs,obsdict,synthdict,chires
 
 def prep_config(args):
 
@@ -551,22 +536,10 @@ if __name__ == "__main__":
             for f in of: 
                 nparams+=1 #offset and lamshift
                 pos.append(0)
-
-    #### TESTING ###############
     
-    pos = np.array(pos)
-    pdict,obsdict,synthdict = full_likelihood(pos,subscript='beforeaper_v8_150',doplot=True)
-    prepos = []
-
-    for s in surveys_for_chisq:
-        ofs = obsfilts[survmap[s]]
-        for of in ofs:
-            prepos.append(pdict[s+'-'+snanafiltsr[s][of]+'_preoffset'])
-    prepos = np.array(prepos)
-    offsets,obsdict,synthdict = full_likelihood(-1*prepos,subscript='preoffsetsaper_v8_150',doplot=True)
     
-    ###########################
-
+    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs)
+    full_likelihood_data(pos,subscript='beforeaper',doplot=True,tableout=tableout)
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
 
@@ -586,11 +559,9 @@ if __name__ == "__main__":
     key=random.PRNGKey(34581339453)
     initkey, samplekey= random.split(key)
     n_samples = 5000
-    n_burnin = args.n_adaptive
     theta0 = random.normal(initkey, shape=(nparams,))*0.01
-    target = args.target_acceptance
     
-    sampler = NUTS(theta0, logp=full_likelihood, target_acceptance=target, M_adapt=n_burnin)
+    sampler = NUTS(theta0, logp=full_likelihood_data, target_acceptance=target, M_adapt=n_burnin)
     key, samples, step_size = sampler.sample(n_samples, samplekey)
     loglikes=jax.vmap(full_likelihood,in_axes=0)(samples)
     np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
