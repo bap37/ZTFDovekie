@@ -93,7 +93,7 @@ def itersigmacut_linefit_jax(x,y,cut,niter=3,nsigma=4):
         cut= (jnp.abs(yres)<nsigma*stdev ) & cut
         returnx = returnx*(cut)
         returny = returny*(cut)
-    return returnx,returny,stdev,yres,popt,pcov
+    return returnx[cut],returny[cut],stdev,yres,popt,pcov
 
 
 def itersigmacut_linefit(x,y,niter=3,nsigma=4):
