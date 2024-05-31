@@ -23,6 +23,11 @@ def loadsynthphot(fname):
 def getdata(survname):
     synth=loadsynthphot(f'output_synthetic_magsaper/synth_{survname}_shift_0.000.txt')
     obs=np.genfromtxt(f'output_observed_apermags+AV/{survname}_observed.csv',names=True,dtype=None,encoding='utf-8',delimiter=',')
+    for name in obs.dtype.names: 
+        if '_AV' in name or name in ['survey','RA','DEC']:
+            pass
+        else:
+            obs[name]=obs[name]- obs[name+'_AV']
     return synth,obs
 
 
@@ -327,8 +332,7 @@ def generatesurvey(name,survoffsets):
               (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
     
     elif name=='CSP':
-        synth=loadsynthphot(f'output_synthetic_magsaper/synth_CSP_shift_0.000.txt')
-        obs=np.genfromtxt(f'output_observed_apermags+AV/CSP_observed.csv',names=True,dtype=None,encoding='utf-8',delimiter=',')
+        synth,obs=getdata(name)
         synth=np.array(list(synth), dtype=[(x.replace('CSP_TAMU',name),synth.dtype.fields[x][0]) for x in synth.dtype.fields])
         filts=[name+x for x in 'BVgri']
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['CFA3SR']-obs['CFA3SI'] > -.2)& (obs['CFA3SB']-obs['CFA3SV'] > .3)
