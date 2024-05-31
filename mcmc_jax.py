@@ -30,7 +30,7 @@ DEBUG = False
 
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
-survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors ,target , n_burnin= prep_config(config)
+survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors ,target_acceptance , n_burnin= prep_config(config)
 
 
 obscolors_by_survey = {'PS1':['PS1-g','PS1-i']} #dodgy, feel like this should be tonry
@@ -142,7 +142,6 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
     else:
         obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
-
     #JAXX stuff starts here 
     obsdf = obsdfs[surv2] #grabs the observed points from the relevant survey
     if DEBUG: print(obsdf.columns, surv2)
@@ -150,9 +149,11 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     datacut = jnp.abs(yr)<1 #only uses things lower than 1
     datacolor = (obsdf[obslongfilta] -obsdf[obslongfilta+"_AV"])-(obsdf[obslongfiltb]-obsdf[obslongfiltb+"_AV"])
     datares = obsdf[obslongfilt1]-obsdf[obslongfilt1+'_AV']-(obsdf[obslongfilt2]-obsdf[obslongfilt2+'_AV'])
-
-    datax,datay,sigmadata,yresd,data_popt,data_pcov = itersigmacut_linefit_jax(datacolor.astype('float'),
-                                                         datares.astype('float'), datacut,
+#     import pdb;pdb.set_trace()
+    datacolor=datacolor[datacut]
+    datares=datares[datacut]
+    datax,datay,sigmadata,yresd,data_popt,data_pcov = itersigmacut_linefit(datacolor,
+                                                         datares,# np.ones(datacut.sum(),dtype=bool),
                                                          niter=2,nsigma=3)
 
     synthxs,synthys, cats,synthpopts,synthpcovs,modelcolors,modelress =  ([] for i in range(7))
@@ -175,8 +176,9 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         
         synthcut = (modelcolor > synth_gi_range[(catname) ][0]) & (modelcolor < synth_gi_range[catname][1]) & synthcut
 
-
-        synthx,synthy,sigmamodel,yres,popt,pcov = itersigmacut_linefit_jax(modelcolor,modelres,synthcut,niter=1,nsigma=3)
+        modelcolor=modelcolor[synthcut]
+        modelres=modelres[synthcut]
+        synthx,synthy,sigmamodel,yres,popt,pcov = itersigmacut_linefit(modelcolor,modelres,niter=1,nsigma=3)
         popt=jnp.array([popt[0],popt[1] + off2-off1 - popt[0]* (offb-offa)])
         synthxs.append(synthx); synthys.append(synthy)
     
@@ -188,8 +190,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         
         dms = datares - line(datacolor,*popt)
         #WHY IS THIS A MEAN
-        chires = jnp.mean(dms,where=datacut)
-        chireserrsq = (sigmadata/jnp.sqrt((datacut.sum())))**2+errfloors[surv2]**2
+        chires = jnp.mean(dms)
+        chireserrsq = (sigmadata/jnp.sqrt(dms.size ))**2+errfloors[surv2]**2
         chi2 += (chires**2/chireserrsq)
 
      
@@ -561,7 +563,7 @@ if __name__ == "__main__":
     n_samples = 5000
     theta0 = random.normal(initkey, shape=(nparams,))*0.01
     
-    sampler = NUTS(theta0, logp=full_likelihood_data, target_acceptance=target, M_adapt=n_burnin)
+    sampler = NUTS(theta0, logp=full_likelihood_data, target_acceptance=target_acceptance, M_adapt=n_burnin)
     key, samples, step_size = sampler.sample(n_samples, samplekey)
     loglikes=jax.vmap(full_likelihood,in_axes=0)(samples)
     np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
