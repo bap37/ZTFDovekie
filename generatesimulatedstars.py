@@ -27,7 +27,10 @@ def getdata(survname):
         if '_AV' in name or name in ['survey','RA','DEC']:
             pass
         else:
-            obs[name]=obs[name]- obs[name+'_AV']
+            try:
+                obs[name]=obs[name]- obs[name+'_AV']
+            except ValueError:
+                pass
     return synth,obs
 
 
@@ -336,7 +339,7 @@ def generatesurvey(name,survoffsets):
         synth=np.array(list(synth), dtype=[(x.replace('CSP_TAMU',name),synth.dtype.fields[x][0]) for x in synth.dtype.fields])
         filts=[name+x for x in 'BVgri']
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['CFA3SR']-obs['CFA3SI'] > -.2)& (obs['CFA3SB']-obs['CFA3SV'] > .3)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CSPDR3natB']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,   
+        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CSPB']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,   
               (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'] ,.2)
     
     elif name=='DES':
@@ -355,6 +358,7 @@ def generatesurvey(name,survoffsets):
               (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],survoffsets['PS1'],.2 ,True)
     
     elif name=='PS1SN':
+        filts=[name+x for x in 'griz']
         synth,obs=getdata(name)
         synth=np.array(list(synth), dtype=[(x.replace('Foundation',name),synth.dtype.fields[x][0]) for x in synth.dtype.fields])
         nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
