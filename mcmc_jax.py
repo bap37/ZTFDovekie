@@ -146,7 +146,7 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     obsdf = obsdfs[surv2] #grabs the observed points from the relevant survey
     if DEBUG: print(obsdf.columns, surv2)
     yr=obsdf[obslongfilt1]-obsdf[obslongfilt2] #observed filter1 - observed filter 2 
-    datacut = jnp.abs(yr)<1 #only uses things lower than 1
+    datacut = np.abs(yr)<1 #only uses things lower than 1
     datacolor = (obsdf[obslongfilta] -obsdf[obslongfilta+"_AV"])-(obsdf[obslongfiltb]-obsdf[obslongfiltb+"_AV"])
     datares = obsdf[obslongfilt1]-obsdf[obslongfilt1+'_AV']-(obsdf[obslongfilt2]-obsdf[obslongfilt2+'_AV'])
 #     import pdb;pdb.set_trace()
@@ -163,8 +163,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         catname=['calspec23','stis_ngsl_v2'][i]
         if DEBUG: print(df2.columns, surv2, surv1) 
         synthcut = (cat) & \
-           (~jnp.isnan(df2[longfilt2].astype('float'))) & \
-           (~jnp.isnan(df2[longfilt1].astype('float')))
+           (~np.isnan(df2[longfilt2].astype('float'))) & \
+           (~np.isnan(df2[longfilt1].astype('float')))
 
         modelfilta = df2[longfilta] ; modelfiltb = df2[longfiltb]
         modelfilt1 = df2[longfilt1] ; modelfilt2 = df2[longfilt2]
@@ -366,11 +366,18 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
 def lnprior(paramsdict):
 
     priordict = { 
-        'PS1-g_offset':[0,.01],
-        'PS1-r_offset':[0,.01],
-        'PS1-i_offset':[0,.01],
-        'PS1-z_offset':[0,.01],
-
+        'PS1-g_offset':[0,.02],
+        'PS1-r_offset':[0,.02],
+        'PS1-i_offset':[0,.02],
+        'PS1-z_offset':[0,.02],
+        'PS1SN-g_offset':[0,.01],
+        'PS1SN-r_offset':[0,.01],
+        'PS1SN-i_offset':[0,.01],
+        'PS1SN-z_offset':[0,.01],
+        'DES-g_offset':[0,.01],
+        'DES-r_offset':[0,.01],
+        'DES-i_offset':[0,.01],
+        'DES-z_offset':[0,.01],
         }
     
 #        'DES-g_offset':[0,.01],
@@ -407,10 +414,12 @@ def lnprior(paramsdict):
 
     lp = 0
     for priorparam,prior in priordict.items():
-        mu = prior[0]
-        sigma = prior[1]
-        lp += -0.5*(paramsdict[priorparam]-mu)**2/sigma**2
-
+        try:
+            mu = prior[0]
+            sigma = prior[1]
+            lp += -0.5*(paramsdict[priorparam]-mu)**2/sigma**2
+        except KeyError:
+            raise ValueError(f'Missed parameter {priorparam}, missing a survey')
 
     return lp
 
@@ -565,7 +574,7 @@ if __name__ == "__main__":
     
     sampler = NUTS(theta0, logp=full_likelihood_data, target_acceptance=target_acceptance, M_adapt=n_burnin)
     key, samples, step_size = sampler.sample(n_samples, samplekey)
-    loglikes=jax.vmap(full_likelihood,in_axes=0)(samples)
+    loglikes=jax.vmap(full_likelihood_data,in_axes=0)(samples)
     np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
     
     
