@@ -1,7 +1,6 @@
 
 ##Which surveys mcmc.py will investigate
 surveys_for_dovekie: ['PS1', 'ZTFD', 'ZTFS', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S'] 
-surveys_for_dovekie:  ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S']
 
 #Where the chains are saved to
 chainsfile: 'FULL_SPLITZTF-LONG.npz'
