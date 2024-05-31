@@ -468,6 +468,7 @@ def plot_forone(result,subscript, outputdir,tableout):
     fname='overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,'all',subscript)
     if outputdir: outpath= path.join('plots',path.join(outputdir, fname))
     else: outpath=path.join('plots',fname)
+    os.makedirs(path.split(outpath)[0],exist_ok=True)
     plt.savefig(outpath, bbox_inches="tight")
 
     print(f'upload {outpath}')
