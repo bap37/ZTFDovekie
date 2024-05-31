@@ -372,7 +372,7 @@ def generatesurvey(name,survoffsets):
         synth,obs=getdata(name)
         nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
+        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFDg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
               (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],survoffsets['PS1'],.2 )
         
     elif name=='ZTFS':
@@ -380,7 +380,7 @@ def generatesurvey(name,survoffsets):
         synth,obs=getdata(name)
         nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
+        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFSg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
               (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],survoffsets['PS1'] ,.2)
               
     return surv
@@ -389,12 +389,12 @@ def generatesurvey(name,survoffsets):
 def getsurveygenerators(survoffsets):
 
     names='SNLS','SDSS','CFA3K','CFA3S','CSP','DES','Foundation','PS1SN','ZTFD','ZTFS'
+    names='ZTFD','ZTFS'
     for name in names:
         yield name,generatesurvey(name,survoffsets)
 
     
 def main():
-    survnames=['CFA3K','CFA3S','CSPDR3nat', 'DES','Foundation','PS1SN','SDSS','SNLS','ZTF']
     survoffsets=generatesurveyoffsets()
     surveys=getsurveygenerators(survoffsets)
     
@@ -403,7 +403,7 @@ def main():
     
     for name,surv in surveys:
         simdata=surv.genstar(surv.nobs)
-        with open(f'output_simulated_apermags+AV/{name}_simobserved.csv', 'w') as csvfile:
+        with open(f'output_simulated_apermags+AV/{name}_observed.csv', 'w') as csvfile:
             out = csv.writer(csvfile, delimiter=',')
             dashednames=[x[:-1]+'-'+x[-1] for x in simdata.dtype.names]
             out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames])
@@ -417,7 +417,7 @@ def main():
     for name in surveys:
         offsetdict[name]=dict(zip(surveys[name].filtnames,survoffsets[name]))
     
-    with open('output_fake_apermags+AV/simmedoffsets.json','w') as file:
+    with open('output_simulated_apermags+AV/simmedoffsets.json','w') as file:
         file.write(json.dumps(offsetdict))
 
 

@@ -86,7 +86,7 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
         survname = obssurvmap[survey]
         if survey == 'PS1': continue
         realdirname = 'output_observed_apermags'
-        if fakes: realdirname = realdirname.replace("observed", "fake")
+        if fakes: realdirname = realdirname.replace("observed", "simulated")
         if redo:
             print(f"Starting IRSA query for {survey}. If nothing is printing that's probably fine.")
             obsdf = pd.read_csv(f'{realdirname}/{survname}_observed.csv')
