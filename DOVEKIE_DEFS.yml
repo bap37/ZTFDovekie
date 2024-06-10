@@ -1,9 +1,12 @@
 
 ##Which surveys mcmc.py will investigate
-surveys_for_dovekie: ['PS1', 'ZTFD', 'ZTFS', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S'] 
+surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTFS', 'ZTFD'] 
+
+
+surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES']
 
 #Where the chains are saved to
-chainsfile: 'FULL_SPLITZTF-LONG.npz'
+chainsfile: 'DOVEKIE.V1.npz'
 
 ####### Below here, only madness lies, unless you want to add another survey. 
 ####### In which case go ahead, but it's ugly.
@@ -26,6 +29,10 @@ survs: ['PS1SN',
         'CFA3K',
         'ZTFS',
         'ZTFD',
+        'ASASSN2',
+        'ASASSN1',
+        'SWIFT',
+        'KAIT',
 ]
 
 kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
@@ -39,6 +46,10 @@ kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
             'kcor/CFA3_KEPLERCAM/',
             'kcor/ZTF/',
             'kcor/ZTF/',
+            'kcor/ASASSN/',
+            'kcor/ASASSN/',
+            'kcor/SWIFTNEW/',
+            'kcor/KAIT_2018/',
 ]
 
 kcors: ['PS1_excalinaper_+30A.input',
@@ -52,6 +63,10 @@ kcors: ['PS1_excalinaper_+30A.input',
         'CFA3_KEPLERCAM_excalin.input',
         'ZTFS_excalin.input',
         'ZTFD_excalin.input',
+        'ASASSN_new_excalin.input',
+        'ASASSN_new_excalin.input',
+        'SWIFT_UVOT_excalin.input',
+        'KAITM_excalin.input',
 ]
 
 
@@ -66,6 +81,10 @@ filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
             'filters/CFA3_native/',
             'filters/ZTF/',
             'filters/ZTF/',
+            'filters/ASASSN/',
+            'filters/ASASSN/',
+            'filters/SWIFTNEW/',
+            'filters/KAIT_2018/',
 ]
 
 
@@ -80,6 +99,10 @@ shiftfiltss: [['g','r','i','z'],
               ['U','B','V','r','i'],
               ['g', 'r', 'i'],
               ['g', 'r', 'i'],
+              ['g','j','i','h'],
+              ['a','b','d','c'],
+              ['U','B','V'],
+              ['A','B','C','D','I','J','K','L','E','F','G','H','M','N','O','P','a','b','c','d','e','f','g','h'],
 ]
 
 
@@ -93,6 +116,10 @@ namedfiltss: [['g','r','i','z'],
               ['U','B','V','r','i'],
               ['g', 'r', 'i'],
               ['g', 'r', 'i'],
+              ['B','V','r','i'],
+              ['B','V','r','i'],
+              ['U','B','V'],
+              ['B','V','R','I','B','V','R','I','B','V','R','I','B','V','R','I','B','V','R','I','B','V','R','I'],
 ]
 
 
@@ -107,6 +134,10 @@ obsfiltss: [['g','r','i','z'],
             ['U','B','V','r','i'],
             ['g', 'r', 'i'],
             ['g', 'r', 'i'],
+            ['g','j','i','h'],
+            ['a','b','d','c'],
+            ['U','B','V'],
+            ['A','B','C','D','I','J','K','L','E','F','G','H','M','N','O','P','a','b','c','d','e','f','g','h'],
 ]
 
 ###############################################
@@ -124,9 +155,21 @@ survmap: {'PS1':'PS1',
           'SNLS':'SNLS',
           'PS1SN':'PS1SN',
           'ZTFS':'ZTFS',
-          'ZTFD':'ZTFD'
+          'ZTFD':'ZTFD',
+          'ASASSN1':'ASASSN1',
+          'ASASSN2':'ASASSN2',
+          'SWIFT':'SWIFT',
+          'KAIT3':'KAIT3',
+          'KAIT4':'KAIT4',
+          'NICKEL1':'NICKEL1',
+          'NICKEL2':'NICKEL2',
+          'KAIT1MO':'KAIT1MO',
+          'KAIT2MO':'KAIT2MO',
+          'KAIT3MO':'KAIT3MO',
+          'KAIT4MO':'KAIT4MO',
+          'NICKEL1MO':'NICKEL1MO',
+          'NICKEL2MO':'NICKEL2MO',
 }
-#ZTFS/ZTFD are future proof for the single and double coating respectively
 
 survmap4shift: {'PS1':'PS1',
                 'DES':'DES',
@@ -140,6 +183,19 @@ survmap4shift: {'PS1':'PS1',
                 'ZTFS':'ZTFS',
                 'ZTFD':'ZTFD',
                 'SNLS':'SNLS',
+                'ASASSN1':'ASASSN1',
+                'ASASSN2':'ASASSN2',
+                'SWIFT':'SWIFT',
+                'KAIT3':'KAIT',
+                'KAIT4':'KAIT',
+                'NICKEL1':'KAIT',
+                'NICKEL2':'KAIT',
+                'KAIT1MO':'KAIT',
+                'KAIT2MO':'KAIT',
+                'KAIT3MO':'KAIT',
+                'KAIT4MO':'KAIT',
+                'NICKEL1MO':'KAIT',
+                'NICKEL2MO':'KAIT',
 }
 
 survfiltmap: {'PS1':'PS1',
@@ -154,6 +210,19 @@ survfiltmap: {'PS1':'PS1',
               'ZTFS':'ZTFS',
               'ZTFD':'ZTFD',
               'SNLS':'SNLS',
+              'ASASSN1':'ASASSN',
+              'ASASSN2':'ASASSN',
+              'SWIFT':'SWIFT',
+              'KAIT1MO':'KAIT_2018',
+              'KAIT2MO':'KAIT_2018',
+              'KAIT3MO':'KAIT_2018',
+              'KAIT4MO':'KAIT_2018',
+              'NICKEL1MO':'KAIT_2018',
+              'NICKEL2MO':'KAIT_2018',
+              'KAIT3':'KAIT_2018',
+              'KAIT4':'KAIT_2018',
+              'NICKEL1':'KAIT_2018',
+              'NICKEL2':'KAIT_2018',
 }
 
 obssurvmap: {'PS1':'PS1',
@@ -168,7 +237,22 @@ obssurvmap: {'PS1':'PS1',
              'ZTFS':'ZTFS',
              'ZTFD':'ZTFD',
              'SNLS':'SNLS',
+             'ASASSN1':'ASASSN1',
+             'ASASSN2':'ASASSN2',
+             'SWIFT':'SWIFT',
+             'KAIT3MO':'KAIT3MO',
+             'KAIT4MO':'KAIT4MO',
+             'NICKEL1MO':'NICKEL1MO',
+             'NICKEL2MO':'NICKEL2MO',
+             'KAIT1MO':'KAIT1MO',
+             'KAIT2MO':'KAIT2MO',
+             'KAIT3':'KAIT3',
+             'KAIT4':'KAIT4',
+             'NICKEL1':'NICKEL1',
+             'NICKEL2':'NICKEL2',
+             'KAIT2':'KAIT2',
 } 
+#removed KAIT1 ^
 
 revobssurvmap: {'PS1':'PS1',
                 'DES':'DES',
@@ -182,6 +266,19 @@ revobssurvmap: {'PS1':'PS1',
                 'ZTFS':'ZTFS',
                 'ZTFD':'ZTFD',
                 'SNLS':'SNLS',
+                'ASASSN1':'ASASSN1',
+                'ASASSN2':'ASASSN2',
+                'SWIFT':'SWIFT',
+                'KAIT3MO':'KAIT',
+                'KAIT4MO':'KAIT',
+                'KAIT1MO':'KAIT',
+                'KAIT2MO':'KAIT',
+                'NICKEL1MO':'KAIT',
+                'NICKEL2MO':'KAIT',
+                'KAIT3':'KAIT',
+                'KAIT4':'KAIT',
+                'NICKEL1':'KAIT',
+                'NICKEL2':'KAIT',
 }
 #formerly a CSPDR3nat
 
@@ -197,7 +294,19 @@ revobssurvmapforsnana: { 'PS1':'PS1',
                          'ZTFS':'ZTF',
                          'ZTFD':'ZTF',
                          'SNLS':'SNLS',
-
+                         'ASASSN1':'ASASSN1',
+                         'ASASSN2':'ASASSN2',
+                         'SWIFT':'SWIFT',
+                         'KAIT1MO':'KAIT1MO',
+                         'KAIT2MO':'KAIT2MO',
+                         'KAIT3MO':'KAIT3MO',
+                         'KAIT4MO':'KAIT4MO',
+                         'NICKEL1MO':'NICKEL1MO',
+                         'NICKEL2MO':'NICKEL2MO',
+                         'KAIT3':'KAIT3',
+                         'KAIT4':'KAIT4',
+                         'NICKEL1':'NICKEL1',
+                         'NICKEL2':'NICKEL2',
 }
 #formerly a CSPDR3nat
 survcolormin: {'DES':.075,
@@ -211,6 +320,19 @@ survcolormin: {'DES':.075,
                'ZTFS':0,
                'ZTFD':0,
                'SNLS':.25,
+               'ASASSN1':.6,
+               'ASASSN2':.6,
+               'SWIFT':0,
+               'KAIT3':.6,
+               'KAIT4':.6,
+               'NICKEL1':.6,
+               'NICKEL2':.6,
+               'KAIT3MO':0,
+               'KAIT4MO':0,
+               'KAIT1MO':0,
+               'KAIT2MO':0,
+               'NICKEL1MO':0,
+               'NICKEL2MO':0,
 }
 
 survcolormax: {'DES':10.075,
@@ -224,7 +346,19 @@ survcolormax: {'DES':10.075,
                'ZTFS':10,
                'ZTFD':10,
                'SNLS':10.25,
-
+               'ASASSN1':.9,
+               'ASASSN2':.9,
+               'SWIFT':10,
+               'KAIT3':.9,
+               'KAIT4':.9,
+               'NICKEL1':.9,
+               'NICKEL2':.9,
+               'KAIT3MO':10,
+               'KAIT4MO':10,
+               'KAIT1MO':10,
+               'KAIT2MO':10,
+               'NICKEL1MO':10,
+               'NICKEL2MO':10,
 }
 
 synth_gi_range: {'calspec23':[-9.25,9.5],
@@ -242,6 +376,19 @@ obsfilts: {'PS1':  ['g','r','i','z'],
            'ZTFS':  ['g', 'r', 'i'],
            'ZTFD':  ['g', 'r', 'i'],
            'SNLS': ['g','r','i','z'],
+           'ASASSN1': ['B','V','r','i'],
+           'ASASSN2': ['B','V','r','i'],
+           'SWIFT': ['B','V'],
+           'KAIT1MO': ['B','V','R','I'],
+           'KAIT2MO': ['B','V','R','I'],
+           'KAIT3MO': ['B','V','R','I'],
+           'KAIT4MO': ['B','V','R','I'],
+           'NICKEL1MO':['B','V','R','I'],
+           'NICKEL2MO':['B','V','R','I'],
+           'KAIT3': ['B','V','R','I'],
+           'KAIT4': ['B','V','R','I'],
+           'NICKEL1':['B','V','R','I'],
+           'NICKEL2':['B','V','R','I'],
  }
 
 snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
@@ -256,8 +403,21 @@ snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
              'ZTFS':     {'g':'g', 'r':'r', 'i':'i'},
              'ZTFD':     {'g':'g', 'r':'r', 'i':'i'},
              'SNLS': {'g':'g','r':'r','i':'i','z':'z'},
+             'ASASSN1': {'a':'B','b':'V','d':'r','c':'i'},
+             'ASASSN2': {'g':'B','j':'V','i':'r','h':'i'},
+             'SWIFT': {'B':'B','V':'V'},
+             'KAIT3MO': {'A':'B','B':'V','C':'R','D':'I'},
+             'KAIT4MO': {'E':'B','F':'V','G':'R','H':'I'},
+             'NICKEL1MO':{'I':'B','J':'V','K':'R','L':'I'},
+             'NICKEL2MO':{'M':'B','N':'V','O':'R','P':'I'},
+             'KAIT1MO': {'a':'B','b':'V','c':'R','d':'I'},
+             'KAIT2MO': {'e':'B','f':'V','g':'R','h':'I'},
+             'KAIT3': {'A':'B','B':'V','C':'R','D':'I'},
+             'KAIT4': {'E':'B','F':'V','G':'R','H':'I'},
+             'NICKEL1':{'I':'B','J':'V','K':'R','L':'I'},
+             'NICKEL2':{'M':'B','N':'V','O':'R','P':'I'},
  }
-
+#            
 
 snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
               'DES' : {'g':'g','r':'r','i':'i','z':'z'},
@@ -271,6 +431,20 @@ snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
               'ZTFS':     {'g':'g', 'r':'r', 'i':'i'},
               'ZTFD':     {'g':'g', 'r':'r', 'i':'i'},
               'SNLS': {'g':'g','r':'r','i':'i','z':'z'},
+              'ASASSN1': {'B':'a','V':'b','r':'d','i':'c'},
+              'ASASSN2': {'B':'g','V':'j','r':'i','i':'h'},
+              'SWIFT': {'B':'B','V':'V'},
+              'KAIT3MO': {'B':'A','V':'B','R':'C','I':'D'},
+              'KAIT4MO': {'B':'E','V':'F','R':'G','I':'H'},
+              'KAIT1MO': {'B':'a','V':'b','R':'c','I':'d'},
+              'KAIT2MO': {'B':'e','V':'f','R':'g','I':'h'},
+              'NICKEL1MO':{'B':'I','V':'J','R':'K','I':'L'},
+              'NICKEL2MO':{'B':'M','V':'N','R':'O','I':'P'},
+              'KAIT3': {'B':'A','V':'B','R':'C','I':'D'},
+              'KAIT4': {'B':'E','V':'F','R':'G','I':'H'},
+              'NICKEL1':{'B':'I','V':'J','R':'K','I':'L'},
+              'NICKEL2':{'B':'M','V':'N','R':'O','I':'P'},
+
  }
 
 #Will need to fix the ZTFS/ZTFD weights at some point
@@ -287,6 +461,19 @@ relativeweights: {
     'ZTFS':      0.5,
     'ZTFD':      0.5,
     'SNLS': 1,
+    'ASASSN1':    .5,
+    'ASASSN2':    .5,
+    'SWIFT':    1,
+    'KAIT3MO':   .25,
+    'KAIT4MO':   .25,
+    'KAIT1MO':   .25,
+    'KAIT2MO':   .25,
+    'NICKEL1MO':   .25,
+    'NICKEL2MO':   .25,
+    'KAIT3':   .25,
+    'KAIT4':   .25,
+    'NICKEL1':   .25,
+    'NICKEL2':   .25,
 }
 
 
@@ -303,6 +490,19 @@ errfloors: {
     'ZTFS'  : 0.005,
     'ZTFD'  : 0.005,
     'SNLS'  : 0.005,
+    'ASASSN1':   .02,
+    'ASASSN2':   .02,
+    'SWIFT':   .01,
+    'KAIT3MO':   .01,
+    'KAIT4MO':   .01,
+    'KAIT1MO':   .01,
+    'KAIT2MO':   .01,
+    'NICKEL1MO':   .01,
+    'NICKEL2MO':   .01,
+    'KAIT3':   .01,
+    'KAIT4':   .01,
+    'NICKEL1':   .01,
+    'NICKEL2':   .01,
 }
 
 target_acceptance: 0.9
@@ -325,6 +525,12 @@ filttranss: [['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt
              ['SNLS3_4shooter2_U.dat', 'SNLS3_4shooter2_B.dat', 'SNLS3_4shooter2_V.dat', 'SNLS3_4shooter2_R.dat', 'SNLS3_4shooter2_I.dat'], 
              ['SNLS3_Keplercam_U_modtran.dat', 'SNLS3_Keplercam_B_modtran.dat', 'SNLS3_Keplercam_V_modtran.dat', 'SNLS3_Keplercam_r_modtran.dat', 'SNLS3_Keplercam_i_modtran.dat'],
              ['ztfg1.dat+-20' ,'ztfr1.dat', 'ztfi1.dat'],
-             ['ztfg2.dat+5' ,'ztfr2.dat', 'ztfi2.dat']
+             ['ztfg2.dat+5' ,'ztfr2.dat', 'ztfi2.dat'],
+             ['astrodon_B.dat', 'astrodon_V.dat', 'astrodon_r.dat', 'astrodon_i.dat'],
+             ['bssl-bx-004.txt', 'bssl-vx-022.txt', 'SDSS.rp.txt', 'SDSS.ip.txt'],
+             ['U_UVOT_rev.txt', 'B_UVOT_rev.txt', 'V_UVOT_rev.txt', 'U_UVOT_rev.txt', 'U_UVOT_rev.txt', 'U_UVOT_rev.txt'],
+             ['B_kait3.txt', 'V_kait3.txt', 'R_kait3.txt', 'I_kait3.txt', 'B_nickel1.txt', 'V_nickel1.txt', 'R_nickel1.txt', 'I_nickel1.txt', 'B_kait4.txt', 'V_kait4.txt', 'R_kait4.txt', 'I_kait4.txt', 'B_nickel2.txt', 'V_nickel2.txt', 'R_nickel2.txt', 'I_nickel2.txt', 'B_kait1_shifted.txt', 'V_kait1_shifted.txt', 'R_kait1_shifted.txt', 'I_kait1_shifted.txt', 'B_kait2_shifted.txt', 'V_kait2_shifted.txt', 'R_kait2_shifted.txt', 'I_kait2_shifted.txt']
 
 ]
+
+#  'ASASSN2', 'ASASSN1', 'SWIFTNEW', 'KAIT',
