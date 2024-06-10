@@ -24,6 +24,16 @@ def get_args():
   args = parser.parse_args()
   return args
 
+def clean_surveys(surv):
+  if surv == "Foundation": 
+    surv = "PS1SN"
+  elif "ASASSN" in surv:
+    surv = "ASASSN"
+  elif "KAIT" in surv:
+    surv = "KAIT_2018"
+  elif "SWIFT" in surv:
+    surv = "SWIFTnat"
+  return surv
 
 parallel = '1'
 if __name__ == '__main__':
@@ -118,9 +128,10 @@ if __name__ == '__main__':
         g=open('logs/kcor_%s.log'%(surv),'r').readlines()
         vals=['99' for n in range(len(obsfilts))]
         searchsurv = surv
+        print(surv)
         for gg in g:
           for iii, obsf in enumerate(obsfilts):
-            if surv == "Foundation": searchsurv = "PS1SN"
+            searchsurv = clean_surveys(surv)
             if (f'{searchsurv}-{obsf}' in gg):
               if ('BD17' in gg.split()[2]):
                 try:
@@ -129,6 +140,7 @@ if __name__ == '__main__':
                   vals[0] == 99
         print(vals, cat)
         vals = np.array(vals).astype(float); vals = -1*vals ;
+        if 'ASASSN' in version: version = "ASASSN";
         if vals[0]!='99':
           bd.write(' '.join([surv,version,ngslf,cat,str(round(shift,3)),'']))
           bd.write(' '.join(vals.astype(str))+'\n')

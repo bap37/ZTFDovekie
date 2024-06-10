@@ -140,11 +140,17 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     obslongfilt1 = obssurvmap[surv1]+'-'+yfilt1 
     if ('CSP' in surv2.upper()):
         obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
+    elif ('KAIT' in surv2.upper()) | ('NICKEL' in surv2.upper()):
+        obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
+    elif 'ASASSN' in surv2.upper():
+        obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
     else:
         obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
+    
     #JAXX stuff starts here 
     obsdf = obsdfs[surv2] #grabs the observed points from the relevant survey
-    if DEBUG: print(obsdf.columns, surv2)
+    if DEBUG: print(obsdf.keys(), surv2)
+    if DEBUG: print(obssurvmap.keys(),surv1,yfilt1, surv2, yfilt2)
     yr=obsdf[obslongfilt1]-obsdf[obslongfilt2] #observed filter1 - observed filter 2 
     datacut = np.abs(yr)<1 #only uses things lower than 1
     datacolor = (obsdf[obslongfilta] -obsdf[obslongfilta+"_AV"])-(obsdf[obslongfiltb]-obsdf[obslongfiltb+"_AV"])
@@ -161,7 +167,7 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     
     for i,cat in enumerate((df2['standard_catagory'],~df2['standard_catagory'])):
         catname=['calspec23','stis_ngsl_v2'][i]
-        if DEBUG: print(df2.columns, surv2, surv1) 
+        if DEBUG: print(df2.keys(), surv2, surv1) 
         synthcut = (cat) & \
            (~np.isnan(df2[longfilt2].astype('float'))) & \
            (~np.isnan(df2[longfilt1].astype('float')))
@@ -342,6 +348,110 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
         filtbs.extend([     'r',     'i',     'i',     'i'])
         filt1s.extend([     'g',     'r',     'r',     'i'])
         filt2s.extend([     'B',     'V',     'r',     'i'])
+    
+    if "KAIT1MO" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['KAIT1MO','KAIT1MO','KAIT1MO','KAIT1MO'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'a',    'b',    'c',    'd'])
+    
+    if "KAIT2MO" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['KAIT2MO','KAIT2MO','KAIT2MO','KAIT2MO'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'e',    'f',    'g',    'h'])
+     
+    if "NICKEL1MO" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['NICKEL1MO','NICKEL1MO','NICKEL1MO','NICKEL1MO'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'I',    'J',    'K',    'L'])
+        surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
+
+    if 'NICKEL2MO' in surveys_for_chisq:
+        surv2s.extend(['NICKEL2MO','NICKEL2MO','NICKEL2MO','NICKEL2MO'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'M',    'N',    'O',    'P'])
+
+    if "KAIT3MO" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['KAIT3MO','KAIT3MO','KAIT3MO','KAIT3MO'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'A',    'B',    'C',    'D'])
+
+    if "KAIT4MO" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['KAIT4MO','KAIT4MO','KAIT4MO','KAIT4MO'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'E',    'F',    'G',    'H'])
+    
+    if "KAIT3" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['KAIT3','KAIT3','KAIT3','KAIT3'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'A',    'B',    'C',    'D'])
+
+    if "KAIT4" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['KAIT4','KAIT4','KAIT4','KAIT4'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'E',    'F',    'G',    'H'])
+    
+    if "NICKEL1" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['NICKEL1','NICKEL1','NICKEL1','NICKEL1'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'I',    'J',    'K',    'L'])
+
+    if "NICKEL2" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
+        surv2s.extend(['NICKEL2','NICKEL2','NICKEL2','NICKEL2'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'M',    'N',    'O',    'P'])
+
+    if "SWIFT" in surveys_for_chisq:
+        surv1s.extend([  'PS1',       'PS1'])
+        surv2s.extend(['SWIFT', 'SWIFT'])
+        filtas.extend([    'g',         'g'])
+        filtbs.extend([    'r',         'i'])
+        filt1s.extend([    'g',         'r'])
+        filt2s.extend([    'B',         'V'])
+
+    if "ASASSN2" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['ASASSN2','ASASSN2','ASASSN2','ASASSN2'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'g',    'j',    'i',    'h'])
+
+    if "ASASSN1" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+        surv2s.extend(['ASASSN1','ASASSN1','ASASSN1','ASASSN1'])
+        filtas.extend([    'g',    'g',    'g',    'g'])
+        filtbs.extend([    'r',    'i',    'i',    'i'])
+        filt1s.extend([    'g',    'r',    'r',    'i'])
+        filt2s.extend([    'a',    'b',    'd',    'c'])
     
     totalchisq = 0
 

@@ -19,5 +19,7 @@ for fp,fts,ofs,surv in zip(config['filtpaths'],config['filttranss'],config['obsf
         out.write(surv+str(of)+','+str(round(np.average(d['wavelength'],weights=d['trans'])))+'\n')
         if surv == "PS1SN":
             out.write(surv.strip("SN")+str(of)+','+str(round(np.average(d['wavelength'],weights=d['trans'])))+'\n')
+        if surv == "SWIFTNEW":
+            out.write(surv.strip("NEW")+str(of)+','+str(round(np.average(d['wavelength'],weights=d['trans'])))+'\n')
 
 out.close()
