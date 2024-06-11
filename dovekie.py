@@ -452,7 +452,24 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
         filtbs.extend([    'r',    'i',    'i',    'i'])
         filt1s.extend([    'g',    'r',    'r',    'i'])
         filt2s.extend([    'a',    'b',    'd',    'c'])
+
+    if "CFA4P1" in surveys_for_chisq:
+        surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
+        surv2s.extend(['CFA4P1', 'CFA4P1','CFA4P1','CFA4P1'])
+        filtas.extend([    'g',         'g',       'g',      'g'])
+        filtbs.extend([    'r',         'i',       'i',      'i'])
+        filt1s.extend([    'g',         'r',       'r',      'i'])
+        filt2s.extend([    'B',         'V',       'r',      'i'])
     
+    if "CFA4P2" in surveys_for_chisq:
+        surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
+        surv2s.extend(['CFA4P2', 'CFA4P2', 'CFA4P2','CFA4P2'])
+        filtas.extend([    'g',         'g',       'g',      'g'])
+        filtbs.extend([    'r',         'i',       'i',      'i'])
+        filt1s.extend([    'g',         'r',       'r',      'i'])
+        filt2s.extend([    'B',         'V',       'r',      'i'])
+
+
     totalchisq = 0
 
     weightsum = 0
@@ -628,7 +645,7 @@ if __name__ == "__main__":
 
     args = get_args()
     REDO, MCMC, DEBUG, FAKES = prep_config(args)
-    tableout = open('preoffsetsaper.dat','w')
+    tableout = open('preprocess_dovekie.dat','w')
     tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
     print('reading in survey data')
 
