@@ -65,7 +65,8 @@ def query_irsa(row,col='NA'):
     avinterp = interpolate.interp1d(table['LamEff'][aa]*10000,table['A_SandF'][aa])
     rs = col.replace('_4shooter','S').replace('_keplercam','K').split('-')[0]
     if "CSP" in rs: rs = "CSP" ;
-    sys.stdout.flush() 
+    #print(f"rs: {rs} \n col: {col}\n snanafiltsr:{snanafiltsr.keys()}")
+    sys.stdout.flush()
     return avinterp(filter_means[revobssurvmap[rs]+snanafiltsr[revobssurvmapforsnana[rs]][col[-1]]])
 
 def get_extinction(survdict):
@@ -130,7 +131,7 @@ def create_chains(labels, samples, ndim=10):
     
     for i in range(ndim):
         ax = axes[i]
-        ax.plot(samples[:, :, -1*i], "k", alpha=0.3)
+        ax.plot(samples[:, -1*i], "k", alpha=0.3)
         ax.set_xlim(0, len(samples))
         ax.set_ylabel(labels[i])
         ax.yaxis.set_label_coords(-0.1, 0.5)
@@ -155,29 +156,35 @@ def create_cov(labels, flat_samples):
     c = ChainConsumer()
     c.add_chain(flat_samples, parameters=labels)
     _,cov = c.analysis.get_covariance()
-    np.savez('EXCALIBUR_COVARIANCE_v1.0.npz',cov=cov,labels=labels)
+    np.savez('DOVEKIE_COV_V1.0.npz',cov=cov,labels=labels)
     fig, ax = plt.subplots(figsize=(14, 12))
 
     plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = True
     plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = False
 
     im = ax.matshow(cov, cmap='cividis')
-    fig.colorbar(im, cmap='cividis')
+    
+    cax = plt.axes((0.9, 0.1, 0.025, 0.89)) #x,y, widht, height
+    
+    cbar = plt.colorbar(im, cax=cax, cmap='cividis', drawedges = False )
+    cbar.formatter.set_powerlimits((0, 0))
+    cbar.ax.tick_params(labelsize=12)
 
     ax.set_xticks(np.arange(len(labels)))
     ax.set_yticks(np.arange(len(labels)))
-    ax.set_xticklabels(labels,fontsize=9)
-    ax.set_yticklabels(labels,fontsize=10)
+    ax.set_xticklabels(labels,fontsize=10, color="dimgray")
+    ax.set_yticklabels(labels,fontsize=10, color="dimgray")
     ax.tick_params(axis="x", bottom=True, top=False, labelbottom=True, labeltop=False)
-    ax.set_title('Cov')
-    plt.setp(ax.get_xticklabels(), rotation=45, ha="right")#rotation_mode="anchor")
+    #ax.set_title('Dovekie Covariance', fontsize=20)
+    plt.setp(ax.get_xticklabels(), rotation=90, ha="right")#rotation_mode="anchor")
     fig.tight_layout()
 
-    plt.savefig('covmat.png')
+    plt.savefig('COVMAT.pdf', bbox_inches="tight")
     print('upload covmat.png')
     return c
 
-def create_corr(c):
+
+def create_corr(c, labels):
     plt.clf()
     _,corr = c.analysis.get_correlations()
 
