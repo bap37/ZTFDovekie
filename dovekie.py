@@ -586,7 +586,7 @@ def plot_forone(result,subscript, outputdir,tableout):
         labels = np.quantile(result.datay, np.arange(0, 1.1, 0.2))
         ax.set_yticks(ticks=labels)
         ax.set_yticklabels(labels=np.around(labels,2))
-        for speen in ['right', 'top', 'left', 'bottom']:
+        for speen in ['right', 'top', 'left', 'bottom']: #hehe speen
             ax.spines[speen].set_visible(False)
 
         ## End plot stuff
@@ -637,6 +637,9 @@ def get_args():
     parser.add_argument("--n_adaptive", help = "Number of steps to adapt MCMC hyperparameters", type=int, default=2000)
     parser.add_argument("--output", help = "Path to write output chains to (.npz format)", type=str, default=None)
 
+    msg = "Default False. Prints a nice bird :)"
+    parser.add_argument("--BIRD", help = msg, action="store_true")
+
     args = parser.parse_args()
     return args
 
@@ -645,6 +648,12 @@ if __name__ == "__main__":
 
     args = get_args()
     REDO, MCMC, DEBUG, FAKES = prep_config(args)
+    if args.BIRD:
+        with open("scripts/birds.txt", "rb") as f:
+            for line in f:
+                print(line)
+        quit()
+
     tableout = open('preprocess_dovekie.dat','w')
     tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
     print('reading in survey data')
@@ -678,7 +687,7 @@ if __name__ == "__main__":
     
     
     full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs)
-    full_likelihood_data(pos,subscript='beforeaper',doplot=True,tableout=tableout)
+    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout)
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
 
