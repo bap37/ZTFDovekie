@@ -2,8 +2,9 @@
 ##Which surveys mcmc.py will investigate
 surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTFS', 'ZTFD'] 
 
+surveys_for_dovekie: ['PS1', 'CFA4P2', 'CFA4P1', 'PS1SN', 'DES']
 
-surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES']
+#surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES']
 
 #Where the chains are saved to
 chainsfile: 'DOVEKIE.V1.npz'
@@ -33,6 +34,8 @@ survs: ['PS1SN',
         'ASASSN1',
         'SWIFT',
         'KAIT',
+        'CFA4P1',
+        'CFA4P2',
 ]
 
 kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
@@ -50,6 +53,8 @@ kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
             'kcor/ASASSN/',
             'kcor/SWIFTNEW/',
             'kcor/KAIT_2018/',
+            'kcor/CFA4_p1/',
+            'kcor/CFA4_p2/',
 ]
 
 kcors: ['PS1_excalinaper_+30A.input',
@@ -67,6 +72,8 @@ kcors: ['PS1_excalinaper_+30A.input',
         'ASASSN_new_excalin.input',
         'SWIFT_UVOT_excalin.input',
         'KAITM_excalin.input',
+        'CFA41_excalin.input',
+        'CFA42_excalin.input',
 ]
 
 
@@ -85,6 +92,8 @@ filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
             'filters/ASASSN/',
             'filters/SWIFTNEW/',
             'filters/KAIT_2018/',
+            'filters/PS1_CFA4/',
+            'filters/PS1_CFA4/'
 ]
 
 
@@ -103,6 +112,8 @@ shiftfiltss: [['g','r','i','z'],
               ['a','b','d','c'],
               ['U','B','V'],
               ['A','B','C','D','I','J','K','L','E','F','G','H','M','N','O','P','a','b','c','d','e','f','g','h'],
+              ['o','p','q','r'],
+              ['s','t','u','v'],
 ]
 
 
@@ -120,6 +131,8 @@ namedfiltss: [['g','r','i','z'],
               ['B','V','r','i'],
               ['U','B','V'],
               ['B','V','R','I','B','V','R','I','B','V','R','I','B','V','R','I','B','V','R','I','B','V','R','I'],
+              ['B','V','r','i'],
+              ['B','V','r','i'],
 ]
 
 
@@ -138,6 +151,8 @@ obsfiltss: [['g','r','i','z'],
             ['a','b','d','c'],
             ['U','B','V'],
             ['A','B','C','D','I','J','K','L','E','F','G','H','M','N','O','P','a','b','c','d','e','f','g','h'],
+            ['B','V','r','i'],
+            ['B','V','r','i'],
 ]
 
 ###############################################
@@ -169,6 +184,8 @@ survmap: {'PS1':'PS1',
           'KAIT4MO':'KAIT4MO',
           'NICKEL1MO':'NICKEL1MO',
           'NICKEL2MO':'NICKEL2MO',
+          'CFA4P1':'CFA4P1',
+          'CFA4P2':'CFA4P2',
 }
 
 survmap4shift: {'PS1':'PS1',
@@ -196,6 +213,8 @@ survmap4shift: {'PS1':'PS1',
                 'KAIT4MO':'KAIT',
                 'NICKEL1MO':'KAIT',
                 'NICKEL2MO':'KAIT',
+                'CFA4P1':'CFA4P1',
+                'CFA4P2':'CFA4P2',
 }
 
 survfiltmap: {'PS1':'PS1',
@@ -223,6 +242,8 @@ survfiltmap: {'PS1':'PS1',
               'KAIT4':'KAIT_2018',
               'NICKEL1':'KAIT_2018',
               'NICKEL2':'KAIT_2018',
+              'CFA4P1':'CFA4P1',
+              'CFA4P2':'CFA4P2',
 }
 
 obssurvmap: {'PS1':'PS1',
@@ -251,6 +272,8 @@ obssurvmap: {'PS1':'PS1',
              'NICKEL1':'NICKEL1',
              'NICKEL2':'NICKEL2',
              'KAIT2':'KAIT2',
+             'CFA4P1':'CFA4P1',
+             'CFA4P2':'CFA4P2',
 } 
 #removed KAIT1 ^
 
@@ -279,6 +302,8 @@ revobssurvmap: {'PS1':'PS1',
                 'KAIT4':'KAIT',
                 'NICKEL1':'KAIT',
                 'NICKEL2':'KAIT',
+                'CFA4P1':'CFA4P1',
+                'CFA4P2':'CFA4P2',
 }
 #formerly a CSPDR3nat
 
@@ -307,6 +332,9 @@ revobssurvmapforsnana: { 'PS1':'PS1',
                          'KAIT4':'KAIT4',
                          'NICKEL1':'NICKEL1',
                          'NICKEL2':'NICKEL2',
+                         'CFA4P1':'CFA4P1',
+                         'CFA4P2':'CFA4P2',
+
 }
 #formerly a CSPDR3nat
 survcolormin: {'DES':.075,
@@ -333,6 +361,8 @@ survcolormin: {'DES':.075,
                'KAIT2MO':0,
                'NICKEL1MO':0,
                'NICKEL2MO':0,
+               'CFA4P2':0,
+               'CFA4P1':0,
 }
 
 survcolormax: {'DES':10.075,
@@ -359,6 +389,8 @@ survcolormax: {'DES':10.075,
                'KAIT2MO':10,
                'NICKEL1MO':10,
                'NICKEL2MO':10,
+               'CFA4P2':10,
+               'CFA4P1':10,
 }
 
 synth_gi_range: {'calspec23':[-9.25,9.5],
@@ -389,6 +421,8 @@ obsfilts: {'PS1':  ['g','r','i','z'],
            'KAIT4': ['B','V','R','I'],
            'NICKEL1':['B','V','R','I'],
            'NICKEL2':['B','V','R','I'],
+           'CFA4P1': ['B','V','r','i'],
+           'CFA4P2': ['B','V','r','i'],
  }
 
 snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
@@ -416,6 +450,8 @@ snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
              'KAIT4': {'E':'B','F':'V','G':'R','H':'I'},
              'NICKEL1':{'I':'B','J':'V','K':'R','L':'I'},
              'NICKEL2':{'M':'B','N':'V','O':'R','P':'I'},
+             'CFA4P1': {'B':'B','V':'V','r':'r','i':'i'},
+             'CFA4P2': {'B':'B','V':'V','r':'r','i':'i'},
  }
 #            
 
@@ -444,7 +480,8 @@ snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
               'KAIT4': {'B':'E','V':'F','R':'G','I':'H'},
               'NICKEL1':{'B':'I','V':'J','R':'K','I':'L'},
               'NICKEL2':{'B':'M','V':'N','R':'O','I':'P'},
-
+              'CFA4P1': {'B':'B','V':'V','r':'r','i':'i'},
+              'CFA4P2': {'B':'B','V':'V','r':'r','i':'i'},
  }
 
 #Will need to fix the ZTFS/ZTFD weights at some point
@@ -474,6 +511,8 @@ relativeweights: {
     'KAIT4':   .25,
     'NICKEL1':   .25,
     'NICKEL2':   .25,
+    'CFA4P1': .5,
+    'CFA4P2': .5,
 }
 
 
@@ -503,6 +542,8 @@ errfloors: {
     'KAIT4':   .01,
     'NICKEL1':   .01,
     'NICKEL2':   .01,
+    'CFA4P1': .01,
+    'CFA4P2': .01,
 }
 
 target_acceptance: 0.9
@@ -529,7 +570,9 @@ filttranss: [['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt
              ['astrodon_B.dat', 'astrodon_V.dat', 'astrodon_r.dat', 'astrodon_i.dat'],
              ['bssl-bx-004.txt', 'bssl-vx-022.txt', 'SDSS.rp.txt', 'SDSS.ip.txt'],
              ['U_UVOT_rev.txt', 'B_UVOT_rev.txt', 'V_UVOT_rev.txt', 'U_UVOT_rev.txt', 'U_UVOT_rev.txt', 'U_UVOT_rev.txt'],
-             ['B_kait3.txt', 'V_kait3.txt', 'R_kait3.txt', 'I_kait3.txt', 'B_nickel1.txt', 'V_nickel1.txt', 'R_nickel1.txt', 'I_nickel1.txt', 'B_kait4.txt', 'V_kait4.txt', 'R_kait4.txt', 'I_kait4.txt', 'B_nickel2.txt', 'V_nickel2.txt', 'R_nickel2.txt', 'I_nickel2.txt', 'B_kait1_shifted.txt', 'V_kait1_shifted.txt', 'R_kait1_shifted.txt', 'I_kait1_shifted.txt', 'B_kait2_shifted.txt', 'V_kait2_shifted.txt', 'R_kait2_shifted.txt', 'I_kait2_shifted.txt']
+             ['B_kait3.txt', 'V_kait3.txt', 'R_kait3.txt', 'I_kait3.txt', 'B_nickel1.txt', 'V_nickel1.txt', 'R_nickel1.txt', 'I_nickel1.txt', 'B_kait4.txt', 'V_kait4.txt', 'R_kait4.txt', 'I_kait4.txt', 'B_nickel2.txt', 'V_nickel2.txt', 'R_nickel2.txt', 'I_nickel2.txt', 'B_kait1_shifted.txt', 'V_kait1_shifted.txt', 'R_kait1_shifted.txt', 'I_kait1_shifted.txt', 'B_kait2_shifted.txt', 'V_kait2_shifted.txt', 'R_kait2_shifted.txt', 'I_kait2_shifted.txt'],
+             ['cfa4_B_p1_modtran.dat', 'cfa4_V_p1_modtran.dat', 'cfa4_r_p1_modtran.dat', 'cfa4_i_p1_modtran.dat'],
+             ['cfa4_B_p2_modtran.dat', 'cfa4_V_p2_modtran.dat', 'cfa4_r_p2_modtran.dat', 'cfa4_i_p2_modtran.dat']
 
 ]
 
