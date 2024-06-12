@@ -11,9 +11,14 @@ import jax
 from jax import numpy as jnp, scipy as jsci
 from iminuit import Minuit
 from functools import reduce, partial
+from scripts.helpers import load_config
+
+
+jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
+config = load_config(jsonload)
+
 
 def loadsynthphot(fname):
-    
     result=np.genfromtxt(fname,names=True,dtype=None,encoding='utf-8',delimiter=' ')
     for key,type in result.dtype.descr:
         if type=='<f8':
@@ -69,27 +74,29 @@ gradoutliers= jax.jit(jax.grad(linearfitwithoutliers,argnums=2),static_argnums=1
 linearfitwithoutliers=jax.jit(linearfitwithoutliers,static_argnums=1)
 
 
-def decomposedata(data,colorinds,outlierwidth=None,maxiter=100000):
+def decomposedata(data,colorinds,outlierwidth=None,maxiter=100000,init=None):
     #Decompose each star into a sum of four components; a mean/intrinsic color, a color described by fixed linear relations in each band, a magnitude, and noise
     assert(np.isnan(data).sum()==0)
     nfilts,nstars=data.shape
     magind,colorind=colorinds
-    #Initialize color and magnitude for each star based on the observed value
-    maginit=data[magind]  #+ np.random.normal(scale =1e-3, size=data.shape[1])
-    colorinit=(data[magind]-data[colorind]) #+ np.random.normal(scale =1e-3, size=data.shape[1])
-    #Initialize slopes based on a SVD
-    slopesinit=np.linalg.svd(data)[0][:,1]
-    slopesinit=slopesinit-slopesinit[magind]
-    slopesinit/=-slopesinit[colorind]
-    #Guess the noise
-    noiseinit= np.tile(np.log(0.02),nfilts)
-    meancolorinit=np.mean( (data -data[magind,:][np.newaxis,:])  ,axis=1)
-    fout=-2
-    if outlierwidth is None: 
-        fout=-100
-
-    parsinit=np.concatenate( [maginit,colorinit,slopesinit,noiseinit,meancolorinit,[fout] 
-    ])
+    if init is None:
+        #Initialize color and magnitude for each star based on the observed value
+        maginit=data[magind]  #+ np.random.normal(scale =1e-3, size=data.shape[1])
+        colorinit=(data[magind]-data[colorind]) #+ np.random.normal(scale =1e-3, size=data.shape[1])
+        #Initialize slopes based on a SVD
+        slopesinit=np.linalg.svd(data)[0][:,1]
+        slopesinit=slopesinit-slopesinit[magind]
+        slopesinit/=-slopesinit[colorind]
+        #Guess the noise
+        noiseinit= np.tile(np.log(0.02),nfilts)
+        meancolorinit=np.mean( (data -data[magind,:][np.newaxis,:])  ,axis=1)
+        fout=-3
+        if outlierwidth is None: 
+            fout=-100
+    
+        parsinit=np.concatenate( [maginit,colorinit,slopesinit,noiseinit,meancolorinit,[fout] 
+        ])
+    else: parsinit=init
     #Minuits function call limit wasn't working, so I wrote my own
     class counter:
         def __init__(self):
@@ -130,7 +137,6 @@ def decomposedata(data,colorinds,outlierwidth=None,maxiter=100000):
         vals=np.array(result.values)
     except RuntimeError as e:
         vals=tracker.vals
-    
     if outlierwidth is None:
         pass
     else: 
@@ -165,11 +171,12 @@ def decomposedata(data,colorinds,outlierwidth=None,maxiter=100000):
 
 class survey:
     
-    def __init__(self, magdist, colordist, magcolorinds, filtnames,obs, survsynth,ps1synth,survoffsets,ps1offsets,outlierwidth,isps1survey=False):
+    def __init__(self,survname, magdist, colordist, magcolorinds, filtnames,obs, survsynth,ps1synth,survoffsets,ps1offsets,outlierwidth,isps1survey=False):
         """
         Initialize an object to produce simulated data from a given survey.
     
         Parameters:
+            survname (str): survey name
             magdist (array_like): Magnitude distribution.
             colordist (array_like): Color distribution.
             magcolorinds (tuple): Indices for magnitude and color.
@@ -181,6 +188,7 @@ class survey:
             ps1offsets (array_like): Offsets for PS1.
             isps1survey (bool, optional): Flag indicating if it's a PS1 survey. Defaults to False.
         """
+        self.name=survname
         self.magind,self.colorind=magcolorinds
         assert(self.magind!=self.colorind)
         self.nobs=obs.size
@@ -204,7 +212,7 @@ class survey:
             mags=np.array([survsynth[x] for x in filtnames]+ [ps1synth['PS1'+x] for x in 'griz'])
         
         #Use factor analysis to reduce the dimensionality of the synthetic photometry
-        _,_,self.slopes,_,self.intrinsic,_=decomposedata(mags,(0,1))
+        _,_,self.slopes,_,self.intrinsic,_=decomposedata(mags,magcolorinds)
         
         self.offsets=np.concatenate([survoffsets,ps1offsets] )
         
@@ -221,29 +229,36 @@ class survey:
         """
 
         if size==1:
-            #Draw magnitude and color
-            mag=self.magdist()
-            color=self.colordist()
-            #Generate  magnitudes from factor analysis
-            mags= self.slopes*color + self.intrinsic + mag
-            if self.isps1survey:
-                mags=np.concatenate((mags,mags))
-            #Add noise
-            if addvariance: 
-                if np.random.random()< self.fout:
-                    mags+=np.random.normal(0,self.outlierwidth,size=self.variance.size)
-                else:
-                    mags+=(np.random.normal(0,np.sqrt(self.variance)))
-            #Add zero-point offsets
-            mags+=self.offsets
+            def genonesetmag():
+                #Draw magnitude and color
+                mag=self.magdist()
+                color=self.colordist()
+                #Generate  magnitudes from factor analysis
+                mags= self.slopes*color + self.intrinsic + mag
+                if self.isps1survey:
+                    mags=np.concatenate((mags,mags))
+                #Add noise
+                if addvariance: 
+                    if np.random.random()< self.fout:
+                        mags+=np.random.normal(0,self.outlierwidth,size=self.variance.size)
+                    else:
+                        mags+=(np.random.normal(0,np.sqrt(self.variance)))
+                #Add zero-point offsets
+                mags+=self.offsets
+                return tuple(mags)
+            mags=genonesetmag()
+            nfilt=len(self.filtnames)
             
-            return tuple(mags)
+            minmag= np.array([14.3,14.4,14.6,14.1])
+            
+            while not ((.25<( mags[nfilt]-mags[nfilt+2]) < 1.) and (np.array(mags[nfilt:])> minmag).all() and (config['survcolormin'][self.name] <( mags[nfilt]-mags[nfilt+2]) < config['survcolormax'][self.name])):
+                mags=genonesetmag()
+            return mags
         else:
             return np.array([(self.genstar(1,addvariance)) for i in range(size)], 
                                          dtype=list(zip(   list(self.filtnames)+['PS1'+x for x in 'griz'],
                                          [float]*(len(self.filtnames)+4))))
-            
-            
+
     def showcolordists(self,obs):
         simdata=self.genstar(obs.size)
         
@@ -311,27 +326,33 @@ def generatesurvey(name,survoffsets):
 
     if name=='SNLS':
         synth,obs=getdata(name)
-        surv=survey(lambda obs=obs: stats.gaussian_kde(obs['SNLSg']).resample(1)[0][0],lambda : np.random.uniform(0,.5)+.2,
+        surv=survey(name,lambda obs=obs: stats.gaussian_kde(obs['SNLSg']).resample(1)[0][0],stats.exponnorm(.1,loc=.2,scale=.3).rvs,
               (0,1),['SNLS'+x for x in 'griz'],obs, synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'], .3 )
         return surv
     
     elif name=='SDSS':
         synth,obs=getdata(name)
-        surv=survey(lambda obs=obs: stats.gaussian_kde(obs['SDSSg']).resample(1)[0][0],  stats.exponnorm(1.8564479517780803, 0.4772301484843199, 0.07070238022618985).rvs ,
+        surv=survey(name,lambda obs=obs: stats.gaussian_kde(obs['SDSSg']).resample(1)[0][0],  stats.exponnorm(.1,loc=.2,scale=.3).rvs ,
               (0,1),[name+x for x in 'griz'],obs, synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'] , .2)
     
     elif name=='CFA3K':
         filts=[name+x for x in 'UBVri']
         synth,obs=getdata(name)
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA3KU']-obs['CFA3KB'] > -.5) & (obs['CFA3KU']-obs['CFA3KB'] < 20)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA3KB']).resample(1)[0][0],  stats.uniform(.25,.3).rvs ,
-              (1,2),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'] ,.4 )
-    
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA3KB']).resample(1)[0][0],  stats.exponnorm(.001,loc=.2,scale=.3).rvs ,
+              (1,2),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'] ,.15 )
+        ####HACK####
+        #Fitted values were not sensible, replacing manually
+        surv.variance=np.array([4.9850158e-04, 1.1771034e-03, 1.9280605e-04, 5.5639852e-05,
+                      2.2119776e-04, 5.4853701e-04, 5.2283016e-05, 1.6486361e-04,
+                      4.0391181e-04])
+        surv.fout=.05
+
     elif name=='CFA3S':
         filts=[name+x for x in 'BVRI']
         synth,obs=getdata(name)
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA3SR']-obs['CFA3SI'] > -.2)& (obs['CFA3SB']-obs['CFA3SV'] > .3)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA3SB']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,   
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA3SB']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
               (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
     
     elif name=='CSP':
@@ -339,22 +360,22 @@ def generatesurvey(name,survoffsets):
         synth=np.array(list(synth), dtype=[(x.replace('CSP_TAMU',name),synth.dtype.fields[x][0]) for x in synth.dtype.fields])
         filts=[name+x for x in 'BVgri']
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['CFA3SR']-obs['CFA3SI'] > -.2)& (obs['CFA3SB']-obs['CFA3SV'] > .3)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['CSPB']).resample(1)[0][0],  stats.uniform(.45,.4).rvs ,   
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['CSPB']).resample(1)[0][0],  stats.exponnorm(.1,loc=.2,scale=.3).rvs ,   
               (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'] ,.2)
     
     elif name=='DES':
         filts=[name+x for x in 'griz']
         synth,obs=getdata(name)
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['DESg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.uniform(.3,.3).rvs ,    
-              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.2 )
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.expon(loc=.2,scale=.15).rvs ,    
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.1 )
     
     elif name=='Foundation':
         filts=[name+x for x in 'griz']
         synth,obs=getdata(name)
         nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['Foundationg']).resample(1)[0][0],  stats.uniform(.25,.4).rvs ,      
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['Foundationg']).resample(1)[0][0],  stats.exponnorm(1e-2,loc=.2,scale=.3).rvs,      
               (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],survoffsets['PS1'],.2 ,True)
     
     elif name=='PS1SN':
@@ -363,7 +384,7 @@ def generatesurvey(name,survoffsets):
         synth=np.array(list(synth), dtype=[(x.replace('Foundation',name),synth.dtype.fields[x][0]) for x in synth.dtype.fields])
         nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['PS1SNg']).resample(1)[0][0],  stats.uniform(.25,.6).rvs ,  
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['PS1SNg']).resample(1)[0][0],  stats.exponnorm(1e-2,loc=.2,scale=.3).rvs ,  
               (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],survoffsets['PS1'] ,.2,True)
     
     
@@ -372,7 +393,7 @@ def generatesurvey(name,survoffsets):
         synth,obs=getdata(name)
         nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFDg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFDg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
               (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],survoffsets['PS1'],.2 )
         
     elif name=='ZTFS':
@@ -380,7 +401,7 @@ def generatesurvey(name,survoffsets):
         synth,obs=getdata(name)
         nans=(~reduce(lambda x,y: x|y,[np.isnan(synth[x]) for x in filts],False))
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-        surv=survey(lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFSg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFSg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
               (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],survoffsets['PS1'] ,.2)
               
     return surv
@@ -397,7 +418,6 @@ def getsurveygenerators(survoffsets):
 def main():
     survoffsets=generatesurveyoffsets()
     surveys=getsurveygenerators(survoffsets)
-    
 ###########################################################################
     
     
