@@ -185,7 +185,7 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         modelcolor=modelcolor[synthcut]
         modelres=modelres[synthcut]
         synthx,synthy,sigmamodel,yres,popt,pcov = itersigmacut_linefit(modelcolor,modelres,niter=1,nsigma=3)
-        popt=jnp.array([popt[0],popt[1] + off2-off1 - popt[0]* (offb-offa)])
+        popt=jnp.array([popt[0],popt[1] -( off2-off1 - popt[0]* (offb-offa))])
         synthxs.append(synthx); synthys.append(synthy)
     
         modelress.append(modelres +off2-off1)
