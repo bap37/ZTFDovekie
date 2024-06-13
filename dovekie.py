@@ -58,11 +58,9 @@ def get_all_shifts(surveys): #acquires all the surveys and collates them.
         for f in files:
             try:
                 tdf = pd.read_csv(f,sep=" ") #formerly delim_whitespace      
-                for x in list(tdf): #Converts the mags into the weird negative space that the code expects.
-                    if "-" in x: tdf[x] = -1*tdf[x] ;
                 if 'PS1_' in f:
-                    tdf = tdf[-1*tdf['PS1-g']+tdf['PS1-i']>.25]
-                    tdf = tdf[-1*tdf['PS1-g']+tdf['PS1-i']<1.6]
+                    tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])>.25]
+                    tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])<1.6]
                 dfl.append(tdf)
             except:
                 print('WARNING: Could not read in ',f) 
@@ -153,9 +151,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     if DEBUG: print(obssurvmap.keys(),surv1,yfilt1, surv2, yfilt2)
     yr=obsdf[obslongfilt1]-obsdf[obslongfilt2] #observed filter1 - observed filter 2 
     datacut = np.abs(yr)<1 #only uses things lower than 1
-    datacolor = (obsdf[obslongfilta] -obsdf[obslongfilta+"_AV"])-(obsdf[obslongfiltb]-obsdf[obslongfiltb+"_AV"])
-    datares = obsdf[obslongfilt1]-obsdf[obslongfilt1+'_AV']-(obsdf[obslongfilt2]-obsdf[obslongfilt2+'_AV'])
-#     import pdb;pdb.set_trace()
+    datacolor = (obsdf[obslongfilta]-obsdf[obslongfilta+"_AV"])-(obsdf[obslongfiltb] -obsdf[obslongfiltb+"_AV"])
+    datares = (obsdf[obslongfilt2]-obsdf[obslongfilt2+'_AV'])-(obsdf[obslongfilt1]-obsdf[obslongfilt1+'_AV'])
     datacolor=datacolor[datacut]
     datares=datares[datacut]
     datax,datay,sigmadata,yresd,data_popt,data_pcov = itersigmacut_linefit(datacolor,
@@ -175,17 +172,15 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         modelfilta = df2[longfilta] ; modelfiltb = df2[longfiltb]
         modelfilt1 = df2[longfilt1] ; modelfilt2 = df2[longfilt2]
         
-        modelcolor = -1*modelfilta+\
-                    modelfiltb
+        modelcolor = modelfilta - modelfiltb
         modelres = -1*modelfilt1+\
                     modelfilt2
-        
         synthcut = (modelcolor > synth_gi_range[(catname) ][0]) & (modelcolor < synth_gi_range[catname][1]) & synthcut
 
         modelcolor=modelcolor[synthcut]
         modelres=modelres[synthcut]
         synthx,synthy,sigmamodel,yres,popt,pcov = itersigmacut_linefit(modelcolor,modelres,niter=1,nsigma=3)
-        popt=jnp.array([popt[0],popt[1] -( off2-off1 - popt[0]* (offb-offa))])
+        popt=jnp.array([popt[0],popt[1] +( off2-off1 - popt[0]* (offb-offa))])
         synthxs.append(synthx); synthys.append(synthy)
     
         modelress.append(modelres +off2-off1)
@@ -558,7 +553,8 @@ def plot_forone(result,subscript, outputdir,tableout):
     fig, ax = plt.subplots(figsize=(6,6))
     ax.scatter(result.datax,result.datay,
             color='k',alpha=.3, edgecolor=None, label='Observed Mags Chisq %.2f'%(result.chi2),s=5,zorder=5)
-    data_slope=result.data_popt[0] ; data_slope_err = (result.data_pcov[0,0]**2+result.sigmadata**2)**.5
+    data_slope=result.data_popt[0] 
+    data_slope_err = np.sqrt(result.data_pcov[0,0] )
     
     ax.plot(result.datax, line(np.array(result.datax),result.data_popt[0],result.data_popt[1]), c="k", lw=4, zorder=20)
     #here starts the two synthetics
@@ -568,7 +564,7 @@ def plot_forone(result,subscript, outputdir,tableout):
         offmean = np.mean(line(result.datax,popt[0],popt[1]) - result.datay)
         offmed = np.median(line(result.datax,popt[0],popt[1]) - result.datay)
         synth_slope = popt[0]
-        synth_slope_err = pcov[0,0]
+        synth_slope_err = np.sqrt(pcov[0,0])
         sigma = (data_slope-synth_slope)/np.sqrt(data_slope_err**2+synth_slope_err**2)
 
         ## Start plots here
