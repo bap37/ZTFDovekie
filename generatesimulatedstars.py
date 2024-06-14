@@ -321,7 +321,7 @@ def generatesurveyoffsets():
 
 def generatesurvey(name,survoffsets):
     ps1synth=loadsynthphot('output_synthetic_magsaper/synth_PS1_shift_0.000.txt')
-    cut=(ps1synth['standard_catagory']=='calspec23')& ( ps1synth['PS1g']-ps1synth['PS1r'] > -1 ) &(ps1synth['PS1g']-ps1synth['PS1r'] <.8)
+    cut=(ps1synth['standard_catagory']=='calspec23')& ( ps1synth['PS1g']-ps1synth['PS1r'] > 0) &(ps1synth['PS1g']-ps1synth['PS1r'] <.8)
     print(f'Preparing {name}')
 
     if name=='SNLS':
@@ -367,7 +367,7 @@ def generatesurvey(name,survoffsets):
         filts=[name+x for x in 'griz']
         synth,obs=getdata(name)
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['DESg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.expon(loc=.2,scale=.15).rvs ,    
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.expon(loc=.05,scale=.15).rvs ,    
               (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.1 )
     
     elif name=='Foundation':
@@ -410,7 +410,7 @@ def generatesurvey(name,survoffsets):
 def getsurveygenerators(survoffsets):
 
     names='SNLS','SDSS','CFA3K','CFA3S','CSP','DES','Foundation','PS1SN','ZTFD','ZTFS'
-    names='ZTFD','ZTFS'
+    #names='ZTFD','ZTFS'
     for name in names:
         yield name,generatesurvey(name,survoffsets)
 
@@ -420,8 +420,8 @@ def main():
     surveys=getsurveygenerators(survoffsets)
 ###########################################################################
     
-    
-    for name,surv in surveys:
+    surveys={name:surv for name,surv in surveys}
+    for name,surv in surveys.items():
         simdata=surv.genstar(surv.nobs)
         with open(f'output_simulated_apermags+AV/{name}_observed.csv', 'w') as csvfile:
             out = csv.writer(csvfile, delimiter=',')
