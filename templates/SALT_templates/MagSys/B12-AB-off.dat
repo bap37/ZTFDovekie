@@ -1,0 +1,33 @@
+# M. Betoule 2012-12-18 (published version)
+# this is the AB spectrum (in ASCII for compatibility with the rest of the code)
+# Edited 21/05/19 G. Taylor 
+# 	- applied ZP offsets to match Supercal offsets applied in S18: https://arxiv.org/pdf/1710.00845.pdf
+@SPECTRUM MagSys/ab-spec.dat
+
+# SDSS AB offsets ( mag_SDSS - mag_AB)
+# original (from JLA release) + supercal offset.  Final values are below (uncommented).
+#SDSS u   0.06791   Unchanged
+#SDSS g  -0.02028 - 0.003
+#SDSS r  -0.00493 + 0.004
+#SDSS i  -0.01780 + 0.001
+#SDSS z  -0.01015 - 0.008
+
+SDSS u 0.06791
+SDSS g $@-0.02028-0.005+EX_SDSS_g$@
+SDSS r $@-0.00493+0.006+EX_SDSS_r$@
+SDSS i $@-0.01780+0.007+EX_SDSS_i$@
+SDSS z $@-0.01015+0.007+EX_SDSS_z$@
+
+# SNLS AB offsets (null by construction because B12 calibration is applied to SNLS lc)
+# original (from JLA release) + supercal offset.  Final values are below (uncommented).
+#MEGACAMPSF g 0 + 0.007
+#MEGACAMPSF r 0 - 0.001
+#MEGACAMPSF i 0 - 0.006
+#MEGACAMPSF y 0 Unchanged
+#MEGACAMPSF z 0 + 0.002
+
+MEGACAMPSF g $@0-0.005+EX_SNLS_g$@
+MEGACAMPSF r $@0+0.006+EX_SNLS_r$@
+MEGACAMPSF i $@0+0.006+EX_SNLS_i$@
+MEGACAMPSF y 0.000
+MEGACAMPSF z $@0+0.007+EX_SNLS_z$@

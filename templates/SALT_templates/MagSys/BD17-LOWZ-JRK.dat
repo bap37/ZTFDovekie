@@ -1,0 +1,19 @@
+# JLA1 analysis  magnitude system based on CALSPEC stis spectra 003
+# 2011 release of CALSPEC 
+# Edited 21/05/19 G. Taylor 
+# 	- applied ZP offsets to match Supercal offsets applied in S18: https://arxiv.org/pdf/1710.00845.pdf
+@SPECTRUM MagSys/bd_17d4708_stisnic_003.ascii
+
+# Magnitudes in the Landolt system : Landolt & Uomoto (2007)
+# original (from JLA release) + supercal offset.  Final values are below (uncommented).
+#STANDARD U 9.724 - Unchanged
+#STANDARD B 9.907 + 0.033
+#STANDARD V 9.464 + 0.004
+#STANDARD R 9.166 + 0.000
+#STANDARD I 8.846 - 0.007
+
+STANDARD U 9.724
+STANDARD B 9.907
+STANDARD V 9.464
+STANDARD R 9.166
+STANDARD I 8.846
