@@ -1,0 +1,19 @@
+@SALT2 salt2-2021
+@STANDARD Instruments/SNLS3-Landolt-model
+@ACSWF Instruments/ACSWF
+@SDSS Instruments/SDSS
+@NICMOS2 Instruments/NICMOS2
+@MEGACAMPSF Instruments/Megacam-PSF
+@SWOPE2 Instruments/Swope2
+@KEPLERCAM Instruments/Keplercam
+@4SHOOTER2 Instruments/4Shooter2
+@DECAM Instruments/DECam
+@VEGA MagSys/BD17-jla1.dat
+@VEGAHST MagSys/Vega0.dat
+@AB_B12 MagSys/B12-AB-off.dat
+@VEGA2 MagSys/BD17-jla1.dat
+@CFA1_S18 MagSys/BD17-jla1_CfA1_s18.dat
+@CFA2_S18 MagSys/BD17-jla1_CfA2_s18.dat
+@LOWZ_JRK MagSys/BD17-LOWZ-JRK.dat
+
+@DES-AB MagSys/DES-AB-off.dat

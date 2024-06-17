@@ -1,0 +1,7 @@
+# Created 03/06/19 G. Taylor (an approximation, for now)
+@SPECTRUM MagSys/ab-spec.dat
+
+DECAM g 0.0
+DECAM r 0.0
+DECAM i 0.0
+DECAM z 0.0

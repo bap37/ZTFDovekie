@@ -1,0 +1,77 @@
+# JLA1 analysis  magnitude system based on CALSPEC stis spectra 003
+# 2011 release of CALSPEC 
+# Edited 21/05/19 G. Taylor 
+# 	- applied ZP offsets to match Supercal offsets applied in S18: https://arxiv.org/pdf/1710.00845.pdf
+@SPECTRUM MagSys/bd_17d4708_stisnic_003.ascii
+
+# Magnitudes in the Landolt system : Landolt & Uomoto (2007)
+STANDARD U 9.724
+STANDARD B $@9.907+EX_LANDOLT_B$@
+STANDARD V $@9.464+EX_LANDOLT_V$@
+STANDARD R $@9.166+EX_LANDOLT_R$@
+STANDARD I $@8.846+EX_LANDOLT_I$@
+
+# Magnitudes in the Keplercam natural system: from linear transformations table 2 of Hicken et al. 2009
+# WARNING : UBV from LANDOLT, ri from USNO
+# original (from JLA release) + supercal offset.  Final values are below (uncommented).
+# V = 9.464 +0.0185*(9.907-9.464) = 9.4722
+# B = 9.4722+0.9212*(9.907-9.464) = 9.8803
+# U = 9.8803+1.0279*(9.724-9.907) = 9.6922
+# r = 9.4722+1.0508*(9.35 -9.464) = 9.3524 
+# ( r = V(KEPLERCAM)+1.0508*(r(USNO)-V(LANDOLT)))
+# i = 9.4722+1.0185*(9.25 -9.464) = 9.2542
+#KEPLERCAM Us 9.724 No change
+#KEPLERCAM U 9.6922 No change
+#KEPLERCAM B 9.8803 - 0.031
+#KEPLERCAM V 9.4722 - 0.006
+#KEPLERCAM r 9.3524 + 0.006
+#KEPLERCAM i 9.2542 - 0.003
+
+KEPLERCAM Us 9.724 
+KEPLERCAM U 9.6922
+KEPLERCAM B $@9.8803+EX_CFA3K_B$@
+KEPLERCAM V $@9.4722+EX_CFA3K_V$@
+KEPLERCAM r $@9.3524+EX_CFA3K_r$@
+KEPLERCAM i $@9.2542+EX_CFA3K_i$@
+
+# Magnitudes in the 4Shooter2 natural system: from linear transformations table 2 of Hicken et al 2009
+# WARNING : UBVRI from LANDOLT
+# original (from JLA release) + supercal offset.  Final values are below (uncommented).
+# V = 9.464 +0.0336*(9.907-9.464) = 9.4789
+# B = 9.4789+0.8928*(9.907-9.464) = 9.8744
+# U = 9.8744+0.9912*(9.724-9.907) = 9.6930
+# R = 9.4789+1.0855*(9.166-9.464) = 9.1554
+# I = 9.4789+1.0166*(8.846-9.464) = 8.8506
+#4SHOOTER2 Us 9.724 unchanged
+#4SHOOTER2 U 9.6930 unchanged
+#4SHOOTER2 B 9.8744 - 0.034
+#4SHOOTER2 V 9.4789 - 0.009
+#4SHOOTER2 R 9.1554 - 0.020
+#4SHOOTER2 I 8.8506 - 0.014
+
+4SHOOTER2 Us 9.724 # U standard (normalement)
+4SHOOTER2 U 9.6930
+4SHOOTER2 B $@9.8744+EX_CFA3S_B$@
+4SHOOTER2 V $@9.4789+EX_CFA3S_V$@
+4SHOOTER2 R $@9.1554+EX_CFA3S_R$@
+4SHOOTER2 I $@8.8506+EX_CFA3S_I$@
+
+# Magnitude in the Swope telescope system of CSP according to Stritzinger et al. (2011), Table 6 (color terms from the first column)
+# original (from JLA release) + supercal offset.  Final values are below (uncommented).
+#SWOPE2 u   10.514   Unchanged
+#SWOPE2 g   9.64406  + 0.009
+#SWOPE2 r   9.3516   + 0.001
+#SWOPE2 i   9.25     - 0.016
+#SWOPE2 B   9.876433 - 0.008
+#SWOPE2 V   9.476626 - 0.002
+#SWOPE2 V1  9.471276 - 0.002
+#SWOPE2 V2  9.477482 - 0.002
+
+SWOPE2 u 10.514
+SWOPE2 g $@9.64406+EX_CSPDR3_g$@
+SWOPE2 r $@9.3516+EX_CSPDR3_r$@
+SWOPE2 i $@9.25+EX_CSPDR3_i$@
+SWOPE2 B $@9.876433+EX_CSPDR3_B$@
+SWOPE2 V $@9.476626+EX_CSPDR3_n$@
+SWOPE2 V1 $@9.471276+EX_CSPDR3_m$@
+SWOPE2 V2 $@9.477482+EX_CSPDR3_o$@

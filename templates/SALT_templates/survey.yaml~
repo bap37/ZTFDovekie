@@ -1,0 +1,113 @@
+# map surveys to MagSys and Instrument so that submit_batch
+# can translate and implement user-requests for systematic variations.
+# These maps are used ONLY by SNANA's submit_batch_jobs, and not
+# used by snpca.
+# Note that bands are case-sensitive.
+
+Calan/Tololo:
+    MagSys: VEGA2
+    MagSys_filename: BD17-jla1.dat
+    Instrument: [ STANDARD ]
+    Instrument_subdir: [ SNLS3-Landolt-model ]
+    Bands: [ B, V, R, I ]
+    SNANA_INSTR: [ CALAN_TOLOLO ]
+    SNANA_BANDS: [ B, V, R, I ]
+
+CfA1:
+    MagSys: CfA1_S18
+    MagSys_filename: BD17-jla1_CfA1_s18.dat
+    Instrument: [ STANDARD ]
+    Instrument_subdir: [SNLS3-Landolt-model]
+    Bands: [ U, B, V, R, I ]
+    SNANA_INSTR: [ CFA1 ]
+    SNANA_BANDS: [ B, C, D, E, F ]
+
+CfA2:
+    MagSys: CfA2_S18
+    MagSys_filename: BD17-jla1_CfA2_s18.dat
+    Instrument: [ STANDARD ]
+    Instrument_subdir: [SNLS3-Landolt-model]
+    Bands: [U,B,V,R,I]
+    SNANA_INSTR: [ CFA2 ]
+    SNANA_BANDS: [ G, H, I, J, K ]
+
+CfA3_STANDARD:
+    MagSys: VEGA2
+    MagSys_filename: BD17-jla1.dat
+    Instrument: [ STANDARD ]
+    Instrument_subdir: [ SNLS3-Landolt-model ]
+    Bands: [ U, B, V, R, I ]
+    SNANA_INSTR:  [ CFA3 ]
+    SNANA_BANDS:  [ U, B, V, R, I ]
+
+CfA3_KEPLERCAM:
+    MagSys: VEGA2
+    MagSys_filename: BD17-jla1.dat
+    Instrument: [ KEPLERCAM ]
+    Instrument_subdir: [ Keplercam ]
+    Bands: [ Us, B, V, r, i ]
+    SNANA_INSTR:  [ CFA3K ]
+    SNANA_BANDS:  [ f, g, h, i, j ]
+
+CfA3_4SHOOTER2:
+    MagSys: VEGA2
+    MagSys_filename: BD17-jla1.dat
+    Instrument: [ 4SHOOTER2 ]
+    Instrument_subdir: [ 4Shooter2 ]
+    Bands: [ Us, B, V, R, I ]
+    SNANA_INSTR:  [ CFA3S ]
+    SNANA_BANDS:  [ a, b, c, d, e ]
+
+SNLS:
+    MagSys: AB_B12
+    MagSys_filename: B12-AB-off.dat
+    Instrument: [ MEGACAMPSF ]
+    Instrument_subdir: [ Megacam-PSF ]
+    Bands: [ g, r, i, z ]
+    SNANA_INSTR: [ SNLS ]
+    SNANA_BANDS: [ g, r, i, z ]
+
+SDSS:
+    MagSys: AB_B12
+    MagSys_filename: B12-AB-off.dat
+    Instrument: [ SDSS ]
+    Instrument_subdir: [SDSS]
+    Bands: [ u, g, r, i, z ]
+    SNANA_INSTR: [ SDSS ]
+    SNANA_BANDS: [ u, g, r, i, z ]
+
+CSP:
+    MagSys: VEGA2
+    MagSys_filename: BD17-jla1.dat
+    Instrument: [ SWOPE2 ]
+    Instrument_subdir: [Swope2]
+    Bands: [u,B,V,g,r,i]
+    SNANA_INSTR: [ CSP ]
+    SNANA_BANDS: [ u, B, Vomn, g, r, i]
+
+Other:
+    MagSys: VEGA2
+    MagSys_filename: BD17-jla1.dat
+    Instrument: [ STANDARD ]
+    Instrument_subdir: [ SNLS3-Landolt-model ]
+    Bands: [U,B,V,R,I]
+    SNANA_INSTR: [ OTHER ]
+    SNANA_BANDS: [ U, B, V, R, I ]
+
+JRK:
+    MagSys: LOWZ_JRK
+    MagSys_filename: BD17-LOWZ-JRK.dat
+    Instrument: [ STANDARD ]
+    Instrument_subdir: [SNLS3-Landolt-model]
+    Bands: [ U, B, V, R, I ]
+    SNANA_INSTR: [ JRK ]
+    SNANA_BANDS: [ U, B, V, R, I]
+
+LOWZ:
+    MagSys: LOWZ_JRK
+    MagSys_filename: BD17-LOWZ-JRK.dat
+    Instrument: [ STANDARD ]
+    Instrument_subdir: [SNLS3-Landolt-model]
+    Bands: [ U, B, V, R, I ]
+    SNANA_INSTR: [ LOWZ ]
+    SNANA_BANDS: [ U, B, V, R, I ]

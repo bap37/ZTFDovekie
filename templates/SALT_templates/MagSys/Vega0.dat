@@ -1,0 +1,18 @@
+# from ftp://ftp.stsci.edu/cdbs/current_calspec/alpha_lyr_stis_004.ascii
+# download date : 2009-04-21
+@SPECTRUM MagSys/alpha_lyr_stis_005.ascii
+#
+# All Magnitudes = 0 for Vega
+ACSWF F606W 0.
+ACSWF F625W 0.
+ACSWF F775W 0.  
+ACSWF F814W 0.  
+ACSWF F850LP 0. 
+NICMOS2 F110W $@0.0-0.068$@
+NICMOS2 F160W $@0.0-0.023$@
+SWIFT uvw1 0.
+SWIFT uvm2 0.
+SWIFT uvw2 0.
+SWIFT u 0.
+SWIFT b $@0.0+EX_SWIFT_B$@
+SWIFT v $@0.0+EX_SWIFT_V$@
