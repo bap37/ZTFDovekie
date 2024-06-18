@@ -1,16 +1,16 @@
 import pandas as pd
-import os
+import os, sys
 from glob import glob
 import numpy as np
 import argparse
+sys.path.insert(1, 'scripts/')
+from helpers import *
+import shutil
 
 #/project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/PANTHEON+/kcor/fragilistic_cov_template_filler
 #OG comes from around here
 
-global LANDOLT_OFFSIG
-LANDOLT_OFFSIG = 0.02
-NREAL = 9
-
+NREAL = 10
 jsonload = 'DOVEKIE_DEFS.yml' 
 config = load_config(jsonload)
 
@@ -36,8 +36,8 @@ def get_args():
    return args
 
 def prep_config(args):
-   filename = args.OFFSETS
-   covfile = args.COV
+   OFFSETS = args.OFFSETS
+   COV = args.COV
    FULL = args.FULL
    OUTDIR = args.OUTDIR
   
@@ -50,27 +50,58 @@ def prep_config(args):
 #    os.system('cd %s; kcor.exe %s'%(version,f.split('/')[-1]))
 #################
 
-def DOSALT(OUTDIR, OFF):
-    os.system(f'cp -r templates/SALT_templates {OUTDIR}/SALT_{OUTDIR}')
-    for i,row in OFF.iterrows(): os.system("sed -i 's/+%s/%s/g' %s/%s/MagSys/*.dat"%('EX_'+row['SURVEYFILT'],row['OFFSETSTR'], OUTDIR, 'SALT_'+OUTDIR))
+def create_kcor(OFF, OUTDIR):
+   #replace the "&" values in these kcor with the appropriate thingo
+   #example line
+   #FILTER: SNLS-z effMEGACAM-z.dat 0+0.007&
+   kcor_ogs = glob("templates/aper_kcor_templates/*.input")
+   for kcorog in kcor_ogs:
+      print(f"starting {kcorog.split('/')[-1]}")
+      tmptxtt = ""
+      with open(kcorog, "r") as kcorfile:
+         Lines = kcorfile.readlines()
+         for line in Lines:
+            if "&" not in line:
+               tmptxtt += line
+            else:
+               objs = line.split()
+               surveyfilt = objs[1]
+               offset = OFF.loc[OFF.SURVEYFILT == surveyfilt].OFFSET.values
+               if len(offset) < 1 :
+                  offset = ''
+               else:
+                  offset = offset[0]
+                  if offset >= 0: offset = "+"+str(offset)
+                  else: offset = str(offset)
+               line = line.replace("&", offset)
+               tmptxtt += line
+      #OUTDIR should exist, so just write to OUTDIR/kcor
+      with open(f'{OUTDIR}/kcor/{kcorog.split("/")[-1]}', "w") as writefile:
+         writefile.write(tmptxtt)
+   return print("Done")
 
-    for f in glob("%s/%s/MagSys/*.dat"%(OUTDIR,'SALT_'+OUTDIR)):
-        txt = open(f,'r').read()
-        newtxt = ''
-        print(f)
-        if len(txt.split('$@'))>1:
-            for snippit in txt.split('$@')[:-1]:
-                if (('+' in snippit) | ('-' in snippit)) & (snippit[0] != '#') & (snippit[0] != 'S'):
-                    try:
-                        snip = float(eval(snippit))
-                        newtxt += '%.4f'%snip
-                    except:
-                        newtxt += snippit
-                else:
-                    newtxt += snippit
-            fout = open(f,'w')
-            fout.write(newtxt)
-            fout.close()
+
+def DOSALT(OUTDIR, OFF):
+   os.system(f'cp -r templates/SALT_templates {OUTDIR}/SALT_{OUTDIR}')
+   for i,row in OFF.iterrows(): os.system("sed -i 's/+%s/%s/g' %s/%s/MagSys/*.dat"%('EX_'+row['SURVEYFILT'],row['OFFSETSTR'], OUTDIR, 'SALT_'+OUTDIR))
+
+   for f in glob("%s/%s/MagSys/*.dat"%(OUTDIR,'SALT_'+OUTDIR)):
+      txt = open(f,'r').read()
+      newtxt = ''
+      print(f)
+      if len(txt.split('$@'))>1:
+         for snippit in txt.split('$@')[:-1]:
+            if (('+' in snippit) | ('-' in snippit)) & (snippit[0] != '#') & (snippit[0] != 'S'):
+               try:
+                  snip = float(eval(snippit))
+                  newtxt += '%.4f'%snip
+               except:
+                  newtxt += snippit
+               else:
+                  newtxt += snippit
+      fout = open(f,'w')
+      fout.write(newtxt)
+      fout.close()
    return print("Done with whatever that was.")
 
 def SYSTSURFACES(OUTDIR, covf):
@@ -79,7 +110,7 @@ def SYSTSURFACES(OUTDIR, covf):
    os.system(f'cp -r templates/realisations_templates {OUTDIR}/realisations_{OUTDIR}')
    os.system(f'cp -r templates/fitopt_templates {OUTDIR}/fitopt_{OUTDIR}')
 
-
+   """"
    txt = open(f'{OUTDIR}/fitopt_{OUTDIR}/ALL.fitopts','r').read()
    newtxt = ''
    for snippit in txt.split('&'):
@@ -91,9 +122,10 @@ def SYSTSURFACES(OUTDIR, covf):
    fout = open(f'{OUTDIR}/fitopt_{OUTDIR}/ALL.fitopts','w')
    fout.write(newtxt)
    fout.close()
+   """
 
    #ok definitely fucked this one up 
-   os.system("sed -i 's/_OUTDIR/_%s/g' %s/ALL.fitopts"%(OUTDIR,'fitopt_'+OUTDIR))
+   #os.system("sed -i 's/_OUTDIR/_%s/g' %s/ALL.fitopts"%(OUTDIR,'fitopt_'+OUTDIR))
 
    from scipy.linalg import eigh, cholesky
    from scipy.stats import norm
@@ -104,56 +136,38 @@ def SYSTSURFACES(OUTDIR, covf):
    c = cholesky(cov['cov'], lower=True)
    real = np.dot(c, x)
    
-   #first do one with zero offsets
-   if FIRST:
-      WRITE_SALTSHAKER(params, labels, OUTDIR, o)
    for n in range(NREAL):
       params = real[:,n]
       labels = cov['labels']
-      WRITE_SALTSHAKER(params, labels, OUTDIR, n)
+      WRITE_ACTUAL(params, labels, OUTDIR, n, config)
 
-   return print("Done, ish?")
+   return "Done"
 
-def WRITE_SALTSHAKER(params, labels, OUTDIR, n):
-   os.system(f"cp {OUTDIR}/realisations_{OUTDIR}/shift_template.dat realisations_{OUTDIR}/shift_{n}.dat")
-   txt = open(f'{OUTDIR}/realisations_{OUTDIR}/shift_{n}.dat').read()
-   newtxt = ''
-   for snippit in txt.split('&'):
-      if snippit[0] == 'R':
-         randf = float(snippit[1:])
-         newtxt += '%.4f'%float(0)
-      else:
-         newtxt += snippit
-   fout = open(f'{OUTDIR}/realisations_{OUTDIR}/shift_{n}.dat', 'w')
-   fout.write(newtxt)
-   fout.close()
+def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
+   waveshifts = config['waveshifts']
+   labels = [sub[:-2] for sub in labels]
 
-   for p,l in zip(params,labels): 
-      print("sed -i 's/%s/%.4f/g' %s/%s/shift_%d.dat"%('EX_'+'_'.join(l.split(' ')[:-1]),p,OUTDIR,'realisations_'+OUTDIR,n))
-      os.system("sed -i 's/%s/%.4f/g' %s/%s/shift_%d.dat"%('EX_'+'_'.join(l.split(' ')[:-1]),p,OUTDIR,'realisations_'+OUTDIR,n))   
-
-   for p,l in zip([np.random.normal(loc=0,scale=LANDOLT_OFFSIG),
-                        np.random.normal(loc=0,scale=LANDOLT_OFFSIG),
-                        np.random.normal(loc=0,scale=LANDOLT_OFFSIG),
-                        np.random.normal(loc=0,scale=LANDOLT_OFFSIG),
-                        np.random.normal(loc=0,scale=LANDOLT_OFFSIG)],
-                       ['LANDOLT_U','LANDOLT_B','LANDOLT_V','LANDOLT_R','LANDOLT_I']):
-      print("sed -i 's/%s/%.4f/g' %s/%s/shift_%d.dat"%(l,p,OUTDIR,'realisations_'+OUTDIR,n))
-      os.system("sed -i 's/%s/%.4f/g' %s/%s/shift_%d.dat"%(l,p,OUTDIR,'realisations_'+OUTDIR,n))
-
-   txt = open(f'{OUTDIR}/realisations_{OUTDIR}/shift_{n}.dat', 'r').read()
-   newtxt = ''
-
-   for snippit in txt.split('@'):
-      if '+' in snippit:
-         snip = float(eval(snippit.split(')')[0]))
-         newtxt += '%.4f'%snip
-      else:
-         newtxt += snippit
-   fout = open(f'{OUTDIR}/realisations_{OUTDIR}/shift_{n}.dat', 'w')
-   fout.write(newtxt)
-   fout.close()
-   return print("Done writing... Something.")
+   with open(f'{OUTDIR}/realisations_{OUTDIR}/shift_{n}.dat', "w") as filew:
+      for n in range(len(labels)):
+         surv = labels[n].split("-")[0]
+         if surv == "PS1":
+            continue
+         if surv == "PS1SN": surv = "PS1MD"
+         survband = labels[n].split("-")[1]
+         buildstr = f'MAGSHIFT {surv} {survband} {np.around(params[n], 3)}'
+         filew.write(buildstr+'\n')
+      filew.write("\n")
+      for n in range(len(labels)):
+         #set up value of waveshift here
+         surv = labels[n].split("-")[0]
+         if surv == "PS1":
+            continue
+         survband = labels[n].split("-")[1]
+         waveval = waveshifts[surv][survband]
+         if surv == "PS1SN": surv = "PS1MD"
+         buildstr = f'WAVESHIFT {surv} {survband} {np.around(np.random.normal(0,waveval),3)}'
+         filew.write(buildstr+'\n')
+   return print(f"Done writing this iteration of SALTShaker Training files at {OUTDIR}")
         
 if __name__ == "__main__":
    
@@ -162,14 +176,20 @@ if __name__ == "__main__":
    if not (os.path.exists(OFFSETS) | os.path.exists(COV)):
       print(f'You gave {OFFSETS} and {COV}, but this file does not exist. Quitting.')
       quit()
+   elif not OUTDIR:
+      print("Please enter a value for OUTDIR!")
+      quit()
    OFF=pd.read_csv(OFFSETS,delim_whitespace=True)
-   OFF['OFFSET'] = OFF['OFFSET'] + OFF['EXTRA']
+   #OFF['OFFSET'] = OFF['OFFSET'] + OFF['EXTRA'] #For extra offsets ? Unclear where/why
    OFF['OFFSETSTR'] = OFF['OFFSET'].astype(str)
 
    OFF['OFFSETSTR'][OFF['OFFSET']>=0] = '+'+OFF['OFFSETSTR']
    try:
       os.mkdir(OUTDIR)
-   except:
-      print(OUTDIR,'directory already exists')
-
-   #Perhaps key in a small program to zero-out certain filters
+   except FileExistsError:
+      print(OUTDIR,'directory already exists, removing it')
+      shutil.rmtree(OUTDIR)
+      os.mkdir(OUTDIR)
+   os.mkdir(f"{OUTDIR}/kcor")
+   SYSTSURFACES(OUTDIR, COV)
+   create_kcor(OFF, OUTDIR)
