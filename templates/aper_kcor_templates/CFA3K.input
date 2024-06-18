@@ -1,0 +1,39 @@
+# ======================== BEGIN INPUT  =========================
+
+# specify spectral template for supernova
+SN_SED: Hsiao07.dat
+
+# specify primary spectrum
+BD17_SED: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/kcor/CFA3_KEPLERCAM/fillme.dat
+
+# specify filters :  
+MAGSYSTEM: BD17
+FILTSYSTEM: COUNT    ("ENERGY" => Trans -> Trans/lambda)
+FILTPATH:  /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
+SURVEY: CFA3K
+FILTER: CFA3K-U   SNLS3_Keplercam_U_modtran.dat   0.683&
+FILTER: CFA3K-B   SNLS3_Keplercam_B_modtran.dat   -0.106&
+FILTER: CFA3K-V   SNLS3_Keplercam_V_modtran.dat   -0.011&
+FILTER: CFA3K-r      SNLS3_Keplercam_r_modtran.dat   -0.004& 
+FILTER: CFA3K-i      SNLS3_Keplercam_i_modtran.dat   0.007&
+
+#=========================
+
+REDSHIFT_RANGE:   0.0  0.09
+REDSHIFT_BINSIZE: 0.005
+
+# define AV grid
+RV:          3.1   A(V)/E(B-V) in LMC
+AV_RANGE:   -6.0  6.0
+AV_BINSIZE:  6.0
+AV_OPTION:   2   [1 => use AV at avg lambda in filter  (with CCM89)]
+                 [2 => convolve spectrum and extinction with CCM89 law]
+
+
+# define lambda range for SN templates; 
+# template lambda binning is used internally
+LAMBDA_RANGE: 2100 11300
+
+# define output file for kcor grid
+OUTFILE: .kcor_CFA3_KEPLERCAM_BD17.fits
+
