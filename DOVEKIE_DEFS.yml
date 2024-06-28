@@ -1,13 +1,14 @@
 
 ##Which surveys mcmc.py will investigate
-surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTFS', 'ZTFD'] 
 
-surveys_for_dovekie: ['PS1', 'CFA4P2', 'CFA4P1', 'PS1SN', 'DES']
+#The proper dovekie
+surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
 
-#surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES']
+#Dovekie wingspan
+#surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTFS', 'ZTFD', 'CFA4P2', 'CFA4P1']
 
 #Where the chains are saved to
-chainsfile: 'DOVEKIE.V1.npz'
+chainsfile: 'DOVEKIE.V2.npz'
 
 ####### Below here, only madness lies, unless you want to add another survey. 
 ####### In which case go ahead, but it's ugly.
@@ -99,7 +100,7 @@ filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
 
 shiftfiltss: [['g','r','i','z'],
               ['g','r','i','z'],
-              ['g', 'r', 'i'],
+              ['g', 'r', 'i', 'G', 'R', 'I'],
               ['u','g','r','i','B','V','o','m','n','Y','y'],
               ['G','R','I','Z','g','r','i','z'],
               ['g', 'r', 'i', 'z'],
@@ -119,7 +120,7 @@ shiftfiltss: [['g','r','i','z'],
 
 namedfiltss: [['g','r','i','z'],
               ['g','r','i','z'],
-              ['g', 'r', 'i'],
+              ['g', 'r', 'i' ,'G', 'R', 'I'],
               ['u','g','r','i','B','V','o','m','n','Y','y'],
               ['G','R','I','Z','g','r','i','z'],
               ['g', 'r', 'i', 'z'],  
@@ -138,7 +139,7 @@ namedfiltss: [['g','r','i','z'],
 
 obsfiltss: [['g','r','i','z'],
             ['g','r','i','z'],
-            ['g', 'r', 'i'],
+            ['g', 'r', 'i','G', 'R', 'I'],
             ['u','g','r','i','B','V','o','m','n','Y','y'],
             ['G','R','I','Z','g','r','i','z'],
             ['g','r','i','z'],
@@ -398,7 +399,7 @@ synth_gi_range: {'calspec23':[-9.25,9.5],
 
 obsfilts: {'PS1':  ['g','r','i','z'],
            'DES':  ['g','r','i','z'],
-           'ZTF':  ['g', 'r', 'i'],
+           'ZTF':  ['g', 'r', 'i', 'G', 'R', 'I'],
            'CFA3S': ['B','V','R','I'],
            'CFA3K': ['B','V','r','i'],
            'CSP': ['g','r','i','B','V','o','m','n'],
@@ -427,7 +428,7 @@ obsfilts: {'PS1':  ['g','r','i','z'],
 
 snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
              'DES' : {'g':'g','r':'r','i':'i','z':'z'},
-             'ZTF':     {'g':'g', 'r':'r', 'i':'i'},
+             'ZTF':     {'g':'g', 'r':'r', 'i':'i', 'G':'G', 'R':'R', 'I':'I'},
              'CFA3S': {'B':'B','V':'V','R':'R','I':'I'},
              'CFA3K': {'B':'B','V':'V','r':'r','i':'i'},
              'CSP': {'g':'g','r':'r','i':'i','B':'B','V':'V','o':'o','m':'m','n':'n'},
@@ -457,7 +458,7 @@ snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
 
 snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
               'DES' : {'g':'g','r':'r','i':'i','z':'z'},
-              'ZTF':     {'g':'g', 'r':'r', 'i':'i'},
+              'ZTF':     {'g':'g', 'r':'r', 'i':'i', 'G':'G', 'R':'R', 'I':'I'},
               'CFA3S': {'B':'B','V':'V','R':'R','I':'I'},
               'CFA3K': {'B':'B','V':'V','r':'r','i':'i'},
               'CSP': {'u':'u','g':'g','r':'r','i':'i','B':'B','V':'V','o':'o','m':'m','n':'n'},
@@ -558,15 +559,15 @@ n_burnin : 2000
 
 filttranss: [['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
-             ['ztfg1.dat+-20' ,'ztfr1.dat', 'ztfi1.dat'],
+             ['ztfg1.dat+-15' ,'ztfr1.dat', 'ztfi1.dat', 'ztfg2.dat' ,'ztfr2.dat', 'ztfi2.dat'],
              ['u_tel_ccd_atm_ext_1.2.dat','g_tel_ccd_atm_ext_1.2.dat','r_tel_ccd_atm_ext_1.2.dat','i_tel_ccd_atm_ext_1.2.dat','B_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','V_LC3009_tel_ccd_atm_ext_1.2.dat','V_LC3014_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','Y_SWO_TAM_scan_atm.dat','Y_DUP_TAM_scan_atm.dat','Jrc1_SWO_TAM_scan_atm.dat','Jrc2_SWO_TAM_scan_atm.dat','H_SWO_TAM_scan_atm.dat','H_DUP_TAM_scan_atm.dat'],
              ['G.dat','R.dat','I.dat','Z.dat','g.dat','r.dat','i.dat','z.dat'],
              ['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['effMEGACAM-g.dat','effMEGACAM-r.dat','effMEGACAM-i.dat','effMEGACAM-z.dat'],
              ['SNLS3_4shooter2_U.dat', 'SNLS3_4shooter2_B.dat', 'SNLS3_4shooter2_V.dat', 'SNLS3_4shooter2_R.dat', 'SNLS3_4shooter2_I.dat'], 
              ['SNLS3_Keplercam_U_modtran.dat', 'SNLS3_Keplercam_B_modtran.dat', 'SNLS3_Keplercam_V_modtran.dat', 'SNLS3_Keplercam_r_modtran.dat', 'SNLS3_Keplercam_i_modtran.dat'],
-             ['ztfg1.dat+-20' ,'ztfr1.dat', 'ztfi1.dat'],
-             ['ztfg2.dat+5' ,'ztfr2.dat', 'ztfi2.dat'],
+             ['ztfg1.dat+-15' ,'ztfr1.dat', 'ztfi1.dat'],
+             ['ztfg2.dat' ,'ztfr2.dat', 'ztfi2.dat'],
              ['astrodon_B.dat', 'astrodon_V.dat', 'astrodon_r.dat', 'astrodon_i.dat'],
              ['bssl-bx-004.txt', 'bssl-vx-022.txt', 'SDSS.rp.txt', 'SDSS.ip.txt'],
              ['U_UVOT_rev.txt', 'B_UVOT_rev.txt', 'V_UVOT_rev.txt', 'U_UVOT_rev.txt', 'U_UVOT_rev.txt', 'U_UVOT_rev.txt'],
@@ -576,4 +577,22 @@ filttranss: [['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt
 
 ]
 
-#  'ASASSN2', 'ASASSN1', 'SWIFTNEW', 'KAIT',
+#################################################
+##### Start surfaces-dovekie.py
+#################################################
+
+# The standard deviations for the random mean filter response shifts
+#that are used in the SALT surfaces.
+waveshifts: {
+           "CFA3K":{"U":20, "B":10, "V":10, "r":10, "i":10},
+           "CFA3S":{"U":20, "B":10, "V":10, "R":10, "I":10},
+           "CSP":{"u":8, "B":7, "V":3, "g":8, "r":4, "i":2, "o":0, "m":0, "n":0},
+           "SDSS":{"u":6, "g":6, "r":6, "i":6, "z":6},
+           "SNLS":{"g":3, "r":10, "i":10, "z":6},
+           "DES":{"g":6, "r":6, "i":6, "z":6},
+           "PS1SN":{"g":7, "r":7, "i":7, "z":7},
+           "Foundation":{"g":7, "r":7, "i":7, "z":7},
+           "ZTF":{"g":10, "r":5, "i":5, "G":10, "R":5, "I":5},
+           "ZTFS":{"g":10, "r":5, "i":5},
+           "ZTFD":{"g":10, "r":5, "i":5}
+}
