@@ -446,7 +446,7 @@ def main():
         double,single=surveys['ZTFD'],surveys['ZTFS']
         with open(f'output_simulated_apermags+AV/{i}/ZTF_observed.csv', 'w') as csvfile:
             out = csv.writer(csvfile, delimiter=',')
-            dashednames=[x[:-1]+'-'+x[-1] for x in single.filtnames+double.filtnames.upper() + ['PS1'+x for x in 'griz']]
+            dashednames=[(x[:-1]+'-'+x[-1]).replace('D-','-').replace('S-','-') for x in single.filtnames+double.filtnames.upper() + ['PS1'+x for x in 'griz']]
             out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames] + [])
             simdata=single.genstar(single.nobs)
             for row in simdata:
