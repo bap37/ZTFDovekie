@@ -43,9 +43,18 @@ def getdata(survname):
 def unpack(data,colorinds,pars):
     nfilts,nstars=data.shape
     
-    mags,colors, slopes,noise,intrinsiccolor,fout= (pars[:nstars],pars[nstars:2*nstars],
-        pars[2*nstars:2*nstars+nfilts],pars[2*nstars+nfilts:2*nstars+2*nfilts]
-        ,pars[2*nstars+2*nfilts:2*nstars+3*nfilts], pars[2*nstars+3*nfilts:2*nstars+3*nfilts+1])
+    mags=pars[:nstars]; pars=pars[nstars:]
+    
+    colors=pars[:nstars]; pars=pars[nstars:]
+    
+    slopes=pars[:nfilts]; pars=pars[nfilts:]
+    
+    noise=pars[:nfilts]; pars=pars[nfilts:]
+    
+    intrinsiccolor=pars[:nfilts]; pars=pars[nfilts:]
+    
+    fout=pars[0]
+    
     intrinsiccolor=intrinsiccolor.at[colorinds[0]].set(0)
     slopes=slopes.at[jnp.array(colorinds)].set([0,-1])
     noise=jnp.exp(noise)
@@ -201,7 +210,7 @@ class survey:
         data=np.array([obs[x] for x in filtnames]+ [obs['PS1'+x] for x in 'griz'])
         #Use factor analysis on observed data
         
-        _,_,_,noise,_,fout=decomposedata(data,magcolorinds,outlierwidth)
+        _,_,self.slopes_data,noise,self.intrinsic_data,fout=decomposedata(data,magcolorinds,outlierwidth)
         self.variance=noise**2
         self.fout=fout
         
@@ -318,12 +327,15 @@ def generatesurveyoffsets():
     survoffsets[name]= np.random.normal(0,0.01,len(filts))
     return survoffsets
 
-
-def generatesurvey(name,survoffsets):
+__surveycache__= {}
+def generatesurvey(name,survoffsets,forcereload=False):
+    if name in __surveycache__ and not forcereload:
+        print(f'Retrieving {name} from cache')
+        return __surveycache__[name]
     ps1synth=loadsynthphot('output_synthetic_magsaper/synth_PS1_shift_0.000.txt')
     cut=(ps1synth['standard_catagory']=='calspec23')& ( ps1synth['PS1g']-ps1synth['PS1r'] > 0) &(ps1synth['PS1g']-ps1synth['PS1r'] <.8)
     print(f'Preparing {name}')
-
+    
     if name=='SNLS':
         synth,obs=getdata(name)
         surv=survey(name,lambda obs=obs: stats.gaussian_kde(obs['SNLSg']).resample(1)[0][0],stats.exponnorm(.1,loc=.2,scale=.3).rvs,
@@ -403,7 +415,7 @@ def generatesurvey(name,survoffsets):
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
         surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFSg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
               (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],survoffsets['PS1'] ,.2)
-              
+    __surveycache__[name]=surv
     return surv
 
 
@@ -421,14 +433,27 @@ def main():
 ###########################################################################
     
     surveys={name:surv for name,surv in surveys}
-    for name,surv in surveys.items():
-        simdata=surv.genstar(surv.nobs)
-        with open(f'output_simulated_apermags+AV/{name}_observed.csv', 'w') as csvfile:
+    for i in range(100):
+        for name,surv in surveys.items():
+            if 'ZTF' in name: continue
+            simdata=surv.genstar(surv.nobs)
+            with open(f'output_simulated_apermags+AV/{i}/{name}_observed.csv', 'w') as csvfile:
+                out = csv.writer(csvfile, delimiter=',')
+                dashednames=[x[:-1]+'-'+x[-1] for x in simdata.dtype.names]
+                out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames])
+                for row in simdata:
+                    out.writerow([name]+list(row)+[99,99]+ [0]*len(row))
+        double,single=surveys['ZTFD'],surveys['ZTFS']
+        with open(f'output_simulated_apermags+AV/{i}/ZTF_observed.csv', 'w') as csvfile:
             out = csv.writer(csvfile, delimiter=',')
-            dashednames=[x[:-1]+'-'+x[-1] for x in simdata.dtype.names]
-            out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames])
+            dashednames=[x[:-1]+'-'+x[-1] for x in single.filtnames+double.filtnames.upper() + ['PS1'+x for x in 'griz']]
+            out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames] + [])
+            simdata=single.genstar(single.nobs)
             for row in simdata:
-                out.writerow([name]+list(row)+[99,99]+ [0]*len(row))
+                out.writerow([name]+list(row[:3])+([0]*3)+list(row[3:])+[99,99]+ [0]*(len(row)+3))
+            simdata=double.genstar(double.nobs)
+            for row in simdata:
+                out.writerow([name]+([0]*3)+list(row[:3])+list(row[3:])+[99,99]+ [0]*(len(row)+3))
 
 ###########################################################################
     
