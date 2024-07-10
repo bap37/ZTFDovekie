@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-
+import shutil
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
@@ -437,6 +437,12 @@ def main():
         for name,surv in surveys.items():
             if 'ZTF' in name: continue
             simdata=surv.genstar(surv.nobs)
+            try:
+                os.mkdir(f'output_simulated_apermags+AV/{i}')
+            except FileExistsError:
+                print(f'output_simulated_apermags+AV/{i} directory already exists, removing it')
+                shutil.rmtree(f'output_simulated_apermags+AV/{i}')
+                os.mkdir(f'output_simulated_apermags+AV/{i}')
             with open(f'output_simulated_apermags+AV/{i}/{name}_observed.csv', 'w') as csvfile:
                 out = csv.writer(csvfile, delimiter=',')
                 dashednames=[x[:-1]+'-'+x[-1] for x in simdata.dtype.names]
