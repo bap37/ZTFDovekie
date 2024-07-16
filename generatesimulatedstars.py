@@ -330,11 +330,11 @@ def generatesurveyoffsets():
 __surveycache__= {}
 def generatesurvey(name,survoffsets,forcereload=False):
     if name in __surveycache__ and not forcereload:
-        print(f'Retrieving {name} from cache')
+        print(f'Retrieving {name} from cache', flush=True)
         return __surveycache__[name]
     ps1synth=loadsynthphot('output_synthetic_magsaper/synth_PS1_shift_0.000.txt')
     cut=(ps1synth['standard_catagory']=='calspec23')& ( ps1synth['PS1g']-ps1synth['PS1r'] > 0) &(ps1synth['PS1g']-ps1synth['PS1r'] <.8)
-    print(f'Preparing {name}')
+    print(f'Preparing {name}', flush=True)
     
     if name=='SNLS':
         synth,obs=getdata(name)
@@ -428,6 +428,7 @@ def getsurveygenerators(survoffsets):
 
     
 def main():
+    print('debug', flush=True)
     survoffsets=generatesurveyoffsets()
     surveys=getsurveygenerators(survoffsets)
 ###########################################################################
