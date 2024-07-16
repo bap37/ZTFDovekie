@@ -434,6 +434,9 @@ def main():
     
     surveys={name:surv for name,surv in surveys}
     for i in range(100):
+        survoffsets=generatesurveyoffsets()
+        for name,surv in surveys.items():
+            surv.offsets=np.concatenate((survoffsets[name],survoffsets['PS1']))
         os.makedirs(f'output_simulated_apermags+AV/{i}/',exist_ok=True)
         for name,surv in surveys.items():
             if 'ZTF' in name: continue
@@ -457,7 +460,9 @@ def main():
             for row in simdata:
                 row=list(row)
                 out.writerow(['ZTF']+([-999]*3)+list(row[:3])+list(row[3:])+[99,99]+ [0]*(len(row)+3))
-
+        with open(f'output_simulated_apermags+AV/{i}/simmedoffsets.json','w') as file:
+            file.write(json.dumps({name:list(survoffsets[name]) for name in survoffsets}))
+    
 ###########################################################################
     
     
@@ -465,8 +470,6 @@ def main():
     for name in surveys:
         offsetdict[name]=dict(zip(surveys[name].filtnames,survoffsets[name]))
     
-    with open('output_simulated_apermags+AV/simmedoffsets.json','w') as file:
-        file.write(json.dumps(offsetdict))
 
 
 if __name__=='__main__': main()
