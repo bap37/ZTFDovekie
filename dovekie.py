@@ -30,7 +30,7 @@ DEBUG = False
 
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
-survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors ,target_acceptance , n_burnin= prep_config(config)
+survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors ,target_acceptance , n_burnin, bboyd_loc = prep_config(config)
 
 
 obscolors_by_survey = {'PS1':['PS1-g','PS1-i']} #dodgy, feel like this should be tonry
@@ -237,7 +237,8 @@ def unwravel_params(params,surveynames,fixsurveynames):
     return paramsdict,outofbounds,paramsnames
 
 
-def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None):
+def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None, bboyd_seds=None):
+
     chisqtot=0
     paramsdict,outofbounds,paramsnames = unwravel_params(params,surveys_for_chisq,fixsurveynames)
     if doplot and tableout is None: raise ValueError('No table file provided')
@@ -289,8 +290,16 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
         filt2s.extend([    'g',    'r',    'i',    'z'])
    
     if "ZTF" in surveys_for_chisq:
+        surv1s.extend([  'PS1',  'PS1',  'PS1', 'PS1', 'PS1', 'PS1'])
+        surv2s.extend([  'ZTF',  'ZTF',  'ZTF', 'ZTF', 'ZTF', 'ZTF'])
+        filtas.extend([    'g',    'g',    'g', 'g', 'g', 'g'])
+        filtbs.extend([    'r',    'i',    'i', 'r', 'i', 'i'])
+        filt1s.extend([    'g',    'r',    'i', 'g', 'r', 'i'])
+        filt2s.extend([    'g',    'r',    'i', 'G', 'R', 'I'])
+
+    if "ZTFD" in surveys_for_chisq:
         surv1s.extend([  'PS1',  'PS1',  'PS1'])
-        surv2s.extend([ 'ZTF', 'ZTF', 'ZTF'])
+        surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
         filtas.extend([    'g',    'g',    'g'])
         filtbs.extend([    'r',    'i',    'i'])
         filt1s.extend([    'g',    'r',    'i'])
@@ -304,13 +313,6 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
         filt1s.extend([    'g',    'r',    'i'])
         filt2s.extend([    'g',    'r',    'i'])
 
-    if "ZTFD" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1'])
-        surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
-        filtas.extend([    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'i'])
-        filt2s.extend([    'g',    'r',    'i'])
 
     if "SDSS" in surveys_for_chisq:
         surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
@@ -466,6 +468,9 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
 
 
     totalchisq = 0
+
+    #/project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/spectra/bboyd/DA_WD_actual.csv
+
 
     weightsum = 0
     chi2v = []
@@ -668,6 +673,11 @@ if __name__ == "__main__":
         print("Done acquiring IRSA maps. Quitting now to avoid confusion.")
         quit()
 
+    if bboyd_loc:
+        bboyd_seds = pd.read_csv(bboyd_loc)
+    else:
+        bboyd_seds = None
+
     nparams=0
     pos = []
     for s in surveys_for_chisq:
@@ -682,7 +692,7 @@ if __name__ == "__main__":
                 pos.append(0)
     
     
-    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs)
+    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, bboyd_seds=bboyd_seds)
     full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout)
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
@@ -698,7 +708,6 @@ if __name__ == "__main__":
     if isshift:
         print("You are currently grabbing all the shifted values, quitting!")
         quit()
-
 
     key=random.PRNGKey(34581339453)
     initkey, samplekey= random.split(key)
