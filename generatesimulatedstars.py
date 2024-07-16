@@ -437,7 +437,6 @@ def main():
         survoffsets=generatesurveyoffsets()
         for name,surv in surveys.items():
             surv.offsets=np.concatenate((survoffsets[name],survoffsets['PS1']))
-        os.makedirs(f'output_simulated_apermags+AV/{i}/',exist_ok=True)
         for name,surv in surveys.items():
             if 'ZTF' in name: continue
             simdata=surv.genstar(surv.nobs)
