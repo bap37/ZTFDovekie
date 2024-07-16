@@ -10,6 +10,25 @@ import shutil
 #/project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/PANTHEON+/kcor/fragilistic_cov_template_filler
 #OG comes from around here
 
+overridedict = {"CSP-g":   "CSP-g/A",
+                "CSP-r":   "CSP-r/L",
+                "CSP-i":   "CSP-i/C",
+                "CSP-B":   "CSP-B/u",
+                "CSP-o":   "CSP-o/v",
+                "CSP-m":   "CSP-m/w",
+                "CSP-n":   "CSP-n/x",
+                "CFA3S-U": "CFA3S-U/a",
+                "CFA3S-B": "CFA3S-B/b",
+                "CFA3S-V": "CFA3S-V/c",
+                "CFA3S-R": "CFA3S-R/d",
+                "CFA3S-I": "CFA3S-I/e",
+                "CFA3K-U": "CFA3K-U/f",
+                "CFA3K-B": "CFA3K-B/h",
+                "CFA3K-V": "CFA3K-V/j",
+                "CFA3K-r": "CFA3K-r/k",
+                "CFA3K-i": "CFA3K-i/l",
+}
+
 NREAL = 10
 jsonload = 'DOVEKIE_DEFS.yml' 
 config = load_config(jsonload)
@@ -153,7 +172,16 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          if surv == "PS1":
             continue
          if surv == "PS1SN": surv = "PS1MD"
-         survband = labels[n].split("-")[1]
+         survband = labels[n]
+         if surv == "PS1MD":
+            survband = survband.replace("SN", '')
+         #doot overridedict
+         try: 
+            survband = overridedict[survband]
+         except KeyError:
+            pass
+         if "CFA3" in surv: surv = "CFA3"
+         if surv == 'ZTF': surv = "ZTF_MSIP"
          buildstr = f'MAGSHIFT {surv} {survband} {np.around(params[n], 3)}'
          filew.write(buildstr+'\n')
       filew.write("\n")
@@ -162,10 +190,20 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          surv = labels[n].split("-")[0]
          if surv == "PS1":
             continue
-         survband = labels[n].split("-")[1]
+         survband = labels[n].split("-")[-1]
+         survbandwrite = labels[n]
          waveval = waveshifts[surv][survband]
          if surv == "PS1SN": surv = "PS1MD"
-         buildstr = f'WAVESHIFT {surv} {survband} {np.around(np.random.normal(0,waveval),3)}'
+         if surv == "PS1MD":
+            survbandwrite = survbandwrite.replace("SN", '')
+         #doot overridedict
+         try: 
+            survbandwrite = overridedict[survbandwrite]
+         except KeyError:
+            pass
+         if "CFA" in surv: surv = "CFA3"
+         if surv == 'ZTF': surv = "ZTF_MSIP"
+         buildstr = f'WAVESHIFT {surv} {survbandwrite} {np.around(np.random.normal(0,waveval),3)}'
          filew.write(buildstr+'\n')
    return print(f"Done writing this iteration of SALTShaker Training files at {OUTDIR}")
         
