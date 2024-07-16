@@ -434,6 +434,7 @@ def main():
     
     surveys={name:surv for name,surv in surveys}
     for i in range(100):
+        os.makedirs(f'output_simulated_apermags+AV/{i}/',exist_ok=True)
         for name,surv in surveys.items():
             if 'ZTF' in name: continue
             simdata=surv.genstar(surv.nobs)
@@ -446,14 +447,16 @@ def main():
         double,single=surveys['ZTFD'],surveys['ZTFS']
         with open(f'output_simulated_apermags+AV/{i}/ZTF_observed.csv', 'w') as csvfile:
             out = csv.writer(csvfile, delimiter=',')
-            dashednames=[(x[:-1]+'-'+x[-1]).replace('D-','-').replace('S-','-') for x in single.filtnames+double.filtnames.upper() + ['PS1'+x for x in 'griz']]
+            dashednames=[(x[:-1]+'-'+x[-1]).replace('D-','-').replace('S-','-') for x in (single.filtnames+[x.upper() for x in double.filtnames] + ['PS1'+x for x in 'griz'])]
             out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames] + [])
             simdata=single.genstar(single.nobs)
             for row in simdata:
-                out.writerow([name]+list(row[:3])+([0]*3)+list(row[3:])+[99,99]+ [0]*(len(row)+3))
+                row=list(row)
+                out.writerow(['ZTF']+list(row[:3])+([-999]*3)+list(row[3:])+[99,99]+ [0]*(len(row)+3))
             simdata=double.genstar(double.nobs)
             for row in simdata:
-                out.writerow([name]+([0]*3)+list(row[:3])+list(row[3:])+[99,99]+ [0]*(len(row)+3))
+                row=list(row)
+                out.writerow(['ZTF']+([-999]*3)+list(row[:3])+list(row[3:])+[99,99]+ [0]*(len(row)+3))
 
 ###########################################################################
     
