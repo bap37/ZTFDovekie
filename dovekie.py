@@ -84,7 +84,6 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
         survname = obssurvmap[survey]
         if survey == 'PS1': continue
         realdirname = 'output_observed_apermags'
-        if fakes: realdirname = realdirname.replace("observed", "simulated")
         if redo:
             print(f"Starting IRSA query for {survey}. If nothing is printing that's probably fine.")
             obsdf = pd.read_csv(f'{realdirname}/{survname}_observed.csv')
@@ -106,7 +105,10 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
             obsdf.to_csv(f'{realdirname}+AV/{survname}_observed.csv', header=True, index=False, float_format='%g')
         else:
             try:
-                obsdf = pd.read_csv(f'{realdirname}+AV/{survname}_observed.csv')
+                if fakes:
+                    obsdf = pd.read_csv(f'{fakes}/{survname}_observed.csv')
+                else:
+                    obsdf = pd.read_csv(f'{realdirname}+AV/{survname}_observed.csv')
             except FileNotFoundError:
                 print(f'For whatever reason, {realdirname}+AV/{survname} does not exist.')
                 quit()
@@ -469,8 +471,6 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
 
     totalchisq = 0
 
-    #/project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/spectra/bboyd/DA_WD_actual.csv
-
 
     weightsum = 0
     chi2v = []
@@ -482,10 +482,15 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
     for surv1,surv2,filta,filtb,filt1,filt2 in zip(surv1s,surv2s,filtas,filtbs,filt1s,filt2s):
         chi2results = getchi_forone(paramsdict,passsurvey, passobsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,
                                 off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
-                                offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
+                                    offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
         if doplot: plot_forone(chi2results,subscript,outputdir,tableout)
         chi2v.append(chi2results.chi2) #Would like to add the survey info as well
         totalchisq+=chi2results.chi2
+
+    #Start WD SEDs stuff here
+    
+
+
     lp += lnprior(paramsdict)
     return lp -.5*totalchisq
 
@@ -630,7 +635,7 @@ def get_args():
     parser.set_defaults(DEBUG=False)
 
     msg = "Default False. Grabs fake stars to test recovery of input parameters."
-    parser.add_argument("--FAKES", help = msg, action='store_true')
+    parser.add_argument("--FAKES", help = msg, type=str,default=None)
     parser.set_defaults(FAKES=False)
     
     parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=0.95)
@@ -640,6 +645,7 @@ def get_args():
 
     msg = "Default False. Prints a nice bird :)"
     parser.add_argument("--BIRD", help = msg, action="store_true")
+
 
     args = parser.parse_args()
     return args
