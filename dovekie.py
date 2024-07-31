@@ -660,8 +660,12 @@ if __name__ == "__main__":
             for line in f:
                 print(line)
         quit()
-
-    tableout = open('preprocess_dovekie.dat','w')
+    tablefile='preprocess_dovekie.dat'
+    if FAKES: 
+        if FAKES.endswith('/'): FAKES=FAKES[:-1]
+        tablefile=path.join(path.join('plots',f'fakes_{path.split(FAKES)[1]}'),tablefile)
+        os.makedirs(path.split(tablefile)[0],exist_ok=True)
+    tableout = open(tablefile,'w')
     tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
     print('reading in survey data')
 
@@ -699,7 +703,7 @@ if __name__ == "__main__":
     
     
     full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, bboyd_seds=bboyd_seds)
-    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout)
+    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=f'fakes_{path.split(FAKES)[1]}' if FAKES else None)
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
 
