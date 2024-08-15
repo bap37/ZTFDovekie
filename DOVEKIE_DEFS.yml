@@ -10,8 +10,8 @@ surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CF
 #Where the chains are saved to
 chainsfile: 'DOVEKIE.V2.npz'
 
-#We use WDs from Boyd et al. 2024 to help constrain our errors
-bboyd_loc: 'spectra/bboyd/DA_WD_actual.csv'
+#We use WDs from Boyd et al. 2024 to help constrain our zeropoints
+whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
 
 ####### Below here, only madness lies, unless you want to add another survey. 
 ####### In which case go ahead, but it's ugly.

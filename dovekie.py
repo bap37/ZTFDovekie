@@ -5,6 +5,8 @@ import pylab as plt
 import numpy as np
 import os, sys
 from scipy.optimize import curve_fit
+from scipy import linalg
+from scipy import interpolate, optimize as op, stats
 from glob import glob
 sys.path.insert(1, 'scripts/')
 from helpers import *
@@ -13,13 +15,14 @@ import emcee
 from astroquery.irsa_dust import IrsaDust
 import astropy.coordinates as coord
 import astropy.units as u
-from scipy import interpolate
 import argparse
 from functools import partial
 import jax
 from jax import numpy as jnp
 from jax import random as random
 from jaxnuts.sampler import NUTS
+from jax.scipy import linalg as jlinalg
+
 from collections import namedtuple
 from os import path
 
@@ -30,7 +33,7 @@ DEBUG = False
 
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
-survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors ,target_acceptance , n_burnin, bboyd_loc = prep_config(config)
+survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors ,target_acceptance , n_burnin, whitedwarf_obs_loc = prep_config(config)
 
 
 obscolors_by_survey = {'PS1':['PS1-g','PS1-i']} #dodgy, feel like this should be tonry
@@ -39,13 +42,20 @@ filter_means = pd.read_csv('filter_means.csv')
 
 filter_means = filter_means.set_index(['SURVEYFILTER']).to_dict()['MEANLAMBDA ']
 
-
 chi2result=namedtuple('chi2result',['chi2','datax','datay','synthxs','synthys',
      'data_popt','data_pcov','cats','synthpopts',
      'synthpcovs','modelcolors','modelress','sigmasynth','sigmadata',
      'obslongfilt1','obslongfilt2','obslongfilta','obslongfiltb',
      'surv1','colorfilta','colorfiltb','yfilt1','surv2','yfilt2','shift'])
 
+def get_whitedwarf_synths(surveys):
+    whitedwarfsynths={}
+    for survey in surveys:
+        files = glob('output_synthetic_magsaper/bboyd_synth_%s_shift_*.000.txt'%survmap4shift[survey])
+        if len(files):
+            for fname in files: whitedwarfsynths[survey]= pd.read_csv(fname,sep=" ") 
+    return whitedwarfsynths
+    
 def get_all_shifts(surveys): #acquires all the surveys and collates them. 
     surveydfs = {}
     for survey in surveys:
@@ -237,15 +247,98 @@ def unwravel_params(params,surveynames,fixsurveynames):
             paramsnames.append(survey+'-'+filt+'_offset')
 
     return paramsdict,outofbounds,paramsnames
+    
+wdresult=namedtuple('wdresult',['chi2','resids','errs', 'errpars'])
 
+def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs):
+    def negloglike(x,synth,obs,obserr):
+        mean,errscale,errfloor=x
+        return -stats.norm.logpdf(synth-obs,loc=mean,scale=np.hypot(errscale*obserr,errfloor)).sum()
+    from scipy import optimize as op
+    
+    for surv in whitedwarf_seds: whitedwarf_seds[surv]=whitedwarf_seds[surv].rename(columns={'standard':'Object'})
+    whitedwarf_seds['PS1']=whitedwarf_seds['PS1SN']
+    whitedwarf_seds[surv].survey='PS1'
+    wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
+    
+    try:
+        badsurvs=[surv for surv in wdsurveys if not surv in whitedwarf_seds]
+        assert(len(badsurvs)==0)
+    except:
+        print(f'No synthetic photometry provided for observations of white dwarf standards from {badsurvs}')
+        raise RuntimeError()
+    accum=whitedwarf_seds[wdsurveys[0]]
+    for key in wdsurveys[1:]:
+        accum=(pd.merge(accum, whitedwarf_seds[key], on=['Object']))
+    
+    whitedwarftotal=(pd.merge(accum,whitedwarf_obs, on=['Object'],how='outer', suffixes=("_synth", "_obs")))
+    whitedwarftotal=whitedwarftotal.replace(-999.,np.nan)
+    errpars={}
+    chisq=0
+    resids={}
+    errs={}
+    errpars={}
+    for surv in wdsurveys:
+        for filt in 'griz':
+            filt=surv+'-'+filt
+            synth,obs,obserr=whitedwarftotal[filt+'_synth'],whitedwarftotal[filt+'_obs'], whitedwarftotal[filt+'-err']
+            isgood=(synth>0) &( obs>0)&(~np.isnan(obs))
+            result=op.minimize(negloglike,[0,1,0],args=(synth[isgood],obs[isgood],(obserr[isgood])),bounds=[(-.2,.2),(0,10),(0,.1)])
+            errscale,errfloor=result.x[1:]
+            
+            rescalederr=np.hypot(errscale*obserr[isgood],errfloor)
+            
+            resids[filt]=(obs-synth)[isgood]#-paramsdict[filt+'_offset']
+            errs[filt]=obserr[isgood]
+            errpars[filt]=errscale,errfloor
+            synthzperr=0.003
+            
+            residcorrected=resids[filt].values-paramsdict[filt+'_offset']
+            covs=np.diag(rescalederr.values**2)+synthzperr**2
+            transform=jlinalg.cholesky(covs,lower=True)
+            design=jlinalg.solve_triangular(transform,residcorrected,lower=True)
+            chisq+= design @ design
 
-def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None, bboyd_seds=None):
+    return wdresult(chisq, resids,errs, errpars)
+
+def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict):
+    fig=plt.figure()
+    plt.xlim(1e-3,.2)
+    plt.ylim(-.1,.1)
+
+    errscale,errfloor=wdresults.errpars[filt]
+    line1=plt.errorbar(wdresults.errs[filt],wdresults.resids[filt],yerr=wdresults.errs[filt],fmt='bx',label='raw errors')
+    
+    errscale,errfloor=wdresults.errpars[filt]
+    scalederr=np.hypot(errscale*wdresults.errs[filt],errfloor)
+    mean=np.average((wdresults.resids)[filt],weights=1/(scalederr**2))
+    line1=plt.errorbar(np.clip(scalederr,*plt.xlim()),np.clip((wdresults.resids)[filt],*plt.ylim()),yerr=scalederr,fmt='rx',
+                       label=f'rescaled errors\n$\sigma \leftarrow \sqrt{{({errscale:.2f}\sigma )^2 + {errfloor:.3f} ^2 }}$')
+    plt.axhline(mean,color='k',linestyle='--',label='WD mean')
+    if paramsdict is not None: plt.axhline(paramsdict[filt+'_offset'],color='g',linestyle='--',label='Derived offset')
+    plt.plot(np.linspace(*plt.xlim(),100),mean+np.linspace(*plt.xlim(),100),'k-')
+    plt.plot(np.linspace(*plt.xlim(),100),mean-np.linspace(*plt.xlim(),100),'k-')
+
+    text=plt.text(.5,.2,'',transform=plt.gca().transAxes)
+    plt.xscale('log')
+    plt.xlabel('Photo-error')
+    plt.ylabel('WD Residual off mean')
+    plt.legend(loc='upper left')
+    plt.title(filt)
+    plt.tight_layout()
+    fname=f'whitedwarf_resids_{filt}.pdf'
+    if outdir: outpath= path.join('plots',path.join(outdir, fname))
+    else: outpath=path.join('plots',fname)
+    plt.savefig(outpath)
+    print(f'writing white dwarf residuals to {outpath}')
+
+def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None, whitedwarf_seds=None,whitedwarf_obs= None):
 
     chisqtot=0
     paramsdict,outofbounds,paramsnames = unwravel_params(params,surveys_for_chisq,fixsurveynames)
     if doplot and tableout is None: raise ValueError('No table file provided')
     lp= jax.lax.cond(outofbounds, lambda : -np.inf, lambda :0.)
-
+    
     surv1s = []
     surv2s = []
     filtas = []
@@ -486,11 +579,16 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
         if doplot: plot_forone(chi2results,subscript,outputdir,tableout)
         chi2v.append(chi2results.chi2) #Would like to add the survey info as well
         totalchisq+=chi2results.chi2
-
-    #Start WD SEDs stuff here
     
-
-
+    if not (whitedwarf_seds is None):
+    
+        whitedwarfresults=calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs)
+        totalchisq+=whitedwarfresults.chi2
+        if doplot:
+            for filt in whitedwarfresults.resids:
+                plotwhitedwarfresids(filt, outputdir, whitedwarfresults,paramsdict)
+            
+    
     lp += lnprior(paramsdict)
     return lp -.5*totalchisq
 
@@ -679,10 +777,13 @@ if __name__ == "__main__":
         print("Done acquiring IRSA maps. Quitting now to avoid confusion.")
         quit()
 
-    if bboyd_loc:
-        bboyd_seds = pd.read_csv(bboyd_loc)
+    if whitedwarf_obs_loc and (not args.FAKES ):
+        print('Loading white dwarf data')
+        whitedwarf_obs = pd.read_csv(whitedwarf_obs_loc)
+        whitedwarf_seds= get_whitedwarf_synths(surveys_for_chisq)
     else:
-        bboyd_seds = None
+        whitedwarf_obs = None
+        whitedwarf_seds= None
 
     nparams=0
     pos = []
@@ -698,7 +799,7 @@ if __name__ == "__main__":
                 pos.append(0)
     
     
-    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, bboyd_seds=bboyd_seds)
+    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs)
     full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout)
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
@@ -724,6 +825,13 @@ if __name__ == "__main__":
     key, samples, step_size = sampler.sample(n_samples, samplekey)
     loglikes=jax.vmap(full_likelihood_data,in_axes=0)(samples)
     np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
+    final=np.mean(samples,axis=0)
     
+    paramsdict=unwravel_params(final,surveys_for_chisq,fixsurveynames)[0]
+    whitedwarfresults=calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs)
+    for filt in whitedwarfresults.resids:
+        plotwhitedwarfresids(filt, '', whitedwarfresults,paramsdict)
+
+
     
     
