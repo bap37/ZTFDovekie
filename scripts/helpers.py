@@ -38,8 +38,8 @@ def prep_config(config):
     snanafiltsr = config['snanafiltsr']
     relativeweights = config['relativeweights']
     errfloors = config['errfloors']
-    bboyd_loc = config['bboyd_loc']
-    return survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,  config['target_acceptance'] , config['n_burnin'], bboyd_loc
+    whitedwarf_obs_loc = config['whitedwarf_obs_loc']
+    return survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,  config['target_acceptance'] , config['n_burnin'], whitedwarf_obs_loc
 
 
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
