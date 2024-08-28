@@ -375,7 +375,7 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
         surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
         surv2s.extend([ 'PS1SN', 'PS1SN', 'PS1SN', 'PS1SN'])
         filtas.extend([    'g',    'g',    'g',    'r'])
-        filtbs.extend([    'r',    'i',    'i',    'z'])
+        filtbs.extend([    'i',    'i',    'i',    'i'])
         filt1s.extend([    'g',    'r',    'i',    'z'])
         filt2s.extend([    'g',    'r',    'i',    'z'])
 
@@ -383,7 +383,7 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
         surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
         surv2s.extend([ 'Foundation', 'Foundation', 'Foundation', 'Foundation'])
         filtas.extend([    'g',    'g',    'g',    'r'])
-        filtbs.extend([    'r',    'i',    'i',    'z'])
+        filtbs.extend([    'i',    'i',    'i',    'i'])
         filt1s.extend([    'g',    'r',    'i',    'z'])
         filt2s.extend([    'g',    'r',    'i',    'z'])
    
@@ -391,7 +391,7 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
         surv1s.extend([  'PS1',  'PS1',  'PS1', 'PS1', 'PS1', 'PS1'])
         surv2s.extend([  'ZTF',  'ZTF',  'ZTF', 'ZTF', 'ZTF', 'ZTF'])
         filtas.extend([    'g',    'g',    'g', 'g', 'g', 'g'])
-        filtbs.extend([    'r',    'i',    'i', 'r', 'i', 'i'])
+        filtbs.extend([    'i',    'i',    'i', 'i', 'i', 'i'])
         filt1s.extend([    'g',    'r',    'i', 'g', 'r', 'i'])
         filt2s.extend([    'g',    'r',    'i', 'G', 'R', 'I'])
 
@@ -415,8 +415,8 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
     if "SDSS" in surveys_for_chisq:
         surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
         surv2s.extend([ 'SDSS', 'SDSS', 'SDSS', 'SDSS'])
-        filtas.extend([    'g',    'g',    'g',    'i'])
-        filtbs.extend([    'r',    'i',    'i',    'z'])
+        filtas.extend([    'g',    'g',    'g',    'r'])
+        filtbs.extend([    'i',    'i',    'i',    'i'])
         filt1s.extend([    'g',    'r',    'i',    'z'])
         filt2s.extend([    'g',    'r',    'i',    'z'])
 
@@ -424,7 +424,7 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
         surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
         surv2s.extend([ 'SNLS', 'SNLS', 'SNLS', 'SNLS'])
         filtas.extend([    'g',    'g',    'g',    'r'])
-        filtbs.extend([    'r',    'i',    'i',    'z'])
+        filtbs.extend([    'i',    'i',    'i',    'i'])
         filt1s.extend([    'g',    'r',    'i',    'z'])
         filt2s.extend([    'g',    'r',    'i',    'z'])
 
@@ -761,8 +761,12 @@ if __name__ == "__main__":
             for line in f:
                 print(line)
         quit()
-
-    tableout = open('preprocess_dovekie.dat','w')
+    tablefile='preprocess_dovekie.dat'
+    if FAKES: 
+        if FAKES.endswith('/'): FAKES=FAKES[:-1]
+        tablefile=path.join(path.join('plots',f'fakes_{path.split(FAKES)[1]}'),tablefile)
+        os.makedirs(path.split(tablefile)[0],exist_ok=True)
+    tableout = open(tablefile,'w')
     tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
     print('reading in survey data')
 
@@ -804,7 +808,7 @@ if __name__ == "__main__":
     
     
     full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs)
-    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout)
+    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=f'fakes_{path.split(FAKES)[1]}' if FAKES else None)
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
 
