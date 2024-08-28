@@ -53,9 +53,9 @@ def get_whitedwarf_synths(surveys):
     for survey in surveys:
         files = glob('output_synthetic_magsaper/bboyd_synth_%s_shift_*.000.txt'%survmap4shift[survey])
         if len(files):
-            for fname in files: whitedwarfsynths[survey]= pd.read_csv(fname,sep=" ") 
+            for fname in files: whitedwarfsynths[survey]= pd.read_csv(fname,sep='\s+') 
     return whitedwarfsynths
-    
+
 def get_all_shifts(surveys): #acquires all the surveys and collates them. 
     surveydfs = {}
     for survey in surveys:
@@ -251,54 +251,54 @@ def unwravel_params(params,surveynames,fixsurveynames):
 wdresult=namedtuple('wdresult',['chi2','resids','errs', 'errpars'])
 
 def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs):
+    for surv in whitedwarf_seds: whitedwarf_seds[surv]=whitedwarf_seds[surv].rename(columns={'standard':'Object'})
+    
+    wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
+    accum=whitedwarf_seds[wdsurveys[0]]
+    for key in wdsurveys[1:]:
+        accum=pd.merge(accum, whitedwarf_seds[key], left_index=True, right_index=True,suffixes=('','_y'))
+        accum=accum.drop(
+            accum.filter(regex='_y$').columns, axis=1)       
+    filts=[(survey+'-' + filt) for filt in 'griz' for survey in wdsurveys ]
+    isbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
+    print(f'{(isbad).sum():d} bad SED samples' )
+
+    grouped=accum.groupby('Object')
+    covsbyobject= [np.cov(grouped.get_group(group)[filts].values.T) for group in grouped.groups]
+    overallcov=np.mean([x for x,group in  zip(covsbyobject,grouped.groups)],axis=0)
+#     plt.imshow(overallcov)
+    whitedwarftotal=pd.merge(whitedwarf_obs,grouped[filts].mean(),left_index=True,right_index=True,suffixes=('_obs','_synth'))
+    whitedwarftotal=whitedwarftotal.replace(-999.,np.nan)
+    resids={}
+    errs={}
+    errpars={}
+    residcorrected={}
+    rescalederr={}
     def negloglike(x,synth,obs,obserr):
         mean,errscale,errfloor=x
         return -stats.norm.logpdf(synth-obs,loc=mean,scale=np.hypot(errscale*obserr,errfloor)).sum()
     from scipy import optimize as op
-    
-    for surv in whitedwarf_seds: whitedwarf_seds[surv]=whitedwarf_seds[surv].rename(columns={'standard':'Object'})
-    whitedwarf_seds['PS1']=whitedwarf_seds['PS1SN']
-    whitedwarf_seds[surv].survey='PS1'
-    wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
-    
-    try:
-        badsurvs=[surv for surv in wdsurveys if not surv in whitedwarf_seds]
-        assert(len(badsurvs)==0)
-    except:
-        print(f'No synthetic photometry provided for observations of white dwarf standards from {badsurvs}')
-        raise RuntimeError()
-    accum=whitedwarf_seds[wdsurveys[0]]
-    for key in wdsurveys[1:]:
-        accum=(pd.merge(accum, whitedwarf_seds[key], on=['Object']))
-    
-    whitedwarftotal=(pd.merge(accum,whitedwarf_obs, on=['Object'],how='outer', suffixes=("_synth", "_obs")))
-    whitedwarftotal=whitedwarftotal.replace(-999.,np.nan)
-    errpars={}
-    chisq=0
-    resids={}
-    errs={}
-    errpars={}
-    for surv in wdsurveys:
-        for filt in 'griz':
-            filt=surv+'-'+filt
-            synth,obs,obserr=whitedwarftotal[filt+'_synth'],whitedwarftotal[filt+'_obs'], whitedwarftotal[filt+'-err']
-            isgood=(synth>0) &( obs>0)&(~np.isnan(obs))
-            result=op.minimize(negloglike,[0,1,0],args=(synth[isgood],obs[isgood],(obserr[isgood])),bounds=[(-.2,.2),(0,10),(0,.1)])
-            errscale,errfloor=result.x[1:]
-            
-            rescalederr=np.hypot(errscale*obserr[isgood],errfloor)
-            
-            resids[filt]=(obs-synth)[isgood]#-paramsdict[filt+'_offset']
-            errs[filt]=obserr[isgood]
-            errpars[filt]=errscale,errfloor
-            synthzperr=0.003
-            
-            residcorrected=resids[filt].values-paramsdict[filt+'_offset']
-            covs=np.diag(rescalederr.values**2)+synthzperr**2
-            transform=jlinalg.cholesky(covs,lower=True)
-            design=jlinalg.solve_triangular(transform,residcorrected,lower=True)
-            chisq+= design @ design
+    for filt in filts:
+        synth,obs,obserr=whitedwarftotal[filt+'_synth'],whitedwarftotal[filt+'_obs'], whitedwarftotal[filt+'-err']
+        isgood=(synth>0) &( obs>0)&(~np.isnan(obs))
+        result=op.minimize(negloglike,[0,1,0],args=(synth[isgood],obs[isgood],(obserr[isgood])),bounds=[(-.2,.2),(0,10),(0,.1)])
+        errscale,errfloor=result.x[1:]
+        errpars[filt]=errscale,errfloor
 
+        resids[filt]=(obs-synth)[isgood]#-paramsdict[filt+'_offset']
+        errs[filt]=obserr[isgood]
+        rescalederr[filt]=np.hypot(errscale*obserr[isgood],errfloor).values
+
+        residcorrected[filt]=resids[filt].values-paramsdict[filt+'_offset']
+    covs=np.diag(np.concatenate([rescalederr[x] for x in filts])**2) 
+    indexes=np.concatenate([np.repeat(i, residcorrected[filt].size) for i, filt in enumerate(filts)]
+    )
+    covs+=np.array([[overallcov[i,j] for i in indexes] for j in indexes]
+    )
+    allresids=jnp.concatenate([residcorrected[x] for x in filts])
+    transform=linalg.cholesky(covs,lower=True)
+    design=jlinalg.solve_triangular(transform,allresids,lower=True)
+    chisq= design @ design
     return wdresult(chisq, resids,errs, errpars)
 
 def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict):
@@ -307,18 +307,21 @@ def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict):
     plt.ylim(-.1,.1)
 
     errscale,errfloor=wdresults.errpars[filt]
-    line1=plt.errorbar(wdresults.errs[filt],wdresults.resids[filt],yerr=wdresults.errs[filt],fmt='bx',label='raw errors')
-    
+    line1=plt.errorbar(wdresults.errs[filt],wdresults.resids[filt],yerr=wdresults.errs[filt],fmt='bx',label=f'raw errors ({wdresults.resids[filt].size} points)')
     errscale,errfloor=wdresults.errpars[filt]
     scalederr=np.hypot(errscale*wdresults.errs[filt],errfloor)
+    
     mean=np.average((wdresults.resids)[filt],weights=1/(scalederr**2))
     line1=plt.errorbar(np.clip(scalederr,*plt.xlim()),np.clip((wdresults.resids)[filt],*plt.ylim()),yerr=scalederr,fmt='rx',
                        label=f'rescaled errors\n$\sigma \leftarrow \sqrt{{({errscale:.2f}\sigma )^2 + {errfloor:.3f} ^2 }}$')
-    plt.axhline(mean,color='k',linestyle='--',label='WD mean')
-    if paramsdict is not None: plt.axhline(paramsdict[filt+'_offset'],color='g',linestyle='--',label='Derived offset')
+    chi2=((((wdresults.resids)[filt]-mean)/scalederr)**2).sum()
+    plt.axhline(mean,color='k',linestyle='--',label=f'WD mean: $\\chi^2$= {chi2:.2f}')
+    if paramsdict is not None: 
+        chi2=((((wdresults.resids)[filt]-paramsdict[filt+'_offset'])/scalederr)**2).sum()
+        plt.axhline(paramsdict[filt+'_offset'],color='g',linestyle='--',label=f'Derived offset: $\\chi^2$= {chi2:.2f}')
     plt.plot(np.linspace(*plt.xlim(),100),mean+np.linspace(*plt.xlim(),100),'k-')
     plt.plot(np.linspace(*plt.xlim(),100),mean-np.linspace(*plt.xlim(),100),'k-')
-
+    
     text=plt.text(.5,.2,'',transform=plt.gca().transAxes)
     plt.xscale('log')
     plt.xlabel('Photo-error')
@@ -778,8 +781,9 @@ if __name__ == "__main__":
         quit()
 
     if whitedwarf_obs_loc and (not args.FAKES ):
+    #     if False:
         print('Loading white dwarf data')
-        whitedwarf_obs = pd.read_csv(whitedwarf_obs_loc)
+        whitedwarf_obs = pd.read_csv(whitedwarf_obs_loc,index_col='Object')
         whitedwarf_seds= get_whitedwarf_synths(surveys_for_chisq)
     else:
         whitedwarf_obs = None
