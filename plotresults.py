@@ -4,7 +4,7 @@ matplotlib.use('Agg')
 import pylab as plt
 import pandas as pd
 from chainconsumer import ChainConsumer
-import mcmc as ll
+import dovekie as ll
 import sys, argparse, os
 import corner
 sys.path.insert(1, 'scripts/')
@@ -51,8 +51,6 @@ if __name__ == "__main__":
    labels = helpers.create_labels(filename)
    samples = np.load(filename,allow_pickle=True)['samples']
    flat_samples = samples.reshape(-1, samples.shape[-1])
-   flat_samples = flat_samples[int(len(flat_samples)/5):]
-   print("Burnt off 20% of the chains")
    surveys_for_chisq = np.load(filename,allow_pickle=True)['surveys_for_chisq']
    #calls mcmc.py to do some quick loading of data
 
@@ -63,14 +61,13 @@ if __name__ == "__main__":
    helpers.create_latex("postoffsets.dat", "postoffsets-latex.tex")
    surveydata = ll.get_all_shifts(surveys_for_chisq)
    obsdfs = ll.get_all_obsdfs(surveys_for_chisq)
-   ll.remote_full_likelihood(np.array(postoffsets),surveys_for_chisqin=surveys_for_chisq,fixsurveynamesin=fixsurveynames,surveydatain=surveydata,obsdfin=obsdfs,subscript='after_v6',doplot=True,first=True, outputdir='postmcmc')
-   helpers.create_likelihoodhistory(samples, postoffsets, ll, surveys_for_chisq, fixsurveynames, surveydata, obsdfs)
+   #ll.full_likelihood(np.array(postoffsets),surveys_for_chisq,fixsurveynames,surveydata,obsdfs,subscript='after_v6',doplot=True,outputdir='postmcmc')
+   #helpers.create_likelihoodhistory(samples, postoffsets, ll, surveys_for_chisq, fixsurveynames, surveydata, obsdfs)
 
    print("Reached end of testing")
-   quit()
 
    if FULL:
       print("bloop")
-      helpers.create_corr(c)
+      helpers.create_corr(c, labels)
       helpers.create_corner(labels, flat_samples)
 #Below are the shadow-touched lands. Do not go there. Only madness lies.
