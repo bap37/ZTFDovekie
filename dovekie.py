@@ -192,7 +192,9 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         modelcolor=modelcolor[synthcut]
         modelres=modelres[synthcut]
         synthx,synthy,sigmamodel,yres,popt,pcov = itersigmacut_linefit(modelcolor,modelres,niter=1,nsigma=3)
-        popt=jnp.array([popt[0],popt[1] +( off2-off1 - popt[0]* (offb-offa))])
+        
+        #CORRECT
+        popt=jnp.array([popt[0] ,popt[1] +( off2-off1 - popt[0]* (offb-offa))])
         synthxs.append(synthx); synthys.append(synthy)
     
         modelress.append(modelres +off2-off1)
@@ -205,9 +207,7 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         #WHY IS THIS A MEAN
         chires = jnp.mean(dms)
         chireserrsq = (sigmadata/jnp.sqrt(dms.size ))**2+errfloors[surv2]**2
-        chi2 += (chires**2/chireserrsq)
-
-     
+        chi2 += (chires**2/chireserrsq)     
    
     
     #print(chi2)
@@ -248,60 +248,70 @@ def unwravel_params(params,surveynames,fixsurveynames):
 
     return paramsdict,outofbounds,paramsnames
     
-wdresult=namedtuple('wdresult',['chi2','resids','errs', 'errpars'])
+wdresult=namedtuple('wdresult',['chi2','resids','errs', 'errpars','covariance','filts'])
 
-def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs):
-    for surv in whitedwarf_seds: whitedwarf_seds[surv]=whitedwarf_seds[surv].rename(columns={'standard':'Object'})
+def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
+    if storedvals is None:
+        for surv in whitedwarf_seds: whitedwarf_seds[surv]=whitedwarf_seds[surv].rename(columns={'standard':'Object'})
+        
+        wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
+        accum=whitedwarf_seds[wdsurveys[0]]
+        for key in wdsurveys[1:]:
+            accum=pd.merge(accum, whitedwarf_seds[key], left_index=True, right_index=True,suffixes=('','_y'))
+            accum=accum.drop(
+                accum.filter(regex='_y$').columns, axis=1)       
+        filts=[(survey+'-' + filt) for filt in 'griz' for survey in wdsurveys ]
+        isbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
+        print(f'{(isbad).sum():d} bad SED samples' )
     
-    wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
-    accum=whitedwarf_seds[wdsurveys[0]]
-    for key in wdsurveys[1:]:
-        accum=pd.merge(accum, whitedwarf_seds[key], left_index=True, right_index=True,suffixes=('','_y'))
-        accum=accum.drop(
-            accum.filter(regex='_y$').columns, axis=1)       
-    filts=[(survey+'-' + filt) for filt in 'griz' for survey in wdsurveys ]
-    isbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
-    print(f'{(isbad).sum():d} bad SED samples' )
-
-    grouped=accum.groupby('Object')
-    covsbyobject= [np.cov(grouped.get_group(group)[filts].values.T) for group in grouped.groups]
-    overallcov=np.mean([x for x,group in  zip(covsbyobject,grouped.groups)],axis=0)
-#     plt.imshow(overallcov)
-    whitedwarftotal=pd.merge(whitedwarf_obs,grouped[filts].mean(),left_index=True,right_index=True,suffixes=('_obs','_synth'))
-    whitedwarftotal=whitedwarftotal.replace(-999.,np.nan)
-    resids={}
-    errs={}
-    errpars={}
-    residcorrected={}
-    rescalederr={}
-    def negloglike(x,synth,obs,obserr):
-        mean,errscale,errfloor=x
-        return -stats.norm.logpdf(synth-obs,loc=mean,scale=np.hypot(errscale*obserr,errfloor)).sum()
-    from scipy import optimize as op
-    for filt in filts:
-        synth,obs,obserr=whitedwarftotal[filt+'_synth'],whitedwarftotal[filt+'_obs'], whitedwarftotal[filt+'-err']
-        isgood=(synth>0) &( obs>0)&(~np.isnan(obs))
-        result=op.minimize(negloglike,[0,1,0],args=(synth[isgood],obs[isgood],(obserr[isgood])),bounds=[(-.2,.2),(0,10),(0,.1)])
-        errscale,errfloor=result.x[1:]
-        errpars[filt]=errscale,errfloor
-
-        resids[filt]=(obs-synth)[isgood]#-paramsdict[filt+'_offset']
-        errs[filt]=obserr[isgood]
-        rescalederr[filt]=np.hypot(errscale*obserr[isgood],errfloor).values
-
-        residcorrected[filt]=resids[filt].values-paramsdict[filt+'_offset']
+        grouped=accum.groupby('Object')
+        covsbyobject= [np.cov(grouped.get_group(group)[filts].values.T) for group in grouped.groups]
+        overallcov=np.mean([x for x,group in  zip(covsbyobject,grouped.groups)],axis=0)
+    #     plt.imshow(overallcov)
+        whitedwarftotal=pd.merge(whitedwarf_obs,grouped[filts].mean(),left_index=True,right_index=True,suffixes=('_obs','_synth'))
+        whitedwarftotal=whitedwarftotal.replace(-999.,np.nan)
+        resids={}
+        errs={}
+        errpars={}
+        residcorrected={}
+        rescalederr={}
+        def negloglike(x,synth,obs,obserr):
+            mean,errscale,errfloor=x
+            return -stats.norm.logpdf(synth-obs,loc=mean,scale=np.hypot(errscale*obserr,errfloor)).sum()
+        from scipy import optimize as op
+        for filt in filts:
+            synth,obs,obserr=whitedwarftotal[filt+'_synth'],whitedwarftotal[filt+'_obs'], whitedwarftotal[filt+'-err']
+            isgood=(synth>0) &( obs>0)&(~np.isnan(obs))
+            result=op.minimize(negloglike,[0,1,0],args=(synth[isgood],obs[isgood],(obserr[isgood])),bounds=[(-.2,.2),(0,10),(0,.1)])
+            errscale,errfloor=result.x[1:]
+            errpars[filt]=errscale,errfloor
+    
+            resids[filt]=(obs-synth)[isgood].values#-paramsdict[filt+'_offset']
+            errs[filt]=obserr[isgood].values
+            rescalederr[filt]=np.hypot(errscale*obserr[isgood],errfloor).values
+    else:
+        resids=storedvals.resids
+        filts=storedvals.filts
+        overallcov=storedvals.covariance
+        errs=storedvals.errs
+        errpars=storedvals.errpars
+        rescalederr={}
+        for filt in filts:
+            errscale,errfloor=storedvals.errpars[filt]
+            rescalederr[filt]=np.hypot(errscale*errs[filt],errfloor)
+            
     covs=np.diag(np.concatenate([rescalederr[x] for x in filts])**2) 
-    indexes=np.concatenate([np.repeat(i, residcorrected[filt].size) for i, filt in enumerate(filts)]
-    )
-    covs+=np.array([[overallcov[i,j] for i in indexes] for j in indexes]
-    )
-    allresids=jnp.concatenate([residcorrected[x] for x in filts])
+    indexes=np.concatenate([np.repeat(i, resids[filt].size) for i, filt in enumerate(filts)]  )
+    covs+=np.array([[overallcov[i,j] for i in indexes] for j in indexes])
+    
+    allresids=jnp.concatenate([resids[x]-paramsdict[x+'_offset'] for x in filts])
     transform=linalg.cholesky(covs,lower=True)
     design=jlinalg.solve_triangular(transform,allresids,lower=True)
     chisq= design @ design
-    return wdresult(chisq, resids,errs, errpars)
+    return wdresult(chisq, resids,errs, errpars,overallcov,filts)
+    
 
-def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict):
+def plotwhitedwarfresids(filt, outdir, overallcov,paramsdict):
     fig=plt.figure()
     plt.xlim(1e-3,.2)
     plt.ylim(-.1,.1)
@@ -335,7 +345,7 @@ def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict):
     plt.savefig(outpath)
     print(f'writing white dwarf residuals to {outpath}')
 
-def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None, whitedwarf_seds=None,whitedwarf_obs= None):
+def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None, whitedwarf_seds=None,whitedwarf_obs= None,biasestimates=None):
 
     chisqtot=0
     paramsdict,outofbounds,paramsnames = unwravel_params(params,surveys_for_chisq,fixsurveynames)
@@ -737,6 +747,8 @@ def get_args():
 
     msg = "Default False. Grabs fake stars to test recovery of input parameters."
     parser.add_argument("--FAKES", help = msg, type=str,default=None)
+    msg = "Use simbiases.txt to bias correct slopes "
+    parser.add_argument("--BIASCOR", help = msg, type=bool,default=True)
     parser.set_defaults(FAKES=False)
     
     parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=0.95)
@@ -792,7 +804,14 @@ if __name__ == "__main__":
     else:
         whitedwarf_obs = None
         whitedwarf_seds= None
-
+    if args.BIASCOR:
+        biasestimates=pd.read_csv('simbiases.txt',sep='\s+',index_col='FILTER' ) 
+        biasestimates={ x:data.loc[x].SLOPEBIAS for x in biasestimates.index}
+        print('Bias corrections applied from simbiases.txt')
+    else:
+        biasestimates=None
+        print("WARNING: NO BIAS CORRECTIONS APPLIED")
+        
     nparams=0
     pos = []
     for s in surveys_for_chisq:
@@ -807,7 +826,7 @@ if __name__ == "__main__":
                 pos.append(0)
     
     
-    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs)
+    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs,biasestimates=biasestimates)
     full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=f'fakes_{path.split(FAKES)[1]}' if FAKES else None)
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
