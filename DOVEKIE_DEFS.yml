@@ -5,10 +5,10 @@
 surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
 
 #Dovekie wingspan
-#surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'Foundation', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTFS', 'ZTFD', 'CFA4P2', 'CFA4P1']
+#surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1', 'ZTF']
 
 #Where the chains are saved to
-chainsfile: 'DOVEKIE.V2.npz'
+chainsfile: 'DOVEKIE.V3.npz'
 
 #We use WDs from Boyd et al. 2024 to help constrain our zeropoints
 whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
@@ -23,7 +23,7 @@ whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
 ############## START: loopsyntheticmags_commandlineaper.py
 ############################################
 
-survs: ['PS1SN',
+survs: ['PS1',
         'DES',
         'ZTF',
         'CSP_TAMU',
@@ -40,6 +40,7 @@ survs: ['PS1SN',
         'KAIT',
         'CFA4P1',
         'CFA4P2',
+        'PS1SN',
 ]
 
 kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
@@ -59,6 +60,7 @@ kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
             'kcor/KAIT_2018/',
             'kcor/CFA4_p1/',
             'kcor/CFA4_p2/',
+            'kcor/PS1s_RS14_PS1_tonry/',
 ]
 
 kcors: ['PS1_excalinaper_+30A.input',
@@ -78,8 +80,8 @@ kcors: ['PS1_excalinaper_+30A.input',
         'KAITM_excalin.input',
         'CFA41_excalin.input',
         'CFA42_excalin.input',
+        'PS1_excalin_+30.input'
 ]
-
 
 filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
             'filters/DES-SN3YR_DECam/',
@@ -97,9 +99,9 @@ filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
             'filters/SWIFTNEW/',
             'filters/KAIT_2018/',
             'filters/PS1_CFA4/',
-            'filters/PS1_CFA4/'
+            'filters/PS1_CFA4/',
+            'filters/PS1s_RS14_PS1_tonry/',
 ]
-
 
 shiftfiltss: [['g','r','i','z'],
               ['g','r','i','z'],
@@ -118,6 +120,7 @@ shiftfiltss: [['g','r','i','z'],
               ['A','B','C','D','I','J','K','L','E','F','G','H','M','N','O','P','a','b','c','d','e','f','g','h'],
               ['o','p','q','r'],
               ['s','t','u','v'],
+              ['g','r','i','z'],
 ]
 
 
@@ -137,6 +140,7 @@ namedfiltss: [['g','r','i','z'],
               ['B','V','R','I','B','V','R','I','B','V','R','I','B','V','R','I','B','V','R','I','B','V','R','I'],
               ['B','V','r','i'],
               ['B','V','r','i'],
+              ['g','r','i','z'],
 ]
 
 
@@ -157,6 +161,7 @@ obsfiltss: [['g','r','i','z'],
             ['A','B','C','D','I','J','K','L','E','F','G','H','M','N','O','P','a','b','c','d','e','f','g','h'],
             ['B','V','r','i'],
             ['B','V','r','i'],
+            ['g','r','i','z'],
 ]
 
 ###############################################

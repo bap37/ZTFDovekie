@@ -85,6 +85,7 @@ def create_kcor(OFF, OUTDIR):
             else:
                objs = line.split()
                surveyfilt = objs[1]
+               print(surveyfilt)
                offset = OFF.loc[OFF.SURVEYFILT == surveyfilt].OFFSET.values
                if len(offset) < 1 :
                   offset = ''
