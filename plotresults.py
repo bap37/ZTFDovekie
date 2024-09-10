@@ -6,6 +6,7 @@ import pandas as pd
 from chainconsumer import ChainConsumer
 import dovekie as ll
 import sys, argparse, os
+from functools import partial
 import corner
 sys.path.insert(1, 'scripts/')
 import helpers
@@ -44,8 +45,6 @@ if __name__ == "__main__":
    if not os.path.exists(filename):
       print(f'You gave {filename}, but this file does not exist. Quitting.')
       quit()
-   
-   #print("CURRENTLY WE ARE LOOKING AT THE FAKE DATA, THIS IS HARDWIRED")
 
    #initialise
    labels = helpers.create_labels(filename)
@@ -59,10 +58,17 @@ if __name__ == "__main__":
    c = helpers.create_cov(labels, flat_samples)
    postoffsets = helpers.create_postoffsets_summary(c)
    helpers.create_latex("postoffsets.dat", "postoffsets-latex.tex")
+
    surveydata = ll.get_all_shifts(surveys_for_chisq)
-   obsdfs = ll.get_all_obsdfs(surveys_for_chisq)
-   #ll.full_likelihood(np.array(postoffsets),surveys_for_chisq,fixsurveynames,surveydata,obsdfs,subscript='after_v6',doplot=True,outputdir='postmcmc')
-   #helpers.create_likelihoodhistory(samples, postoffsets, ll, surveys_for_chisq, fixsurveynames, surveydata, obsdfs)
+   obsdfs = ll.get_all_obsdfs(surveys_for_chisq, False, False)
+
+   tablefile = "postproces.dat"
+   tableout = open(tablefile,'w')
+   tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
+
+   full_likelihood_data= partial(ll.full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=None,whitedwarf_obs=None)
+   full_likelihood_data(postoffsets,subscript='postprocess',doplot=True, tableout=tableout)
+   tableout.close()
 
    print("Reached end of testing")
 
