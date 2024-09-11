@@ -136,7 +136,7 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
 def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colorfiltb,yfilt1,yfilt2,
                   shifta=0,shiftb=0,shift1=0,shift2=0,off1=0,off2=0,offa=0,offb=0,
                   calspecslope=0,calspecmeanlambda=4383.15,ngslslope=0,ngslmeanlambda=5507.09,
-                  doplot=False,subscript='', outputdir='synthetic'): #where the magic happens I suppose
+                  doplot=False,subscript='', outputdir='synthetic',speclibrary=None): #where the magic happens I suppose
     ssurv2 = survmap[surv2]
     df2 = surveydata[surv2]
     shift=df2['shift'][0]
@@ -173,9 +173,11 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
 
     synthxs,synthys, cats,synthpopts,synthpcovs,modelcolors,modelress =  ([] for i in range(7))
 
-    
-    for i,cat in enumerate((df2['standard_catagory'],~df2['standard_catagory'])):
-        catname=['calspec23','stis_ngsl_v2'][i]
+    if speclibrary is None: 
+       libraries=['stis_ngsl_v2','calspec23']
+    else: libraries=[speclibrary]
+    for i,catname in enumerate(libraries):
+        cat=df2['standard_catagory'].values==catname
         if DEBUG: print(df2.keys(), surv2, surv1) 
         synthcut = (cat) & \
            (~np.isnan(df2[longfilt2].astype('float'))) & \
@@ -209,7 +211,7 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         chireserrsq = (sigmadata/jnp.sqrt(dms.size ))**2+errfloors[surv2]**2
         chi2 += (chires**2/chireserrsq)     
    
-    
+    chi2/=len(libraries)
     #print(chi2)
     return chi2result(chi2=chi2,datax=datax,datay=datay,synthxs=synthxs,synthys=synthys,
      data_popt=data_popt,data_pcov=data_pcov,sigmadata=sigmadata, cats=cats,synthpopts=synthpopts,
@@ -311,7 +313,7 @@ def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
     return wdresult(chisq, resids,errs, errpars,overallcov,filts)
     
 
-def plotwhitedwarfresids(filt, outdir, overallcov,paramsdict):
+def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict,):
     fig=plt.figure()
     plt.xlim(1e-3,.2)
     plt.ylim(-.1,.1)
@@ -345,7 +347,7 @@ def plotwhitedwarfresids(filt, outdir, overallcov,paramsdict):
     plt.savefig(outpath)
     print(f'writing white dwarf residuals to {outpath}')
 
-def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None, whitedwarf_seds=None,whitedwarf_obs= None,biasestimates=None):
+def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None, whitedwarf_seds=None,whitedwarf_obs= None,biasestimates=None,speclibrary=None):
 
     chisqtot=0
     paramsdict,outofbounds,paramsnames = unwravel_params(params,surveys_for_chisq,fixsurveynames)
@@ -583,12 +585,12 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
 
     passsurvey={surv:{name: surveydata[surv][name].values for name in list(surveydata[surv])  if surveydata[surv][name].dtype in [np.dtype(int), np.dtype(float)] } for surv in surveydata}
     for surv in surveydata: 
-        passsurvey[surv]['standard_catagory'] = surveydata[surv]['standard_catagory'].values=='calspec23'
+        passsurvey[surv]['standard_catagory'] = surveydata[surv]['standard_catagory'] 
     passobsdfs={surv:{name: obsdfs[surv][name].values for name in list(obsdfs[surv]) if obsdfs[surv][name].dtype in [np.dtype(int), np.dtype(float)] } for surv in obsdfs}
     for surv1,surv2,filta,filtb,filt1,filt2 in zip(surv1s,surv2s,filtas,filtbs,filt1s,filt2s):
         chi2results = getchi_forone(paramsdict,passsurvey, passobsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,
                                 off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
-                                    offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
+                                    offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'], speclibrary=speclibrary)
         if doplot: plot_forone(chi2results,subscript,outputdir,tableout)
         chi2v.append(chi2results.chi2) #Would like to add the survey info as well
         totalchisq+=chi2results.chi2
@@ -751,11 +753,12 @@ def get_args():
     parser.add_argument("--BIASCOR", help = msg, type=bool,default=True)
     parser.set_defaults(FAKES=False)
     
+    parser.add_argument('--speclibrary', help='Spectral library to use',type=str,default=None)
+    parser.add_argument('--outputdir', help='Directory for all output',type=str,default=None)
     parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=0.95)
     
     parser.add_argument("--n_adaptive", help = "Number of steps to adapt MCMC hyperparameters", type=int, default=2000)
     parser.add_argument("--output", help = "Path to write output chains to (.npz format)", type=str, default=None)
-
     msg = "Default False. Prints a nice bird :)"
     parser.add_argument("--BIRD", help = msg, action="store_true")
 
@@ -774,9 +777,13 @@ if __name__ == "__main__":
                 print(line)
         quit()
     tablefile='preprocess_dovekie.dat'
-    if FAKES: 
-        if FAKES.endswith('/'): FAKES=FAKES[:-1]
-        tablefile=path.join(path.join('plots',f'fakes_{path.split(FAKES)[1]}'),tablefile)
+    if args.outputdir is None:
+        if FAKES: 
+            if FAKES.endswith('/'): FAKES=FAKES[:-1]
+            tablefile=path.join(path.join('plots',f'fakes_{path.split(FAKES)[1]}'),tablefile)
+            os.makedirs(path.split(tablefile)[0],exist_ok=True)
+    else: 
+        tablefile=path.join(args.outputdir,tablefile)
         os.makedirs(path.split(tablefile)[0],exist_ok=True)
     tableout = open(tablefile,'w')
     tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
@@ -806,7 +813,7 @@ if __name__ == "__main__":
         whitedwarf_seds= None
     if args.BIASCOR:
         biasestimates=pd.read_csv('simbiases.txt',sep='\s+',index_col='FILTER' ) 
-        biasestimates={ x:data.loc[x].SLOPEBIAS for x in biasestimates.index}
+        biasestimates={ x:biasestimates.loc[x].SLOPEBIAS for x in biasestimates.index}
         print('Bias corrections applied from simbiases.txt')
     else:
         biasestimates=None
@@ -826,8 +833,8 @@ if __name__ == "__main__":
                 pos.append(0)
     
     
-    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs,biasestimates=biasestimates)
-    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=f'fakes_{path.split(FAKES)[1]}' if FAKES else None)
+    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs,biasestimates=biasestimates, speclibrary=args.speclibrary)
+    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=(args.outputdir if args.outputdir is not None else  (f'fakes_{path.split(FAKES)[1]}' if FAKES else None) ))
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
 
@@ -851,9 +858,10 @@ if __name__ == "__main__":
     sampler = NUTS(theta0, logp=full_likelihood_data, target_acceptance=target_acceptance, M_adapt=n_burnin)
     key, samples, step_size = sampler.sample(n_samples, samplekey)
     loglikes=jax.vmap(full_likelihood_data,in_axes=0)(samples)
+    if args.outputdir and not ( '/' in outname): outname= path.join(args.outputdir,outname)
     np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
     final=np.mean(samples,axis=0)
-    
+    if args.FAKES: sys.exit(0)
     paramsdict=unwravel_params(final,surveys_for_chisq,fixsurveynames)[0]
     whitedwarfresults=calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs)
     for filt in whitedwarfresults.resids:
