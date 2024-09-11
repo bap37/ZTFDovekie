@@ -12,6 +12,7 @@ from jax import numpy as jnp, scipy as jsci
 from iminuit import Minuit
 from functools import reduce, partial
 from scripts.helpers import load_config
+import argparse
 
 
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
@@ -328,12 +329,12 @@ def generatesurveyoffsets():
     return survoffsets
 
 __surveycache__= {}
-def generatesurvey(name,survoffsets,forcereload=False):
+def generatesurvey(name,survoffsets,forcereload=False,speclibrary='calspec23'):
     if name in __surveycache__ and not forcereload:
         print(f'Retrieving {name} from cache', flush=True)
         return __surveycache__[name]
     ps1synth=loadsynthphot('output_synthetic_magsaper/synth_PS1_shift_0.000.txt')
-    cut=(ps1synth['standard_catagory']=='calspec23')& ( ps1synth['PS1g']-ps1synth['PS1r'] > 0) &(ps1synth['PS1g']-ps1synth['PS1r'] <.8)
+    cut=(ps1synth['standard_catagory']==speclibrary)& ( ps1synth['PS1g']-ps1synth['PS1r'] > 0) &(ps1synth['PS1g']-ps1synth['PS1r'] <.8)
     print(f'Preparing {name}', flush=True)
     
     if name=='SNLS':
@@ -419,18 +420,20 @@ def generatesurvey(name,survoffsets,forcereload=False):
     return surv
 
 
-def getsurveygenerators(survoffsets):
+def getsurveygenerators(*args,**kwargs):
 
     names='SNLS','SDSS','CFA3K','CFA3S','CSP','DES','Foundation','PS1SN','ZTFD','ZTFS'
     #names='ZTFD','ZTFS'
     for name in names:
-        yield name,generatesurvey(name,survoffsets)
+        yield name,generatesurvey(name,*args,**kwargs)
 
     
 def main():
-    print('debug', flush=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--speclibrary',type=str,default='calspec23')
+    args = parser.parse_args()
     survoffsets=generatesurveyoffsets()
-    surveys=getsurveygenerators(survoffsets)
+    surveys=getsurveygenerators(survoffsets,speclibrary=args.speclibrary)
 ###########################################################################
     
     surveys={name:surv for name,surv in surveys}
@@ -438,23 +441,24 @@ def main():
         survoffsets=generatesurveyoffsets()
         for name,surv in surveys.items():
             surv.offsets=np.concatenate((survoffsets[name],survoffsets['PS1']))
+        outputdir=f'output_simulated_apermags+AV/{args.speclibrary}_{i}'
         try:
-            os.mkdir(f'output_simulated_apermags+AV/{i}')
+            os.mkdir(outputdir)
         except FileExistsError:
-            print(f'output_simulated_apermags+AV/{i} directory already exists, removing it')
-            shutil.rmtree(f'output_simulated_apermags+AV/{i}')
-            os.mkdir(f'output_simulated_apermags+AV/{i}')
+            print(outputdir+' directory already exists, removing it')
+            shutil.rmtree(outputdir)
+            os.mkdir(outputdir)
         for name,surv in surveys.items():
             if 'ZTF' in name: continue
             simdata=surv.genstar(surv.nobs)
-            with open(f'output_simulated_apermags+AV/{i}/{name}_observed.csv', 'w') as csvfile:
+            with open(outputdir+f'/{name}_observed.csv', 'w') as csvfile:
                 out = csv.writer(csvfile, delimiter=',')
                 dashednames=[x[:-1]+'-'+x[-1] for x in simdata.dtype.names]
                 out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames])
                 for row in simdata:
                     out.writerow([name]+list(row)+[99,99]+ [0]*len(row))
         double,single=surveys['ZTFD'],surveys['ZTFS']
-        with open(f'output_simulated_apermags+AV/{i}/ZTF_observed.csv', 'w') as csvfile:
+        with open(outputdir+'/ZTF_observed.csv', 'w') as csvfile:
             out = csv.writer(csvfile, delimiter=',')
             dashednames=[(x[:-1]+'-'+x[-1]).replace('D-','-').replace('S-','-') for x in (single.filtnames+[x.upper() for x in double.filtnames] + ['PS1'+x for x in 'griz'])]
             out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames] + [])
@@ -466,7 +470,7 @@ def main():
             for row in simdata:
                 row=list(row)
                 out.writerow(['ZTF']+([-999]*3)+list(row[:3])+list(row[3:])+[99,99]+ [0]*(len(row)+3))
-        with open(f'output_simulated_apermags+AV/{i}/simmedoffsets.json','w') as file:
+        with open(outputdir+'/simmedoffsets.json','w') as file:
             file.write(json.dumps({name:list(survoffsets[name]) for name in survoffsets}))
     
 ###########################################################################
