@@ -198,8 +198,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         popt=jnp.array([popt[0] ,popt[1] +( off2-off1 - popt[0]* (offb-offa))])
         synthxs.append(synthx); synthys.append(synthy)
     
-        modelress.append(modelres +off2-off1)
-        modelcolors.append(modelcolor + offb-offa)
+        modelress.append(modelres.values +off2-off1)
+        modelcolors.append(modelcolor.values + offb-offa)
         cats.append(catname)
         synthpopts.append(popt)
         synthpcovs.append(pcov)
