@@ -420,6 +420,39 @@ def generatesurvey(name,survoffsets,forcereload=False,speclibrary='calspec23'):
     return surv
 
 
+def generatewhitedwarfs(survoffsets):
+    whitedwarf_seds=get_whitedwarf_synths(config['surveys_for_dovekie'])
+    whitedwarf_obs = pd.read_csv(whitedwarf_obs_loc,index_col='Object')
+
+    for surv in whitedwarf_seds: whitedwarf_seds[surv]=whitedwarf_seds[surv].rename(columns={'standard':'Object'})
+    wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
+    accum=whitedwarf_seds[wdsurveys[0]]
+    for key in wdsurveys[1:]:
+        accum=pd.merge(accum, whitedwarf_seds[key], left_index=True, right_index=True,suffixes=('','_y'))
+        accum=accum.drop(
+            accum.filter(regex='_y$').columns, axis=1)       
+    filts=[(survey+'-' + filt) for filt in 'griz' for survey in wdsurveys ]
+    isbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
+    print(f'{(isbad).sum():d} bad SED samples' )
+    accum=accum[~isbad]
+    
+    grouped=accum.groupby('Object')
+    whitedwarftotal=pd.merge(whitedwarf_obs,grouped.sample().set_index('Object')[filts],left_index=True,right_index=True,suffixes=('_obs','_synth'))
+    whitedwarftotal=whitedwarftotal.replace(-999.,np.nan)
+    whitedwarf_generated=whitedwarf_obs.copy()
+    for fullfilt in filts:
+        surv,filtname=fullfilt.split('-')
+        synth,obs,obserr=whitedwarftotal[fullfilt+'_synth'],whitedwarftotal[fullfilt+'_obs'], whitedwarftotal[fullfilt+'-err']
+        isgood=(synth>0) &( obs>0)&(~np.isnan(obs))
+        errscale=stats.gamma(2,scale=1).rvs()
+        errfloor=stats.uniform(0,0.02).rvs()
+        trueerr=np.hypot(obserr*errscale,errfloor)
+        print(trueerr[isgood][0],synth[isgood][0])
+        generated= synth[isgood]+np.random.normal(scale=trueerr.values[isgood])+survoffsets[surv]['griz'.index(filtname)]
+        whitedwarf_generated.loc[generated.index,fullfilt]=generated
+    return whitedwarf_generated
+
+
 def getsurveygenerators(*args,**kwargs):
 
     names='SNLS','SDSS','CFA3K','CFA3S','CSP','DES','Foundation','PS1SN','ZTFD','ZTFS'
@@ -475,6 +508,8 @@ def main():
     
 ###########################################################################
     
+    generatedwds=generatewhitedwarfs(survoffsets)
+    generatedwds.to_csv(outputdir+'/WD_simmed.csv')
     
     offsetdict={'PS1':dict(zip(['PS1'+x for x in 'griz'] ,survoffsets['PS1']))}
     for name in surveys:

@@ -262,9 +262,9 @@ def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
             accum=accum.drop(
                 accum.filter(regex='_y$').columns, axis=1)       
         filts=[(survey+'-' + filt) for filt in 'griz' for survey in wdsurveys ]
-        isbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
+        issbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
         print(f'{(isbad).sum():d} bad SED samples' )
-    
+        accum=accum[~isbad]
         grouped=accum.groupby('Object')
         covsbyobject= [np.cov(grouped.get_group(group)[filts].values.T) for group in grouped.groups]
         overallcov=np.mean([x for x,group in  zip(covsbyobject,grouped.groups)],axis=0)
