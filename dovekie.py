@@ -262,7 +262,7 @@ def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
             accum=accum.drop(
                 accum.filter(regex='_y$').columns, axis=1)       
         filts=[(survey+'-' + filt) for filt in 'griz' for survey in wdsurveys ]
-        issbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
+        isbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
         print(f'{(isbad).sum():d} bad SED samples' )
         accum=accum[~isbad]
         grouped=accum.groupby('Object')
@@ -808,8 +808,9 @@ if __name__ == "__main__":
         print("Done acquiring IRSA maps. Quitting now to avoid confusion.")
         quit()
 
-    if whitedwarf_obs_loc and (not args.FAKES ):
-    #     if False:
+    if whitedwarf_obs_loc:
+        if ( args.FAKES ):
+            whitedwarf_obs_loc=args.fakes+'/WD_simmed.csv'
         print('Loading white dwarf data')
         whitedwarf_obs = pd.read_csv(whitedwarf_obs_loc,index_col='Object')
         whitedwarf_seds= get_whitedwarf_synths(surveys_for_chisq)
