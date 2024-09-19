@@ -282,7 +282,7 @@ def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
         from scipy import optimize as op
         for filt in filts:
             synth,obs,obserr=whitedwarftotal[filt+'_synth'],whitedwarftotal[filt+'_obs'], whitedwarftotal[filt+'-err']
-            isgood=(synth>0) &( obs>0)&(~np.isnan(obs))
+            isgood=(synth>0) &( obs>0)&(~np.isnan(obs))&(~np.isnan(obserr))
             result=op.minimize(negloglike,[0,1,0],args=(synth[isgood],obs[isgood],(obserr[isgood])),bounds=[(-.2,.2),(0,10),(0,.1)])
             errscale,errfloor=result.x[1:]
             errpars[filt]=errscale,errfloor
