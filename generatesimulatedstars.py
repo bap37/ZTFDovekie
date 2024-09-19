@@ -13,8 +13,8 @@ from iminuit import Minuit
 from functools import reduce, partial
 from scripts.helpers import load_config
 import argparse
-
-
+import pandas as pd
+from dovekie import get_whitedwarf_synths
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
 
@@ -27,9 +27,12 @@ def loadsynthphot(fname):
     return result
 
 def getdata(survname):
+    if 'ZTF' in survname:
+        isdouble=survname[-1]=='D'
+        survname='ZTF'
     synth=loadsynthphot(f'output_synthetic_magsaper/synth_{survname}_shift_0.000.txt')
     obs=np.genfromtxt(f'output_observed_apermags+AV/{survname}_observed.csv',names=True,dtype=None,encoding='utf-8',delimiter=',')
-    for name in obs.dtype.names: 
+    for name in obs.dtype.names:
         if '_AV' in name or name in ['survey','RA','DEC']:
             pass
         else:
@@ -37,6 +40,17 @@ def getdata(survname):
                 obs[name]=obs[name]- obs[name+'_AV']
             except ValueError:
                 pass
+    if survname=='ZTF':
+        if isdouble: 
+            obscut=np.all([obs[x]<80 for x in ['ZTFG','ZTFR','ZTFI']],axis=0)#
+        else:
+            obscut= np.all([obs[x]<80 for x in ['ZTFg','ZTFr','ZTFi']],axis=0)#
+        obs=obs[obscut]
+        cutfilts=(['ZTF'+(x if isdouble else x.upper()) for x in 'gri'])
+        obs=obs[[x for x in obs.dtype.names if x not in cutfilts]]
+        obs.dtype.names=[((x[:-1]+('D' if isdouble else 'S')+x[-1].lower() )if ((len(x)==4) and (x[:3]=='ZTF') ) else x)for x in obs.dtype.names]
+        synth=synth[[x for x in synth.dtype.names if x not in cutfilts]]
+        synth.dtype.names=[((x[:-1]+('D' if isdouble else 'S')+x[-1].lower() )if ((len(x)==4) and (x[:3]=='ZTF') ) else x)for x in synth.dtype.names]
     return synth,obs
 
 
@@ -422,7 +436,7 @@ def generatesurvey(name,survoffsets,forcereload=False,speclibrary='calspec23'):
 
 def generatewhitedwarfs(survoffsets):
     whitedwarf_seds=get_whitedwarf_synths(config['surveys_for_dovekie'])
-    whitedwarf_obs = pd.read_csv(whitedwarf_obs_loc,index_col='Object')
+    whitedwarf_obs = pd.read_csv('spectra/bboyd/DA_WD_actual.csv',index_col='Object')
 
     for surv in whitedwarf_seds: whitedwarf_seds[surv]=whitedwarf_seds[surv].rename(columns={'standard':'Object'})
     wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
@@ -447,7 +461,6 @@ def generatewhitedwarfs(survoffsets):
         errscale=stats.gamma(2,scale=1).rvs()
         errfloor=stats.uniform(0,0.02).rvs()
         trueerr=np.hypot(obserr*errscale,errfloor)
-        print(trueerr[isgood][0],synth[isgood][0])
         generated= synth[isgood]+np.random.normal(scale=trueerr.values[isgood])+survoffsets[surv]['griz'.index(filtname)]
         whitedwarf_generated.loc[generated.index,fullfilt]=generated
     return whitedwarf_generated
@@ -506,10 +519,10 @@ def main():
         with open(outputdir+'/simmedoffsets.json','w') as file:
             file.write(json.dumps({name:list(survoffsets[name]) for name in survoffsets}))
     
+        generatedwds=generatewhitedwarfs(survoffsets)
+        generatedwds.to_csv(outputdir+'/WD_simmed.csv')
 ###########################################################################
     
-    generatedwds=generatewhitedwarfs(survoffsets)
-    generatedwds.to_csv(outputdir+'/WD_simmed.csv')
     
     offsetdict={'PS1':dict(zip(['PS1'+x for x in 'griz'] ,survoffsets['PS1']))}
     for name in surveys:
