@@ -593,7 +593,7 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
             chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
                                     off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
                                         offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
-            if doplot: plot_forone(chi2results,subscript,outputdir,tableout)
+            if doplot: plot_forone(chi2results,subscript,outputdir,tableout,biasestimates)
             chi2v.append(chi2results.chi2) #Would like to add the survey info as well
         if len(allshifts)>1: 
             print('WARNING: Multiple shifts indicated, no chi2 calculated')
@@ -674,7 +674,7 @@ def lnprior(paramsdict):
     return lp
 
 ##Put old ugly code with plotting in here
-def plot_forone(result,subscript, outputdir,tableout): 
+def plot_forone(result,subscript, outputdir,tableout,biasestimates): 
 
     
     plt.clf()
@@ -693,7 +693,7 @@ def plot_forone(result,subscript, outputdir,tableout):
         offmed = np.median(line(result.datax,popt[0],popt[1]) - result.datay)
         synth_slope = popt[0]
         synth_slope_err = np.sqrt(pcov[0,0])
-        sigma = (data_slope-synth_slope)/np.sqrt(data_slope_err**2+synth_slope_err**2)
+        diff = (data_slope-synth_slope)
 
         ## Start plots here
         ax.plot(result.datax,line(result.datax,popt[0],popt[1]),
@@ -714,8 +714,8 @@ def plot_forone(result,subscript, outputdir,tableout):
             ax.spines[speen].set_visible(False)
 
         ## End plot stuff
-
-        tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.1f\t%.1f\n'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,cat,offmean,result.datax.size,data_slope,data_slope_err,synth_slope,synth_slope_err,sigma,result.shift))
+        preddiff,scatter=biasestimates[result.surv2+'-' + result.yfilt2]
+        tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.3f\t%.3f\t%.1f\t%.1f\n'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,cat,offmean,result.datax.size,data_slope,data_slope_err,synth_slope,synth_slope_err, diff,preddiff, (diff-preddiff)/scatter,result.shift))
     fname='overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,'all',subscript)
     if outputdir: outpath= path.join('plots',path.join(outputdir, fname))
     else: outpath=path.join('plots',fname)
@@ -791,7 +791,7 @@ if __name__ == "__main__":
         tablefile=path.join(args.outputdir,tablefile)
         os.makedirs(path.split(tablefile)[0],exist_ok=True)
     tableout = open(tablefile,'w')
-    tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
+    tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE DIFF PRED_DIFF SIGMA SHIFT\n')
     print('reading in survey data')
 
     surveys_for_chisq = config['surveys_for_dovekie']
@@ -819,7 +819,7 @@ if __name__ == "__main__":
         whitedwarf_seds= None
     if args.BIASCOR:
         biasestimates=pd.read_csv('simbiases.txt',sep='\s+',index_col='FILTER' ) 
-        biasestimates={ x:biasestimates.loc[x].SLOPEBIAS for x in biasestimates.index}
+        biasestimates={ x:(biasestimates.loc[x].SLOPEBIAS,biasestimates.loc[x].SLOPEERROR) for x in biasestimates.index}
         print('Bias corrections applied from simbiases.txt')
     else:
         biasestimates=None
@@ -839,8 +839,8 @@ if __name__ == "__main__":
                 pos.append(0)
     
     
-    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs,biasestimates=biasestimates, speclibrary=args.speclibrary)
-    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=(args.outputdir if args.outputdir is not None else  (f'fakes_{path.split(FAKES)[1]}' if FAKES else None) ))
+    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs, speclibrary=args.speclibrary)
+    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=(args.outputdir if args.outputdir is not None else  (f'fakes_{path.split(FAKES)[1]}' if FAKES else None) ),biasestimates=biasestimates)
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
 

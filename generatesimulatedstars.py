@@ -436,7 +436,7 @@ def generatesurvey(name,survoffsets,forcereload=False,speclibrary='calspec23'):
 
 def generatewhitedwarfs(survoffsets):
     whitedwarf_seds=get_whitedwarf_synths(config['surveys_for_dovekie'])
-    whitedwarf_obs = pd.read_csv('spectra/bboyd/DA_WD_actual.csv',index_col='Object')
+    whitedwarf_obs = pd.read_csv('spectra/bboyd/DA_WD_DES-update.dat',index_col='Object')
 
     for surv in whitedwarf_seds: whitedwarf_seds[surv]=whitedwarf_seds[surv].rename(columns={'standard':'Object'})
     wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
