@@ -810,7 +810,7 @@ if __name__ == "__main__":
 
     if whitedwarf_obs_loc:
         if ( args.FAKES ):
-            whitedwarf_obs_loc=args.fakes+'/WD_simmed.csv'
+            whitedwarf_obs_loc=args.FAKES+'/WD_simmed.csv'
         print('Loading white dwarf data')
         whitedwarf_obs = pd.read_csv(whitedwarf_obs_loc,index_col='Object')
         whitedwarf_seds= get_whitedwarf_synths(surveys_for_chisq)
