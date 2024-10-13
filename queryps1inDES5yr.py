@@ -211,16 +211,28 @@ def resolve(name):
 
 
 #d = pd.read_csv('newcatalog/Y6A1_FGCM_V3_3_1_PSF_ALL_STARS_small_July2020.pkl')
-d = pickle.load( open( "newcatalog/Y6A1_FGCM_V3_3_1_PSF_ALL_STARS_small_July2020.pkl", "rb" ) )
+#d = pickle.load( open( "newcatalog/Y6A1_FGCM_V3_3_1_PSF_ALL_STARS_small_July2020.pkl", "rb" ) )
 
-print(d.columns)
-quit()
+#d = pd.read_csv('newcatalog/Y6A1_FGCM_V3_3_1_PSF_ALL_STARS_small_July2020-INSNFIELDS.csv')
+d = Table.read('rawstars/Y6A1_FGCM_V3_3_1_PSF_ALL_STARS.fits')
+d = d.to_pandas()
+
+d['radiff']  = d['RA']  - 35
+d['decdiff'] = d['DEC'] - -5
+
+d = d.loc[(abs(d.radiff) < 1) & (abs(d.decdiff) < 1)]
+
+print(list(d))
+
 
 pcols = d.columns
 l = len(d)
 tables = []
 for i,row in d.iterrows():
-    if row['Y6A1_G'] > 19: continue
+    try:
+        if row['Y6A1_G'] > 19: continue
+    except:
+        if row['MAG_STD_G'] > 19: continue
     if row['DEC'] < -29: continue
     print(i,'out of',l)
 
