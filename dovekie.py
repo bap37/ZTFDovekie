@@ -714,7 +714,7 @@ def plot_forone(result,subscript, outputdir,tableout,biasestimates):
             ax.spines[speen].set_visible(False)
 
         ## End plot stuff
-        preddiff,scatter=biasestimates[result.surv2+'-' + result.yfilt2]
+        preddiff,scatter=biasestimates[result.surv2+'-' + result.yfilt2+'-'+cat]
         tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.3f\t%.3f\t%.1f\t%.1f\n'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,cat,offmean,result.datax.size,data_slope,data_slope_err,synth_slope,synth_slope_err, diff,preddiff, (diff-preddiff)/scatter,result.shift))
     fname='overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,'all',subscript)
     if outputdir: outpath= path.join('plots',path.join(outputdir, fname))
@@ -818,8 +818,8 @@ if __name__ == "__main__":
         whitedwarf_obs = None
         whitedwarf_seds= None
     if args.BIASCOR:
-        biasestimates=pd.read_csv('simbiases.txt',sep='\s+',index_col='FILTER' ) 
-        biasestimates={ x:(biasestimates.loc[x].SLOPEBIAS,biasestimates.loc[x].SLOPEERROR) for x in biasestimates.index}
+        biasestimates=pd.read_csv('simbiases.txt',sep='\s+' ) 
+        biasestimates={ x.FILTER+'-'+x.SPECLIB:(x.SLOPEBIAS,x.SLOPEERROR) for _,x in biasestimates.iterrows()}
         print('Bias corrections applied from simbiases.txt')
     else:
         biasestimates=None
