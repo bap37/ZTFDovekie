@@ -715,7 +715,7 @@ def plot_forone(result,subscript, outputdir,tableout,biasestimates):
 
         ## End plot stuff
         if (biasestimates is None) or (len(biasestimates) is 0):
-            preddiff,scatter=None,None
+            preddiff,scatter=0,0
         else:
             preddiff,scatter=biasestimates[result.surv2+'-' + result.yfilt2+'-'+cat]
         tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.3f\t%.3f\t%.1f\t%.1f\n'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,cat,offmean,result.datax.size,data_slope,data_slope_err,synth_slope,synth_slope_err, diff,preddiff, (diff-preddiff)/scatter,result.shift))
