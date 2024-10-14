@@ -3,6 +3,7 @@
 
 #The proper dovekie
 surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'ZTF'] 
+#surveys_for_dovekie: ['DES','PS1']
 
 #Dovekie wingspan
 #surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1', 'ZTF']
@@ -567,7 +568,7 @@ n_burnin : 2000
 
 filttranss: [['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
-             ['ztfg1.dat+-15' ,'ztfr1.dat', 'ztfi1.dat', 'ztfg2.dat' ,'ztfr2.dat', 'ztfi2.dat'],
+             ['ztfg1.dat' ,'ztfr1.dat+20', 'ztfi1.dat', 'ztfg2.dat+20' ,'ztfr2.dat+25', 'ztfi2.dat'],
              ['u_tel_ccd_atm_ext_1.2.dat','g_tel_ccd_atm_ext_1.2.dat','r_tel_ccd_atm_ext_1.2.dat','i_tel_ccd_atm_ext_1.2.dat','B_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','V_LC3009_tel_ccd_atm_ext_1.2.dat','V_LC3014_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','Y_SWO_TAM_scan_atm.dat','Y_DUP_TAM_scan_atm.dat','Jrc1_SWO_TAM_scan_atm.dat','Jrc2_SWO_TAM_scan_atm.dat','H_SWO_TAM_scan_atm.dat','H_DUP_TAM_scan_atm.dat'],
              ['G.dat','R.dat','I.dat','Z.dat','g.dat','r.dat','i.dat','z.dat'],
              ['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],

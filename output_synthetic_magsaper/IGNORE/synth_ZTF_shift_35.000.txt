@@ -1,452 +1,452 @@
-survey version standard standard_catagory shift ZTF-g ZTF-r ZTF-i 
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd078316_v2.fits stis_ngsl_v2 35 5.077 5.441 5.735
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd063700_v2.fits stis_ngsl_v2 35 3.81 2.903 2.645
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd167278_v2.fits stis_ngsl_v2 35 8.379 8.184 8.219
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd172506_v2.fits stis_ngsl_v2 35 8.109 8.054 8.13
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd008491_v2.fits stis_ngsl_v2 35 5.147 4.351 4.127
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd028978_v2.fits stis_ngsl_v2 35 5.692 5.909 6.16
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd046703_v2.fits stis_ngsl_v2 35 9.242 8.87 8.752
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd064412_v2.fits stis_ngsl_v2 35 8.941 8.564 8.465
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd221377_v2.fits stis_ngsl_v2 35 7.65 7.441 7.42
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd087737_v2.fits stis_ngsl_v2 35 3.358 3.609 3.831
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd095849_v2.fits stis_ngsl_v2 35 6.429 5.491 5.2
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd020039_v2.fits stis_ngsl_v2 35 9.16 8.616 8.434
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd126327_v2.fits stis_ngsl_v2 35 8.558 6.099 3.515
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd030834_v2.fits stis_ngsl_v2 35 5.37 4.189 3.764
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd072324_v2.fits stis_ngsl_v2 35 6.74 5.991 5.762
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd111721_v2.fits stis_ngsl_v2 35 8.282 7.68 7.458
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd160762_v2.fits stis_ngsl_v2 35 3.553 3.982 4.326
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd124186_v2.fits stis_ngsl_v2 35 6.654 5.669 5.365
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd146233_v2.fits stis_ngsl_v2 35 5.747 5.347 5.287
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd041357_v2.fits stis_ngsl_v2 35 5.346 5.352 5.473
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd025329_v2.fits stis_ngsl_v2 35 8.828 8.149 7.919
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd072968_v2.fits stis_ngsl_v2 35 5.589 5.862 6.097
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g115-58_v2.fits stis_ngsl_v2 35 12.31 12.02 11.98
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd004813_v2.fits stis_ngsl_v2 35 5.325 5.031 4.997
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd142926_v2.fits stis_ngsl_v2 35 5.554 5.901 6.206
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164257_v2.fits stis_ngsl_v2 35 6.702 6.848 7.016
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd196725_v2.fits stis_ngsl_v2 35 6.361 5.11 4.673
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd030614_v2.fits stis_ngsl_v2 35 4.188 4.351 4.549
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd022484_v2.fits stis_ngsl_v2 35 4.452 4.125 4.054
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd079469_v2.fits stis_ngsl_v2 35 3.731 4.051 4.331
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g18-39_v2.fits stis_ngsl_v2 35 10.537 10.235 10.145
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g12-21_v2.fits stis_ngsl_v2 35 10.359 10.053 10.003
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd025893_v2.fits stis_ngsl_v2 35 7.522 6.918 6.77
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd132345_v2.fits stis_ngsl_v2 35 6.381 5.412 5.114
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd091316_v2.fits stis_ngsl_v2 35 3.646 4.027 4.339
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd117880_v2.fits stis_ngsl_v2 35 8.989 9.183 9.388
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_cd-621346_v2.fits stis_ngsl_v2 35 10.082 9.59 9.438
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_gl109_v2.fits stis_ngsl_v2 35 11.288 9.821 8.558
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd016031_v2.fits stis_ngsl_v2 35 9.899 9.638 9.566
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd371458_v2.fits stis_ngsl_v2 35 9.203 8.794 8.679
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd081797_v2.fits stis_ngsl_v2 35 2.737 1.582 1.194
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd067390_v2.fits stis_ngsl_v2 35 9.595 9.482 9.52
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd061603_v2.fits stis_ngsl_v2 35 6.589 5.292 4.73
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd062412_v2.fits stis_ngsl_v2 35 6.0 5.282 5.068
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd031219_v2.fits stis_ngsl_v2 35 8.345 8.01 7.989
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd002857_v2.fits stis_ngsl_v2 35 10.271 10.422 10.552
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd114710_v2.fits stis_ngsl_v2 35 4.418 4.057 3.987
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd198809_v2.fits stis_ngsl_v2 35 4.859 4.264 4.1
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g88-27_v2.fits stis_ngsl_v2 35 10.838 10.553 10.489
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd210807_v2.fits stis_ngsl_v2 35 5.169 4.496 4.321
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd201091_v2.fits stis_ngsl_v2 35 5.748 4.692 4.314
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd165341_v2.fits stis_ngsl_v2 35 4.538 3.93 3.782
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd131873_v2.fits stis_ngsl_v2 35 2.73 1.507 1.039
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_cd-3018140_v2.fits stis_ngsl_v2 35 10.155 9.965 9.94
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd184266_v2.fits stis_ngsl_v2 35 7.82 7.394 7.257
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd057060_v2.fits stis_ngsl_v2 35 5.09 5.453 5.747
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd045282_v2.fits stis_ngsl_v2 35 8.285 7.789 7.638
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd176437_v2.fits stis_ngsl_v2 35 3.102 3.392 3.619
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd185144_v2.fits stis_ngsl_v2 35 4.964 4.371 4.209
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd057727_v2.fits stis_ngsl_v2 35 5.358 4.691 4.506
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g188-30_v2.fits stis_ngsl_v2 35 11.476 11.052 10.923
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+112998_v2.fits stis_ngsl_v2 35 9.318 8.847 8.668
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd204155_v2.fits stis_ngsl_v2 35 8.674 8.313 8.215
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g029-023_v2.fits stis_ngsl_v2 35 10.391 10.094 10.033
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd122956_v2.fits stis_ngsl_v2 35 7.655 6.851 6.546
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd128279_v2.fits stis_ngsl_v2 35 8.285 7.783 7.594
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd205811_v2.fits stis_ngsl_v2 35 6.054 6.323 6.552
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd217107_v2.fits stis_ngsl_v2 35 6.423 5.926 5.817
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g194-22_v2.fits stis_ngsl_v2 35 9.929 9.708 9.677
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd039587_v2.fits stis_ngsl_v2 35 4.563 4.189 4.128
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g24-3_v2.fits stis_ngsl_v2 35 10.624 10.3 10.201
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd163810_v2.fits stis_ngsl_v2 35 10.157 9.781 9.696
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd108945_v2.fits stis_ngsl_v2 35 5.386 5.616 5.877
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd085380_v2.fits stis_ngsl_v2 35 6.606 6.251 6.186
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd002665_v2.fits stis_ngsl_v2 35 8.06 7.441 7.207
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_lhs482_v2.fits stis_ngsl_v2 35 12.752 11.248 10.382
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd065354_v2.fits stis_ngsl_v2 35 7.529 6.193 5.686
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd167006_v2.fits stis_ngsl_v2 35 5.613 4.16 3.184
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd204867_v2.fits stis_ngsl_v2 35 3.175 2.615 2.486
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd222404_v2.fits stis_ngsl_v2 35 3.609 2.835 2.604
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd174240_v2.fits stis_ngsl_v2 35 6.118 6.353 6.563
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd134113_v2.fits stis_ngsl_v2 35 8.455 8.071 7.969
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd105546_v2.fits stis_ngsl_v2 35 8.879 8.379 8.214
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd148293_v2.fits stis_ngsl_v2 35 5.695 4.857 4.606
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd212593_v2.fits stis_ngsl_v2 35 4.485 4.615 4.786
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd005544_v2.fits stis_ngsl_v2 35 8.082 7.216 6.929
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd232078_v2.fits stis_ngsl_v2 35 9.357 7.6 6.857
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd196218_v2.fits stis_ngsl_v2 35 7.571 7.283 7.223
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd076932_v2.fits stis_ngsl_v2 35 5.952 5.63 5.547
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd190404_v2.fits stis_ngsl_v2 35 7.628 6.984 6.806
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd000886_v2.fits stis_ngsl_v2 35 2.6 3.076 3.44
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd167946_v2.fits stis_ngsl_v2 35 7.248 7.469 7.705
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd210745_v2.fits stis_ngsl_v2 35 4.018 2.763 2.357
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd004727_v2.fits stis_ngsl_v2 35 4.336 4.723 5.045
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g169-28_v2.fits stis_ngsl_v2 35 11.516 11.18 11.091
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd029391_v2.fits stis_ngsl_v2 35 5.196 5.179 5.267
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd009051_v2.fits stis_ngsl_v2 35 9.275 8.645 8.43
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd041667_v2.fits stis_ngsl_v2 35 8.872 8.119 7.827
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd065228_v2.fits stis_ngsl_v2 35 4.403 3.942 3.832
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd173819_v2.fits stis_ngsl_v2 35 6.564 5.332 4.575
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd005395_v2.fits stis_ngsl_v2 35 4.981 4.276 4.043
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd103036_v2.fits stis_ngsl_v2 35 8.667 7.654 7.295
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_gj825_v2.fits stis_ngsl_v2 35 7.34 5.969 5.308
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd043042_v2.fits stis_ngsl_v2 35 5.342 5.113 5.132
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd143459_v2.fits stis_ngsl_v2 35 5.452 5.677 5.857
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164402_v2.fits stis_ngsl_v2 35 5.58 5.816 6.055
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175640_v2.fits stis_ngsl_v2 35 6.056 6.344 6.606
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd146051_v2.fits stis_ngsl_v2 35 3.422 2.078 1.361
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd105740_v2.fits stis_ngsl_v2 35 8.806 8.048 7.774
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd113002_v2.fits stis_ngsl_v2 35 9.009 8.46 8.274
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd174959_v2.fits stis_ngsl_v2 35 5.922 6.264 6.559
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd074721_v2.fits stis_ngsl_v2 35 8.578 8.809 9.019
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hr0753_v2.fits stis_ngsl_v2 35 6.606 5.867 5.662
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd511696_v2.fits stis_ngsl_v2 35 10.12 9.728 9.634
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd128801_v2.fits stis_ngsl_v2 35 8.634 8.915 9.168
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd027295_v2.fits stis_ngsl_v2 35 5.32 5.676 5.959
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hr8086_v2.fits stis_ngsl_v2 35 6.682 5.391 4.848
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd010780_v2.fits stis_ngsl_v2 35 5.914 5.344 5.192
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd113092_v2.fits stis_ngsl_v2 35 5.909 4.864 4.477
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd083212_v2.fits stis_ngsl_v2 35 8.77 7.911 7.593
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd413931_v2.fits stis_ngsl_v2 35 10.526 10.084 9.971
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd147394_v2.fits stis_ngsl_v2 35 3.667 4.086 4.407
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd102212_v2.fits stis_ngsl_v2 35 4.667 3.379 2.689
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd140232_v2.fits stis_ngsl_v2 35 5.788 5.842 5.967
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+363168_v2.fits stis_ngsl_v2 35 10.276 6.17 4.812
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd197177_v2.fits stis_ngsl_v2 35 6.056 5.29 5.06
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd205202_v2.fits stis_ngsl_v2 35 8.204 8.0 7.972
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd159181_v2.fits stis_ngsl_v2 35 3.14 2.451 2.242
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd149382_v2.fits stis_ngsl_v2 35 8.686 9.221 9.615
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd048279_v2.fits stis_ngsl_v2 35 7.91 7.975 8.105
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd161770_v2.fits stis_ngsl_v2 35 9.956 9.41 9.203
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd017925_v2.fits stis_ngsl_v2 35 6.387 5.721 5.558
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g20-15_v2.fits stis_ngsl_v2 35 10.839 10.365 10.207
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g243-62_v2.fits stis_ngsl_v2 35 11.889 11.192 10.937
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd156283_v2.fits stis_ngsl_v2 35 3.745 2.604 2.205
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd166208_v2.fits stis_ngsl_v2 35 5.331 4.659 4.458
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd060319_v2.fits stis_ngsl_v2 35 9.074 8.751 8.676
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd052973_v2.fits stis_ngsl_v2 35 4.162 3.568 3.423
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd034797_v2.fits stis_ngsl_v2 35 6.363 6.714 7.0
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175545_v2.fits stis_ngsl_v2 35 7.876 6.934 6.628
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd095735_v2.fits stis_ngsl_v2 35 8.16 6.732 5.715
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd136726_v2.fits stis_ngsl_v2 35 5.578 4.457 4.075
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd040573_v2.fits stis_ngsl_v2 35 7.341 7.628 7.871
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd204041_v2.fits stis_ngsl_v2 35 6.395 6.504 6.641
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd028946_v2.fits stis_ngsl_v2 35 8.199 7.643 7.495
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd143107_v2.fits stis_ngsl_v2 35 4.684 3.734 3.43
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g202-65_v2.fits stis_ngsl_v2 35 11.602 11.531 11.586
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd204543_v2.fits stis_ngsl_v2 35 8.704 7.975 7.705
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd172230_v2.fits stis_ngsl_v2 35 7.175 7.185 7.29
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd160922_v2.fits stis_ngsl_v2 35 4.87 4.658 4.648
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd082395_v2.fits stis_ngsl_v2 35 5.38 4.593 4.364
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g262-14_v2.fits stis_ngsl_v2 35 11.782 11.164 10.937
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd026297_v2.fits stis_ngsl_v2 35 7.938 7.015 6.663
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd110885_v2.fits stis_ngsl_v2 35 9.395 8.963 8.83
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd201377_v2.fits stis_ngsl_v2 35 6.635 6.734 6.875
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g13-35_v2.fits stis_ngsl_v2 35 9.793 9.525 9.462
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd050420_v2.fits stis_ngsl_v2 35 6.204 6.102 6.132
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd206778_v2.fits stis_ngsl_v2 35 3.107 1.853 1.462
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g188-22_v2.fits stis_ngsl_v2 35 10.238 9.926 9.86
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd093813_v2.fits stis_ngsl_v2 35 3.603 2.635 2.309
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175865_v2.fits stis_ngsl_v2 35 4.602 3.043 1.323
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd006734_v2.fits stis_ngsl_v2 35 6.768 6.128 5.932
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd038237_v2.fits stis_ngsl_v2 35 7.115 7.226 7.383
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd072184_v2.fits stis_ngsl_v2 35 6.32 5.474 5.223
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd052089_v2.fits stis_ngsl_v2 35 1.31 1.767 2.086
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd086322_v2.fits stis_ngsl_v2 35 7.297 6.514 6.269
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd137909_v2.fits stis_ngsl_v2 35 3.796 3.837 4.016
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd173158_v2.fits stis_ngsl_v2 35 8.627 7.243 6.703
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd121146_v2.fits stis_ngsl_v2 35 6.864 5.912 5.599
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+75d325_v2.fits stis_ngsl_v2 35 9.268 9.832 10.261
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd017361_v2.fits stis_ngsl_v2 35 4.952 4.104 3.847
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd592723_v2.fits stis_ngsl_v2 35 10.621 10.322 10.243
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd166229_v2.fits stis_ngsl_v2 35 5.943 5.076 4.808
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164967_v2.fits stis_ngsl_v2 35 7.143 7.275 7.428
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd224926_v2.fits stis_ngsl_v2 35 4.936 5.303 5.606
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_cd-259286_v2.fits stis_ngsl_v2 35 11.118 10.811 10.741
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd071160_v2.fits stis_ngsl_v2 35 8.606 7.375 6.9
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd106304_v2.fits stis_ngsl_v2 35 8.937 9.184 9.404
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g187-40_v2.fits stis_ngsl_v2 35 10.728 10.396 10.322
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019787_v2.fits stis_ngsl_v2 35 4.734 3.969 3.751
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g231-52_v2.fits stis_ngsl_v2 35 10.659 10.231 10.107
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd141851_v2.fits stis_ngsl_v2 35 5.056 5.183 5.348
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd082734_v2.fits stis_ngsl_v2 35 5.385 4.653 4.455
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd163641_v2.fits stis_ngsl_v2 35 6.147 6.392 6.614
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd176232_v2.fits stis_ngsl_v2 35 6.02 6.067 6.22
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd005256_v2.fits stis_ngsl_v2 35 9.019 8.483 8.33
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd003712_v2.fits stis_ngsl_v2 35 3.083 2.348 2.106
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd101013_v2.fits stis_ngsl_v2 35 6.509 5.767 5.561
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd109387_v2.fits stis_ngsl_v2 35 3.642 3.927 4.141
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd118055_v2.fits stis_ngsl_v2 35 9.433 8.358 7.924
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd194093_v2.fits stis_ngsl_v2 35 2.423 2.036 1.961
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd191277_v2.fits stis_ngsl_v2 35 5.886 4.948 4.653
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd010380_v2.fits stis_ngsl_v2 35 5.017 3.901 3.508
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd034816_v2.fits stis_ngsl_v2 35 4.049 4.57 4.96
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd000319_v2.fits stis_ngsl_v2 35 5.863 6.007 6.165
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd105452_v2.fits stis_ngsl_v2 35 4.044 3.957 4.008
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd111464_v2.fits stis_ngsl_v2 35 7.194 6.02 5.575
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019656_v2.fits stis_ngsl_v2 35 5.085 4.25 4.011
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd058343_v2.fits stis_ngsl_v2 35 4.936 5.153 5.364
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd138716_v2.fits stis_ngsl_v2 35 5.097 4.34 4.138
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd196426_v2.fits stis_ngsl_v2 35 6.04 6.394 6.668
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd020630_v2.fits stis_ngsl_v2 35 5.085 4.632 4.518
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g192-43_v2.fits stis_ngsl_v2 35 10.464 10.217 10.189
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd055057_v2.fits stis_ngsl_v2 35 5.45 5.392 5.463
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g17-25_v2.fits stis_ngsl_v2 35 9.911 9.35 9.163
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd193281_v2.fits stis_ngsl_v2 35 6.658 6.815 6.975
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd134440_v2.fits stis_ngsl_v2 35 9.777 9.081 8.852
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd036960_v2.fits stis_ngsl_v2 35 4.509 5.016 5.397
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd041661_v2.fits stis_ngsl_v2 35 7.581 7.333 7.328
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd720094_v2.fits stis_ngsl_v2 35 10.063 9.809 9.748
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd094028_v2.fits stis_ngsl_v2 35 8.358 8.053 7.983
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd006229_v2.fits stis_ngsl_v2 35 8.873 8.329 8.131
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd122064_v2.fits stis_ngsl_v2 35 6.909 6.05 5.81
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd102780_v2.fits stis_ngsl_v2 35 8.916 7.526 6.84
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd128000_v2.fits stis_ngsl_v2 35 6.391 5.1 4.557
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd170973_v2.fits stis_ngsl_v2 35 6.285 6.538 6.794
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd142091_v2.fits stis_ngsl_v2 35 5.186 4.421 4.204
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd021742_v2.fits stis_ngsl_v2 35 8.322 7.719 7.577
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd090862_v2.fits stis_ngsl_v2 35 9.244 8.027 7.541
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd017081_v2.fits stis_ngsl_v2 35 4.045 4.426 4.725
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd224801_v2.fits stis_ngsl_v2 35 6.248 6.527 6.79
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd167105_v2.fits stis_ngsl_v2 35 8.999 9.256 9.506
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019445_v2.fits stis_ngsl_v2 35 8.176 7.878 7.797
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd047839_v2.fits stis_ngsl_v2 35 4.437 4.949 5.329
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd072505_v2.fits stis_ngsl_v2 35 6.724 5.815 5.538
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd193495_v2.fits stis_ngsl_v2 35 3.387 2.783 2.581
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd292091_v2.fits stis_ngsl_v2 35 10.468 10.134 10.054
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd018769_v2.fits stis_ngsl_v2 35 5.85 5.976 6.153
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd660268_v2.fits stis_ngsl_v2 35 10.299 9.891 9.753
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g234-28_v2.fits stis_ngsl_v2 35 11.256 10.954 10.893
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd190360_v2.fits stis_ngsl_v2 35 6.028 5.533 5.422
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd132475_v2.fits stis_ngsl_v2 35 8.749 8.367 8.241
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd195434_v2.fits stis_ngsl_v2 35 9.669 8.93 8.649
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd185351_v2.fits stis_ngsl_v2 35 5.532 4.847 4.662
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd029574_v2.fits stis_ngsl_v2 35 8.963 7.74 7.225
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g196-48_v2.fits stis_ngsl_v2 35 10.516 10.162 10.066
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g114-26_v2.fits stis_ngsl_v2 35 9.802 9.489 9.41
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g019-013_v2.fits stis_ngsl_v2 35 8.217 7.158 6.768
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd160346_v2.fits stis_ngsl_v2 35 6.895 6.118 5.86
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd003360_v2.fits stis_ngsl_v2 35 3.44 3.902 4.248
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd074088_v2.fits stis_ngsl_v2 35 7.445 6.03 5.422
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd078479_v2.fits stis_ngsl_v2 35 7.676 6.738 6.454
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd174708_v2.fits stis_ngsl_v2 35 9.644 9.391 9.351
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd188262_v2.fits stis_ngsl_v2 35 8.039 7.379 7.162
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+381670_v2.fits stis_ngsl_v2 35 9.642 9.214 9.065
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd065714_v2.fits stis_ngsl_v2 35 6.255 5.522 5.313
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd201601_v2.fits stis_ngsl_v2 35 4.738 4.726 4.852
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164058_v2.fits stis_ngsl_v2 35 2.897 1.632 1.092
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd034078_v2.fits stis_ngsl_v2 35 6.037 5.92 5.941
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd115617_v2.fits stis_ngsl_v2 35 4.985 4.484 4.365
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd036702_v2.fits stis_ngsl_v2 35 8.859 7.846 7.459
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g021-024_v2.fits stis_ngsl_v2 35 9.443 8.236 7.788
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd063791_v2.fits stis_ngsl_v2 35 8.27 7.535 7.253
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd215665_v2.fits stis_ngsl_v2 35 4.386 3.603 3.373
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd097633_v2.fits stis_ngsl_v2 35 3.177 3.457 3.687
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd112413_v2.fits stis_ngsl_v2 35 2.737 3.086 3.374
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd200905_v2.fits stis_ngsl_v2 35 4.407 3.037 2.463
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd008724_v2.fits stis_ngsl_v2 35 8.765 7.924 7.593
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd031421_v2.fits stis_ngsl_v2 35 4.554 3.664 3.352
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd212516_v2.fits stis_ngsl_v2 35 9.473 8.024 7.184
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd200081_v2.fits stis_ngsl_v2 35 8.249 7.668 7.491
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd-122669_v2.fits stis_ngsl_v2 35 10.286 10.166 10.194
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd012533_v2.fits stis_ngsl_v2 35 2.808 1.77 1.433
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd196662_v2.fits stis_ngsl_v2 35 5.632 6.007 6.336
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd008890_v2.fits stis_ngsl_v2 35 2.185 1.83 1.791
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd174966_v2.fits stis_ngsl_v2 35 7.749 7.729 7.84
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd191026_v2.fits stis_ngsl_v2 35 5.698 5.068 4.897
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd004128_v2.fits stis_ngsl_v2 35 2.528 1.834 1.651
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd114330_v2.fits stis_ngsl_v2 35 4.451 4.695 4.973
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164353_v2.fits stis_ngsl_v2 35 3.884 4.063 4.256
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd183915_v2.fits stis_ngsl_v2 35 7.852 6.839 6.51
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd138749_v2.fits stis_ngsl_v2 35 4.095 4.477 4.776
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019308_v2.fits stis_ngsl_v2 35 7.609 7.177 7.114
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd163346_v2.fits stis_ngsl_v2 35 7.054 6.613 6.461
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd033793_v2.fits stis_ngsl_v2 35 9.586 8.115 7.306
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd092860_v2.fits stis_ngsl_v2 35 11.182 10.76 10.638
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd000358_v2.fits stis_ngsl_v2 35 1.896 2.252 2.545
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd106516_v2.fits stis_ngsl_v2 35 6.242 5.972 5.913
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd126661_v2.fits stis_ngsl_v2 35 5.371 5.418 5.553
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd037828_v2.fits stis_ngsl_v2 35 7.351 6.437 6.064
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd005916_v2.fits stis_ngsl_v2 35 7.208 6.544 6.321
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd006755_v2.fits stis_ngsl_v2 35 8.03 7.475 7.277
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd183324_v2.fits stis_ngsl_v2 35 5.868 6.102 6.334
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd037216_v2.fits stis_ngsl_v2 35 8.127 7.616 7.508
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_viwcom_v2.fits stis_ngsl_v2 35 8.752 7.266 5.787
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd109995_v2.fits stis_ngsl_v2 35 7.48 7.688 7.862
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd123657_v2.fits stis_ngsl_v2 35 5.758 4.293 2.782
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd018907_v2.fits stis_ngsl_v2 35 6.16 5.595 5.41
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd087140_v2.fits stis_ngsl_v2 35 9.258 8.712 8.502
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd095418_v2.fits stis_ngsl_v2 35 2.276 2.517 2.748
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd148513_v2.fits stis_ngsl_v2 35 6.013 4.8 4.35
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd169191_v2.fits stis_ngsl_v2 35 5.766 4.758 4.429
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd095241_v2.fits stis_ngsl_v2 35 6.204 5.834 5.741
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd023439_v2.fits stis_ngsl_v2 35 8.423 7.85 7.668
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_lhs10_v2.fits stis_ngsl_v2 35 13.37 11.621 9.421
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g260-36_v2.fits stis_ngsl_v2 35 11.6 10.903 10.7
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd128987_v2.fits stis_ngsl_v2 35 7.58 7.088 6.989
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd025975_v2.fits stis_ngsl_v2 35 6.446 5.76 5.586
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd022049_v2.fits stis_ngsl_v2 35 4.055 3.376 3.197
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd119971_v2.fits stis_ngsl_v2 35 6.032 4.894 4.458
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd073710_v2.fits stis_ngsl_v2 35 6.816 6.074 5.864
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd149161_v2.fits stis_ngsl_v2 35 5.502 4.203 3.652
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd079349_v2.fits stis_ngsl_v2 35 9.182 7.838 7.197
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd217357_v2.fits stis_ngsl_v2 35 8.528 7.207 6.637
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd111786_v2.fits stis_ngsl_v2 35 6.137 6.134 6.197
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd166991_v2.fits stis_ngsl_v2 35 6.746 6.913 7.093
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd059612_v2.fits stis_ngsl_v2 35 4.876 4.871 4.928
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd093329_v2.fits stis_ngsl_v2 35 8.682 8.863 9.034
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd086986_v2.fits stis_ngsl_v2 35 7.929 8.053 8.185
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd039833_v2.fits stis_ngsl_v2 35 7.848 7.431 7.351
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_gl15b_v2.fits stis_ngsl_v2 35 8.859 7.36 6.439
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd001461_v2.fits stis_ngsl_v2 35 6.685 6.25 6.157
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g18-54_v2.fits stis_ngsl_v2 35 10.892 10.553 10.468
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd124425_v2.fits stis_ngsl_v2 35 6.026 5.765 5.733
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd068988_v2.fits stis_ngsl_v2 35 8.424 7.994 7.92
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd155763_v2.fits stis_ngsl_v2 35 2.968 3.344 3.642
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd058551_v2.fits stis_ngsl_v2 35 6.661 6.397 6.352
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd017072_v2.fits stis_ngsl_v2 35 6.826 6.347 6.183
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd284248_v2.fits stis_ngsl_v2 35 9.379 9.118 9.084
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd037202_v2.fits stis_ngsl_v2 35 2.689 3.096 3.401
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd018078_v2.fits stis_ngsl_v2 35 8.248 8.233 8.352
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_mmj6490_v2.fits stis_ngsl_v2 35 10.856 11.045 11.241
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd126511_v2.fits stis_ngsl_v2 35 8.629 8.1 7.971
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd079158_v2.fits stis_ngsl_v2 35 5.118 5.477 5.79
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd110073_v2.fits stis_ngsl_v2 35 4.516 4.85 5.16
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_cd-691618_v2.fits stis_ngsl_v2 35 9.1 9.497 9.819
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd423607_v2.fits stis_ngsl_v2 35 10.413 10.143 10.088
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd187879_v2.fits stis_ngsl_v2 35 5.537 5.824 6.071
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd203638_v2.fits stis_ngsl_v2 35 5.814 4.935 4.674
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_vgkcom_v2.fits stis_ngsl_v2 35 7.491 6.017 4.482
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_mmj6476_v2.fits stis_ngsl_v2 35 11.339 11.29 11.376
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd055496_v2.fits stis_ngsl_v2 35 8.775 8.091 7.872
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd126614_v2.fits stis_ngsl_v2 35 9.09 8.527 8.414
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd099648_v2.fits stis_ngsl_v2 35 5.344 4.62 4.422
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+413306_v2.fits stis_ngsl_v2 35 9.179 8.577 8.381
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd170737_v2.fits stis_ngsl_v2 35 8.43 7.814 7.597
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g63-26_v2.fits stis_ngsl_v2 35 12.384 12.106 12.076
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd076291_v2.fits stis_ngsl_v2 35 6.166 5.307 5.028
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd345957_v2.fits stis_ngsl_v2 35 9.07 8.719 8.608
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd078362_v2.fits stis_ngsl_v2 35 4.709 4.595 4.676
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd442051_v2.fits stis_ngsl_v2 35 9.459 8.013 7.127
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd142703_v2.fits stis_ngsl_v2 35 6.12 6.091 6.15
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_vbnvul_v2.fits stis_ngsl_v2 35 10.846 10.337 10.099
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd166283_v2.fits stis_ngsl_v2 35 7.793 7.825 7.959
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd137759_v2.fits stis_ngsl_v2 35 4.008 3.275 3.015
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175156_v2.fits stis_ngsl_v2 35 5.084 5.097 5.183
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd037763_v2.fits stis_ngsl_v2 35 5.63 4.749 4.483
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd044007_v2.fits stis_ngsl_v2 35 8.379 7.719 7.469
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd101107_v2.fits stis_ngsl_v2 35 5.676 5.553 5.597
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd187111_v2.fits stis_ngsl_v2 35 8.268 7.214 6.778
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd038510_v2.fits stis_ngsl_v2 35 8.356 8.024 7.94
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd063077_v2.fits stis_ngsl_v2 35 5.55 5.216 5.127
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175305_v2.fits stis_ngsl_v2 35 7.616 7.086 6.914
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd124547_v2.fits stis_ngsl_v2 35 5.406 4.285 3.893
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd015089_v2.fits stis_ngsl_v2 35 4.585 4.812 5.086
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd013520_v2.fits stis_ngsl_v2 35 5.406 4.164 3.691
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019019_v2.fits stis_ngsl_v2 35 7.083 6.738 6.687
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd190073_v2.fits stis_ngsl_v2 35 7.768 7.881 8.007
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175805_v2.fits stis_ngsl_v2 35 7.836 7.534 7.523
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd194453_v2.fits stis_ngsl_v2 35 6.619 6.911 7.154
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd061064_v2.fits stis_ngsl_v2 35 5.17 4.96 5.001
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd134439_v2.fits stis_ngsl_v2 35 9.747 9.246 9.083
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd026630_v2.fits stis_ngsl_v2 35 4.518 3.765 3.532
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd096446_v2.fits stis_ngsl_v2 35 6.492 6.885 7.193
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g180-24_v2.fits stis_ngsl_v2 35 10.019 9.728 9.641
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd080607_v2.fits stis_ngsl_v2 35 9.386 8.846 8.738
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd141795_v2.fits stis_ngsl_v2 35 3.654 3.777 3.962
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd157244_v2.fits stis_ngsl_v2 35 3.448 2.283 1.915
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd111515_v2.fits stis_ngsl_v2 35 8.354 7.883 7.745
-ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd107582_v2.fits stis_ngsl_v2 35 8.408 7.989 7.878
-ZTF ZTF spectra/calspec23/bd26d2606_stis_006.fits calspec23 35 9.845 9.577 9.501
-ZTF ZTF spectra/calspec23/wd0308_565_stis_009.fits calspec23 35 13.942 14.363 14.692
-ZTF ZTF spectra/calspec23/sdss132811_stis_004.fits calspec23 35 16.991 17.282 17.531
-ZTF ZTF spectra/calspec23/hz21_stis_007.fits calspec23 35 14.413 14.976 15.399
-ZTF ZTF spectra/calspec23/gj7541a_stis_004.fits calspec23 35 12.222 12.403 12.614
-ZTF ZTF spectra/calspec23/ngc6681_3_stis_002.fits calspec23 35 16.664 nan nan
-ZTF ZTF spectra/calspec23/16cygb_stis_004.fits calspec23 35 6.453 6.016 5.917
-ZTF ZTF spectra/calspec23/hd38949_stis_007.fits calspec23 35 7.977 7.623 7.557
-ZTF ZTF spectra/calspec23/hd115169_stis_003.fits calspec23 35 9.463 9.042 8.94
-ZTF ZTF spectra/calspec23/feige34_stis_006.fits calspec23 35 10.891 11.463 11.844
-ZTF ZTF spectra/calspec23/18sco_stis_005.fits calspec23 35 5.701 5.289 5.194
-ZTF ZTF spectra/calspec23/ngc6681_9_stis_002.fits calspec23 35 15.717 nan nan
-ZTF ZTF spectra/calspec23/hd209458_stisnic_008.fits calspec23 35 7.82 7.49 7.436
-ZTF ZTF spectra/calspec23/wd0320_539_stis_005.fits calspec23 35 14.705 15.235 15.641
-ZTF ZTF spectra/calspec23/mucol_stis_007.fits calspec23 35 4.895 5.424 5.823
-ZTF ZTF spectra/calspec23/ngc6681_12_stis_002.fits calspec23 35 16.985 nan nan
-ZTF ZTF spectra/calspec23/hz43_stis_005.fits calspec23 35 12.649 13.211 13.627
-ZTF ZTF spectra/calspec23/hd101452_stis_003.fits calspec23 35 7.563 7.52 7.603
-ZTF ZTF spectra/calspec23/ngc2506g31_stis_003.fits calspec23 35 18.175 17.691 17.562
-ZTF ZTF spectra/calspec23/hd158485_stis_005.fits calspec23 35 6.433 6.572 6.736
-ZTF ZTF spectra/calspec23/ksi2ceti_stis_006.fits calspec23 35 4.119 4.448 4.716
-ZTF ZTF spectra/calspec23/hd37962_stis_010.fits calspec23 35 8.059 7.642 7.54
-ZTF ZTF spectra/calspec23/ngc6681_10_stis_002.fits calspec23 35 18.136 nan nan
-ZTF ZTF spectra/calspec23/hd116405_stis_006.fits calspec23 35 8.163 8.499 8.776
-ZTF ZTF spectra/calspec23/hd009051_stis_007.fits calspec23 35 9.256 8.632 8.389
-ZTF ZTF spectra/calspec23/ngc6681_4_stis_002.fits calspec23 35 15.868 nan nan
-ZTF ZTF spectra/calspec23/hd55677_stis_004.fits calspec23 35 9.369 9.556 9.739
-ZTF ZTF spectra/calspec23/feige110_stisnic_008.fits calspec23 35 11.566 12.126 12.538
-ZTF ZTF spectra/calspec23/hd185975_stis_007.fits calspec23 35 8.337 7.884 7.775
-ZTF ZTF spectra/calspec23/hd200654_stis_007.fits calspec23 35 9.327 8.854 8.664
-ZTF ZTF spectra/calspec23/hz44_stis_006.fits calspec23 35 11.4 11.953 12.378
-ZTF ZTF spectra/calspec23/ngc6681_7_stis_002.fits calspec23 35 15.316 nan nan
-ZTF ZTF spectra/calspec23/ngc6681_6_stis_002.fits calspec23 35 15.935 nan nan
-ZTF ZTF spectra/calspec23/wd0947_857_stis_007.fits calspec23 35 15.513 16.06 16.475
-ZTF ZTF spectra/calspec23/hd205905_stis_009.fits calspec23 35 6.944 6.552 6.474
-ZTF ZTF spectra/calspec23/eta1dor_stis_004.fits calspec23 35 5.546 5.859 6.117
-ZTF ZTF spectra/calspec23/sun_reference_stis_002.fits calspec23 35 -26.511 -26.959 -27.052
-ZTF ZTF spectra/calspec23/hd163466_stis_005.fits calspec23 35 6.828 6.901 7.034
-ZTF ZTF spectra/calspec23/hz4_stis_008.fits calspec23 35 14.411 14.73 15.025
-ZTF ZTF spectra/calspec23/bd_75d325_stis_006.fits calspec23 35 9.258 9.835 10.262
-ZTF ZTF spectra/calspec23/alpha_lyr_stis_011.fits calspec23 35 -0.108 0.184 0.429
-ZTF ZTF spectra/calspec23/hd180609_stis_006.fits calspec23 35 9.365 9.523 9.693
-ZTF ZTF spectra/calspec23/bd11d3759_stis_003.fits calspec23 35 12.001 10.484 8.891
-ZTF ZTF spectra/calspec23/hz43b_stis_005.fits calspec23 35 14.643 13.556 12.239
-ZTF ZTF spectra/calspec23/hd128998_stis_003.fits calspec23 35 5.681 5.973 6.214
-ZTF ZTF spectra/calspec23/ngc6681_8_stis_002.fits calspec23 35 16.62 nan nan
-ZTF ZTF spectra/calspec23/ngc6681_2_stis_002.fits calspec23 35 16.048 nan nan
-ZTF ZTF spectra/calspec23/hd200775_stis_001.fits calspec23 35 7.489 7.183 7.068
-ZTF ZTF spectra/calspec23/agk_81d266_stisnic_007.fits calspec23 35 11.641 12.229 12.661
-ZTF ZTF spectra/calspec23/hd160617_stis_005.fits calspec23 35 8.872 8.58 8.495
-ZTF ZTF spectra/calspec23/hd142331_stis_005.fits calspec23 35 8.958 8.503 8.393
-ZTF ZTF spectra/calspec23/hd159222_stis_008.fits calspec23 35 6.736 6.328 6.246
-ZTF ZTF spectra/calspec23/bd54d1216_stis_005.fits calspec23 35 9.846 9.561 9.484
-ZTF ZTF spectra/calspec23/hd167060_stis_005.fits calspec23 35 9.138 8.736 8.643
-ZTF ZTF spectra/calspec23/bd21d0607_stis_006.fits calspec23 35 9.353 9.09 9.02
-ZTF ZTF spectra/calspec23/bd29d2091_stis_006.fits calspec23 35 10.428 10.084 9.977
-ZTF ZTF spectra/calspec23/hs2027_stis_006.fits calspec23 35 16.447 16.885 17.289
-ZTF ZTF spectra/calspec23/ngc6681_11_stis_002.fits calspec23 35 15.65 nan nan
-ZTF ZTF spectra/calspec23/hd074000_stis_006.fits calspec23 35 9.78 9.538 9.476
-ZTF ZTF spectra/calspec23/wd1026_453_stis_007.fits calspec23 35 15.889 16.429 16.839
-ZTF ZTF spectra/calspec23/hd14943_stis_005.fits calspec23 35 5.876 5.955 6.1
-ZTF ZTF spectra/calspec23/ngc6681_5_stis_002.fits calspec23 35 15.849 nan nan
-ZTF ZTF spectra/calspec23/bd_28d4211_stis_005.fits calspec23 35 10.238 10.822 11.259
-ZTF ZTF spectra/calspec23/bd02d3375_stis_006.fits calspec23 35 10.093 9.784 9.684
-ZTF ZTF spectra/calspec23/hd106252_stis_008.fits calspec23 35 7.621 7.233 7.149
-ZTF ZTF spectra/calspec23/hd111980_stis_006.fits calspec23 35 8.546 8.202 8.102
-ZTF ZTF spectra/calspec23/hd2811_stis_004.fits calspec23 35 7.476 7.581 7.717
-ZTF ZTF spectra/calspec23/delumi_stis_004.fits calspec23 35 4.216 4.482 4.707
-ZTF ZTF spectra/calspec23/hd60753_stis_004.fits calspec23 35 6.524 6.845 7.106
-ZTF ZTF spectra/calspec23/etauma_stis_007.fits calspec23 35 1.603 2.059 2.4
-ZTF ZTF spectra/calspec23/lamlep_stis_007.fits calspec23 35 4.027 4.536 4.921
-ZTF ZTF spectra/calspec23/hd031128_stis_006.fits calspec23 35 9.284 8.979 8.892
-ZTF ZTF spectra/calspec23/hd172728_stis_002.fits calspec23 35 5.571 5.889 6.15
-ZTF ZTF spectra/calspec23/109vir_stis_003.fits calspec23 35 3.583 3.868 4.102
-ZTF ZTF spectra/calspec23/sdssj151421_stis_005.fits calspec23 35 15.69 16.159 16.528
-ZTF ZTF spectra/calspec23/bd_17d4708_stisnic_007.fits calspec23 35 9.603 9.331 9.256
-ZTF ZTF spectra/calspec23/10lac_stis_007.fits calspec23 35 4.652 5.102 5.454
-ZTF ZTF spectra/calspec23/ngc6681_1_stis_002.fits calspec23 35 15.766 nan nan
-ZTF ZTF spectra/calspec23/sirius_stis_005.fits calspec23 35 -1.583 -1.279 -1.019
-ZTF ZTF spectra/calspec23/hd93521_stis_007.fits calspec23 35 6.782 7.259 7.639
-ZTF ZTF spectra/calspec23/sigori_stis_001.fits calspec23 35 3.588 4.078 4.452
+survey version standard standard_catagory shift ZTF-g ZTF-r ZTF-i ZTF-G ZTF-R ZTF-I 
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd078316_v2.fits stis_ngsl_v2 35 5.0816 5.4406 5.735 5.0761 5.4444 5.7355
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd063700_v2.fits stis_ngsl_v2 35 3.7886 2.9031 2.6451 3.8162 2.8987 2.6448
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd167278_v2.fits stis_ngsl_v2 35 8.3731 8.1841 8.2193 8.3804 8.1842 8.2194
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd172506_v2.fits stis_ngsl_v2 35 8.105 8.0544 8.1301 8.1097 8.0552 8.1303
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd008491_v2.fits stis_ngsl_v2 35 5.1278 4.3507 4.1269 5.1513 4.3469 4.1266
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd028978_v2.fits stis_ngsl_v2 35 5.6935 5.9091 6.1597 5.6915 5.9123 6.1602
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd046703_v2.fits stis_ngsl_v2 35 9.2345 8.87 8.7516 9.2446 8.868 8.7514
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd064412_v2.fits stis_ngsl_v2 35 8.9332 8.5641 8.4648 8.9451 8.5624 8.4646
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd221377_v2.fits stis_ngsl_v2 35 7.6444 7.4412 7.4199 7.652 7.4406 7.4199
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd087737_v2.fits stis_ngsl_v2 35 3.3603 3.6086 3.8311 3.3568 3.6114 3.8315
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd095849_v2.fits stis_ngsl_v2 35 6.407 5.4914 5.1996 6.434 5.4867 5.1991
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd020039_v2.fits stis_ngsl_v2 35 9.1485 8.6162 8.4345 9.1648 8.6132 8.4342
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd126327_v2.fits stis_ngsl_v2 35 8.5427 6.0988 3.5153 8.5767 6.071 3.512
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd030834_v2.fits stis_ngsl_v2 35 5.3447 4.1891 3.7644 5.3758 4.1825 3.7637
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd072324_v2.fits stis_ngsl_v2 35 6.7219 5.9906 5.7621 6.7448 5.9868 5.7618
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd111721_v2.fits stis_ngsl_v2 35 8.2701 7.6798 7.4584 8.2874 7.6762 7.458
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd160762_v2.fits stis_ngsl_v2 35 3.5582 3.9821 4.3257 3.5511 3.9865 4.3263
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd124186_v2.fits stis_ngsl_v2 35 6.6302 5.6686 5.3654 6.6578 5.6638 5.3649
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd146233_v2.fits stis_ngsl_v2 35 5.7374 5.3468 5.2869 5.751 5.3453 5.2869
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd041357_v2.fits stis_ngsl_v2 35 5.3433 5.3524 5.4726 5.3458 5.3538 5.4729
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd025329_v2.fits stis_ngsl_v2 35 8.8138 8.1491 7.919 8.8329 8.1453 7.9186
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd072968_v2.fits stis_ngsl_v2 35 5.5918 5.8617 6.0967 5.5876 5.8648 6.0971
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g115-58_v2.fits stis_ngsl_v2 35 12.304 12.0197 11.9803 12.3124 12.0186 11.9804
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd004813_v2.fits stis_ngsl_v2 35 5.3175 5.0313 4.9966 5.3274 5.0303 4.9967
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd142926_v2.fits stis_ngsl_v2 35 5.5584 5.9007 6.2063 5.5532 5.9043 6.2069
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164257_v2.fits stis_ngsl_v2 35 6.7031 6.8481 7.0157 6.7018 6.8504 7.016
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd196725_v2.fits stis_ngsl_v2 35 6.3335 5.1102 4.6734 6.3672 5.1034 4.6727
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd030614_v2.fits stis_ngsl_v2 35 4.1901 4.3512 4.5487 4.188 4.3535 4.5491
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd022484_v2.fits stis_ngsl_v2 35 4.4442 4.125 4.0541 4.4555 4.1236 4.0541
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd079469_v2.fits stis_ngsl_v2 35 3.7346 4.0513 4.3308 3.7298 4.055 4.3314
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g18-39_v2.fits stis_ngsl_v2 35 10.5303 10.2346 10.145 10.5391 10.2329 10.1449
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g12-21_v2.fits stis_ngsl_v2 35 10.3519 10.0532 10.0028 10.3613 10.0519 10.0028
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd025893_v2.fits stis_ngsl_v2 35 7.5088 6.9178 6.7701 7.5264 6.9151 6.77
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd132345_v2.fits stis_ngsl_v2 35 6.3577 5.4122 5.1136 6.3856 5.4075 5.1131
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd091316_v2.fits stis_ngsl_v2 35 3.6508 4.0275 4.3386 3.6449 4.0312 4.3392
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd117880_v2.fits stis_ngsl_v2 35 8.9906 9.1828 9.3883 8.9887 9.1855 9.3887
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_cd-621346_v2.fits stis_ngsl_v2 35 10.0708 9.5899 9.438 10.0866 9.5873 9.4378
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_gl109_v2.fits stis_ngsl_v2 35 11.2615 9.821 8.558 11.2966 9.8077 8.5565
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd016031_v2.fits stis_ngsl_v2 35 9.8938 9.6376 9.5663 9.9012 9.6362 9.5662
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd371458_v2.fits stis_ngsl_v2 35 9.194 8.7943 8.6795 9.2061 8.7923 8.6793
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd081797_v2.fits stis_ngsl_v2 35 2.7113 1.5816 1.1942 2.743 1.5757 1.1936
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd067390_v2.fits stis_ngsl_v2 35 9.5913 9.4822 9.52 9.5965 9.4824 9.5201
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd061603_v2.fits stis_ngsl_v2 35 6.561 5.2921 4.7296 6.5953 5.2843 4.7288
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd062412_v2.fits stis_ngsl_v2 35 5.983 5.2822 5.0681 6.0049 5.2787 5.0678
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd031219_v2.fits stis_ngsl_v2 35 8.3366 8.0099 7.9888 8.3483 8.0091 7.9889
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd002857_v2.fits stis_ngsl_v2 35 10.2716 10.4219 10.5524 10.2709 10.4236 10.5527
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd114710_v2.fits stis_ngsl_v2 35 4.4102 4.0573 3.9867 4.4217 4.0557 3.9867
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd198809_v2.fits stis_ngsl_v2 35 4.8447 4.264 4.0997 4.863 4.2611 4.0995
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g88-27_v2.fits stis_ngsl_v2 35 10.8316 10.5529 10.4892 10.8399 10.5516 10.4892
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd210807_v2.fits stis_ngsl_v2 35 5.1529 4.496 4.3213 5.1736 4.4929 4.321
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd201091_v2.fits stis_ngsl_v2 35 5.7261 4.6916 4.3143 5.7499 4.6861 4.3137
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd165341_v2.fits stis_ngsl_v2 35 4.5239 3.9302 3.7821 4.5418 3.9275 3.7819
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd131873_v2.fits stis_ngsl_v2 35 2.7027 1.5073 1.0395 2.7351 1.5003 1.0388
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_cd-3018140_v2.fits stis_ngsl_v2 35 10.1499 9.9649 9.9404 10.157 9.9643 9.9405
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd184266_v2.fits stis_ngsl_v2 35 7.8112 7.3938 7.2569 7.8226 7.3914 7.2567
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd057060_v2.fits stis_ngsl_v2 35 5.0948 5.4532 5.7468 5.0887 5.4566 5.7474
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd045282_v2.fits stis_ngsl_v2 35 8.2745 7.7891 7.6385 8.2886 7.7865 7.6383
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd176437_v2.fits stis_ngsl_v2 35 3.1049 3.3916 3.6189 3.1005 3.3946 3.6194
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd185144_v2.fits stis_ngsl_v2 35 4.9513 4.3713 4.209 4.9684 4.3683 4.2088
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd057727_v2.fits stis_ngsl_v2 35 5.3428 4.6913 4.5057 5.3629 4.6881 4.5054
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g188-30_v2.fits stis_ngsl_v2 35 11.4663 11.0522 10.9229 11.4798 11.05 10.9227
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+112998_v2.fits stis_ngsl_v2 35 9.3086 8.8472 8.668 9.3216 8.8443 8.6678
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd204155_v2.fits stis_ngsl_v2 35 8.6657 8.3127 8.2151 8.6773 8.3109 8.215
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g029-023_v2.fits stis_ngsl_v2 35 10.3847 10.0938 10.0329 10.3934 10.0926 10.0329
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd122956_v2.fits stis_ngsl_v2 35 7.6383 6.8509 6.5459 7.6603 6.846 6.5454
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd128279_v2.fits stis_ngsl_v2 35 8.2756 7.7835 7.5942 8.2889 7.7804 7.594
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd205811_v2.fits stis_ngsl_v2 35 6.0568 6.323 6.552 6.0536 6.326 6.5525
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd217107_v2.fits stis_ngsl_v2 35 6.4112 5.9261 5.8167 6.427 5.9241 5.8166
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g194-22_v2.fits stis_ngsl_v2 35 9.9233 9.7084 9.6773 9.9314 9.7076 9.6773
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd039587_v2.fits stis_ngsl_v2 35 4.554 4.1892 4.128 4.5661 4.1877 4.128
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g24-3_v2.fits stis_ngsl_v2 35 10.6175 10.2998 10.2007 10.6265 10.298 10.2007
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd163810_v2.fits stis_ngsl_v2 35 10.1492 9.781 9.6955 10.1606 9.7794 9.6954
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd108945_v2.fits stis_ngsl_v2 35 5.3871 5.6162 5.8774 5.3847 5.6197 5.8779
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd085380_v2.fits stis_ngsl_v2 35 6.5976 6.2509 6.1856 6.6089 6.2495 6.1855
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd002665_v2.fits stis_ngsl_v2 35 8.0474 7.4408 7.2067 8.0644 7.437 7.2064
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_lhs482_v2.fits stis_ngsl_v2 35 12.7233 11.2483 10.3821 12.7566 11.2396 10.3809
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd065354_v2.fits stis_ngsl_v2 35 7.4996 6.1931 5.6857 7.5347 6.1856 5.6849
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd167006_v2.fits stis_ngsl_v2 35 5.5859 4.1597 3.1842 5.6222 4.1483 3.183
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd204867_v2.fits stis_ngsl_v2 35 3.1618 2.6149 2.4864 3.1796 2.6124 2.4863
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd222404_v2.fits stis_ngsl_v2 35 3.5899 2.8349 2.6042 3.6128 2.8311 2.6038
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd174240_v2.fits stis_ngsl_v2 35 6.1198 6.3533 6.5634 6.1169 6.356 6.5638
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd134113_v2.fits stis_ngsl_v2 35 8.4465 8.0711 7.9685 8.4582 8.0692 7.9684
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd105546_v2.fits stis_ngsl_v2 35 8.8688 8.3786 8.2142 8.8831 8.3758 8.2139
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd148293_v2.fits stis_ngsl_v2 35 5.6746 4.8572 4.6063 5.6995 4.8531 4.6059
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd212593_v2.fits stis_ngsl_v2 35 4.4855 4.6152 4.7865 4.4851 4.6173 4.7868
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd005544_v2.fits stis_ngsl_v2 35 8.0617 7.216 6.9288 8.087 7.2114 6.9283
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd232078_v2.fits stis_ngsl_v2 35 9.3217 7.6002 6.8573 9.3627 7.5889 6.8562
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd196218_v2.fits stis_ngsl_v2 35 7.564 7.2835 7.2229 7.5736 7.2821 7.2229
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd076932_v2.fits stis_ngsl_v2 35 5.9448 5.6296 5.5468 5.9554 5.6281 5.5468
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd190404_v2.fits stis_ngsl_v2 35 7.6144 6.9843 6.8056 7.6321 6.9812 6.8053
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd000886_v2.fits stis_ngsl_v2 35 2.6063 3.0763 3.4404 2.598 3.0809 3.4411
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd167946_v2.fits stis_ngsl_v2 35 7.2504 7.4689 7.7045 7.2475 7.472 7.705
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd210745_v2.fits stis_ngsl_v2 35 3.989 2.7631 2.357 4.0237 2.7567 2.3564
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd004727_v2.fits stis_ngsl_v2 35 4.3406 4.7226 5.0455 4.3342 4.7267 5.0461
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g169-28_v2.fits stis_ngsl_v2 35 11.5092 11.1801 11.0906 11.5196 11.1786 11.0905
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd029391_v2.fits stis_ngsl_v2 35 5.1932 5.1791 5.267 5.1966 5.1801 5.2672
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd009051_v2.fits stis_ngsl_v2 35 9.2625 8.6447 8.4299 9.2805 8.6412 8.4296
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd041667_v2.fits stis_ngsl_v2 35 8.8563 8.1189 7.8266 8.878 8.1143 7.8262
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd065228_v2.fits stis_ngsl_v2 35 4.3912 3.9422 3.8324 4.4059 3.9401 3.8323
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd173819_v2.fits stis_ngsl_v2 35 6.538 5.3315 4.5749 6.5718 5.3227 4.5739
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd005395_v2.fits stis_ngsl_v2 35 4.9644 4.2756 4.043 4.9859 4.2719 4.0427
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd103036_v2.fits stis_ngsl_v2 35 8.6465 7.6542 7.2953 8.6734 7.6484 7.2947
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_gj825_v2.fits stis_ngsl_v2 35 7.3137 5.9687 5.3076 7.3432 5.9606 5.3067
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd043042_v2.fits stis_ngsl_v2 35 5.3359 5.1131 5.132 5.344 5.1129 5.1321
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd143459_v2.fits stis_ngsl_v2 35 5.4546 5.6767 5.8574 5.4516 5.6791 5.8578
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164402_v2.fits stis_ngsl_v2 35 5.582 5.8163 6.0551 5.579 5.8191 6.0556
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175640_v2.fits stis_ngsl_v2 35 6.0589 6.3442 6.6063 6.0547 6.3475 6.6068
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd146051_v2.fits stis_ngsl_v2 35 3.3947 2.0782 1.3615 3.4293 2.0691 1.3605
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd105740_v2.fits stis_ngsl_v2 35 8.79 8.0481 7.7743 8.8114 8.0437 7.7739
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd113002_v2.fits stis_ngsl_v2 35 8.9977 8.4598 8.2736 9.014 8.4567 8.2733
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd174959_v2.fits stis_ngsl_v2 35 5.9258 6.2644 6.559 5.9202 6.2681 6.5596
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd074721_v2.fits stis_ngsl_v2 35 8.5798 8.8086 9.0188 8.5769 8.8114 9.0192
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hr0753_v2.fits stis_ngsl_v2 35 6.5904 5.8673 5.6619 6.6092 5.8641 5.6616
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd511696_v2.fits stis_ngsl_v2 35 10.112 9.7276 9.6336 10.1238 9.7258 9.6335
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd128801_v2.fits stis_ngsl_v2 35 8.6371 8.9153 9.1677 8.6327 8.9185 9.1682
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd027295_v2.fits stis_ngsl_v2 35 5.3239 5.676 5.9585 5.3184 5.6797 5.9591
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hr8086_v2.fits stis_ngsl_v2 35 6.6567 5.3907 4.8476 6.6843 5.3836 4.8469
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd010780_v2.fits stis_ngsl_v2 35 5.9008 5.3436 5.1916 5.9177 5.3409 5.1914
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd113092_v2.fits stis_ngsl_v2 35 5.8861 4.864 4.4767 5.9152 4.858 4.4761
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd083212_v2.fits stis_ngsl_v2 35 8.7522 7.9114 7.5931 8.7758 7.9063 7.5926
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd413931_v2.fits stis_ngsl_v2 35 10.5166 10.0845 9.9707 10.53 10.0823 9.9706
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd147394_v2.fits stis_ngsl_v2 35 3.6721 4.086 4.4075 3.6653 4.0902 4.4081
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd102212_v2.fits stis_ngsl_v2 35 4.6412 3.3786 2.6888 4.6746 3.3698 2.6878
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd140232_v2.fits stis_ngsl_v2 35 5.7867 5.8424 5.9668 5.7875 5.8439 5.9671
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+363168_v2.fits stis_ngsl_v2 35 10.2059 6.1697 4.8123 10.2799 6.1489 4.8105
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd197177_v2.fits stis_ngsl_v2 35 6.0378 5.2896 5.0598 6.0608 5.2858 5.0595
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd205202_v2.fits stis_ngsl_v2 35 8.1993 8.0 7.9719 8.2061 7.9992 7.9719
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd159181_v2.fits stis_ngsl_v2 35 3.124 2.4505 2.2417 3.145 2.447 2.2414
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd149382_v2.fits stis_ngsl_v2 35 8.6931 9.2213 9.6151 8.6835 9.2263 9.6159
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd048279_v2.fits stis_ngsl_v2 35 7.9102 7.9749 8.1052 7.9107 7.9765 8.1055
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd161770_v2.fits stis_ngsl_v2 35 9.9459 9.4096 9.2035 9.9592 9.4062 9.2032
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd017925_v2.fits stis_ngsl_v2 35 6.3724 5.7213 5.5579 6.3914 5.7183 5.5577
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g20-15_v2.fits stis_ngsl_v2 35 10.8304 10.3649 10.2066 10.8424 10.3623 10.2064
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g243-62_v2.fits stis_ngsl_v2 35 11.8748 11.1915 10.937 11.8931 11.1875 10.9366
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd156283_v2.fits stis_ngsl_v2 35 3.7188 2.6038 2.2053 3.7506 2.5977 2.2047
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd166208_v2.fits stis_ngsl_v2 35 5.3149 4.659 4.4581 5.3346 4.6556 4.4578
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd060319_v2.fits stis_ngsl_v2 35 9.0668 8.7506 8.6757 9.0772 8.7491 8.6756
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd052973_v2.fits stis_ngsl_v2 35 4.1476 3.5675 3.4233 4.1659 3.5649 3.4231
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd034797_v2.fits stis_ngsl_v2 35 6.3677 6.7137 6.9995 6.3619 6.7174 7.0001
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175545_v2.fits stis_ngsl_v2 35 7.8543 6.934 6.6278 7.8804 6.9292 6.6273
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd095735_v2.fits stis_ngsl_v2 35 8.1334 6.7315 5.7154 8.1664 6.7207 5.7141
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd136726_v2.fits stis_ngsl_v2 35 5.5525 4.457 4.0748 5.5828 4.4511 4.0742
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd040573_v2.fits stis_ngsl_v2 35 7.3441 7.6276 7.871 7.3397 7.6308 7.8716
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd204041_v2.fits stis_ngsl_v2 35 6.3945 6.5036 6.6413 6.3944 6.5054 6.6416
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd028946_v2.fits stis_ngsl_v2 35 8.1865 7.6426 7.4952 8.2034 7.6399 7.495
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd143107_v2.fits stis_ngsl_v2 35 4.6614 3.7341 3.4298 4.6889 3.7292 3.4294
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g202-65_v2.fits stis_ngsl_v2 35 11.5987 11.5308 11.586 11.6031 11.5313 11.5862
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd204543_v2.fits stis_ngsl_v2 35 8.6888 7.9753 7.705 8.709 7.971 7.7046
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd172230_v2.fits stis_ngsl_v2 35 7.1724 7.1848 7.2899 7.1753 7.186 7.2901
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd160922_v2.fits stis_ngsl_v2 35 4.8641 4.6576 4.6484 4.8719 4.6571 4.6484
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd082395_v2.fits stis_ngsl_v2 35 5.361 4.593 4.3639 5.3846 4.5892 4.3635
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g262-14_v2.fits stis_ngsl_v2 35 11.7692 11.1638 10.9371 11.7858 11.1603 10.9368
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd026297_v2.fits stis_ngsl_v2 35 7.9196 7.0149 6.6633 7.9443 7.0093 6.6628
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd110885_v2.fits stis_ngsl_v2 35 9.3859 8.9631 8.8305 9.3982 8.9608 8.8303
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd201377_v2.fits stis_ngsl_v2 35 6.6348 6.7343 6.8753 6.6351 6.7361 6.8757
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g13-35_v2.fits stis_ngsl_v2 35 9.7871 9.5254 9.4623 9.7949 9.5241 9.4622
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd050420_v2.fits stis_ngsl_v2 35 6.2012 6.1022 6.132 6.2053 6.1023 6.1321
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd206778_v2.fits stis_ngsl_v2 35 3.0786 1.8526 1.4618 3.113 1.8463 1.4612
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g188-22_v2.fits stis_ngsl_v2 35 10.2307 9.9259 9.86 10.24 9.9244 9.86
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd093813_v2.fits stis_ngsl_v2 35 3.5808 2.6352 2.3094 3.6086 2.63 2.3089
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175865_v2.fits stis_ngsl_v2 35 4.5807 3.0429 1.3232 4.6148 3.0254 1.3214
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd006734_v2.fits stis_ngsl_v2 35 6.7533 6.1282 5.9321 6.7722 6.1249 5.9318
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd038237_v2.fits stis_ngsl_v2 35 7.1144 7.2257 7.3832 7.1151 7.2278 7.3835
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd072184_v2.fits stis_ngsl_v2 35 6.299 5.474 5.2232 6.3238 5.4699 5.2228
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd052089_v2.fits stis_ngsl_v2 35 1.316 1.7668 2.0864 1.3081 1.7707 2.0871
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd086322_v2.fits stis_ngsl_v2 35 7.279 6.514 6.2686 7.302 6.5099 6.2683
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd137909_v2.fits stis_ngsl_v2 35 3.7937 3.8368 4.0159 3.7965 3.8391 4.0162
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd173158_v2.fits stis_ngsl_v2 35 8.5988 7.2432 6.7027 8.6321 7.2353 6.7018
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd121146_v2.fits stis_ngsl_v2 35 6.8423 5.9123 5.5988 6.8684 5.9073 5.5983
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+75d325_v2.fits stis_ngsl_v2 35 9.2761 9.8324 10.261 9.2656 9.8379 10.2619
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd017361_v2.fits stis_ngsl_v2 35 4.9322 4.1041 3.8475 4.9569 4.0999 3.8471
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd592723_v2.fits stis_ngsl_v2 35 10.6145 10.3221 10.243 10.6229 10.3206 10.2429
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd166229_v2.fits stis_ngsl_v2 35 5.9219 5.076 4.8085 5.9473 5.0718 4.808
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164967_v2.fits stis_ngsl_v2 35 7.1432 7.275 7.4278 7.1422 7.277 7.4282
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd224926_v2.fits stis_ngsl_v2 35 4.9405 5.3027 5.6061 4.9343 5.3065 5.6067
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_cd-259286_v2.fits stis_ngsl_v2 35 11.1118 10.8111 10.7414 11.1204 10.8098 10.7414
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd071160_v2.fits stis_ngsl_v2 35 8.579 7.3755 6.9005 8.6113 7.3685 6.8998
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd106304_v2.fits stis_ngsl_v2 35 8.9395 9.1839 9.4039 8.9363 9.1868 9.4043
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g187-40_v2.fits stis_ngsl_v2 35 10.7207 10.3959 10.3217 10.7313 10.3945 10.3217
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019787_v2.fits stis_ngsl_v2 35 4.7154 3.9692 3.7514 4.7384 3.9655 3.7511
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g231-52_v2.fits stis_ngsl_v2 35 10.6496 10.2313 10.1071 10.6622 10.2291 10.1069
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd141851_v2.fits stis_ngsl_v2 35 5.0562 5.1832 5.3482 5.0555 5.1853 5.3486
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd082734_v2.fits stis_ngsl_v2 35 5.3669 4.6527 4.4547 5.3896 4.6493 4.4544
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd163641_v2.fits stis_ngsl_v2 35 6.1499 6.3916 6.6137 6.1465 6.3944 6.6141
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd176232_v2.fits stis_ngsl_v2 35 6.0185 6.0665 6.2201 6.0205 6.0685 6.2204
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd005256_v2.fits stis_ngsl_v2 35 9.0073 8.4829 8.3301 9.0238 8.4803 8.3299
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd003712_v2.fits stis_ngsl_v2 35 3.0632 2.348 2.1058 3.0879 2.3442 2.1054
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd101013_v2.fits stis_ngsl_v2 35 6.4896 5.7673 5.5613 6.5142 5.764 5.561
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd109387_v2.fits stis_ngsl_v2 35 3.6465 3.9273 4.1411 3.641 3.9297 4.1415
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd118055_v2.fits stis_ngsl_v2 35 9.4109 8.358 7.9236 9.4388 8.3511 7.9229
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd194093_v2.fits stis_ngsl_v2 35 2.413 2.0364 1.9611 2.4263 2.0348 1.961
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd191277_v2.fits stis_ngsl_v2 35 5.8642 4.9475 4.6534 5.8903 4.9429 4.653
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd010380_v2.fits stis_ngsl_v2 35 4.9926 3.9008 3.5078 5.0228 3.8947 3.5072
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd034816_v2.fits stis_ngsl_v2 35 4.0556 4.5701 4.9603 4.0469 4.575 4.961
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd000319_v2.fits stis_ngsl_v2 35 5.8629 6.0067 6.165 5.8623 6.0089 6.1653
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd105452_v2.fits stis_ngsl_v2 35 4.0401 3.9569 4.0083 4.0449 3.9573 4.0084
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd111464_v2.fits stis_ngsl_v2 35 7.1688 6.0205 5.5749 7.1997 6.0138 5.5742
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019656_v2.fits stis_ngsl_v2 35 5.0653 4.25 4.011 5.0904 4.2461 4.0107
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd058343_v2.fits stis_ngsl_v2 35 4.9381 5.1533 5.3636 4.935 5.1558 5.364
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd138716_v2.fits stis_ngsl_v2 35 5.079 4.3397 4.1379 5.1013 4.3363 4.1376
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd196426_v2.fits stis_ngsl_v2 35 6.0448 6.3942 6.6683 6.039 6.3978 6.6689
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd020630_v2.fits stis_ngsl_v2 35 5.0746 4.632 4.5183 5.0885 4.6299 4.5182
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g192-43_v2.fits stis_ngsl_v2 35 10.4577 10.2172 10.1891 10.4657 10.2165 10.1891
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd055057_v2.fits stis_ngsl_v2 35 5.4467 5.3922 5.463 5.4506 5.3929 5.4632
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g17-25_v2.fits stis_ngsl_v2 35 9.8995 9.3502 9.1625 9.9155 9.3472 9.1623
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd193281_v2.fits stis_ngsl_v2 35 6.6586 6.815 6.9748 6.6574 6.8172 6.9752
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd134440_v2.fits stis_ngsl_v2 35 9.7633 9.0813 8.8521 9.7815 9.0776 8.8518
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd036960_v2.fits stis_ngsl_v2 35 4.5156 5.0163 5.3973 4.5072 5.0211 5.3981
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd041661_v2.fits stis_ngsl_v2 35 7.5748 7.3326 7.3282 7.5828 7.3321 7.3283
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd720094_v2.fits stis_ngsl_v2 35 10.0572 9.8089 9.7478 10.0647 9.8076 9.7478
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd094028_v2.fits stis_ngsl_v2 35 8.3519 8.053 7.9834 8.3608 8.0516 7.9833
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd006229_v2.fits stis_ngsl_v2 35 8.8619 8.3288 8.1305 8.8778 8.3256 8.1303
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd122064_v2.fits stis_ngsl_v2 35 6.8895 6.0505 5.8103 6.9114 6.0464 5.8099
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd102780_v2.fits stis_ngsl_v2 35 8.8873 7.5263 6.8405 8.9226 7.5174 6.8395
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd128000_v2.fits stis_ngsl_v2 35 6.3631 5.0998 4.5571 6.3963 5.0923 4.5563
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd170973_v2.fits stis_ngsl_v2 35 6.288 6.5382 6.7942 6.2839 6.5415 6.7947
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd142091_v2.fits stis_ngsl_v2 35 5.1683 4.4209 4.2042 5.1905 4.4172 4.2039
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd021742_v2.fits stis_ngsl_v2 35 8.3068 7.7191 7.5773 8.3253 7.7164 7.5771
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd090862_v2.fits stis_ngsl_v2 35 9.2173 8.027 7.5412 9.2497 8.0197 7.5404
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd017081_v2.fits stis_ngsl_v2 35 4.0502 4.4264 4.7249 4.0438 4.4302 4.7255
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd224801_v2.fits stis_ngsl_v2 35 6.2515 6.5273 6.7897 6.2465 6.5306 6.7902
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd167105_v2.fits stis_ngsl_v2 35 9.0017 9.2561 9.5061 8.9984 9.2595 9.5066
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019445_v2.fits stis_ngsl_v2 35 8.1698 7.8778 7.7965 8.1786 7.8762 7.7965
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd047839_v2.fits stis_ngsl_v2 35 4.4438 4.949 5.329 4.4356 4.9538 5.3297
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd072505_v2.fits stis_ngsl_v2 35 6.7017 5.8149 5.5384 6.7282 5.8105 5.5379
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd193495_v2.fits stis_ngsl_v2 35 3.3737 2.7835 2.5808 3.3906 2.7802 2.5805
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd292091_v2.fits stis_ngsl_v2 35 10.461 10.1336 10.054 10.4711 10.1321 10.054
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd018769_v2.fits stis_ngsl_v2 35 5.8501 5.9755 6.1531 5.85 5.9777 6.1536
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd660268_v2.fits stis_ngsl_v2 35 10.2899 9.8913 9.7534 10.3027 9.8891 9.7532
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g234-28_v2.fits stis_ngsl_v2 35 11.2489 10.9539 10.8928 11.2581 10.9527 10.8928
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd190360_v2.fits stis_ngsl_v2 35 6.0161 5.5331 5.4216 6.0324 5.531 5.4214
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd132475_v2.fits stis_ngsl_v2 35 8.7412 8.367 8.2405 8.7517 8.3647 8.2404
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd195434_v2.fits stis_ngsl_v2 35 9.6538 8.9296 8.6494 9.6727 8.9255 8.649
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd185351_v2.fits stis_ngsl_v2 35 5.5154 4.8472 4.6622 5.5362 4.8439 4.662
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd029574_v2.fits stis_ngsl_v2 35 8.939 7.7395 7.2247 8.9688 7.7316 7.2239
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g196-48_v2.fits stis_ngsl_v2 35 10.5082 10.1619 10.0658 10.5184 10.1601 10.0657
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g114-26_v2.fits stis_ngsl_v2 35 9.7949 9.4894 9.4105 9.8039 9.4878 9.4104
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g019-013_v2.fits stis_ngsl_v2 35 8.1956 7.1575 6.7679 8.219 7.1519 6.7673
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd160346_v2.fits stis_ngsl_v2 35 6.8785 6.1184 5.8599 6.8991 6.1145 5.8595
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd003360_v2.fits stis_ngsl_v2 35 3.4466 3.9022 4.2485 3.4385 3.9066 4.2492
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd074088_v2.fits stis_ngsl_v2 35 7.4157 6.0302 5.4223 7.4508 6.0216 5.4214
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd078479_v2.fits stis_ngsl_v2 35 7.6531 6.7383 6.4537 7.6802 6.7338 6.4533
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd174708_v2.fits stis_ngsl_v2 35 9.6384 9.3914 9.3509 9.6465 9.3905 9.3509
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd188262_v2.fits stis_ngsl_v2 35 8.0256 7.3788 7.1619 8.0427 7.3754 7.1615
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+381670_v2.fits stis_ngsl_v2 35 9.6328 9.2144 9.0653 9.6463 9.2122 9.065
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd065714_v2.fits stis_ngsl_v2 35 6.2371 5.5217 5.3134 6.2596 5.5181 5.3131
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd201601_v2.fits stis_ngsl_v2 35 4.7346 4.7261 4.8518 4.738 4.7275 4.8521
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164058_v2.fits stis_ngsl_v2 35 2.8692 1.6316 1.0923 2.9025 1.624 1.0915
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd034078_v2.fits stis_ngsl_v2 35 6.034 5.9199 5.9407 6.0375 5.9199 5.9408
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd115617_v2.fits stis_ngsl_v2 35 4.9737 4.4835 4.3648 4.9889 4.4813 4.3647
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd036702_v2.fits stis_ngsl_v2 35 8.8388 7.8456 7.459 8.8654 7.8393 7.4584
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g021-024_v2.fits stis_ngsl_v2 35 9.419 8.2359 7.7875 9.4456 8.2297 7.7869
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd063791_v2.fits stis_ngsl_v2 35 8.255 7.5353 7.253 8.275 7.5308 7.2526
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd215665_v2.fits stis_ngsl_v2 35 4.3665 3.6033 3.373 4.3906 3.5994 3.3726
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd097633_v2.fits stis_ngsl_v2 35 3.1805 3.4567 3.687 3.1765 3.4597 3.6875
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd112413_v2.fits stis_ngsl_v2 35 2.7418 3.0864 3.3735 2.7355 3.0902 3.3741
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd200905_v2.fits stis_ngsl_v2 35 4.3771 3.0374 2.4631 4.4132 3.0292 2.4623
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd008724_v2.fits stis_ngsl_v2 35 8.748 7.9236 7.5927 8.7704 7.9185 7.5922
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd031421_v2.fits stis_ngsl_v2 35 4.5335 3.6636 3.3515 4.5595 3.6586 3.351
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd212516_v2.fits stis_ngsl_v2 35 9.4445 8.0241 7.1844 9.4804 8.0139 7.1833
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd200081_v2.fits stis_ngsl_v2 35 8.236 7.6681 7.4906 8.2529 7.6651 7.4904
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd-122669_v2.fits stis_ngsl_v2 35 10.2828 10.1664 10.1942 10.2873 10.1665 10.1943
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd012533_v2.fits stis_ngsl_v2 35 2.7824 1.7701 1.4331 2.8138 1.7648 1.4325
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd196662_v2.fits stis_ngsl_v2 35 5.6359 6.0069 6.3362 5.6301 6.0111 6.3369
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd008890_v2.fits stis_ngsl_v2 35 2.1762 1.8304 1.7907 2.1881 1.8293 1.7907
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd174966_v2.fits stis_ngsl_v2 35 7.7465 7.7292 7.8403 7.7496 7.7305 7.8406
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd191026_v2.fits stis_ngsl_v2 35 5.6834 5.068 4.8974 5.7022 5.0651 4.8972
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd004128_v2.fits stis_ngsl_v2 35 2.5096 1.8341 1.6513 2.5319 1.8309 1.651
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd114330_v2.fits stis_ngsl_v2 35 4.454 4.6951 4.9735 4.4502 4.6988 4.974
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd164353_v2.fits stis_ngsl_v2 35 3.8857 4.0635 4.2556 3.8832 4.0658 4.256
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd183915_v2.fits stis_ngsl_v2 35 7.8288 6.8394 6.5098 7.8592 6.8343 6.5093
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd138749_v2.fits stis_ngsl_v2 35 4.1003 4.4769 4.7758 4.0939 4.4807 4.7764
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019308_v2.fits stis_ngsl_v2 35 7.5988 7.1772 7.1136 7.6127 7.1756 7.1136
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd163346_v2.fits stis_ngsl_v2 35 7.0456 6.6135 6.461 7.0561 6.6111 6.4608
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd033793_v2.fits stis_ngsl_v2 35 9.5573 8.1153 7.3057 9.5905 8.1066 7.3046
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd092860_v2.fits stis_ngsl_v2 35 11.1731 10.7601 10.6381 11.1852 10.7579 10.638
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd000358_v2.fits stis_ngsl_v2 35 1.9003 2.2519 2.5449 1.8945 2.2557 2.5455
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd106516_v2.fits stis_ngsl_v2 35 6.2357 5.9718 5.913 6.244 5.9705 5.913
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd126661_v2.fits stis_ngsl_v2 35 5.3686 5.4184 5.5534 5.3709 5.4201 5.5537
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd037828_v2.fits stis_ngsl_v2 35 7.3315 6.4366 6.0639 7.3566 6.4308 6.0634
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd005916_v2.fits stis_ngsl_v2 35 7.1935 6.5438 6.3213 7.2135 6.5402 6.321
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd006755_v2.fits stis_ngsl_v2 35 8.0186 7.475 7.2773 8.0344 7.4717 7.2771
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd183324_v2.fits stis_ngsl_v2 35 5.87 6.1017 6.3337 5.8676 6.1049 6.3342
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd037216_v2.fits stis_ngsl_v2 35 8.1151 7.6159 7.5081 8.1315 7.6138 7.508
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_viwcom_v2.fits stis_ngsl_v2 35 8.729 7.2657 5.7874 8.7644 7.2501 5.7858
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd109995_v2.fits stis_ngsl_v2 35 7.4817 7.6879 7.8617 7.4793 7.6903 7.8621
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd123657_v2.fits stis_ngsl_v2 35 5.7357 4.2925 2.782 5.7707 4.2767 2.7804
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd018907_v2.fits stis_ngsl_v2 35 6.1471 5.5947 5.4104 6.1646 5.5915 5.4101
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd087140_v2.fits stis_ngsl_v2 35 9.2475 8.7124 8.5019 9.2625 8.709 8.5016
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd095418_v2.fits stis_ngsl_v2 35 2.2794 2.5169 2.7475 2.2751 2.5198 2.7481
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd148513_v2.fits stis_ngsl_v2 35 5.9862 4.8 4.3496 6.0184 4.7934 4.3489
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd169191_v2.fits stis_ngsl_v2 35 5.7435 4.7584 4.4285 5.7715 4.7531 4.428
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd095241_v2.fits stis_ngsl_v2 35 6.1956 5.834 5.7411 6.2072 5.8322 5.741
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd023439_v2.fits stis_ngsl_v2 35 8.4115 7.8498 7.6676 8.4275 7.8467 7.6674
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_lhs10_v2.fits stis_ngsl_v2 35 13.3398 11.6214 9.4211 13.3856 11.5998 9.4186
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g260-36_v2.fits stis_ngsl_v2 35 11.5834 10.903 10.6999 11.6033 10.8995 10.6996
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd128987_v2.fits stis_ngsl_v2 35 7.5686 7.0879 6.9889 7.5841 7.0859 6.9888
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd025975_v2.fits stis_ngsl_v2 35 6.4297 5.7599 5.5856 6.4508 5.7568 5.5854
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd022049_v2.fits stis_ngsl_v2 35 4.0402 3.3763 3.1967 4.0594 3.3731 3.1965
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd119971_v2.fits stis_ngsl_v2 35 6.0081 4.8941 4.4583 6.0379 4.8874 4.4576
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd073710_v2.fits stis_ngsl_v2 35 6.7974 6.0741 5.8638 6.8202 6.0706 5.8635
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd149161_v2.fits stis_ngsl_v2 35 5.4745 4.2033 3.652 5.5073 4.1956 3.6512
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd079349_v2.fits stis_ngsl_v2 35 9.1544 7.838 7.1974 9.1879 7.8296 7.1965
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd217357_v2.fits stis_ngsl_v2 35 8.5026 7.2074 6.6371 8.5306 7.1999 6.6363
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd111786_v2.fits stis_ngsl_v2 35 6.135 6.1337 6.197 6.1369 6.1343 6.1972
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd166991_v2.fits stis_ngsl_v2 35 6.7469 6.9133 7.0929 6.7457 6.9156 7.0933
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd059612_v2.fits stis_ngsl_v2 35 4.8747 4.8707 4.9283 4.8774 4.8714 4.9284
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd093329_v2.fits stis_ngsl_v2 35 8.6836 8.8628 9.0339 8.6817 8.8651 9.0342
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd086986_v2.fits stis_ngsl_v2 35 7.9293 8.0525 8.1852 7.9283 8.0542 8.1855
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd039833_v2.fits stis_ngsl_v2 35 7.8387 7.4309 7.351 7.8518 7.4292 7.3509
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_gl15b_v2.fits stis_ngsl_v2 35 8.8331 7.3601 6.439 8.8654 7.35 6.4376
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd001461_v2.fits stis_ngsl_v2 35 6.6749 6.2501 6.1571 6.6893 6.2483 6.157
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g18-54_v2.fits stis_ngsl_v2 35 10.8846 10.5526 10.4684 10.8946 10.551 10.4683
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd124425_v2.fits stis_ngsl_v2 35 6.0196 5.7652 5.733 6.0283 5.7643 5.733
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd068988_v2.fits stis_ngsl_v2 35 8.4135 7.9943 7.9199 8.427 7.9926 7.9199
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd155763_v2.fits stis_ngsl_v2 35 2.9723 3.3439 3.6417 2.9662 3.3477 3.6423
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd058551_v2.fits stis_ngsl_v2 35 6.6547 6.3968 6.3518 6.6634 6.3957 6.3518
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd017072_v2.fits stis_ngsl_v2 35 6.8162 6.347 6.1826 6.8296 6.3443 6.1824
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd284248_v2.fits stis_ngsl_v2 35 9.3727 9.1182 9.084 9.3806 9.1173 9.084
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd037202_v2.fits stis_ngsl_v2 35 2.695 3.0963 3.4009 2.6879 3.0998 3.4014
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd018078_v2.fits stis_ngsl_v2 35 8.2458 8.2328 8.3521 8.2473 8.2343 8.3524
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_mmj6490_v2.fits stis_ngsl_v2 35 10.8567 11.0447 11.2406 10.8553 11.0474 11.241
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd126511_v2.fits stis_ngsl_v2 35 8.6172 8.0997 7.9714 8.6334 8.0973 7.9713
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd079158_v2.fits stis_ngsl_v2 35 5.1231 5.477 5.79 5.1168 5.481 5.7907
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd110073_v2.fits stis_ngsl_v2 35 4.52 4.8495 5.1597 4.5151 4.8535 5.1603
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_cd-691618_v2.fits stis_ngsl_v2 35 9.1046 9.4967 9.8191 9.0984 9.5007 9.8198
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd423607_v2.fits stis_ngsl_v2 35 10.4062 10.1425 10.0882 10.4153 10.1414 10.0882
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd187879_v2.fits stis_ngsl_v2 35 5.5403 5.8244 6.0713 5.5364 5.8275 6.0718
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd203638_v2.fits stis_ngsl_v2 35 5.7929 4.9352 4.6744 5.819 4.931 4.674
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_vgkcom_v2.fits stis_ngsl_v2 35 7.4692 6.0168 4.4818 7.5037 6.0009 4.4801
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_mmj6476_v2.fits stis_ngsl_v2 35 11.3356 11.29 11.3756 11.3395 11.2911 11.3758
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd055496_v2.fits stis_ngsl_v2 35 8.7592 8.0915 7.8721 8.7802 8.0879 7.8717
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd126614_v2.fits stis_ngsl_v2 35 9.0758 8.5271 8.4138 9.0934 8.5248 8.4137
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd099648_v2.fits stis_ngsl_v2 35 5.3261 4.6203 4.4216 5.3486 4.6168 4.4213
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd+413306_v2.fits stis_ngsl_v2 35 9.1665 8.5768 8.3814 9.1833 8.5735 8.3811
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd170737_v2.fits stis_ngsl_v2 35 8.4177 7.8142 7.5967 8.4353 7.8106 7.5964
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g63-26_v2.fits stis_ngsl_v2 35 12.3773 12.106 12.076 12.386 12.1046 12.076
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd076291_v2.fits stis_ngsl_v2 35 6.1457 5.3069 5.0283 6.1704 5.3024 5.0278
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd345957_v2.fits stis_ngsl_v2 35 9.063 8.7185 8.608 9.0727 8.7165 8.6079
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd078362_v2.fits stis_ngsl_v2 35 4.7047 4.5947 4.676 4.71 4.5954 4.6762
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_bd442051_v2.fits stis_ngsl_v2 35 9.4316 8.0134 7.1268 9.4647 8.0036 7.1257
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd142703_v2.fits stis_ngsl_v2 35 6.1179 6.0906 6.1505 6.1208 6.0912 6.1507
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_vbnvul_v2.fits stis_ngsl_v2 35 10.8368 10.3371 10.0994 10.8486 10.334 10.0991
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd166283_v2.fits stis_ngsl_v2 35 7.7911 7.8255 7.959 7.7927 7.8272 7.9593
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd137759_v2.fits stis_ngsl_v2 35 3.988 3.2751 3.0148 4.0125 3.271 3.0144
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175156_v2.fits stis_ngsl_v2 35 5.0824 5.0966 5.1828 5.084 5.0975 5.1831
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd037763_v2.fits stis_ngsl_v2 35 5.6093 4.7486 4.4828 5.6341 4.7443 4.4824
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd044007_v2.fits stis_ngsl_v2 35 8.3654 7.7188 7.4694 8.3836 7.7148 7.469
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd101107_v2.fits stis_ngsl_v2 35 5.672 5.5529 5.5972 5.6769 5.553 5.5974
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd187111_v2.fits stis_ngsl_v2 35 8.2472 7.2142 6.7778 8.2742 7.2075 6.7772
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd038510_v2.fits stis_ngsl_v2 35 8.3487 8.0238 7.9402 8.3594 8.0222 7.9401
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd063077_v2.fits stis_ngsl_v2 35 5.5427 5.2158 5.1271 5.5538 5.2142 5.127
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175305_v2.fits stis_ngsl_v2 35 7.6046 7.0859 6.914 7.6204 7.083 6.9138
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd124547_v2.fits stis_ngsl_v2 35 5.3809 4.2848 3.8929 5.4114 4.2787 3.8923
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd015089_v2.fits stis_ngsl_v2 35 4.586 4.8118 5.0856 4.5842 4.8154 5.0862
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd013520_v2.fits stis_ngsl_v2 35 5.3785 4.1641 3.6907 5.4113 4.1572 3.69
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd019019_v2.fits stis_ngsl_v2 35 7.0754 6.7382 6.6874 7.0864 6.7369 6.6874
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd190073_v2.fits stis_ngsl_v2 35 7.7689 7.8808 8.0068 7.7676 7.8823 8.007
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd175805_v2.fits stis_ngsl_v2 35 7.8276 7.5337 7.5231 7.8382 7.533 7.5232
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd194453_v2.fits stis_ngsl_v2 35 6.6217 6.9112 7.1537 6.6176 6.9143 7.1542
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd061064_v2.fits stis_ngsl_v2 35 5.1631 4.96 5.0006 5.1716 4.9602 5.0007
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd134439_v2.fits stis_ngsl_v2 35 9.7364 9.2459 9.0832 9.7511 9.2433 9.083
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd026630_v2.fits stis_ngsl_v2 35 4.5022 3.7655 3.5322 4.5229 3.7616 3.5319
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd096446_v2.fits stis_ngsl_v2 35 6.4964 6.8853 7.1927 6.4898 6.8891 7.1933
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_g180-24_v2.fits stis_ngsl_v2 35 10.0126 9.728 9.6408 10.0211 9.7264 9.6407
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd080607_v2.fits stis_ngsl_v2 35 9.3728 8.846 8.7379 9.3898 8.8438 8.7378
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd141795_v2.fits stis_ngsl_v2 35 3.6536 3.7773 3.9616 3.6536 3.7796 3.962
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd157244_v2.fits stis_ngsl_v2 35 3.4213 2.2833 1.9154 3.4544 2.2774 1.9148
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd111515_v2.fits stis_ngsl_v2 35 8.3429 7.883 7.7451 8.358 7.8806 7.7449
+ZTF ZTF spectra/stis_ngsl_v2/h_stis_ngsl_hd107582_v2.fits stis_ngsl_v2 35 8.3989 7.9893 7.8779 8.4122 7.9872 7.8778
+ZTF ZTF spectra/calspec23/bd26d2606_stis_006.fits calspec23 35 9.8394 9.5773 9.5007 9.8469 9.5758 9.5006
+ZTF ZTF spectra/calspec23/wd0308_565_stis_009.fits calspec23 35 13.9464 14.363 14.6915 13.9402 14.3671 14.6922
+ZTF ZTF spectra/calspec23/sdss132811_stis_004.fits calspec23 35 16.9897 17.2819 17.5308 16.9885 17.2862 17.5313
+ZTF ZTF spectra/calspec23/hz21_stis_007.fits calspec23 35 14.4215 14.9763 15.3992 14.4108 14.9818 15.4001
+ZTF ZTF spectra/calspec23/gj7541a_stis_004.fits calspec23 35 12.2235 12.4027 12.6139 12.2221 12.4049 12.6144
+ZTF ZTF spectra/calspec23/ngc6681_3_stis_002.fits calspec23 35 16.6648 nan nan 16.6628 nan nan
+ZTF ZTF spectra/calspec23/16cygb_stis_004.fits calspec23 35 6.4429 6.0164 5.9172 6.4565 6.0144 5.9171
+ZTF ZTF spectra/calspec23/hd38949_stis_007.fits calspec23 35 7.969 7.6228 7.5568 7.9801 7.6214 7.5567
+ZTF ZTF spectra/calspec23/hd115169_stis_003.fits calspec23 35 9.4537 9.0423 8.9399 9.4668 9.0403 8.9398
+ZTF ZTF spectra/calspec23/feige34_stis_006.fits calspec23 35 10.8993 11.4628 11.8444 10.8884 11.468 11.8451
+ZTF ZTF spectra/calspec23/18sco_stis_005.fits calspec23 35 5.6917 5.2893 5.1938 5.7048 5.2873 5.1937
+ZTF ZTF spectra/calspec23/ngc6681_9_stis_002.fits calspec23 35 15.7166 nan nan 15.7175 nan nan
+ZTF ZTF spectra/calspec23/hd209458_stisnic_008.fits calspec23 35 7.8121 7.4905 7.4364 7.8227 7.4892 7.4364
+ZTF ZTF spectra/calspec23/wd0320_539_stis_005.fits calspec23 35 14.7113 15.2349 15.6407 14.7024 15.2402 15.6415
+ZTF ZTF spectra/calspec23/mucol_stis_007.fits calspec23 35 4.902 5.4239 5.8234 4.8926 5.4289 5.8242
+ZTF ZTF spectra/calspec23/ngc6681_12_stis_002.fits calspec23 35 16.9849 nan nan 16.9852 nan nan
+ZTF ZTF spectra/calspec23/hz43_stis_005.fits calspec23 35 12.6566 13.2107 13.6274 12.6465 13.2161 13.6282
+ZTF ZTF spectra/calspec23/hd101452_stis_003.fits calspec23 35 7.5603 7.5202 7.6033 7.5639 7.5211 7.6035
+ZTF ZTF spectra/calspec23/ngc2506g31_stis_003.fits calspec23 35 18.1647 17.6914 17.5624 18.179 17.689 17.5623
+ZTF ZTF spectra/calspec23/hd158485_stis_005.fits calspec23 35 6.433 6.5717 6.7357 6.4322 6.5738 6.7361
+ZTF ZTF spectra/calspec23/ksi2ceti_stis_006.fits calspec23 35 4.1227 4.4481 4.7164 4.1174 4.4516 4.717
+ZTF ZTF spectra/calspec23/hd37962_stis_010.fits calspec23 35 8.0498 7.6421 7.5404 8.063 7.6401 7.5403
+ZTF ZTF spectra/calspec23/ngc6681_10_stis_002.fits calspec23 35 18.1328 nan nan 18.1356 nan nan
+ZTF ZTF spectra/calspec23/hd116405_stis_006.fits calspec23 35 8.1668 8.4994 8.7755 8.1614 8.503 8.7761
+ZTF ZTF spectra/calspec23/hd009051_stis_007.fits calspec23 35 9.2435 8.632 8.3893 9.2611 8.6281 8.3889
+ZTF ZTF spectra/calspec23/ngc6681_4_stis_002.fits calspec23 35 15.869 nan nan 15.868 nan nan
+ZTF ZTF spectra/calspec23/hd55677_stis_004.fits calspec23 35 9.3707 9.5559 9.7392 9.3684 9.5583 9.7395
+ZTF ZTF spectra/calspec23/feige110_stisnic_008.fits calspec23 35 11.5744 12.1256 12.538 11.5641 12.1308 12.5388
+ZTF ZTF spectra/calspec23/hd185975_stis_007.fits calspec23 35 8.3272 7.8839 7.7752 8.3414 7.8818 7.7751
+ZTF ZTF spectra/calspec23/hd200654_stis_007.fits calspec23 35 9.3183 8.8545 8.6638 9.3305 8.8514 8.6635
+ZTF ZTF spectra/calspec23/hz44_stis_006.fits calspec23 35 11.4075 11.9527 12.3781 11.3978 11.958 12.3789
+ZTF ZTF spectra/calspec23/ngc6681_7_stis_002.fits calspec23 35 nan nan nan nan nan nan
+ZTF ZTF spectra/calspec23/ngc6681_6_stis_002.fits calspec23 35 15.9354 nan nan 15.9348 nan nan
+ZTF ZTF spectra/calspec23/wd0947_857_stis_007.fits calspec23 35 15.5206 16.0605 16.475 15.5111 16.0658 16.4759
+ZTF ZTF spectra/calspec23/hd205905_stis_009.fits calspec23 35 6.9353 6.5515 6.4737 6.9478 6.5499 6.4736
+ZTF ZTF spectra/calspec23/eta1dor_stis_004.fits calspec23 35 5.5491 5.8588 6.1165 5.5444 5.8622 6.117
+ZTF ZTF spectra/calspec23/sun_reference_stis_002.fits calspec23 35 -26.5207 -26.9586 -27.052 -26.5072 -26.9604 -27.0521
+ZTF ZTF spectra/calspec23/hd163466_stis_005.fits calspec23 35 6.8277 6.901 7.0344 6.8282 6.9027 7.0347
+ZTF ZTF spectra/calspec23/hz4_stis_008.fits calspec23 35 14.4111 14.7299 15.0254 14.4097 14.7347 15.026
+ZTF ZTF spectra/calspec23/bd_75d325_stis_006.fits calspec23 35 9.2664 9.8349 10.2625 9.2556 9.8403 10.2633
+ZTF ZTF spectra/calspec23/alpha_lyr_stis_011.fits calspec23 35 -0.1045 0.1837 0.4294 -0.1088 0.187 0.4299
+ZTF ZTF spectra/calspec23/hd180609_stis_006.fits calspec23 35 9.3664 9.523 9.693 9.3651 9.5252 9.6934
+ZTF ZTF spectra/calspec23/bd11d3759_stis_003.fits calspec23 35 11.9752 10.4845 8.8907 12.0128 10.4677 8.8889
+ZTF ZTF spectra/calspec23/hz43b_stis_005.fits calspec23 35 14.6302 13.556 12.2394 14.6474 13.5425 12.2378
+ZTF ZTF spectra/calspec23/hd128998_stis_003.fits calspec23 35 5.6843 5.9734 6.2144 5.6802 5.9766 6.2149
+ZTF ZTF spectra/calspec23/ngc6681_8_stis_002.fits calspec23 35 nan nan nan nan nan nan
+ZTF ZTF spectra/calspec23/ngc6681_2_stis_002.fits calspec23 35 16.0486 nan nan 16.0471 nan nan
+ZTF ZTF spectra/calspec23/hd200775_stis_001.fits calspec23 35 7.485 7.1827 7.0681 7.4905 7.1801 7.0678
+ZTF ZTF spectra/calspec23/agk_81d266_stisnic_007.fits calspec23 35 11.65 12.2288 12.661 11.639 12.2343 12.6618
+ZTF ZTF spectra/calspec23/hd160617_stis_005.fits calspec23 35 8.866 8.5796 8.4952 8.8741 8.578 8.4951
+ZTF ZTF spectra/calspec23/hd142331_stis_005.fits calspec23 35 8.9475 8.503 8.3935 8.9616 8.5009 8.3933
+ZTF ZTF spectra/calspec23/hd159222_stis_008.fits calspec23 35 6.7269 6.3277 6.2463 6.7399 6.326 6.2462
+ZTF ZTF spectra/calspec23/bd54d1216_stis_005.fits calspec23 35 9.8405 9.5609 9.4845 9.8488 9.5594 9.4844
+ZTF ZTF spectra/calspec23/hd167060_stis_005.fits calspec23 35 9.1287 8.7363 8.6434 9.1416 8.7344 8.6433
+ZTF ZTF spectra/calspec23/bd21d0607_stis_006.fits calspec23 35 9.3476 9.0897 9.0201 9.3551 9.0884 9.0201
+ZTF ZTF spectra/calspec23/bd29d2091_stis_006.fits calspec23 35 10.4209 10.0841 9.9765 10.4306 10.0822 9.9764
+ZTF ZTF spectra/calspec23/hs2027_stis_006.fits calspec23 35 16.4538 16.8852 17.2894 16.4448 16.89 17.2902
+ZTF ZTF spectra/calspec23/ngc6681_11_stis_002.fits calspec23 35 15.6478 nan nan 15.6502 nan nan
+ZTF ZTF spectra/calspec23/hd074000_stis_006.fits calspec23 35 9.7752 9.5378 9.4755 9.7822 9.5366 9.4755
+ZTF ZTF spectra/calspec23/wd1026_453_stis_007.fits calspec23 35 15.8961 16.4289 16.8394 15.8868 16.4342 16.8402
+ZTF ZTF spectra/calspec23/hd14943_stis_005.fits calspec23 35 5.8752 5.9548 6.0998 5.876 5.9566 6.1001
+ZTF ZTF spectra/calspec23/ngc6681_5_stis_002.fits calspec23 35 nan nan nan nan nan nan
+ZTF ZTF spectra/calspec23/bd_28d4211_stis_005.fits calspec23 35 10.2463 10.8219 11.2593 10.2358 10.8274 11.2602
+ZTF ZTF spectra/calspec23/bd02d3375_stis_006.fits calspec23 35 10.0872 9.7836 9.6841 10.0956 9.7817 9.684
+ZTF ZTF spectra/calspec23/hd106252_stis_008.fits calspec23 35 7.6119 7.2326 7.1495 7.6242 7.2309 7.1494
+ZTF ZTF spectra/calspec23/hd111980_stis_006.fits calspec23 35 8.5385 8.2025 8.102 8.5485 8.2006 8.1019
+ZTF ZTF spectra/calspec23/hd2811_stis_004.fits calspec23 35 7.4767 7.5806 7.7171 7.4765 7.5824 7.7174
+ZTF ZTF spectra/calspec23/delumi_stis_004.fits calspec23 35 4.2191 4.4816 4.7069 4.2155 4.4847 4.7074
+ZTF ZTF spectra/calspec23/hd60753_stis_004.fits calspec23 35 6.528 6.8449 7.1064 6.5226 6.8482 7.1069
+ZTF ZTF spectra/calspec23/etauma_stis_007.fits calspec23 35 1.6092 2.0585 2.3995 1.6014 2.0629 2.4002
+ZTF ZTF spectra/calspec23/lamlep_stis_007.fits calspec23 35 4.0341 4.5359 4.9213 4.025 4.5408 4.922
+ZTF ZTF spectra/calspec23/hd031128_stis_006.fits calspec23 35 9.2776 8.9794 8.8922 9.2865 8.9778 8.8922
+ZTF ZTF spectra/calspec23/hd172728_stis_002.fits calspec23 35 5.5751 5.8894 6.15 5.5701 5.8928 6.1505
+ZTF ZTF spectra/calspec23/109vir_stis_003.fits calspec23 35 3.5864 3.8678 4.1017 3.5822 3.8708 4.1022
+ZTF ZTF spectra/calspec23/sdssj151421_stis_005.fits calspec23 35 15.6948 16.1586 16.5283 15.6876 16.1637 16.5291
+ZTF ZTF spectra/calspec23/bd_17d4708_stisnic_007.fits calspec23 35 9.5971 9.3313 9.2562 9.6047 9.3299 9.2561
+ZTF ZTF spectra/calspec23/10lac_stis_007.fits calspec23 35 4.6584 5.1017 5.454 4.6506 5.1061 5.4547
+ZTF ZTF spectra/calspec23/ngc6681_1_stis_002.fits calspec23 35 15.7661 nan nan 15.7659 nan nan
+ZTF ZTF spectra/calspec23/sirius_stis_005.fits calspec23 35 -1.5797 -1.2793 -1.0188 -1.5844 -1.2758 -1.0183
+ZTF ZTF spectra/calspec23/hd93521_stis_007.fits calspec23 35 6.7883 7.2586 7.6388 6.7797 7.2633 7.6396
+ZTF ZTF spectra/calspec23/sigori_stis_001.fits calspec23 35 3.5944 4.0783 4.4522 3.586 4.0829 4.453

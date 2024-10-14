@@ -217,12 +217,26 @@ def resolve(name):
 d = Table.read('rawstars/Y6A1_FGCM_V3_3_1_PSF_ALL_STARS.fits')
 d = d.to_pandas()
 
-d['radiff']  = d['RA']  - 35
-d['decdiff'] = d['DEC'] - -5
+RA_SHALLOW = np.asarray([54.2743, 54.2743, 7.8744, 9.5000, 42.8200, 41.1944, 34.4757, 35.6645, 52.6484, 36.45])
+DEC_SHALLOW = np.asarray([-27.1116, -29.0884, -43.0096, -43.9980, 0, -0.9884, -4.9295, -6.4121, -28.1, -4.6])
 
-d = d.loc[(abs(d.radiff) < 1) & (abs(d.decdiff) < 1)]
+ismin = np.zeros_like(d['RA'])
+for i in range(len(RA_SHALLOW)):
+    tmpra = d['RA'] - RA_SHALLOW[i]
+    tmpdec = d['DEC'] - DEC_SHALLOW[i]
+    ismin[(np.abs(tmpra) < 1) & (np.abs(tmpdec) < 1)] = 1
 
-print(list(d))
+d['ismin'] = ismin
+#
+#d['radiff']  = d['RA']  - 35
+#d['decdiff'] = d['DEC'] - -5
+
+#make a min function to choose between fields 'n stuff
+
+#d = d.loc[(abs(d.radiff) < 1) & (abs(d.decdiff) < 1)]
+print(len(d))
+d = d.loc[d.ismin == 1]
+print(len(d))
 
 
 pcols = d.columns

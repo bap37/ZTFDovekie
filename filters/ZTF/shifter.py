@@ -5,7 +5,7 @@ filename = 'ztfg2.dat'
 
 df = pd.read_csv(filename, delim_whitespace=True)
 
-shiftval = +5
+shiftval = +20
 
 df['#wave(A)'] += shiftval
 
