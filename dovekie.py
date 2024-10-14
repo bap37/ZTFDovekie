@@ -714,7 +714,7 @@ def plot_forone(result,subscript, outputdir,tableout,biasestimates):
             ax.spines[speen].set_visible(False)
 
         ## End plot stuff
-        if (biasestimates is None) or (len(biasestimates) is 0):
+        if (biasestimates is None) or (len(biasestimates) ==0):
             preddiff,scatter=0,0
         else:
             preddiff,scatter=biasestimates[result.surv2+'-' + result.yfilt2+'-'+cat]
