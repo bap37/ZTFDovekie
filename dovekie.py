@@ -715,7 +715,7 @@ def plot_forone(result,subscript, outputdir,tableout,biasestimates):
 
         ## End plot stuff
         if (biasestimates is None) or (len(biasestimates) is 0):
-            preddiff,scatter=None,None
+            preddiff,scatter=0,0
         else:
             preddiff,scatter=biasestimates[result.surv2+'-' + result.yfilt2+'-'+cat]
         tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.3f\t%.3f\t%.1f\t%.1f\n'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,cat,offmean,result.datax.size,data_slope,data_slope_err,synth_slope,synth_slope_err, diff,preddiff, (diff-preddiff)/scatter,result.shift))
@@ -760,7 +760,8 @@ def get_args():
     msg = "Use simbiases.txt to bias correct slopes "
     parser.add_argument("--BIASCOR", help = msg, type=bool,default=True)
     parser.set_defaults(FAKES=False)
-    
+    parser.set_defaults(BIASCOR=False)
+
     parser.add_argument('--speclibrary', help='Spectral library to use',type=str,default=None)
     parser.add_argument('--outputdir', help='Directory for all output',type=str,default=None)
     parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=0.95)
