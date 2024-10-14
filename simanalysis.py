@@ -54,6 +54,10 @@ for label in outfile['labels']:
 
 
 # In[6]:
+#outdirfstring='plots/fakes_calspeconly_fitstis_{i}'
+outdirfstring='plots/fakes_stisonly_fitboth_{i}'
+inputlib=('calspec23' if 'calspeconly' in outdirfstring else 'stis_ngsl_v2')
+fitlib=('calspec23' if 'fitcalspec' in outdirfstring else 'stis_ngsl_v2')
 
 
 results=[]
@@ -61,14 +65,14 @@ def splittuple(arr):
     return map( lambda x: np.array(list(map(float,x))),list(zip(*np.char.split(arr,'+-'))))
 
 for i in range(100):
-    outdir=f'plots/fakes_{i}'
+    outdir=outdirfstring.format(i=i)
     result=np.genfromtxt(path.join(outdir,'preprocess_dovekie.dat'),dtype=None,names=True,encoding='utf-8')
-    result=result[result['SPECLIB']=='calspec23']
-    outfile=np.load(path.join(outdir,'results.npz'))
+    result=result[result['SPECLIB']==fitlib]
+    outfile=np.load(path.join(outdir,'DOVEKIE.V3.npz'))
 
     offsetsamples=outfile['samples']
     offsets,offseterrs=np.mean(offsetsamples,axis=0),np.std(offsetsamples,axis=0)
-    with open(f'output_simulated_apermags+AV/{i}/simmedoffsets.json') as file: 
+    with open(f'output_simulated_apermags+AV/{inputlib}_{i}/simmedoffsets.json') as file: 
         simmedoffsets=(json.loads(file.read()))
     trueoffsets=np.array([simmedoffsets[(idx:=simmap_indexes[label])[0]][idx[1]] for label in outfile['labels']])
     pval=np.sum(offsetsamples>trueoffsets[np.newaxis,:],axis=0)/offsetsamples.shape[0]
