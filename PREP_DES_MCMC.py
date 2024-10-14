@@ -9,8 +9,10 @@ system = 'DES'
 from astropy.table import Table
 t = Table.read('newcatalog/PS1_in_DES5YR.fits')
 print(t.columns)
-xx = (t['DES_MAG_STD_G'].astype(float) > 10) & (t['gMeanPSFMag'].astype(float) > 10)
 
+t = t[0:2000]
+
+xx = (t['DES_MAG_STD_G'].astype(float) > 10) & (t['gMeanPSFMag'].astype(float) > 10)
 
 
 colnames = ['%s-g'%system,'%s-r'%system,'%s-i'%system,'%s-z'%system,

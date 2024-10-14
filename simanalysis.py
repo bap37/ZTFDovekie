@@ -65,25 +65,23 @@ def splittuple(arr):
     return map( lambda x: np.array(list(map(float,x))),list(zip(*np.char.split(arr,'+-'))))
 
 for i in range(100):
-    for outdirfstring in ['plots/fakes_stisonly_fitboth_{i}','plots/fakes_calspeconly_fitboth_{i}']:
-        inputlib=('calspec23' if 'calspeconly' in outdirfstring else 'stis_ngsl_v2')
-        fitlib=(inputlib if 'fitboth' in outdirfstring else ('calspec23' if 'fitcalspec' in outdirfstring else 'stis_ngsl_v2'))
-        outdir=outdirfstring.format(i=i)
-        result=np.genfromtxt(path.join(outdir,'preprocess_dovekie.dat'),dtype=None,names=True,encoding='utf-8')
-        result=result[result['SPECLIB']==fitlib]
-        outfile=np.load(path.join(outdir,'DOVEKIE.V3.npz'))
+    outdir=outdirfstring.format(i=i)
+    result=np.genfromtxt(path.join(outdir,'preprocess_dovekie.dat'),dtype=None,names=True,encoding='utf-8')
+    result=result[result['SPECLIB']==fitlib]
+    outfile=np.load(path.join(outdir,'DOVEKIE.V3.npz'))
+
+    offsetsamples=outfile['samples']
+    offsets,offseterrs=np.mean(offsetsamples,axis=0),np.std(offsetsamples,axis=0)
+    with open(f'output_simulated_apermags+AV/{inputlib}_{i}/simmedoffsets.json') as file: 
+        simmedoffsets=(json.loads(file.read()))
+    trueoffsets=np.array([simmedoffsets[(idx:=simmap_indexes[label])[0]][idx[1]] for label in outfile['labels']])
+    pval=np.sum(offsetsamples>trueoffsets[np.newaxis,:],axis=0)/offsetsamples.shape[0]
+    slopes,errs=list((splittuple(result['D_SLOPE'])))
+    synth_slopes,_=list((splittuple(result['S_SLOPE'])))
+    results+=[(slopes,errs,synth_slopes,offsets,offseterrs,trueoffsets,pval)]
     
-        offsetsamples=outfile['samples']
-        offsets,offseterrs=np.mean(offsetsamples,axis=0),np.std(offsetsamples,axis=0)
-        with open(f'output_simulated_apermags+AV/{inputlib}_{i}/simmedoffsets.json') as file: 
-            simmedoffsets=(json.loads(file.read()))
-        trueoffsets=np.array([simmedoffsets[(idx:=simmap_indexes[label])[0]][idx[1]] for label in outfile['labels']])
-        pval=np.sum(offsetsamples>trueoffsets[np.newaxis,:],axis=0)/offsetsamples.shape[0]
-        slopes,errs=list((splittuple(result['D_SLOPE'])))
-        synth_slopes,_=list((splittuple(result['S_SLOPE'])))
-        results+=[(slopes,errs,synth_slopes,offsets,offseterrs,trueoffsets,pval,inputlib)]
-    
-slopes,errs,synth_slopes,offsets,offseterrs,trueoffsets,pval,inputlib=list(map(np.stack,zip(*results)))
+slopes,errs,synth_slopes,offsets,offseterrs,trueoffsets,pval=list(map(np.stack,zip(*results)))
+
 
 # In[8]:
 
@@ -95,7 +93,7 @@ offsetlabels=np.char.replace(outfile['labels'],'_offset','')
 # In[11]:
 
 
-plt.hist([stats.kstest(pval[:,i],lambda x: x).pvalue for i in range(pval.shape[1])],bins=np.linspace(0,1,11,True))
+plt.hist(stats.kstest(pval,lambda x: x).pvalue,bins=np.linspace(0,1,11,True))
 plt.xlabel('KS test p-value')
 plt.savefig('offsetpvals.pdf')
 
@@ -178,30 +176,28 @@ plt.savefig('plots/simscatter.pdf')
 
 with open('simbiases.txt','w') as file:
     defcolumnwidth=9
-    header=['FILTER']+['SPECLIB']+ ['OFFSETBIAS' , 'OFFSETZSCORE','OFFSETERRMEAN','OFFSETSCATTER', 'OFFSETPVAL','SLOPEBIAS','SLOPEERROR','SLOPEZSCORE','SLOPEPVAL']
+    header=['FILTER']+ ['OFFSETBIAS' , 'OFFSETZSCORE','OFFSETERRMEAN','OFFSETSCATTER', 'OFFSETPVAL','SLOPEBIAS','SLOPEERROR','SLOPEZSCORE','SLOPEPVAL']
     def formatline(arr):
         return' '.join([('{: >'+(str(max(defcolumnwidth,len(header)+3)))+'.4f}').format(x) if type(x) is np.float64 else ('{: >'+(str(max(defcolumnwidth,len(header)+3)))+'}').format(x) for x,head in zip(arr,header)])
     file.write(formatline(header)+'\n')    
     for filt in np.unique(np.concatenate((offsetlabels,slopelabels))):
-        for rowinputlib in np.unique(inputlib):
-            idx=np.where(filt==offsetlabels)[0]
-            if len(idx):
-                meanbias=np.mean((offsets[:,idx]-trueoffsets[:,idx]))
-                meanzscore= np.mean((offsets[:,idx]-trueoffsets[:,idx])/offseterrs[:,idx])
-                offerrest,offerrobs=np.sqrt(np.mean(offseterrs[:,idx]**2)), np.std((offsets[:,idx]-trueoffsets[:,idx]))
-                kspval=stats.kstest(pval[:,idx],lambda x: x).pvalue
-            else: meanbias , meanzscore,offerrest,offerrobs, kspval = ['NA']*3
-            idx=np.where(filt==slopelabels)[0]
-            if len(idx):
-                idx=idx[0]
-                slopebias=np.mean(slopes[inputlib ==rowinputlib,idx]-synth_slopes[inputlib ==rowinputlib,idx])
-                slopeerr=np.std(slopes[inputlib ==rowinputlib,idx]-synth_slopes[inputlib ==rowinputlib,idx])
-                slopebiaszscore= slopebias/(slopeerr)
-                slopebiaspval= (1-stats.norm.cdf(np.abs(slopebiaszscore)))*2
-            else:
-                slopebias,slopeerr,slopebiaszscore,slopebiaspval= ['NA']*4
-            allres=[meanbias , meanzscore,offerrest,offerrobs, kspval,slopebias,slopeerr,slopebiaszscore,slopebiaspval]
-            file.write(formatline([filt]+[rowinputlib]+allres)+'\n')
+        idx=np.where(filt==offsetlabels)[0]
+        if len(idx):
+            meanbias=np.mean((offsets[:,idx]-trueoffsets[:,idx]))
+            meanzscore= np.mean((offsets[:,idx]-trueoffsets[:,idx])/offseterrs[:,idx])
+            offerrest,offerrobs=np.sqrt(np.mean(offseterrs[:,idx]**2)), np.std((offsets[:,idx]-trueoffsets[:,idx]))
+            kspval=stats.kstest(pval[:,idx],lambda x: x).pvalue[0]
+        else: meanbias , meanzscore,offerrest,offerrobs, kspval = ['NA']*3
+        idx=np.where(filt==slopelabels)[0]
+        if len(idx):
+            slopebias=np.mean(slopes[:,idx]-synth_slopes[:,idx])
+            slopeerr=np.std(slopes[:,idx]-synth_slopes[:,idx])
+            slopebiaszscore=np.mean(slopes[:,idx]-synth_slopes[:,idx])/(slopeerr)
+            slopebiaspval= (1-stats.norm.cdf(np.abs(slopebiaszscore)))*2
+        else:
+            slopebias,slopeerr,slopebiaszscore,slopebiaspval= ['NA']*4
+        allres=[meanbias , meanzscore,offerrest,offerrobs, kspval,slopebias,slopeerr,slopebiaszscore,slopebiaspval]
+        file.write(formatline([filt]+allres)+'\n')
 
 
 # In[20]:
