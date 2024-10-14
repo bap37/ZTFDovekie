@@ -757,7 +757,8 @@ def get_args():
     msg = "Use simbiases.txt to bias correct slopes "
     parser.add_argument("--BIASCOR", help = msg, type=bool,default=True)
     parser.set_defaults(FAKES=False)
-    
+    parser.set_defaults(BIASCOR=False)
+
     parser.add_argument('--speclibrary', help='Spectral library to use',type=str,default=None)
     parser.add_argument('--outputdir', help='Directory for all output',type=str,default=None)
     parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=0.95)
