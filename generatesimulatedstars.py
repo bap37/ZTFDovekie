@@ -394,7 +394,7 @@ def generatesurvey(name,survoffsets,forcereload=False,speclibrary='calspec23'):
         filts=[name+x for x in 'griz']
         synth,obs=getdata(name)
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['DESg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
-        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.expon(loc=.05,scale=.15).rvs ,    
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.exponnorm(1e-2,loc=.2,scale=.3).rvs,    
               (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.1 )
     
     elif name=='Foundation':
