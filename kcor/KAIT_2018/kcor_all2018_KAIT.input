@@ -1,0 +1,115 @@
+
+
+# specify spectral template for supernova
+SN_SED: Hsiao07.dat
+
+# specify primary spectrum
+BD17_SED:    $PS1_USERS/dscolnic/Excalibur_dillon/kcor/KAIT_2018/temp_bd17.dat
+
+
+# specify filters :
+MAGSYSTEM: BD17
+FILTSYSTEM: COUNT   ("ENERGY" => Trans -> Trans/lambda)
+FILTPATH: $PS1_USERS/dscolnic/Excalibur_dillon/filters/KAIT_2018__shift__
+SURVEY: KAIT
+FILTER: KAIT3-B   B_kait3.txt   -0.115
+FILTER: KAIT3-V   V_kait3.txt   -0.022
+FILTER: KAIT3-R   R_kait3.txt   0.144
+FILTER: KAIT3-I   I_kait3.txt   0.400
+FILTER: nickel-b   B_nickel1.txt   -0.128
+FILTER: nickel-v   V_nickel1.txt   -0.026
+FILTER: nickel-r   R_nickel1.txt   0.139
+FILTER: nickel-i   I_nickel1.txt   0.424
+FILTER: KAIT3-W   B_kait4.txt      -0.112
+FILTER: KAIT3-X   V_kait4.txt      -0.025
+FILTER: KAIT3-Y   R_kait4.txt      0.136
+FILTER: KAIT3-Q   I_kait4.txt      0.391
+FILTER: nickel-w   B_nickel2.txt   -0.028 
+FILTER: nickel-x   V_nickel2.txt   -0.015
+FILTER: nickel-y   R_nickel2.txt   0.143
+FILTER: nickel-q   I_nickel2.txt   0.424
+
+
+# ***** Compute BD17 flux and ZP in each filter ***** 
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#             KAIT3-B (  BD17)   1.533e+02   9.7668   0.000  -9.767  
+#             KAIT3-V (  BD17)   1.521e+02   9.4561   0.000  -9.456  
+#             KAIT3-R (  BD17)   2.154e+02   9.3295   0.000  -9.329  
+#             KAIT3-I (  BD17)   1.772e+02   9.2451   0.000  -9.245  
+#            nickel-b (  BD17)   1.398e+02   9.7383   0.000  -9.738  
+#            nickel-v (  BD17)   1.384e+02   9.4612   0.000  -9.461  
+#            nickel-r (  BD17)   1.988e+02   9.3317   0.000  -9.332  
+#            nickel-i (  BD17)   2.242e+02   9.2429   0.000  -9.243  
+#             KAIT3-W (  BD17)   1.455e+02   9.7360   0.000  -9.736  
+#             KAIT3-X (  BD17)   1.510e+02   9.4619   0.000  -9.462  
+#             KAIT3-Y (  BD17)   2.057e+02   9.3344   0.000  -9.334  
+#             KAIT3-Q (  BD17)   1.727e+02   9.2459   0.000  -9.246  
+#            nickel-w (  BD17)   1.396e+02   9.8377   0.000  -9.838  
+#            nickel-x (  BD17)   1.428e+02   9.4724   0.000  -9.472  
+#            nickel-y (  BD17)   2.191e+02   9.3360   0.000  -9.336  
+#            nickel-q (  BD17)   3.668e+02   9.2426   0.000  -9.243  
+#  ----------------------------------------------------------------- 
+
+
+
+#FILTER: KAIT3-B   B_kait3.txt   9.882
+#FILTER: KAIT3-V   V_kait3.txt   9.478
+#FILTER: KAIT3-R   R_kait3.txt   9.185
+#FILTER: KAIT3-I   I_kait3.txt   8.845
+
+#FILTER: nickel-b   B_nickel1.txt   9.866 #SETTING THE SAME FOR NICKEL 1 and 2
+#FILTER: nickel-v   V_nickel1.txt   9.487
+#FILTER: nickel-r   R_nickel1.txt   9.193
+#FILTER: nickel-i   I_nickel1.txt   8.819
+
+#FILTER: KAIT3-W   B_kait4.txt	   9.848
+#FILTER: KAIT3-X   V_kait4.txt	   9.487
+#FILTER: KAIT3-Y   R_kait4.txt	   9.198
+#FILTER: KAIT3-Q   I_kait4.txt	   8.855
+
+#FILTER: nickel-w   B_nickel2.txt   9.866 #SETTING THE	SAME FOR NICKEL	1 and 2
+#FILTER: nickel-x   V_nickel2.txt   9.487
+#FILTER: nickel-y   R_nickel2.txt   9.193
+#FILTER: nickel-q   I_nickel2.txt   8.819
+
+
+# ***** Compute BD17 flux and ZP in each filter ***** 
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#             KAIT3-B (  BD17)   1.533e+02   9.7668  -0.115  -9.882  
+#             KAIT3-V (  BD17)   1.521e+02   9.4561  -0.022  -9.478  
+#             KAIT3-R (  BD17)   2.154e+02   9.3295   0.144  -9.185  
+#             KAIT3-I (  BD17)   1.772e+02   9.2451   0.400  -8.845  
+#            nickel-b (  BD17)   1.398e+02   9.7383  -0.128  -9.866  
+#            nickel-v (  BD17)   1.384e+02   9.4612  -0.026  -9.487  
+#            nickel-r (  BD17)   1.988e+02   9.3317   0.139  -9.193  
+#            nickel-i (  BD17)   2.242e+02   9.2429   0.424  -8.819  
+#             KAIT3-W (  BD17)   1.455e+02   9.7360  -0.112  -9.848  
+#             KAIT3-X (  BD17)   1.510e+02   9.4619  -0.025  -9.487  
+#             KAIT3-Y (  BD17)   2.057e+02   9.3344   0.136  -9.198  
+#             KAIT3-Q (  BD17)   1.727e+02   9.2459   0.391  -8.855  
+#            nickel-w (  BD17)   1.396e+02   9.8377  -0.028  -9.866  
+#            nickel-x (  BD17)   1.428e+02   9.4724  -0.015  -9.487  
+#            nickel-y (  BD17)   2.191e+02   9.3360   0.143  -9.193  
+#            nickel-q (  BD17)   3.668e+02   9.2426   0.424  -8.819  
+#  ----------------------------------------------------------------- 
+
+
+
+
+# define lambda range for SN templates; 
+# template lambda binning is used internally
+LAMBDA_RANGE: 2100 13450
+
+# define output file for kcor grid
+
+OUTFILE: .kcor_KAIT.fits
+
+
+
+

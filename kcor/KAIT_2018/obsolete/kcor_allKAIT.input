@@ -1,0 +1,32 @@
+# specify spectral template for supernova
+SN_SED: Hsiao07.dat
+
+# specify primary spectrum
+BD17_SED:  $PS1_USERS/dscolnic/Excalibur_dillon/kcor/KAIT/temp_bd17.dat
+
+# specify filters :
+MAGSYSTEM: BD17
+FILTSYSTEM: COUNT   ("ENERGY" => Trans -> Trans/lambda)
+FILTPATH: $PS1_USERS/dscolnic/Excalibur_dillon/filters/KAIT_2018
+
+SURVEY: KAIT
+FILTER: KAIT1-B   B_kait1_shifted.txt   9.865
+FILTER: KAIT1-V   V_kait1_shifted.txt   9.476
+FILTER: KAIT1-R   R_kait1_shifted.txt   9.112
+FILTER: KAIT1-I   I_kait1_shifted.txt   8.802
+
+FILTER: nickel-b   B_nickel_shifted.txt   9.866
+FILTER: nickel-v   V_nickel_shifted.txt   9.487
+FILTER: nickel-r   R_nickel_shifted.txt   9.193
+FILTER: nickel-i   I_nickel_shifted.txt   8.819
+
+
+
+
+# define lambda range for SN templates;
+# template lambda binning is used internally
+LAMBDA_RANGE: 2100 11300
+
+# define output file for kcor grid
+
+OUTFILE: kcor_KAIT1+NICKEL.fits

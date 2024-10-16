@@ -1,0 +1,33 @@
+SN_SED: Hsiao07.dat
+
+BD17_SED:    $PS1_USERS/dscolnic/Excalibur_dillon/calspec/bd_17d4708_stisnic_007.dat
+
+MAGSYSTEM:  AB
+FILTSYSTEM: COUNT
+FILTPATH: $PS1_USERS/dscolnic/Excalibur_dillon/filters/ASASSN
+
+SURVEY: ASASSN
+FILTER: ASASSN-g astrodon_B.dat 0
+FILTER: ASASSN-j astrodon_V.dat 0
+FILTER: ASASSN-i astrodon_r.dat 0
+FILTER: ASASSN-h astrodon_i.dat 0
+FILTER: ASASSN-a bssl-bx-004.txt 0
+FILTER: ASASSN-b bssl-vx-022.txt 0
+FILTER: ASASSN-d SDSS.rp.txt 0
+FILTER: ASASSN-c SDSS.ip.txt 0
+
+
+# Define generation grids. 
+REDSHIFT_RANGE:    0.0  0.46 
+REDSHIFT_BINSIZE:  0.02      
+
+# define AV grid. 
+RV:          3.1   A(V)/E(B-V) in LMC 
+AV_RANGE:   -6.0  6.0  
+AV_BINSIZE:  0.5  
+AV_OPTION:   2   
+
+LAMBDA_RANGE: 2100 12500  # for SN templates
+
+
+OUTFILE: kcor_ASASSN_nosupercal_AB.fits

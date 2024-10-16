@@ -1,0 +1,20 @@
+# ------------------------------------------
+# specify spectral template for SNIa
+SN_SED: $SNDATA_ROOT/snsed/Hsiao07.dat
+BD17_SED:    /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/kcor/GAIA_DR3/fillme_GAIA_DR3.dat
+
+# specify filters :  
+MAGSYSTEM: BD17
+FILTSYSTEM: COUNT
+FILTPATH:   /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/GAIA_DR3/
+SURVEY: CLASH     #107 #listen it's fine 
+FILTER:  GAIA-g   g.dat   0.0
+FILTER:  GAIA-b   b.dat   0.0
+FILTER:  GAIA-r   r.dat   0.0
+
+# wavelength range for filters and primary ref
+LAMBDA_RANGE: 2100 12000
+
+# define output file to store calibration info
+OUTFILE: .kcor_GAIA_DR3.fits
+
