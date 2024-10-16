@@ -70,6 +70,9 @@ def get_all_shifts(surveys): #acquires all the surveys and collates them.
                 if 'PS1_' in f:
                     tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])>.25]
                     tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])<1.6]
+                elif "GAIA_" in f:
+                    tdf = tdf[(tdf['GAIA-b']-tdf['GAIA-r'])>.25]
+                    tdf = tdf[(tdf['GAIA-b']-tdf['GAIA-r'])<1.6]
                 dfl.append(tdf)
             except:
                 print('WARNING: Could not read in ',f) 
@@ -92,6 +95,7 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
     for survey in surveys:
         survname = obssurvmap[survey]
         if survey == 'PS1': continue
+        elif survey == "GAIA": continue
         realdirname = 'output_observed_apermags'
         if redo:
             print(f"Starting IRSA query for {survey}. If nothing is printing that's probably fine.")
@@ -578,6 +582,30 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
         if "DES" in surveys_for_chisq:
             surv1s.extend([  'GAIA',  'GAIA',  'GAIA',  'GAIA']) #always GAIA
             surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
+            filtas.extend([    'b',    'b',    'b',    'b']) #first filter for colour
+            filtbs.extend([    'r',    'r',    'r',    'r']) #second filter for colour
+            filt1s.extend([    'g',    'g',    'g',    'g']) # GAIA magnitude band
+            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
+
+        if "SDSS" in surveys_for_chisq:
+            surv1s.extend([  'GAIA',  'GAIA',  'GAIA',  'GAIA']) #always GAIA
+            surv2s.extend([  'SDSS',  'SDSS',  'SDSS',  'SDSS']) #Survey to compare
+            filtas.extend([    'b',    'b',    'b',    'b']) #first filter for colour
+            filtbs.extend([    'r',    'r',    'r',    'r']) #second filter for colour
+            filt1s.extend([    'g',    'g',    'g',    'g']) # GAIA magnitude band
+            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
+
+        if "PS1SN" in surveys_for_chisq:
+            surv1s.extend([  'GAIA',  'GAIA',  'GAIA',  'GAIA']) #always GAIA
+            surv2s.extend([  'PS1SN',  'PS1SN',  'PS1SN',  'PS1SN']) #Survey to compare
+            filtas.extend([    'b',    'b',    'b',    'b']) #first filter for colour
+            filtbs.extend([    'r',    'r',    'r',    'r']) #second filter for colour
+            filt1s.extend([    'g',    'g',    'g',    'g']) # GAIA magnitude band
+            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
+
+        if "SNLS" in surveys_for_chisq:
+            surv1s.extend([  'GAIA',  'GAIA',  'GAIA',  'GAIA']) #always GAIA
+            surv2s.extend([  'SNLS',  'SNLS',  'SNLS',  'SNLS']) #Survey to compare
             filtas.extend([    'b',    'b',    'b',    'b']) #first filter for colour
             filtbs.extend([    'r',    'r',    'r',    'r']) #second filter for colour
             filt1s.extend([    'g',    'g',    'g',    'g']) # GAIA magnitude band
