@@ -11,7 +11,6 @@ from glob import glob
 sys.path.insert(1, 'scripts/')
 from helpers import *
 import time, pickle
-import emcee
 from astroquery.irsa_dust import IrsaDust
 import astropy.coordinates as coord
 import astropy.units as u
