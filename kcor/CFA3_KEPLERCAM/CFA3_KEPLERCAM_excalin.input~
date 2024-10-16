@@ -1,0 +1,72 @@
+# ============================================================
+#  Feb 26, 2011 R.Kessler
+#  Native 4SHOOTER mags from $SALT2PATH/data/MagSys/BD17-jla.dat
+#  Filter responses from S.Jha email (Aug 2009)
+#
+# ======================== BEGIN INPUT  =========================
+
+# specify spectral template for supernova
+SN_SED: Hsiao07.dat
+
+# specify primary spectrum
+BD17_SED: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/kcor/CFA3_KEPLERCAM/fillme.dat
+
+# specify filters :  
+MAGSYSTEM: BD17
+FILTSYSTEM: COUNT    ("ENERGY" => Trans -> Trans/lambda)
+FILTPATH:  /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
+SURVEY: CFA3K
+FILTER: Bessell-U   SNLS3_Keplercam_U_modtran.dat   0.683
+FILTER: Bessell-B   SNLS3_Keplercam_B_modtran.dat   -0.106
+FILTER: Bessell-V   SNLS3_Keplercam_V_modtran.dat   -0.011
+FILTER: SDSS-r      SNLS3_Keplercam_r_modtran.dat   -0.004
+FILTER: SDSS-i      SNLS3_Keplercam_i_modtran.dat   0.007
+
+
+################# MODTRAN ################################################
+# ***** Compute BD17 flux and ZP in each filter ***** 
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#           Bessell-U (  BD17)   3.735e+01  10.3752   9.692  -0.683  
+#           Bessell-B (  BD17)   1.202e+02   9.7744   9.880   0.106  
+#           Bessell-V (  BD17)   1.349e+02   9.4617   9.472   0.011  
+#              SDSS-r (  BD17)   2.019e+02   9.3483   9.352   0.004  
+#              SDSS-i (  BD17)   1.765e+02   9.2613   9.254  -0.007  
+#  ----------------------------------------------------------------- 
+
+########### NO MODTRAN ######################################################
+# ***** Compute BD17 flux and ZP in each filter ***** 
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#           Bessell-U (  BD17)   5.927e+01  10.3947   9.692  -0.702  
+#           Bessell-B (  BD17)   1.578e+02   9.7891   9.880   0.091  
+#           Bessell-V (  BD17)   1.570e+02   9.4628   9.472   0.009  
+#              SDSS-r (  BD17)   2.264e+02   9.3492   9.352   0.003  
+#              SDSS-i (  BD17)   1.913e+02   9.2614   9.254  -0.007  
+#  ----------------------------------------------------------------- 
+
+
+
+
+REDSHIFT_RANGE:   0.0  0.09
+REDSHIFT_BINSIZE: 0.005
+
+# define AV grid
+RV:          3.1   A(V)/E(B-V) in LMC
+AV_RANGE:   -6.0  6.0
+AV_BINSIZE:  6.0
+AV_OPTION:   2   [1 => use AV at avg lambda in filter  (with CCM89)]
+                 [2 => convolve spectrum and extinction with CCM89 law]
+
+
+# define lambda range for SN templates; 
+# template lambda binning is used internally
+LAMBDA_RANGE: 2100 11300
+
+# define output file for kcor grid
+OUTFILE: .kcor_CFA3_KEPLERCAM_BD17.fits
+

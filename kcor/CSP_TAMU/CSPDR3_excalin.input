@@ -1,0 +1,120 @@
+# =================================================================
+#
+#   name in snoopy code               name in public filter page
+#  r_tel_ccd_atm_ext_1.2_new.dat -> r_tel_ccd_atm_ext_1.2.dat
+#  i_tel_ccd_atm_ext_1.2_new.dat -> i_tel_ccd_atm_ext_1.2.dat
+#  V_tel_ccd_atm_ext_1.2.dat     -> V_LC9844_tel_ccd_atm_ext_1.2.dat 
+#  J_old_retrocam_swope_atm.dat  -> Jrc1_SWO_TAM_scan_atm.dat
+#  J_SWO_TAM_scan_atm.dat        -> Jrc2_SWO_TAM_scan_atm.dat 
+#
+# SNooPy model V should be V_tel_ccd_atm_ext_1.2.dat  VegaB=0.0096 
+#
+# -----------------------------
+
+SN_SED: Hsiao07.dat
+BD17_SED:    /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/kcor/CSP_TAMU/fillme.dat
+
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+FILTPATH:   /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
+
+SURVEY: CSP
+FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat -0.062
+FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat -0.020
+FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat -0.006
+FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat 0.002
+FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat           -0.132
+FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat    -0.028  # V for snoopy model
+FILTER: CSP-o  V_LC3009_tel_ccd_atm_ext_1.2.dat    -0.027  # V1
+FILTER: CSP-m  V_LC3014_tel_ccd_atm_ext_1.2.dat    -0.023  # V0
+FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat    -0.028  # V
+
+FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       0.617
+FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       0.630 # Ydw
+
+# ***** Compute BD17 flux and ZP in each filter ***** 
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#               CSP-u (  BD17)   9.726e+00  10.4564   0.000 -10.456  
+#               CSP-g (  BD17)   1.539e+02   9.6243   0.000  -9.624  
+#               CSP-r (  BD17)   1.662e+02   9.3458   0.000  -9.346  
+#               CSP-i (  BD17)   1.313e+02   9.2520   0.000  -9.252  
+#               CSP-B (  BD17)   5.964e+01   9.7641   0.000  -9.764  
+#               CSP-V (  BD17)   9.575e+01   9.4661   0.000  -9.466  
+#               CSP-o (  BD17)   9.232e+01   9.4607   0.000  -9.461  
+#               CSP-m (  BD17)   9.570e+01   9.4687   0.000  -9.469  
+#               CSP-n (  BD17)   9.575e+01   9.4661   0.000  -9.466  
+#               CSP-Y (  BD17)   1.320e+02   9.2487   0.000  -9.249  
+#               CSP-y (  BD17)   1.161e+02   9.2503   0.000  -9.250  
+#  ----------------------------------------------------------------- 
+
+#FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat       10.518
+#FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat        9.644
+#FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat        9.352
+#FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat        9.250
+
+#FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat           9.896 
+#FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat    9.494  # V for snoopy model
+#FILTER: CSP-o  V_LC3009_tel_ccd_atm_ext_1.2.dat    9.488  # V1
+#FILTER: CSP-m  V_LC3014_tel_ccd_atm_ext_1.2.dat    9.492  # V0
+#FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat    9.494  # V
+
+#FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       8.632
+#FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       8.620 # Ydw 
+
+##THESE ARE NEARIR, DONT USE FOR CALIB
+##FILTER: CSP-J  Jrc1_SWO_TAM_scan_atm.dat    8.419 
+##FILTER: CSP-j  Jrc2_SWO_TAM_scan_atm.dat    8.426
+##FILTER: CSP-H  H_SWO_TAM_scan_atm.dat       8.125
+##FILTER: CSP-h  H_DUP_TAM_scan_atm.dat       8.126  # Hdw
+
+# ***** Compute BD17 flux and ZP in each filter ***** 
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#               CSP-u (  BD17)   9.726e+00  10.4564  -0.062 -10.518  
+#               CSP-g (  BD17)   1.539e+02   9.6243  -0.020  -9.644  
+#               CSP-r (  BD17)   1.662e+02   9.3458  -0.006  -9.352  
+#               CSP-i (  BD17)   1.313e+02   9.2520   0.002  -9.250  
+#               CSP-B (  BD17)   5.964e+01   9.7641  -0.132  -9.896  
+#               CSP-V (  BD17)   9.575e+01   9.4661  -0.028  -9.494  
+#               CSP-o (  BD17)   9.232e+01   9.4607  -0.027  -9.488  
+#               CSP-m (  BD17)   9.570e+01   9.4687  -0.023  -9.492  
+#               CSP-n (  BD17)   9.575e+01   9.4661  -0.028  -9.494  
+#               CSP-Y (  BD17)   1.320e+02   9.2487   0.617  -8.632  
+#               CSP-y (  BD17)   1.161e+02   9.2503   0.630  -8.620  
+#  ----------------------------------------------------------------- 
+
+
+
+#               CSP-g (  BD17)   1.546e+02   9.6194   9.644   0.025  
+#               CSP-r (  BD17)   1.659e+02   9.3481   9.352   0.004  
+#               CSP-i (  BD17)   1.303e+02   9.2611   9.250  -0.011  
+#               CSP-B (  BD17)   6.003e+01   9.7571   9.896   0.139  
+#               CSP-V (  BD17)   9.595e+01   9.4638   9.494   0.030  
+#               CSP-o (  BD17)   9.250e+01   9.4586   9.488   0.029  
+#               CSP-m (  BD17)   9.590e+01   9.4664   9.492   0.026  
+#               CSP-n (  BD17)   9.595e+01   9.4638   9.494   0.030  
+#               CSP-Y (  BD17)   1.313e+02   9.2548   8.632  -0.623  
+#               CSP-y (  BD17)   1.155e+02   9.2557   8.620  -0.636  
+
+
+
+# - - - - - - - - - 
+# Define generation grids. 
+REDSHIFT_RANGE:    0.0  0.1 
+REDSHIFT_BINSIZE:  0.01
+
+# define AV grid. 
+RV:          3.1   A(V)/E(B-V) in LMC 
+AV_RANGE:   -6.0  6.0  
+AV_BINSIZE:  0.5
+AV_OPTION:   2  
+
+
+LAMBDA_RANGE: 2100 20000  # for SN templates
+
+OUTFILE: .kcor_CSPDR3_bd_17d4708_stisnic_006.fits

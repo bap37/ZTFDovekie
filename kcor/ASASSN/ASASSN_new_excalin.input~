@@ -1,0 +1,54 @@
+SN_SED: Hsiao07.dat
+BD17_SED:    /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/kcor/ASASSN/fillme.dat
+
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/ASASSN
+
+#16.6763 +0.212+0.556*(16.6763- 16.3680  )+0.034*(16.6763- 16.3680  )^2=17.063
+#16.3680+0.005+0.462*(16.6763- 16.3680  )+0.013*(16.6763- 16.3680  )^2=16.52
+#16.3680-0.001+0.004*(16.6763- 16.3680  )+0.007*(16.6763- 16.3680  )^2=16.37
+#16.2632 -0.005+0.011*(16.6763- 16.3680  )+0.010*(16.6763- 16.3680  )^2=16.26
+
+SURVEY: ASASSN
+FILTER: ASASSN-g astrodon_B.dat -0.093
+FILTER: ASASSN-j astrodon_V.dat -0.033
+FILTER: ASASSN-i astrodon_r.dat -0.024
+FILTER: ASASSN-h astrodon_i.dat -0.007
+
+FILTER: ASASSN-a bssl-bx-004.txt -0.157
+FILTER: ASASSN-b bssl-vx-022.txt -0.019
+FILTER: ASASSN-d SDSS.rp.txt -0.017
+FILTER: ASASSN-c SDSS.ip.txt -0.002
+
+# ***** Compute BD17 flux and ZP in each filter ***** 
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#            ASASSN-g (  BD17)   1.888e-01  16.9673  17.060   0.093  
+#            ASASSN-j (  BD17)   2.340e-01  16.4868  16.520   0.033  
+#            ASASSN-i (  BD17)   3.284e-01  16.3465  16.370   0.024  
+#            ASASSN-h (  BD17)   3.378e-01  16.2530  16.260   0.007  
+#            ASASSN-a (  BD17)   1.504e-01  16.9028  17.060   0.157  
+#            ASASSN-b (  BD17)   1.891e-01  16.5013  16.520   0.019  
+#            ASASSN-d (  BD17)   3.525e-01  16.3528  16.370   0.017  
+#            ASASSN-c (  BD17)   2.991e-01  16.2580  16.260   0.002  
+#  ----------------------------------------------------------------- 
+
+
+
+# Define generation grids. 
+REDSHIFT_RANGE:    0.0  0.46 
+REDSHIFT_BINSIZE:  0.02      
+
+# define AV grid. 
+RV:          3.1   A(V)/E(B-V) in LMC 
+AV_RANGE:   -6.0  6.0  
+AV_BINSIZE:  0.5  
+AV_OPTION:   2   
+
+LAMBDA_RANGE: 2100 12500  # for SN templates
+
+
+OUTFILE: kcor_ASASSN_new_excalin.fits
