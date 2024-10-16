@@ -55,7 +55,7 @@ def get_whitedwarf_synths(surveys):
             for fname in files: whitedwarfsynths[survey]= pd.read_csv(fname,sep='\s+') 
     return whitedwarfsynths
 
-def get_all_shifts(surveys): #acquires all the surveys and collates them. 
+def get_all_shifts(surveys, reference_surveys): #acquires all the surveys and collates them. 
     surveydfs = {}
     for survey in surveys:
         files = glob('output_synthetic_magsaper/synth_%s_shift_*.000.txt'%survmap4shift[survey]) #TODO - better determination of whether or not there are lambda shifts and what to do if there are
@@ -70,7 +70,7 @@ def get_all_shifts(surveys): #acquires all the surveys and collates them.
                 if 'PS1_' in f:
                     tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])>.25]
                     tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])<1.6]
-                elif "GAIA_" in f:
+                elif 'GAIA_' in f:
                     tdf = tdf[(tdf['GAIA-b']-tdf['GAIA-r'])>.25]
                     tdf = tdf[(tdf['GAIA-b']-tdf['GAIA-r'])<1.6]
                 dfl.append(tdf)
@@ -85,8 +85,10 @@ def get_all_shifts(surveys): #acquires all the surveys and collates them.
         surveydfs[survey] = df
     #First for loop ends here.
     for survey in surveys:
-        if survey != 'PS1':
-            surveydfs[survey] = pd.merge(surveydfs[survey],surveydfs['PS1'],left_on='standard',right_on='standard',suffixes=('','_b'))
+        #doot 
+        if survey not in reference_surveys: #need to fix this to work with GAIA
+            for refsurv in reference_surveys:
+                surveydfs[survey] = pd.merge(surveydfs[survey],surveydfs[refsurv],left_on='standard',right_on='standard',suffixes=('','_b'))
     return surveydfs
     
 def get_all_obsdfs(surveys, redo=False, fakes=False): 
@@ -842,7 +844,7 @@ if __name__ == "__main__":
     #surveys_for_chisq = ['PS1', 'CFA3K', 'PS1SN'] #keep this one around for quick IRSA updates!
     fixsurveynames = []
 
-    surveydata = get_all_shifts(surveys_for_chisq)
+    surveydata = get_all_shifts(surveys_for_chisq, config['reference_surveys'])
     obsdfs = get_all_obsdfs(surveys_for_chisq, REDO, FAKES)
     print('got all survey data')
 
