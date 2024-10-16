@@ -1,0 +1,101 @@
+ SNANA_DIR   = /project2/rkessler/PRODUCTS/SNANA/SNANA 
+ SNDATA_ROOT = /project2/rkessler/PRODUCTS/SNDATA_ROOT 
+ --------------------------------------------------------
+  Read user input file: CFA3_KEPLERCAM_orig.input 
+
+	 Found MAGSYSTEM 'BD17' with offset =  -48.600 (INDX=1->1)
+	 Could not find /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/ZPOFF.DAT => no ZP offsets. 
+    ( 1) Bessell-U  COUNT-flux => /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_U.dat 
+    ( 2) Bessell-B  COUNT-flux => /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_B.dat 
+    ( 3) Bessell-V  COUNT-flux => /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_V.dat 
+    ( 4) SDSS-r  COUNT-flux => /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_r.dat 
+    ( 5) SDSS-i  COUNT-flux => /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_i.dat 
+	 NPRIMARY:          1 
+	 SN Ia templates:   Hsiao07.dat 
+	 SN SED Fudge file: NULL 
+	 TREF_EXPLODE =  -19.0 days (rest-frame)
+	 REDSHIFT range from 0.000 to 0.090 
+	 REDSHIFT binsize : 0.005 (NZBIN=19) 
+	 AV range from -6.00 to 6.00 
+	 AV binsize : 6.00  (NAVBIN=3) 
+	 RV = A(V)/E(B-V) : 3.10  
+	 Galactic extinction law: CCM89+ODonell94 
+	 AV option : 2  =>  convolve Kcor * A(lam)  
+	 MW Extinction slope measured at E(B-V)= 0.10, RVMW=3.100 
+	 User SN LAMBDA range from   2100 to  11300 Angstroms 
+	 User SN Trest range from    -30 to    100 days 
+
+  Done reading user input file.
+
+	 OUTFILE: kcor_CFA3_KEPLERCAM_BD17.fits  ->  FITS format
+
+  ***** READ FILTER TRANSMISSIONS ***** 
+	 Opened : /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_U.dat 
+	 Filter-01  Bessell-U :  28 values from  2950 to  4300 A, <lam>= 3650 
+	 Opened : /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_B.dat 
+	 Filter-02  Bessell-B :  50 values from  3450 to  5900 A, <lam>= 4356 
+	 Opened : /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_V.dat 
+	 Filter-03  Bessell-V :  44 values from  4700 to  6850 A, <lam>= 5410 
+	 Opened : /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_r.dat 
+	 Filter-04     SDSS-r :  45 values from  5250 to  7450 A, <lam>= 6242 
+	 Opened : /project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/filters/CFA3_native/SNLS3_Keplercam_i.dat 
+	 Filter-05     SDSS-i :  55 values from  6300 to  9000 A, <lam>= 7674 
+
+ Global range of all filters: 2950 to 9000 A 
+
+
+  ***** READ Supernova SED TEMPLATES ***** 
+  Read  K-cor  SED  from : 
+    /project2/rkessler/PRODUCTS/SNDATA_ROOT/snsed/Hsiao07.dat 
+  Finished reading Hsiao07.dat 
+  Found 106 epochs from day -20.0 to 85.0 . 
+  Each epoch has 921 lambda bins with binsize = 10.00 A . 
+  Spectra stored between   2100 and  11300 A . 
+
+
+  ***** READ PRIMARY BD17 SED (INDX=1) ***** 
+	 Opened : bd17.dat 
+   Read 2630 lambda bins from 1702 to 9198 A  
+   Re-bin BD17 to uniform (10 A) lambda bins from 2950 to 9000 A
+	 Flam(BD17,LAM=2950.0) = 4.245876e-13 
+
+ ***** Compute BD17 flux and ZP in each filter ***** 
+                                            syn                    
+                                flux        BD17     system  final  
+         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+  ------------------------------------------------------------------ 
+           Bessell-U (  BD17)   5.837e+01  10.4113   9.692  -0.719  
+           Bessell-B (  BD17)   1.567e+02   9.7967   9.880   0.084  
+           Bessell-V (  BD17)   1.567e+02   9.4649   9.472   0.007  
+              SDSS-r (  BD17)   2.269e+02   9.3470   9.352   0.005  
+              SDSS-i (  BD17)   1.929e+02   9.2526   9.254   0.002  
+  ----------------------------------------------------------------- 
+
+ Finished  kcor_ini  
+
+
+ ***** Compute SN magnitude in each filter/epoch ***** 
+
+ 
+                                         Synth MAG   Synth    
+          filter              (system)   at T=0      DM15    
+# ------------------------------------------------------------ 
+SNMAG:   Bessell-U            (  BD17)  -0.4549     1.409
+SNMAG:   Bessell-B            (  BD17)  -0.0114     1.034
+SNMAG:   Bessell-V            (  BD17)   0.0592     0.567
+SNMAG:   SDSS-r               (  BD17)   0.1443     0.654
+SNMAG:   SDSS-i               (  BD17)   0.7255     0.717
+# ---------------------------------------------------------- 
+
+  ***** START LOOPING for KCOR GRID ***** 
+
+ wr_fits: WRITE CALIB/KCOR TO 'kcor_CFA3_KEPLERCAM_BD17.fits' 
+	 wr_fits_HEAD: write header info.
+	 wr_fits_ZPT: write ZPT info 
+	 wr_fits_SNSED: write SN SED 
+	 wr_fits_KCOR: write KCOR tables 
+	 wr_fits_MAGS: write MAG+MWXT tables 
+	 wr_fits_FilterTrans: write filter transmissions. 
+	 wr_fits_PRIMARY: write Primary SED(s) 
+
+ Program stopping gracefully. Bye. 

@@ -1,0 +1,58 @@
+# Auto generated kcor-input file created by 
+#  /home/s1/rkessler/sdss/util/SDSS_build_CCDfilters.pl 
+
+SN_SED:    Hsiao07.dat   # spectral template for SN
+
+## REMINDER NEED TO UPDATE TO LATEST CALSPEC
+##alpha_lyr_stis_005.dat
+
+#BasdfD17_SED:  alpha_lyr_stis_005.dat
+BD17_SED:    $BRODIE_HOME/ZTF_CAL/kcor/SWIFTNEW/fillme.dat
+
+MAGSYSTEM:   BD17
+FILTSYSTEM:  COUNT
+SURVEY: SWIFTNEW
+FILTPATH: $BRODIE_HOME/ZTF_CAL/filters/SWIFTNEW
+FILTER: SWIFTNEW-U   U_UVOT_rev.txt   0.991
+FILTER: SWIFTNEW-B   B_UVOT_rev.txt   -0.129
+FILTER: SWIFTNEW-V   V_UVOT_rev.txt   -0.008
+
+FILTER: SWIFTNEW-X   U_UVOT_rev.txt   0.991
+FILTER: SWIFTNEW-N   U_UVOT_rev.txt   0.991
+FILTER: SWIFTNEW-W   U_UVOT_rev.txt   0.991
+
+
+LAMBDA_RANGE: 2100 11300  # for SN templates
+
+OUTFILE:  .kcor_UVOT_zp.fits 
+
+
+# V05
+
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#              UVOT-U (  BD17)   2.174e+05   1.0126   0.000  -1.013  
+#              UVOT-B (  BD17)   4.383e+05  -0.1159   0.000   0.116  
+#              UVOT-V (  BD17)   1.430e+05  -0.0047   0.000   0.005  
+#              UVOT-X (  BD17)   2.174e+05   1.0126   0.000  -1.013  
+#              UVOT-N (  BD17)   2.174e+05   1.0126   0.000  -1.013  
+#              UVOT-W (  BD17)   2.174e+05   1.0126   0.000  -1.013  
+#  ----------------------------------------------------------------- 
+
+
+
+# V10
+
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#              UVOT-U (  BD17)   2.217e+05   0.9914   0.000  -0.991  
+#              UVOT-B (  BD17)   4.435e+05  -0.1288   0.000   0.129  
+#              UVOT-V (  BD17)   1.434e+05  -0.0078   0.000   0.008  
+#              UVOT-X (  BD17)   2.217e+05   0.9914   0.000  -0.991  
+#              UVOT-N (  BD17)   2.217e+05   0.9914   0.000  -0.991  
+#              UVOT-W (  BD17)   2.217e+05   0.9914   0.000  -0.991  
+#  ----------------------------------------------------------------- 

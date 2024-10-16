@@ -1,0 +1,71 @@
+BD17_SED:    $PS1_USERS/dscolnic/Excalibur_dillon/kcor/CFA4_p1/temp_bd17.dat
+
+SN_SED: Hsiao07.dat
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+
+#FILTPATH:   PS1/PS1s_RS14/PS1_CFA4
+FILTPATH:   $PS1_USERS/dscolnic/Excalibur_dillon/filters/PS1_CFA4__shift__
+
+#FILTER: CFA41-U/n cfa4_B_p1.dat 0 #Total Fudge don;t use u!
+SURVEY: CFA4p1
+FILTER: CFA41-B/o cfa4_B_p1.dat -0.088
+FILTER: CFA41-V/p cfa4_V_p1.dat -0.014
+FILTER: CFA41-r/q cfa4_r_p1.dat -0.007
+FILTER: CFA41-i/r cfa4_i_p1.dat -0.002
+
+
+#FILTER: CFA41-U/n cfa4_B_p1.dat 9.724 #Total Fudge don;t use u!
+#FILTER: CFA41-B/o cfa4_B_p1.dat 9.88605
+#FILTER: CFA41-V/p cfa4_V_p1.dat 9.47432
+#FILTER: CFA41-r/q cfa4_r_p1.dat 9.35252
+#FILTER: CFA41-i/r cfa4_i_p1.dat 9.25465
+
+# ***** Compute BD17 flux and ZP in each filter ***** 
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#           CFA41-B/o (  BD17)   1.596e+02   9.7981   0.000  -9.798  
+#           CFA41-V/p (  BD17)   1.642e+02   9.4602   0.000  -9.460  
+#           CFA41-r/q (  BD17)   2.260e+02   9.3459   0.000  -9.346  
+#           CFA41-i/r (  BD17)   1.852e+02   9.2530   0.000  -9.253  
+#  ----------------------------------------------------------------- 
+
+
+
+
+# ***** Compute BD17 flux and ZP in each filter ***** 
+#                                            syn                    
+#                                flux        BD17     system  final  
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+#  ------------------------------------------------------------------ 
+#           CFA41-B/o (  BD17)   1.596e+02   9.7981  -0.088  -9.886  
+#           CFA41-V/p (  BD17)   1.642e+02   9.4602  -0.014  -9.474  
+#           CFA41-r/q (  BD17)   2.260e+02   9.3459  -0.007  -9.353  
+#           CFA41-i/r (  BD17)   1.852e+02   9.2530  -0.002  -9.255  
+#  ----------------------------------------------------------------- 
+
+
+
+
+
+# 1st filter is rest-frame. 
+# 2nd filter is observer-frame. 
+# 3rd arg is short-hand name for table storage. 
+
+
+# Define generation grids. 
+REDSHIFT_RANGE:    0.0  0.46 
+REDSHIFT_BINSIZE:  0.02      
+
+# define AV grid. 
+RV:          3.1   A(V)/E(B-V) in LMC 
+AV_RANGE:   -6.0  6.0  
+AV_BINSIZE:  0.5  
+AV_OPTION:   2   
+
+LAMBDA_RANGE: 2100 12500  # for SN templates
+
+
+OUTFILE: .kcor_CFA41.fits

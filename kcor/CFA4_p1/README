@@ -1,0 +1,22 @@
+kcor.exe CFA41_orig.input
+
+
+FILTER: CFA41-U/n cfa4_B_p1.dat 9.724 #Total Fudge don;t use u!
+FILTER: CFA41-B/o cfa4_B_p1.dat 9.88605
+FILTER: CFA41-V/p cfa4_V_p1.dat 9.47432
+FILTER: CFA41-r/q cfa4_r_p1.dat 9.35252
+FILTER: CFA41-i/r cfa4_i_p1.dat 9.25465
+
+
+
+ ***** Compute BD17 flux and ZP in each filter ***** 
+                                            syn                    
+                                flux        BD17     system  final  
+         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+  ------------------------------------------------------------------ 
+           CFA41-U/n (  BD17)   1.607e+02   9.7905   9.724  -0.067  
+           CFA41-B/o (  BD17)   1.607e+02   9.7905   9.886   0.096  
+           CFA41-V/p (  BD17)   1.645e+02   9.4581   9.474   0.016  
+           CFA41-r/q (  BD17)   2.255e+02   9.3482   9.353   0.004  
+           CFA41-i/r (  BD17)   1.837e+02   9.2618   9.255  -0.007  
+  ----------------------------------------------------------------- 
