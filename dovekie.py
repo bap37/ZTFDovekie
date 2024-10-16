@@ -346,7 +346,7 @@ def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict,):
     plt.savefig(outpath)
     print(f'writing white dwarf residuals to {outpath}')
 
-def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,doplot=False,subscript='',outputdir='',tableout=None, whitedwarf_seds=None,whitedwarf_obs= None,biasestimates=None,speclibrary=None):
+def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference_surveys, params,doplot=False,subscript='',outputdir='',tableout=None, whitedwarf_seds=None,whitedwarf_obs= None,biasestimates=None,speclibrary=None):
 
     chisqtot=0
     paramsdict,outofbounds,paramsnames = unwravel_params(params,surveys_for_chisq,fixsurveynames)
@@ -366,215 +366,225 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs, params,
     #I think this fucked me up again :p
 
     #Only documenting this one, the rest share the same setup. 
-    if "DES" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1']) #always PS1
-        surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
-        filtas.extend([    'g',    'g',    'g',    'g']) #first filter for colour
-        filtbs.extend([    'i',    'i',    'i',    'i']) #second filter for colour
-        filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
-        filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
+    if 'PS1' in reference_surveys:
+        if "DES" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1']) #always PS1
+            surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
+            filtas.extend([    'g',    'g',    'g',    'g']) #first filter for colour
+            filtbs.extend([    'i',    'i',    'i',    'i']) #second filter for colour
+            filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
+            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
+        
+        if "CSP" in surveys_for_chisq:
+            surv1s.extend([    'PS1',    'PS1',    'PS1',    'PS1',    'PS1',   'PS1',   'PS1',   'PS1'])
+            surv2s.extend([ 'CSP', 'CSP', 'CSP', 'CSP', 'CSP','CSP','CSP','CSP'])
+            filtas.extend([      'g',      'g',      'g',      'g',      'g',     'g',     'g',     'g'])
+            filtbs.extend([      'r',      'i',      'i',      'r',      'i',     'i',     'i',     'i'])
+            filt1s.extend([      'g',      'r',      'i',      'g',      'r',     'r',     'r',     'r'])
+            filt2s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
     
-    if "CSP" in surveys_for_chisq:
-        surv1s.extend([    'PS1',    'PS1',    'PS1',    'PS1',    'PS1',   'PS1',   'PS1',   'PS1'])
-        surv2s.extend([ 'CSP', 'CSP', 'CSP', 'CSP', 'CSP','CSP','CSP','CSP'])
-        filtas.extend([      'g',      'g',      'g',      'g',      'g',     'g',     'g',     'g'])
-        filtbs.extend([      'r',      'i',      'i',      'r',      'i',     'i',     'i',     'i'])
-        filt1s.extend([      'g',      'r',      'i',      'g',      'r',     'r',     'r',     'r'])
-        filt2s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
-
-    if "PS1SN" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend([ 'PS1SN', 'PS1SN', 'PS1SN', 'PS1SN'])
-        filtas.extend([    'g',    'g',    'g',    'r'])
-        filtbs.extend([    'i',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'i',    'z'])
-        filt2s.extend([    'g',    'r',    'i',    'z'])
-
-    if "Foundation" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend([ 'Foundation', 'Foundation', 'Foundation', 'Foundation'])
-        filtas.extend([    'g',    'g',    'g',    'r'])
-        filtbs.extend([    'i',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'i',    'z'])
-        filt2s.extend([    'g',    'r',    'i',    'z'])
-   
-    if "ZTF" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1', 'PS1', 'PS1', 'PS1'])
-        surv2s.extend([  'ZTF',  'ZTF',  'ZTF', 'ZTF', 'ZTF', 'ZTF'])
-        filtas.extend([    'g',    'g',    'g', 'g', 'g', 'g'])
-        filtbs.extend([    'i',    'i',    'i', 'i', 'i', 'i'])
-        filt1s.extend([    'g',    'r',    'i', 'g', 'r', 'i'])
-        filt2s.extend([    'g',    'r',    'i', 'G', 'R', 'I'])
-
-    if "ZTFD" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1'])
-        surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
-        filtas.extend([    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'i'])
-        filt2s.extend([    'g',    'r',    'i'])
-
-    if "ZTFS" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1'])
-        surv2s.extend([ 'ZTFS', 'ZTFS', 'ZTFS'])
-        filtas.extend([    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'i'])
-        filt2s.extend([    'g',    'r',    'i'])
-
-
-    if "SDSS" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend([ 'SDSS', 'SDSS', 'SDSS', 'SDSS'])
-        filtas.extend([    'g',    'g',    'g',    'r'])
-        filtbs.extend([    'i',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'i',    'z'])
-        filt2s.extend([    'g',    'r',    'i',    'z'])
-
-    if "SNLS" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend([ 'SNLS', 'SNLS', 'SNLS', 'SNLS'])
-        filtas.extend([    'g',    'g',    'g',    'r'])
-        filtbs.extend([    'i',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'i',    'z'])
-        filt2s.extend([    'g',    'r',    'i',    'z'])
-
-    if "CFA3S" in surveys_for_chisq:
-        surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
-        surv2s.extend([ 'CFA3S', 'CFA3S', 'CFA3S', 'CFA3S'])
-        filtas.extend([     'g',     'g',     'g',     'g'])
-        filtbs.extend([     'r',     'i',     'i',     'i'])
-        filt1s.extend([     'g',     'r',     'r',     'i'])
-        filt2s.extend([     'B',     'V',    'R',     'I'])
-
-    if "CFA3K" in surveys_for_chisq:
-        surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
-        surv2s.extend([ 'CFA3K', 'CFA3K', 'CFA3K', 'CFA3K'])
-        filtas.extend([     'g',     'g',     'g',     'g'])
-        filtbs.extend([     'r',     'i',     'i',     'i'])
-        filt1s.extend([     'g',     'r',     'r',     'i'])
-        filt2s.extend([     'B',     'V',     'r',     'i'])
+        if "PS1SN" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend([ 'PS1SN', 'PS1SN', 'PS1SN', 'PS1SN'])
+            filtas.extend([    'g',    'g',    'g',    'r'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i',    'z'])
+            filt2s.extend([    'g',    'r',    'i',    'z'])
     
-    if "KAIT1MO" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['KAIT1MO','KAIT1MO','KAIT1MO','KAIT1MO'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'a',    'b',    'c',    'd'])
+        if "Foundation" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend([ 'Foundation', 'Foundation', 'Foundation', 'Foundation'])
+            filtas.extend([    'g',    'g',    'g',    'r'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i',    'z'])
+            filt2s.extend([    'g',    'r',    'i',    'z'])
+       
+        if "ZTF" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1', 'PS1', 'PS1', 'PS1'])
+            surv2s.extend([  'ZTF',  'ZTF',  'ZTF', 'ZTF', 'ZTF', 'ZTF'])
+            filtas.extend([    'g',    'g',    'g', 'g', 'g', 'g'])
+            filtbs.extend([    'i',    'i',    'i', 'i', 'i', 'i'])
+            filt1s.extend([    'g',    'r',    'i', 'g', 'r', 'i'])
+            filt2s.extend([    'g',    'r',    'i', 'G', 'R', 'I'])
     
-    if "KAIT2MO" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['KAIT2MO','KAIT2MO','KAIT2MO','KAIT2MO'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'e',    'f',    'g',    'h'])
-     
-    if "NICKEL1MO" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['NICKEL1MO','NICKEL1MO','NICKEL1MO','NICKEL1MO'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'I',    'J',    'K',    'L'])
-        surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
-
-    if 'NICKEL2MO' in surveys_for_chisq:
-        surv2s.extend(['NICKEL2MO','NICKEL2MO','NICKEL2MO','NICKEL2MO'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'M',    'N',    'O',    'P'])
-
-    if "KAIT3MO" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['KAIT3MO','KAIT3MO','KAIT3MO','KAIT3MO'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'A',    'B',    'C',    'D'])
-
-    if "KAIT4MO" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['KAIT4MO','KAIT4MO','KAIT4MO','KAIT4MO'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'E',    'F',    'G',    'H'])
+        if "ZTFD" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1'])
+            surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
+            filtas.extend([    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i'])
+            filt2s.extend([    'g',    'r',    'i'])
     
-    if "KAIT3" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['KAIT3','KAIT3','KAIT3','KAIT3'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'A',    'B',    'C',    'D'])
-
-    if "KAIT4" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['KAIT4','KAIT4','KAIT4','KAIT4'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'E',    'F',    'G',    'H'])
+        if "ZTFS" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1'])
+            surv2s.extend([ 'ZTFS', 'ZTFS', 'ZTFS'])
+            filtas.extend([    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i'])
+            filt2s.extend([    'g',    'r',    'i'])
     
-    if "NICKEL1" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['NICKEL1','NICKEL1','NICKEL1','NICKEL1'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'I',    'J',    'K',    'L'])
-
-    if "NICKEL2" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
-        surv2s.extend(['NICKEL2','NICKEL2','NICKEL2','NICKEL2'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'M',    'N',    'O',    'P'])
-
-    if "SWIFT" in surveys_for_chisq:
-        surv1s.extend([  'PS1',       'PS1'])
-        surv2s.extend(['SWIFT', 'SWIFT'])
-        filtas.extend([    'g',         'g'])
-        filtbs.extend([    'r',         'i'])
-        filt1s.extend([    'g',         'r'])
-        filt2s.extend([    'B',         'V'])
-
-    if "ASASSN2" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['ASASSN2','ASASSN2','ASASSN2','ASASSN2'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'g',    'j',    'i',    'h'])
-
-    if "ASASSN1" in surveys_for_chisq:
-        surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-        surv2s.extend(['ASASSN1','ASASSN1','ASASSN1','ASASSN1'])
-        filtas.extend([    'g',    'g',    'g',    'g'])
-        filtbs.extend([    'r',    'i',    'i',    'i'])
-        filt1s.extend([    'g',    'r',    'r',    'i'])
-        filt2s.extend([    'a',    'b',    'd',    'c'])
-
-    if "CFA4P1" in surveys_for_chisq:
-        surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
-        surv2s.extend(['CFA4P1', 'CFA4P1','CFA4P1','CFA4P1'])
-        filtas.extend([    'g',         'g',       'g',      'g'])
-        filtbs.extend([    'r',         'i',       'i',      'i'])
-        filt1s.extend([    'g',         'r',       'r',      'i'])
-        filt2s.extend([    'B',         'V',       'r',      'i'])
     
-    if "CFA4P2" in surveys_for_chisq:
-        surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
-        surv2s.extend(['CFA4P2', 'CFA4P2', 'CFA4P2','CFA4P2'])
-        filtas.extend([    'g',         'g',       'g',      'g'])
-        filtbs.extend([    'r',         'i',       'i',      'i'])
-        filt1s.extend([    'g',         'r',       'r',      'i'])
-        filt2s.extend([    'B',         'V',       'r',      'i'])
-
+        if "SDSS" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend([ 'SDSS', 'SDSS', 'SDSS', 'SDSS'])
+            filtas.extend([    'g',    'g',    'g',    'r'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i',    'z'])
+            filt2s.extend([    'g',    'r',    'i',    'z'])
+    
+        if "SNLS" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend([ 'SNLS', 'SNLS', 'SNLS', 'SNLS'])
+            filtas.extend([    'g',    'g',    'g',    'r'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i',    'z'])
+            filt2s.extend([    'g',    'r',    'i',    'z'])
+    
+        if "CFA3S" in surveys_for_chisq:
+            surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
+            surv2s.extend([ 'CFA3S', 'CFA3S', 'CFA3S', 'CFA3S'])
+            filtas.extend([     'g',     'g',     'g',     'g'])
+            filtbs.extend([     'r',     'i',     'i',     'i'])
+            filt1s.extend([     'g',     'r',     'r',     'i'])
+            filt2s.extend([     'B',     'V',    'R',     'I'])
+    
+        if "CFA3K" in surveys_for_chisq:
+            surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
+            surv2s.extend([ 'CFA3K', 'CFA3K', 'CFA3K', 'CFA3K'])
+            filtas.extend([     'g',     'g',     'g',     'g'])
+            filtbs.extend([     'r',     'i',     'i',     'i'])
+            filt1s.extend([     'g',     'r',     'r',     'i'])
+            filt2s.extend([     'B',     'V',     'r',     'i'])
+        
+        if "KAIT1MO" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['KAIT1MO','KAIT1MO','KAIT1MO','KAIT1MO'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'a',    'b',    'c',    'd'])
+        
+        if "KAIT2MO" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['KAIT2MO','KAIT2MO','KAIT2MO','KAIT2MO'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'e',    'f',    'g',    'h'])
+         
+        if "NICKEL1MO" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['NICKEL1MO','NICKEL1MO','NICKEL1MO','NICKEL1MO'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'I',    'J',    'K',    'L'])
+            surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
+    
+        if 'NICKEL2MO' in surveys_for_chisq:
+            surv2s.extend(['NICKEL2MO','NICKEL2MO','NICKEL2MO','NICKEL2MO'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'M',    'N',    'O',    'P'])
+    
+        if "KAIT3MO" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['KAIT3MO','KAIT3MO','KAIT3MO','KAIT3MO'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'A',    'B',    'C',    'D'])
+    
+        if "KAIT4MO" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['KAIT4MO','KAIT4MO','KAIT4MO','KAIT4MO'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'E',    'F',    'G',    'H'])
+        
+        if "KAIT3" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['KAIT3','KAIT3','KAIT3','KAIT3'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'A',    'B',    'C',    'D'])
+    
+        if "KAIT4" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['KAIT4','KAIT4','KAIT4','KAIT4'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'E',    'F',    'G',    'H'])
+        
+        if "NICKEL1" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['NICKEL1','NICKEL1','NICKEL1','NICKEL1'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'I',    'J',    'K',    'L'])
+    
+        if "NICKEL2" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
+            surv2s.extend(['NICKEL2','NICKEL2','NICKEL2','NICKEL2'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'M',    'N',    'O',    'P'])
+    
+        if "SWIFT" in surveys_for_chisq:
+            surv1s.extend([  'PS1',       'PS1'])
+            surv2s.extend(['SWIFT', 'SWIFT'])
+            filtas.extend([    'g',         'g'])
+            filtbs.extend([    'r',         'i'])
+            filt1s.extend([    'g',         'r'])
+            filt2s.extend([    'B',         'V'])
+    
+        if "ASASSN2" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['ASASSN2','ASASSN2','ASASSN2','ASASSN2'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'g',    'j',    'i',    'h'])
+    
+        if "ASASSN1" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend(['ASASSN1','ASASSN1','ASASSN1','ASASSN1'])
+            filtas.extend([    'g',    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'r',    'i'])
+            filt2s.extend([    'a',    'b',    'd',    'c'])
+    
+        if "CFA4P1" in surveys_for_chisq:
+            surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
+            surv2s.extend(['CFA4P1', 'CFA4P1','CFA4P1','CFA4P1'])
+            filtas.extend([    'g',         'g',       'g',      'g'])
+            filtbs.extend([    'r',         'i',       'i',      'i'])
+            filt1s.extend([    'g',         'r',       'r',      'i'])
+            filt2s.extend([    'B',         'V',       'r',      'i'])
+        
+        if "CFA4P2" in surveys_for_chisq:
+            surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
+            surv2s.extend(['CFA4P2', 'CFA4P2', 'CFA4P2','CFA4P2'])
+            filtas.extend([    'g',         'g',       'g',      'g'])
+            filtbs.extend([    'r',         'i',       'i',      'i'])
+            filt1s.extend([    'g',         'r',       'r',      'i'])
+            filt2s.extend([    'B',         'V',       'r',      'i'])
+    if 'GAIA' in reference_surveys:
+        if "DES" in surveys_for_chisq:
+            surv1s.extend([  'GAIA',  'GAIA',  'GAIA',  'GAIA']) #always GAIA
+            surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
+            filtas.extend([    'b',    'b',    'b',    'b']) #first filter for colour
+            filtbs.extend([    'r',    'r',    'r',    'r']) #second filter for colour
+            filt1s.extend([    'g',    'g',    'g',    'g']) # GAIA magnitude band
+            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
+        
+ 
 
     totalchisq = 0
 
@@ -714,7 +724,7 @@ def plot_forone(result,subscript, outputdir,tableout,biasestimates):
             ax.spines[speen].set_visible(False)
 
         ## End plot stuff
-        if (biasestimates is None) or (len(biasestimates) is 0):
+        if (biasestimates is None) or (len(biasestimates) == 0):
             preddiff,scatter=0,0
         else:
             preddiff,scatter=biasestimates[result.surv2+'-' + result.yfilt2+'-'+cat]
@@ -799,6 +809,7 @@ if __name__ == "__main__":
     print('reading in survey data')
 
     surveys_for_chisq = config['surveys_for_dovekie']
+    reference_surveys= config['reference_surveys']
     if args.output is None: outname = config['chainsfile']
     else: outname= args.output
     #surveys_for_chisq = ['PS1', 'CFA3K', 'PS1SN'] #keep this one around for quick IRSA updates!
@@ -817,6 +828,7 @@ if __name__ == "__main__":
             whitedwarf_obs_loc=args.FAKES+'/WD_simmed.csv'
         print('Loading white dwarf data')
         whitedwarf_obs = pd.read_csv(whitedwarf_obs_loc,index_col='Object')
+        whitedwarf_obs=whitedwarf_obs.rename(columns={x:x.replace('_','-') for x in list(whitedwarf_obs) if '_' in x})
         whitedwarf_seds= get_whitedwarf_synths(surveys_for_chisq)
     else:
         whitedwarf_obs = None
@@ -843,7 +855,7 @@ if __name__ == "__main__":
                 pos.append(0)
     
     
-    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs, speclibrary=args.speclibrary)
+    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference_surveys, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs, speclibrary=args.speclibrary)
     full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=(args.outputdir if args.outputdir is not None else  (f'fakes_{path.split(FAKES)[1]}' if FAKES else None) ),biasestimates=biasestimates)
 
     _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
