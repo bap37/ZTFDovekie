@@ -1,0 +1,45 @@
+# ============================================================
+#  Feb 26, 2011 R.Kessler
+#  Native 4SHOOTER mags from $SALT2PATH/data/MagSys/BD17-jla.dat
+#  Filter responses from S.Jha email (Aug 2009)
+#
+# ======================== BEGIN INPUT  =========================
+
+# specify spectral template for supernova
+SN_SED: Hsiao07.dat
+
+# specify primary spectrum
+BD17_SED: $PS1_USERS/dscolnic/Excalibur_dillon/calspec/bd_17d4708_stisnic_007.dat
+
+# specify filters :  
+MAGSYSTEM: BD17
+FILTSYSTEM: COUNT    ("ENERGY" => Trans -> Trans/lambda)
+FILTPATH:  $PS1_USERS/dscolnic/Excalibur_dillon/filters/CFA3_native
+SURVEY: CFA3K
+FILTER: Bessell-U   SNLS3_Keplercam_U_modtran.dat   9.6922
+FILTER: Bessell-B   SNLS3_Keplercam_B_modtran.dat   9.8803
+FILTER: Bessell-V   SNLS3_Keplercam_V_modtran.dat   9.4722
+FILTER: SDSS-r      SNLS3_Keplercam_r_modtran.dat   9.3524
+FILTER: SDSS-i      SNLS3_Keplercam_i_modtran.dat   9.2542
+
+REDSHIFT_RANGE:   0.0  0.09
+REDSHIFT_BINSIZE: 0.005
+
+# define AV grid
+RV:          3.1   A(V)/E(B-V) in LMC
+AV_RANGE:   -6.0  6.0
+AV_BINSIZE:  6.0
+AV_OPTION:   2   [1 => use AV at avg lambda in filter  (with CCM89)]
+                 [2 => convolve spectrum and extinction with CCM89 law]
+
+
+# define lambda range for SN templates; 
+# template lambda binning is used internally
+LAMBDA_RANGE: 2100 11300
+
+# define output file for kcor grid
+OUTFILE: kcor_CFA3_KEPLERCAM_BD17_PANTHEONPLUS_v1_0.fits
+
+
+
+

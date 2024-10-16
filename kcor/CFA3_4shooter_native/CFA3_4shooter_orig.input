@@ -1,0 +1,34 @@
+BD17_SED:    $PS1_USERS/dscolnic/Excalibur_dillon/calspec/bd_17d4708_stisnic_007.dat
+
+SN_SED: Hsiao07.dat
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+
+#FILTPATH:   PS1/PS1s_RS14/CFA3_native
+FILTPATH: $PS1_USERS/dscolnic/Excalibur_dillon/filters/CFA3_native
+
+SURVEY: CFA3S
+FILTER: CFA3S-U/i SNLS3_4shooter2_U.dat 9.6930
+FILTER: CFA3S-B/j SNLS3_4shooter2_B.dat 9.87400
+FILTER: CFA3S-V/k SNLS3_4shooter2_V.dat 9.47900
+FILTER: CFA3S-R/l SNLS3_4shooter2_R.dat 9.15500
+FILTER: CFA3S-I/m SNLS3_4shooter2_I.dat 8.85100
+
+# 1st filter is rest-frame. 
+# 2nd filter is observer-frame. 
+# 3rd arg is short-hand name for table storage. 
+
+
+# Define generation grids. 
+#REDSHIFT_RANGE:    0.0  0.46 
+#REDSHIFT_BINSIZE:  0.02      
+
+# define AV grid. 
+RV:          3.1   A(V)/E(B-V) in LMC 
+AV_RANGE:   -6.0  6.0  
+AV_BINSIZE:  0.5  
+AV_OPTION:   2   
+
+LAMBDA_RANGE: 2100 12500  # for SN templates
+
+OUTFILE: kcor_CFA3s_nosupercal.fits

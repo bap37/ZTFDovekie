@@ -1,0 +1,121 @@
+ SNANA_DIR   = /home/s1/rkessler/snana 
+ SNDATA_ROOT = /data/dp62.b/data/SNDATA_ROOT 
+
+  Size of SNSED     struct : 10.95 Mb 
+  Size of KCOR_GRID struct :  0.00 Mb 
+  Size of FILTER    struct :  4.83 Mb 
+  Size of PRIMARYSED   struct :  1.21 Mb 
+ --------------------------------------------------------
+  Read user input file: kcor_KAIT1+NICKEL.input 
+
+	 Found MAGSYSTEM 'BD17' with offset =  -48.600 
+	 Could not find KAIT/ZPOFF.DAT => no ZP offsets. 
+	 (1) KAIT1-B  COUNT-flux filter => KAIT/B_kait1_shifted.txt 
+	 (2) KAIT1-V  COUNT-flux filter => KAIT/V_kait1_shifted.txt 
+	 (3) KAIT1-R  COUNT-flux filter => KAIT/R_kait1_shifted.txt 
+	 (4) KAIT1-I  COUNT-flux filter => KAIT/I_kait1_shifted.txt 
+	 (5) nickel-b  COUNT-flux filter => KAIT/B_nickel_shifted.txt 
+	 (6) nickel-v  COUNT-flux filter => KAIT/V_nickel_shifted.txt 
+	 (7) nickel-r  COUNT-flux filter => KAIT/R_nickel_shifted.txt 
+	 (8) nickel-i  COUNT-flux filter => KAIT/I_nickel_shifted.txt 
+	 SN Ia templates:   Hsiao07.dat 
+	 SN SED Fudge file: NULL 
+	 TREF_EXPLODE =  -19.0 days (rest-frame)
+	 REDSHIFT range from 0.000 to 0.000 
+	 REDSHIFT binsize : 0.000 (NZBIN=1) 
+	 AV range from 0.00 to 0.00 
+	 AV binsize : 0.00  (NAVBIN=1) 
+	 RV = A(V)/E(B-V) : 0.00  and CCM89 law 
+	 (Use 1994 ODonnell update for optical/NIR)
+	 AV option : 2  =>  convolve Kcor * A(lam)  
+	 MW Extinction slope measured at E(B-V)= 0.10 
+	 User SN LAMBDA range from   2100 to  11300 Angstroms 
+	 User SN Trest range from    -30 to    100 days 
+
+  Done reading user input file.
+
+	 OUTFILE: kcor_KAIT1+NICKEL.fits  ->  FITS format
+
+  ***** READ FILTER TRANSMISSIONS ***** 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/filters/KAIT/B_kait1_shifted.txt 
+	 Filter    KAIT1-B : 2701 values from  3347 to  6047 A, <lam>= 4449 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/filters/KAIT/V_kait1_shifted.txt 
+	 Filter    KAIT1-V : 2101 values from  4704 to  6804 A, <lam>= 5451 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/filters/KAIT/R_kait1_shifted.txt 
+	 Filter    KAIT1-R : 4601 values from  5402 to  9999 A, <lam>= 6888 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/filters/KAIT/I_kait1_shifted.txt 
+	 Filter    KAIT1-I : 3101 values from  7040 to  9999 A, <lam>= 8464 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/filters/KAIT/B_nickel_shifted.txt 
+	 Filter   nickel-b : 590 values from  3563 to  5270 A, <lam>= 4444 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/filters/KAIT/V_nickel_shifted.txt 
+	 Filter   nickel-v : 555 values from  4744 to  6349 A, <lam>= 5413 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/filters/KAIT/R_nickel_shifted.txt 
+	 Filter   nickel-r : 900 values from  5435 to  8040 A, <lam>= 6410 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/filters/KAIT/I_nickel_shifted.txt 
+	 Filter   nickel-i : 1313 values from  6779 to  9997 A, <lam>= 8337 
+
+ Global range of all filters: 3347 to 9999 A 
+
+
+  ***** READ Supernova SED TEMPLATES ***** 
+  Read  K-cor  SED  from : 
+    /data/dp62.b/data/SNDATA_ROOT/snsed/Hsiao07.dat 
+  Finished reading Hsiao07.dat 
+  Found 106 epochs from day -20.0 to 85.0 . 
+  Each epoch has 921 lambda bins with binsize = 10.00 A . 
+  Spectra stored between   2100 and  11300 A . 
+
+
+  ***** READ BD17 SED (INDX=1) ***** 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/standards/bd_17d4708_stisnic_003.dat 
+	 Opened : /data/dp62.b/data/SNDATA_ROOT/standards/bd_17d4708_stisnic_003.dat 
+   Read 2829 lambda bins from 1702 to 10197 A  
+   Re-bin BD17 to uniform (10 A) lambda bins from 3350 to 10000 A
+
+ ***** Compute BD17 flux in each filter ***** 
+
+                                            syn                    
+                                flux        BD17     system  final  
+         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP    
+  ------------------------------------------------------------------ 
+             KAIT1-B (  BD17)   1.503e+02   9.7452   9.865   0.120  
+             KAIT1-V (  BD17)   1.511e+02   9.4568   9.476   0.019  
+             KAIT1-R (  BD17)   3.198e+02   9.3070   9.112  -0.195  
+             KAIT1-I (  BD17)   2.250e+02   9.2405   8.802  -0.439  
+            nickel-b (  BD17)   1.393e+02   9.7420   9.866   0.124  
+            nickel-v (  BD17)   1.382e+02   9.4633   9.487   0.024  
+            nickel-r (  BD17)   1.987e+02   9.3322   9.193  -0.139  
+            nickel-i (  BD17)   2.244e+02   9.2422   8.819  -0.423  
+  ----------------------------------------------------------------- 
+
+ Finished  kcor_ini  
+
+
+ ***** Compute SN magnitude in each filter/epoch ***** 
+
+ 
+                                Synth MAG   Synth    
+         filter      (system)   at T=0      DM15    
+  --------------------------------------------------------- 
+             KAIT1-B (  BD17)  666.000     0.000
+             KAIT1-V (  BD17)  666.000     0.000
+             KAIT1-R (  BD17)  666.000     0.000
+             KAIT1-I (  BD17)  666.000     0.000
+            nickel-b (  BD17)  666.000     0.000
+            nickel-v (  BD17)  666.000     0.000
+            nickel-r (  BD17)  666.000     0.000
+            nickel-i (  BD17)  666.000     0.000
+  ----------------------------------------------------- 
+
+  ***** START LOOPING for KCOR GRID ***** 
+
+ wr_fits: WRITE CALIB/KCOR TO 'kcor_KAIT1+NICKEL.fits' 
+	 wr_fits_HEAD: write header info.
+	 wr_fits_ZPT: write ZPT info 
+	 wr_fits_SNSED: write SN SED 
+	 wr_fits_KCOR: write KCOR tables 
+	 wr_fits_MAGS: write MAG+MWXT tables 
+	 wr_fits_FilterTrans: write filter transmissions. 
+	 wr_fits_PRIMARY: write Primary SED(s) 
+
+ Program stopping gracefully. Bye. 
