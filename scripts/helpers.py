@@ -8,7 +8,6 @@ from glob import glob
 import time, sys, os
 import pickle, yaml
 from chainconsumer import ChainConsumer
-import emcee
 import corner
 from astroquery.irsa_dust import IrsaDust
 import astropy.coordinates as coord
