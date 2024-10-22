@@ -333,6 +333,7 @@ def generatesurveyoffsets():
     name='DES'
     filts=[name+x for x in 'griz']
     survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
     name='ZTFS'
     filts=[name+x for x in 'gri']
     survoffsets[name]= np.random.normal(0,0.01,len(filts))
@@ -340,6 +341,68 @@ def generatesurveyoffsets():
     name='ZTFD'
     filts=[name+x for x in 'gri']
     survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='ASASSN1'
+    filts=[name+x for x in 'BVri']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='ASASSN2'
+    filts=[name+x for x in 'BVi']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='SWIFT'
+    filts=[name+x for x in 'BV']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='KAIT1MO'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='KAIT2MO'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='KAIT3MO'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='KAIT4MO'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='NICKEL1MO'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='NICKEL2MO'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='KAIT3'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='KAIT4'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='NICKEL1'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='NICKEL2'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='CFA4P1'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='CFA4P2'
+    filts=[name+x for x in 'BVRI']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+
     return survoffsets
 
 __surveycache__= {}
@@ -430,6 +493,113 @@ def generatesurvey(name,survoffsets,forcereload=False,speclibrary='calspec23'):
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )#& (obs['Foundationg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
         surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['ZTFSg']).resample(1)[0][0],  stats.uniform(.3,.5).rvs ,   
               (0,1),filts,obs[obscut], synth[cut&nans],ps1synth[cut&nans], survoffsets[name],survoffsets['PS1'] ,.2)
+
+    elif name=='SWIFT':
+        filts=[name+x for x in 'BV']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['SWIFTB']-obs['SWIFTR'] > -.2)& (obs['SWIFTR']-obs['SWIFTR'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['SWIFTB']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='KAIT1MO':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['KAIT1MOR']-obs['KAIT1MOI'] > -.2)& (obs['KAIT1MOB']-obs['KAIT1MOV'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['KAIT1MOB']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='KAIT2MO':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['KAIT2MOR']-obs['KAIT2MOI'] > -.2)& (obs['KAIT2MOB']-obs['KAIT2MOV'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['KAIT2MOB']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='KAIT3MO':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['KAIT3MOR']-obs['KAIT3MOI'] > -.2)& (obs['KAIT3MOB']-obs['KAIT3MOV'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['KAIT3MOB']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='KAIT4MO':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['KAIT4MOR']-obs['KAIT4MOI'] > -.2)& (obs['KAIT4MOB']-obs['KAIT4MOV'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['KAIT4MOB']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='NICKEL1MO':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['NICKEL1MOR']-obs['NICKEL1MOI'] > -.2)& (obs['NICKEL1MOB']-obs['NICKEL1MOV'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['NICKEL1MOB']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='NICKEL2MO':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['NICKEL2MOR']-obs['NICKEL2MOI'] > -.2)& (obs['NICKEL2MOB']-obs['NICKE2MOV'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['NICKEL2MOB']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='KAIT3':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['KAIT3R']-obs['KAIT3I'] > -.2)& (obs['KAIT3B']-obs['KAIT3V'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['KAIT3B']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='KAIT4':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['KAIT4R']-obs['KAIT4I'] > -.2)& (obs['KAIT4B']-obs['KAIT4V'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['KAIT4B']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='NICKEL1':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['NICKEL1R']-obs['NICKEL1I'] > -.2)& (obs['NICKEL1B']-obs['NICKEL1V'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['NICKEL1B']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='NICKEL2':
+        filts=[name+x for x in 'BVRI']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['NICKEL2R']-obs['NICKEL2I'] > -.2)& (obs['NICKEL2B']-obs['NICKEL2V'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['NICKEL2B']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='ASASSN1':
+        filts=[name+x for x in 'BVri']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['ASASSN1r']-obs['ASASSN1i'] > -.2)& (obs['ASASSN1B']-obs['ASASSN1V'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['ASASSN1B']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='ASASSN2':
+        filts=[name+x for x in 'BVri']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['ASASSN2r']-obs['ASASSN2i'] > -.2)& (obs['ASASSN2B']-obs['ASASSN2V'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['ASASSN2B']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='CFA4P1':
+        filts=[name+x for x in 'BVri']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA4P1r']-obs['CFA4P1i'] > -.2)& (obs['CFA4P1B']-obs['CFA4P1V'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA4P1B']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+    elif name=='CFA4P2':
+        filts=[name+x for x in 'BVri']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA4P2r']-obs['CFA4P2i'] > -.2)& (obs['CFA4P2B']-obs['CFA4P2V'] > .3)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA4P2B']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
+
+
     __surveycache__[name]=surv
     return surv
 
@@ -469,6 +639,7 @@ def generatewhitedwarfs(survoffsets):
 def getsurveygenerators(*args,**kwargs):
 
     names='SNLS','SDSS','CFA3K','CFA3S','CSP','DES','Foundation','PS1SN','ZTFD','ZTFS'
+    names ='SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1'
     #names='ZTFD','ZTFS'
     for name in names:
         yield name,generatesurvey(name,*args,**kwargs)
