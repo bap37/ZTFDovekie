@@ -65,7 +65,7 @@ def query_irsa(row,col='NA'):
     avinterp = interpolate.interp1d(table['LamEff'][aa]*10000,table['A_SandF'][aa])
     rs = col.replace('_4shooter','S').replace('_keplercam','K').split('-')[0]
     if "CSP" in rs: rs = "CSP" ;
-    #print(f"rs: {rs} \n col: {col}\n snanafiltsr:{snanafiltsr.keys()}")
+    print(f"rs: {rs} \n col: {col}\n snanafiltsr:{snanafiltsr.keys()}")
     sys.stdout.flush()
     return avinterp(filter_means[revobssurvmap[rs]+snanafiltsr[revobssurvmapforsnana[rs]][col[-1]]])
 

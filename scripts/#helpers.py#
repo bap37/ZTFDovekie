@@ -8,12 +8,14 @@ from glob import glob
 import time, sys, os
 import pickle, yaml
 from chainconsumer import ChainConsumer
-import emcee
 import corner
 from astroquery.irsa_dust import IrsaDust
 import astropy.coordinates as coord
 import astropy.units as u
 from scipy import interpolate
+from jax.scipy.optimize import minimize as jmin
+from jax import numpy as jnp
+
 
 def load_config(config_path):
     with open(config_path, "r") as cfgfile:
@@ -35,11 +37,13 @@ def prep_config(config):
     snanafiltsr = config['snanafiltsr']
     relativeweights = config['relativeweights']
     errfloors = config['errfloors']
-    return survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors
+    whitedwarf_obs_loc = config['whitedwarf_obs_loc']
+    return survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,  config['target_acceptance'] , config['n_burnin'], whitedwarf_obs_loc
 
-jsonload = 'FILTERDEFS.yml' #where all the important but unwieldy dictionaries live
+
+jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
-survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors = prep_config(config)
+survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,target_acceptance , n_burnin, bboyd_loc = prep_config(config)
 
 filter_means = pd.read_csv('filter_means.csv') 
 
@@ -61,7 +65,8 @@ def query_irsa(row,col='NA'):
     avinterp = interpolate.interp1d(table['LamEff'][aa]*10000,table['A_SandF'][aa])
     rs = col.replace('_4shooter','S').replace('_keplercam','K').split('-')[0]
     if "CSP" in rs: rs = "CSP" ;
-    sys.stdout.flush() 
+    print(f"rs: {rs} \n col: {col}\n snanafiltsr:{snanafiltsr.keys()}")
+    sys.stdout.flush()
     return avinterp(filter_means[revobssurvmap[rs]+snanafiltsr[revobssurvmapforsnana[rs]][col[-1]]])
 
 def get_extinction(survdict):
@@ -73,12 +78,31 @@ def get_extinction(survdict):
 
 def myround(x, base=5):
     return base * round(x/base)
+    
+    
+def itersigmacut_linefit_jax(x,y,cut,niter=3,nsigma=4):
+    returnx = x
+    returny = y
+    
+    for i in range(niter):
+        result = jmin(lambda pars: (((line(returnx,pars[0],pars[1],)-returny)*cut)**2).sum(), 
+                               x0=jnp.array([0.,0.]), method='BFGS'
+                            )
+        popt, pcov = result.x, result.hess_inv
+        yres = returny-line(returnx,popt[0],popt[1])
+        stdev = jnp.std(yres,where=cut) 
+        cut= (jnp.abs(yres)<nsigma*stdev ) & cut
+        returnx = returnx*(cut)
+        returny = returny*(cut)
+    return returnx[cut],returny[cut],stdev,yres,popt,pcov
+
 
 def itersigmacut_linefit(x,y,niter=3,nsigma=4):
     returnx = x
     returny = y
     
     for i in range(niter):
+    
         popt, pcov = curve_fit(line, 
                                returnx,
                                returny,
@@ -90,6 +114,16 @@ def itersigmacut_linefit(x,y,niter=3,nsigma=4):
         returny = returny[np.abs(yres)<nsigma*stdev]
     return returnx,returny,stdev,yres,popt,pcov
 
+def walker_maker(nparams, prepos, walkfactor=2):  
+    pos = (0.01 * np.random.randn(nparams*walkfactor, nparams))
+    for entry in range(nparams):                              
+        prepos = list(prepos)
+        pos[:,entry] = np.random.normal(np.array(prepos*walkfactor), 0.001) 
+    return pos
+    #END input_cleaner
+
+
+
 ################# plotoffsets.py lives below
 
 def create_chains(labels, samples, ndim=10):
@@ -97,7 +131,7 @@ def create_chains(labels, samples, ndim=10):
     
     for i in range(ndim):
         ax = axes[i]
-        ax.plot(samples[:, :, -1*i], "k", alpha=0.3)
+        ax.plot(samples[:, -1*i], "k", alpha=0.3)
         ax.set_xlim(0, len(samples))
         ax.set_ylabel(labels[i])
         ax.yaxis.set_label_coords(-0.1, 0.5)
@@ -117,34 +151,37 @@ def create_labels(filename):
     labels = list(labels)
     return labels
 
-def create_cov(labels, flat_samples):
-    plt.clf()
-    c = ChainConsumer()
-    c.add_chain(flat_samples, parameters=labels)
+=labels)
     _,cov = c.analysis.get_covariance()
-    np.savez('EXCALIBUR_COVARIANCE_v1.0.npz',cov=cov,labels=labels)
+    np.savez('DOVEKIE_COV_V1.0.npz',cov=cov,labels=labels)
     fig, ax = plt.subplots(figsize=(14, 12))
 
     plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = True
     plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = False
 
-    im = ax.matshow(cov)
-    fig.colorbar(im)
+    im = ax.matshow(cov, cmap='cividis')
+    
+    cax = plt.axes((0.9, 0.1, 0.025, 0.89)) #x,y, widht, height
+    
+    cbar = plt.colorbar(im, cax=cax, cmap='cividis', drawedges = False )
+    cbar.formatter.set_powerlimits((0, 0))
+    cbar.ax.tick_params(labelsize=12)
 
     ax.set_xticks(np.arange(len(labels)))
     ax.set_yticks(np.arange(len(labels)))
-    ax.set_xticklabels(labels,fontsize=9)
-    ax.set_yticklabels(labels,fontsize=10)
+    ax.set_xticklabels(labels,fontsize=10, color="dimgray")
+    ax.set_yticklabels(labels,fontsize=10, color="dimgray")
     ax.tick_params(axis="x", bottom=True, top=False, labelbottom=True, labeltop=False)
-    ax.set_title('Cov')
-    plt.setp(ax.get_xticklabels(), rotation=45, ha="right")#rotation_mode="anchor")
+    #ax.set_title('Dovekie Covariance', fontsize=20)
+    plt.setp(ax.get_xticklabels(), rotation=90, ha="right")#rotation_mode="anchor")
     fig.tight_layout()
 
-    plt.savefig('covmat.png')
+    plt.savefig('COVMAT.pdf', bbox_inches="tight")
     print('upload covmat.png')
     return c
 
-def create_corr(c):
+
+def create_corr(c, labels):
     plt.clf()
     _,corr = c.analysis.get_correlations()
 
@@ -153,8 +190,8 @@ def create_corr(c):
     plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = True
     plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = False
 
-    im = ax.matshow(corr)
-    fig.colorbar(im)
+    im = ax.matshow(corr, cmap='cividis')
+    fig.colorbar(im, cmap='cividis')
 
     ax.set_xticks(np.arange(len(labels)))
     ax.set_yticks(np.arange(len(labels)))
@@ -214,9 +251,24 @@ def create_likelihoodhistory(fullsamples, poss, ll, surveys_for_chisq, fixsurvey
 
     plt.figure(figsize=(8,6))
     plt.plot(steps,chi2s,lw=3)
-    plt.xlabel('Step')
+    plt.xlabel('Step - arbitrary')
     plt.ylabel('Log Likelihood')
     plt.savefig('likelihoodhistory.png')
     print('upload likelihoodhistory.png')
     return "Done" 
 
+def create_latex(infile, outfile):
+    header = """\\begin{table}
+    \centering
+    \caption{}
+    \label{tab:model_params}
+    \\begin{tabular}{cc}
+        \hline \n"""
+    df = pd.read_csv(infile, sep=' ')
+    with open(outfile, "w") as f2:
+        f2.write(header)
+        for i, row in df.iterrows():
+            f2.write(f"{row.SURVEYFILT} & ${row.OFFSET} \pm {row.OFFSETERR}$ \\\\ \n")
+
+        f2.write("\end{tabular}\n")
+        f2.write("\end{table}")
