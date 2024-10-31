@@ -27,18 +27,18 @@ simmap={ 'PS1':'griz',
     'CFA3K':'UBVri',
     'CFA3S': 'BVRI'  ,  
     'CSP':'BVgri',
-    'PS1SN':'griz',
-    
+    'PS1SN':'griz',    
     'DES': 'griz',
-
     'ZTFS':'gri',
-    
     'ZTFD':'GRI',
+    'CFA4P1':'BVri',
+    'CFA4P2':'BVri',
+    'ZTF':'griGRI',
 }
-outdir=f'plots/fakes_0'
+outdir=f'plots/fakes_calspeconly_fitboth_0'
 result=np.genfromtxt(path.join(outdir,'preprocess_dovekie.dat'),dtype=None,names=True,encoding='utf-8')
 result=result[result['SPECLIB']=='calspec23']
-outfile=np.load(path.join(outdir,'results.npz'))
+outfile=np.load(path.join(outdir,'DOVEKIE.V4.npz'))
     
 simmap_indexes={}
 label=outfile['labels'][0]
@@ -50,6 +50,7 @@ for label in outfile['labels']:
         else:
             surv='ZTFS'
     index=simmap[surv].index('V' if surv=='CSP' and filt in 'omn' else filt  )
+
     simmap_indexes[label]=(surv,index)
 
 
@@ -71,7 +72,7 @@ for i in range(100):
         outdir=outdirfstring.format(i=i)
         result=np.genfromtxt(path.join(outdir,'preprocess_dovekie.dat'),dtype=None,names=True,encoding='utf-8')
         result=result[result['SPECLIB']==fitlib]
-        outfile=np.load(path.join(outdir,'DOVEKIE.V3.npz'))
+        outfile=np.load(path.join(outdir,'DOVEKIE.V4.npz'))
     
         offsetsamples=outfile['samples']
         offsets,offseterrs=np.mean(offsetsamples,axis=0),np.std(offsetsamples,axis=0)
@@ -82,7 +83,6 @@ for i in range(100):
         slopes,errs=list((splittuple(result['D_SLOPE'])))
         synth_slopes,_=list((splittuple(result['S_SLOPE'])))
         results+=[(slopes,errs,synth_slopes,offsets,offseterrs,trueoffsets,pval,inputlib)]
-    
 slopes,errs,synth_slopes,offsets,offseterrs,trueoffsets,pval,inputlib=list(map(np.stack,zip(*results)))
 
 # In[8]:
@@ -152,7 +152,7 @@ plt.savefig('offsetzscoreshist.pdf')
 # In[16]:
 
 
-plt.hist([np.corrcoef((slopes-synth_slopes).T)[~np.eye(38,dtype=bool)],np.corrcoef((offsets-trueoffsets).T)[~np.eye(42,dtype=bool)]],
+plt.hist([np.corrcoef((slopes-synth_slopes).T)[~np.eye(slopes.shape[1],dtype=bool)],np.corrcoef((offsets-trueoffsets).T)[~np.eye(offsets.shape[1],dtype=bool)]],
         label=['Slopes','Offsets'])
 
 plt.xlabel('Correlation coefficient (off-diagonal)')
@@ -189,7 +189,7 @@ with open('simbiases.txt','w') as file:
                 meanbias=np.mean((offsets[:,idx]-trueoffsets[:,idx]))
                 meanzscore= np.mean((offsets[:,idx]-trueoffsets[:,idx])/offseterrs[:,idx])
                 offerrest,offerrobs=np.sqrt(np.mean(offseterrs[:,idx]**2)), np.std((offsets[:,idx]-trueoffsets[:,idx]))
-                kspval=stats.kstest(pval[:,idx],lambda x: x).pvalue
+                kspval=stats.kstest(pval[:,idx[0]],lambda x: x).pvalue
             else: meanbias , meanzscore,offerrest,offerrobs, kspval = ['NA']*3
             idx=np.where(filt==slopelabels)[0]
             if len(idx):
