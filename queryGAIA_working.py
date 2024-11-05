@@ -22,12 +22,14 @@ config = load_config(jsonload)
 
 #######################
 
-def GAIA_query(RA,DEC, radius=0.6*0.000277778):
+def GAIA_query(RA,DEC, radius=2*0.000277778):
     coord = SkyCoord(ra=RA, dec=DEC, unit=(u.degree, u.degree), frame='icrs')
     j = Gaia.cone_search_async(coord, radius=u.Quantity(radius, u.deg))
     #INFO: Query finished. [astroquery.utils.tap.core]
     r = j.get_results()
     r.pprint()
+    if len(r) < 1:
+        return -999
     SOURCE_ID = r['SOURCE_ID'].value[0]
 
     query = f"SELECT TOP 1 \
@@ -38,6 +40,9 @@ def GAIA_query(RA,DEC, radius=0.6*0.000277778):
 
     job     = Gaia.launch_job_async(query)
     results = job.get_results()
+
+    r.pprint()
+
     print(f'Table size (rows): {len(results)}')
 
     if len(results) != 0:
@@ -46,7 +51,7 @@ def GAIA_query(RA,DEC, radius=0.6*0.000277778):
     return -999
 
 def search_spectrum(SOURCE_ID, filters, filtpath, sampling):
-    calibrated_spectra, sampling = calibrate([str(SOURCE_ID)], sampling=sampling, save_file=False)
+    calibrated_spectra, sampling = calibrate([str(SOURCE_ID)], sampling=sampling, save_file=False) #output_file='my_output_name'
 
     # Do not show the legend as there's only one source in the data
     plt.figure()
@@ -59,17 +64,14 @@ def search_spectrum(SOURCE_ID, filters, filtpath, sampling):
     oldfluxunit = u.W / (u.nm * u.m ** 2)
     newfluxunit = u.erg / (u.cm ** 2 * u.s * u.AA)
     #(W m-2 Hz-1)
-    oldfluxes = calibrated_spectra.flux.values[0]*100*oldfluxunit
+    oldfluxes = calibrated_spectra.flux.values[0]*oldfluxunit*100 #factor of 100 is because Gaia expects nanometers and we normally use angstroms; this is a conversion factor 
     newfluxes = oldfluxes.to(newfluxunit).value
 
     seds = get_model_mag(newfluxes,band_weights, zps)
-    phot=np.mean(seds,axis=1)
-    phot_err=np.std(seds,axis=1)
 
-    #print(phot)
-    #print(phot_err)
+    print(seds)
 
-    return phot
+    return seds 
 
 ###################
 
@@ -120,6 +122,7 @@ if __name__ == '__main__':
         DEC = row.DEC
         SOURCE_ID = GAIA_query(RA,DEC, radius=0.6*0.000277778)
         if SOURCE_ID != -999:
+            #import pdb;pdb.set_trace()
             integrated_vals = search_spectrum(SOURCE_ID, filters, filtpath, sampling=sampling)
             wrapout = [f'GAIA_{surv}-'+_ for _ in obsfilts]
             for _ in range(len(wrapout)):
@@ -128,4 +131,4 @@ if __name__ == '__main__':
     # if the query search returns -9 then skip
 
 
-    df.to_csv(f'output_observed_apermags+AV/{survname}_observed.csv', header=True, index=False, float_format='%g')
+    df.to_csv(f'output_observed_apermags+AV/{surv}_observed.csv', header=True, index=False, float_format='%g')
