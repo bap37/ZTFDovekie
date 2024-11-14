@@ -6,7 +6,7 @@ FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/SDSS_Doi20
 
 
 SURVEY: SDSS
-FILTER: SDSS-g g.dat -0.0073
+FILTER: SDSS-g g.dat+15 -0.0073
 FILTER: SDSS-r r.dat -0.0088
 FILTER: SDSS-i i.dat -0.0090
 FILTER: SDSS-z z.dat -0.0094

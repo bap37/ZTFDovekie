@@ -1,0 +1,24 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+files = ['effMEGACAM-g.dat', 'effMEGACAM-r.dat', 'effMEGACAM-i.dat', 'effMEGACAM-z.dat']
+names = ['g', 'r', 'i', 'z']
+
+dic = {"g":4803.42, "r":6207.19, "i":7613.75, "z":8793.44}
+
+for n, filt in enumerate(files):
+    df = pd.read_csv(filt, sep=r"\s+", names=['wav', 'trans'], comment="#")
+
+    #plt.figure()
+    #plt.scatter(df.wav, df.trans, label="og")
+    #plt.scatter(df.wav, df.trans*(5358.25/df.wav), label='weighted')
+    #plt.legend()
+
+    #plt.savefig("bla.pdf")
+
+    waveeff = dic[names[n]]
+    X = -1
+    df['trans'] = df.trans*((waveeff/df.wav)**X)
+
+    df.to_csv(filt+"_mod_X_"+str(np.abs(X)), index=False, float_format='%g', sep=" ", header=False)

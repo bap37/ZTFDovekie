@@ -19,15 +19,15 @@ FILTSYSTEM: COUNT
 FILTPATH:   /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
 
 SURVEY: CSP
-FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat -0.062
-FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat -0.020
-FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat -0.006
-FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat 0.002
-FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat           -0.132
-FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat    -0.028  # V for snoopy model
-FILTER: CSP-o  V_LC3009_tel_ccd_atm_ext_1.2.dat    -0.027  # V1
-FILTER: CSP-m  V_LC3014_tel_ccd_atm_ext_1.2.dat    -0.023  # V0
-FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat    -0.028  # V
+FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat_mod   -0.062
+FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat_mod   -0.020
+FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat_mod   -0.006
+FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat_mod    0.002
+FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat_mod_inv   -0.132
+FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.028  # V V_LC9844_tel_ccd_atm_ext_1.2.dat originally
+FILTER: CSP-o  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.027  # V1
+FILTER: CSP-m  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.023  # V0
+FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod   -0.028  # V
 
 FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       0.617
 FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       0.630 # Ydw
