@@ -43,6 +43,7 @@ survs: ['PS1',
         'CFA4P2',
         'PS1SN',
         'GAIA',
+        'ATLAS',
 ]
 
 kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
@@ -64,6 +65,7 @@ kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
             'kcor/CFA4_p2/',
             'kcor/PS1s_RS14_PS1_tonry/',
             'kcor/GAIA_DR3/',
+            'kcor/ATLAS/',
 ]
 
 ##PS1_excalinaper_+30A.input originally for PS1 AP
@@ -86,6 +88,7 @@ kcors: ['PS1_excalinaper.input',
         'CFA42_excalin.input',
         'PS1_excalin.input',
         'GAIA_excalin.input',
+        'ATLAS_excalin.input'
 ]
 
 #Used to be PS1_excalin_+30A.input for PS1 :O
@@ -109,6 +112,7 @@ filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
             'filters/PS1_CFA4/',
             'filters/PS1s_RS14_PS1_tonry/',
             'filters/GAIA_DR3/',
+            'filters/ATLAS/',
 ]
 
 shiftfiltss: [['g','r','i','z'],
@@ -130,6 +134,7 @@ shiftfiltss: [['g','r','i','z'],
               ['s','t','u','v'],
               ['g','r','i','z'],
               ['g', 'b', 'r'],
+              ['c', 'o'],
 ]
 
 
@@ -151,6 +156,7 @@ namedfiltss: [['g','r','i','z'],
               ['B','V','r','i'],
               ['g','r','i','z'],
               ['g', 'b', 'r'],
+              ['c', 'o'],
 ]
 
 
@@ -173,6 +179,7 @@ obsfiltss: [['g','r','i','z'],
             ['B','V','r','i'],
             ['g','r','i','z'],
             ['g', 'b', 'r'],
+            ['c', 'o'],
 ]
 
 ###############################################
@@ -207,6 +214,7 @@ survmap: {'PS1':'PS1',
           'CFA4P1':'CFA4P1',
           'CFA4P2':'CFA4P2',
           'GAIA':'GAIA',
+          'ATLAS':'ATLAS',
 }
 
 survmap4shift: {'PS1':'PS1',
@@ -237,6 +245,7 @@ survmap4shift: {'PS1':'PS1',
                 'CFA4P1':'CFA4P1',
                 'CFA4P2':'CFA4P2',
                 'GAIA':'GAIA',
+                'ATLAS':'ATLAS',
 }
 
 survfiltmap: {'PS1':'PS1',
@@ -267,6 +276,7 @@ survfiltmap: {'PS1':'PS1',
               'CFA4P1':'CFA4P1',
               'CFA4P2':'CFA4P2',
               'GAIA':'GAIA',
+              'ATLAS':'ATLAS',
 }
 
 obssurvmap: {'PS1':'PS1',
@@ -298,6 +308,7 @@ obssurvmap: {'PS1':'PS1',
              'CFA4P1':'CFA4P1',
              'CFA4P2':'CFA4P2',
              'GAIA':'GAIA',
+             'ATLAS':'ATLAS',
 } 
 #removed KAIT1 ^
 
@@ -329,6 +340,7 @@ revobssurvmap: {'PS1':'PS1',
                 'CFA4P1':'CFA4P1',
                 'CFA4P2':'CFA4P2',
                 'GAIA':'GAIA',
+                'ATLAS':'ATLAS',
 }
 #formerly a CSPDR3nat
 
@@ -360,6 +372,7 @@ revobssurvmapforsnana: { 'PS1':'PS1',
                          'CFA4P1':'CFA4P1',
                          'CFA4P2':'CFA4P2',
                          'GAIA':'GAIA',
+                         'ATLAS':'ATLAS',
 }
 #formerly a CSPDR3nat
 survcolormin: {'DES':.075,
@@ -389,6 +402,7 @@ survcolormin: {'DES':.075,
                'CFA4P2':0,
                'CFA4P1':0,
                'GAIA':0,
+               'ATLAS': 0,
 }
 
 survcolormax: {'DES':10.075,
@@ -417,7 +431,8 @@ survcolormax: {'DES':10.075,
                'NICKEL2MO':10,
                'CFA4P2':10,
                'CFA4P1':10,
-               'GAIA':0,
+               'GAIA':10,
+               'ATLAS':10,
 }
 
 synth_gi_range: {'calspec23':[-9.25,9.5],
@@ -451,7 +466,8 @@ obsfilts: {'PS1':  ['g','r','i','z'],
            'CFA4P1': ['B','V','r','i'],
            'CFA4P2': ['B','V','r','i'],
            'GAIA': ['g', 'b', 'r'],
- }
+           'ATLAS': ['c', 'o'], 
+}
 
 snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
              'DES' : {'g':'g','r':'r','i':'i','z':'z'},
@@ -480,8 +496,9 @@ snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
              'NICKEL2':{'M':'B','N':'V','O':'R','P':'I'},
              'CFA4P1': {'B':'B','V':'V','r':'r','i':'i'},
              'CFA4P2': {'B':'B','V':'V','r':'r','i':'i'},
-             'GAIA': {'g':'g', 'r':'r', 'b':'b'}
- }
+             'GAIA': {'g':'g', 'r':'r', 'b':'b'},
+             'ATLAS': {'c':'c', 'o':'o'},
+}
 #            
 
 snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
@@ -512,7 +529,8 @@ snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
               'CFA4P1': {'B':'B','V':'V','r':'r','i':'i'},
               'CFA4P2': {'B':'B','V':'V','r':'r','i':'i'},
               'GAIA': {'g':'g', 'r':'r', 'b':'b'},
- }
+              'ATLAS': {'c':'c', 'o':'o'},
+}
 
 #Will need to fix the ZTFS/ZTFD weights at some point
 relativeweights: {
@@ -544,6 +562,7 @@ relativeweights: {
     'CFA4P1': .5,
     'CFA4P2': .5,
     'GAIA': 1,
+    'ATLAS':1,
 }
 
 
@@ -576,6 +595,7 @@ errfloors: {
     'CFA4P1': .01,
     'CFA4P2': .01,
     'GAIA':, 0.01,
+    'ATLAS':0.01,
 }
 
 target_acceptance: 0.9
@@ -607,6 +627,7 @@ filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_t
              ['cfa4_B_p2_modtran.dat', 'cfa4_V_p2_modtran.dat', 'cfa4_r_p2_modtran.dat', 'cfa4_i_p2_modtran.dat'],
              ['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['g.dat', 'b.dat', 'r.dat'],
+             ['cyan.dat', 'orange.dat'],
 ]
 
 #################################################

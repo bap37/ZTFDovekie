@@ -19,10 +19,10 @@ FILTSYSTEM: COUNT
 SURVEY: ZTF_MSIP
 FILTPATH:  /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/ZTF
 FILTER: ZTF-g   ztfg1.dat      0.0  
-FILTER: ZTF-r   ztfr1.dat+20   0.0
+FILTER: ZTF-r   ztfr1.dat      0.0
 FILTER: ZTF-i   ztfi1.dat      0.0
-FILTER: ZTF-G   ztfg2.dat+20   0.0  
-FILTER: ZTF-R   ztfr2.dat+25   0.0
+FILTER: ZTF-G   ztfg2.dat      0.0  
+FILTER: ZTF-R   ztfr2.dat      0.0
 FILTER: ZTF-I   ztfi2.dat      0.0
 
 # define output file
