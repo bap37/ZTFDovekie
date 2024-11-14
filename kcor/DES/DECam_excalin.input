@@ -6,12 +6,12 @@ BD17_SED:    /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/kcor/DES/fillme
 # specify filters :  
 MAGSYSTEM: BD17
 FILTSYSTEM: COUNT
-FILTPATH:   /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/DES-SN3YR_DECamY3A2
+FILTPATH:   /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/DES-SN3YR_DECam
 SURVEY: DES
-FILTER:  DES-g   y3a2_standard_throughput_g.dat   0.0-0.011
-FILTER:  DES-r   y3a2_standard_throughput_r.dat   0.0-0.011
-FILTER:  DES-i   y3a2_standard_throughput_i.dat   0.0-0.008
-FILTER:  DES-z   y3a2_standard_throughput_z.dat   0.0-0.004
+FILTER:  DES-g   DECam_g.dat   0.0-0.011
+FILTER:  DES-r   DECam_r.dat   0.0-0.011
+FILTER:  DES-i   DECam_i.dat   0.0-0.008
+FILTER:  DES-z   DECam_z.dat   0.0-0.004
 
 # wavelength range for filters and primary ref
 LAMBDA_RANGE: 2100 12000
