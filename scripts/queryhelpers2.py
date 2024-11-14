@@ -43,7 +43,7 @@ def f_lam(l):
     f = (const.c.to('AA/s').value / 1e23) * ((l) ** -2) * 10 ** (-48.6 / 2.5) * 1e23
     return f
 
-def prep_filts(sampling, filters, filtpath):
+def prep_filts(sampling, filters, filtpath, isgaia=True):
 
     wav = sampling #sampling 
     band_weights=[]
@@ -52,35 +52,39 @@ def prep_filts(sampling, filters, filtpath):
         R = np.loadtxt(os.path.join(filtpath,filt))
         T = np.zeros(len(wav))
 
-        R[:,0] *= 0.1
-    
+        if isgaia:
+            R[:,0] *= 0.1
+            R[:,1] *= 10
+        lam = R[:, 0]
+        R[:,1]*=lam
+
         min_id=np.argmin((wav-np.min(R[:,0]))**2)
         max_id=np.argmin((wav-np.max(R[:,0]))**2)
     
-        T[min_id:max_id]= np.interp(wav[min_id:max_id], R[:, 0], R[:, 1])
-    
+        #T[min_id:max_id]= np.interp(wav[min_id:max_id], R[:, 0], R[:, 1])
+        T = np.interp(wav, R[:, 0], R[:, 1], left=0, right=0)
+
         dlambda = np.diff(wav)
         dlambda = np.r_[dlambda, dlambda[-1]]
 
-        num = wav * T * dlambda
+        num =  T * dlambda
         denom = np.sum(num)
         band_weight = num / denom
         band_weights.append(band_weight)
 
-        lam = R[:, 0]
         zp_sed = f_lam(lam)
 
-        int1 = simpson(lam * zp_sed * R[:, 1], lam)
-        int2 = simpson(lam * R[:, 1], lam)
+        int1 = simpson( zp_sed * R[:, 1], lam)
+        int2 = simpson( R[:, 1], lam)
         zp = 2.5 * np.log10(int1 / int2)
         zps.append(zp)
-    
+
     band_weights = np.array(band_weights)
     zps = np.array(zps)
     return band_weights, zps
 
 def get_model_mag(flux_grid, band_weights, zps):
-    model_flux = band_weights @ flux_grid.T
+    model_flux = band_weights @ flux_grid
 
-    model_mag = -2.5 * np.log10(model_flux) + zps[:, None]
+    model_mag = -2.5 * np.log10(model_flux)+zps 
     return model_mag
