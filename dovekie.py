@@ -57,7 +57,7 @@ def get_whitedwarf_synths(surveys):
 
 def get_all_shifts(surveys, reference_surveys): #acquires all the surveys and collates them. 
     surveydfs = {}
-    for survey in surveys:
+    for survey in surveys: #5/11/24 - need to upgrade this to handle new GAIA format
         files = glob('output_synthetic_magsaper/synth_%s_shift_*.000.txt'%survmap4shift[survey]) #TODO - better determination of whether or not there are lambda shifts and what to do if there are
         print(files)
         if len(files) > 1:
@@ -70,9 +70,7 @@ def get_all_shifts(surveys, reference_surveys): #acquires all the surveys and co
                 if 'PS1_' in f:
                     tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])>.25]
                     tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])<1.6]
-                elif 'GAIA_' in f:
-                    tdf = tdf[(tdf['GAIA-b']-tdf['GAIA-r'])>.25]
-                    tdf = tdf[(tdf['GAIA-b']-tdf['GAIA-r'])<1.6]
+                    tdf = tdf[(tdf['PS1-g']-tdf['PS1-r'])>.25]
                 dfl.append(tdf)
             except:
                 print('WARNING: Could not read in ',f) 
@@ -85,7 +83,6 @@ def get_all_shifts(surveys, reference_surveys): #acquires all the surveys and co
         surveydfs[survey] = df
     #First for loop ends here.
     for survey in surveys:
-        #doot 
         if survey not in reference_surveys: #need to fix this to work with GAIA
             for refsurv in reference_surveys:
                 surveydfs[survey] = pd.merge(surveydfs[survey],surveydfs[refsurv],left_on='standard',right_on='standard',suffixes=('','_b'))
@@ -124,6 +121,10 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
                     obsdf = pd.read_csv(f'{fakes}/{survname}_observed.csv')
                 else:
                     obsdf = pd.read_csv(f'{realdirname}+AV/{survname}_observed.csv')
+                    obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
+                          (obsdf['PS1-i']-obsdf['PS1-i_AV']) < survcolormax[survey]]
+                    obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
+                          (obsdf['PS1-i']-obsdf['PS1-i_AV']) > survcolormin[survey]]
             except FileNotFoundError:
                 print(f'For whatever reason, {realdirname}+AV/{survname} does not exist.')
                 quit()
@@ -148,29 +149,50 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     chi2 = 0
 
     #changed these back to dashes
-    longfilta = survfiltmap[colorsurvab]+'-'+colorfilta ; longfiltb = survfiltmap[colorsurvab]+'-'+colorfiltb
-    longfilt1 = survfiltmap[surv1]+'-'+yfilt1 ; longfilt2 = survfiltmap[surv2]+'-'+yfilt2
-    obslongfilta = obssurvmap[colorsurvab]+'-'+colorfilta ; obslongfiltb = obssurvmap[colorsurvab]+'-'+colorfiltb
-    obslongfilt1 = obssurvmap[surv1]+'-'+yfilt1 
-    if ('CSP' in surv2.upper()):
-        obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
-    elif ('KAIT' in surv2.upper()) | ('NICKEL' in surv2.upper()):
-        obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
-    elif 'ASASSN' in surv2.upper():
-        obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
+    longfilta = 'PS1-'+colorfilta ; longfiltb = 'PS1-'+colorfiltb #11/5/24 changed survfiltmap[colorsurvab] to 'PS1'
+    if "GAIA_" in surv1:
+        #Do nothing for longfilt1 or longfilt2 
+        survtemp1 = surv1.replace("GAIA_", '') ; survtemp2 = surv2.replace("GAIA_", '')
+        obslongfilt1 = 'GAIA_'+obssurvmap[survtemp1]+'-'+yfilt1
+        obslongfilta = 'PS1-'+colorfilta ; obslongfiltb = 'PS1-'+colorfiltb #should always be PS1
+        if ('CSP' in surv2.upper()):
+            obslongfilt2 = 'GAIA_'+obssurvmap[survtemp2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
+        elif ('KAIT' in surv2.upper()) | ('NICKEL' in surv2.upper()):
+            obslongfilt2 = 'GAIA_'+obssurvmap[survtemp2]+'-'+snanafilts[survtemp2][yfilt2]
+        elif 'ASASSN' in surv2.upper():
+            obslongfilt2 = 'GAIA_'+obssurvmap[survtemp2]+'-'+snanafilts[survtemp2][yfilt2]
+        else:
+            obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
     else:
-        obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
-    
+        longfilt1 = survfiltmap[surv1]+'-'+yfilt1 ; longfilt2 = survfiltmap[surv2]+'-'+yfilt2
+        obslongfilt1 = obssurvmap[surv1]+'-'+yfilt1
+        if ('CSP' in surv2.upper()):
+            obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
+        elif ('KAIT' in surv2.upper()) | ('NICKEL' in surv2.upper()):
+            obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
+        elif 'ASASSN' in surv2.upper():
+            obslongfilt2 = obssurvmap[surv2]+'-'+snanafilts[surv2][yfilt2]
+        else:
+            obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
+        obslongfilta = obssurvmap[colorsurvab]+'-'+colorfilta ; obslongfiltb = obssurvmap[colorsurvab]+'-'+colorfiltb
+
     #JAXX stuff starts here 
     obsdf = obsdfs[surv2] #grabs the observed points from the relevant survey
-    if DEBUG: print(obsdf.keys(), surv2)
-    if DEBUG: print(obssurvmap.keys(),surv1,yfilt1, surv2, yfilt2)
+    #if DEBUG: print(obsdf.keys(), surv2)
+    #if DEBUG: print(obssurvmap.keys(),surv1,yfilt1, surv2, yfilt2)
     yr=obsdf[obslongfilt1]-obsdf[obslongfilt2] #observed filter1 - observed filter 2 
     datacut = np.abs(yr)<1 #only uses things lower than 1
-    datacolor = (obsdf[obslongfilta]-obsdf[obslongfilta+"_AV"])-(obsdf[obslongfiltb] -obsdf[obslongfiltb+"_AV"])
-    datares = (obsdf[obslongfilt2]-obsdf[obslongfilt2+'_AV'])-(obsdf[obslongfilt1]-obsdf[obslongfilt1+'_AV'])
+    if "GAIA_" in obslongfilt1:
+        datacolor = (obsdf[obslongfilta]-obsdf[obslongfilta+"_AV"])-(obsdf[obslongfiltb] -obsdf[obslongfiltb+"_AV"])
+        if ('CSP' in surv2.upper()):
+            obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
+        datares = (obsdf[obslongfilt2])-(obsdf[obslongfilt1]) #need to add Gaia in here
+    else:
+        datacolor = (obsdf[obslongfilta]-obsdf[obslongfilta+"_AV"])-(obsdf[obslongfiltb] -obsdf[obslongfiltb+"_AV"])
+        datares = (obsdf[obslongfilt2]-obsdf[obslongfilt2+'_AV'])-(obsdf[obslongfilt1]-obsdf[obslongfilt1+'_AV']) #need to add Gaia in here
     datacolor=datacolor[datacut]
     datares=datares[datacut]
+    if DEBUG: print(np.std(datacolor), np.std(datares))
     datax,datay,sigmadata,yresd,data_popt,data_pcov = itersigmacut_linefit(datacolor,
                                                          datares,# np.ones(datacut.sum(),dtype=bool),
                                                          niter=2,nsigma=3)
@@ -183,12 +205,17 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     for i,catname in enumerate(libraries):
         cat=df2['standard_catagory'].values==catname
         if DEBUG: print(df2.keys(), surv2, surv1) 
-        synthcut = (cat) & \
-           (~np.isnan(df2[longfilt2].astype('float'))) & \
-           (~np.isnan(df2[longfilt1].astype('float')))
+        if "GAIA_" in surv1:
+            modelfilta = df2[longfilta] ; modelfiltb = df2[longfiltb]
+            modelfilt1 = np.zeros(modelfilta.size) ; modelfilt2 = np.zeros(modelfiltb.size)
+            synthcut = np.ones(modelfilta.size, dtype=bool)
+        else:
+            synthcut = (cat) & \
+                       (~np.isnan(df2[longfilt2].astype('float'))) & \
+                       (~np.isnan(df2[longfilt1].astype('float')))
 
-        modelfilta = df2[longfilta] ; modelfiltb = df2[longfiltb]
-        modelfilt1 = df2[longfilt1] ; modelfilt2 = df2[longfilt2]
+            modelfilta = df2[longfilta] ; modelfiltb = df2[longfiltb]
+            modelfilt1 = df2[longfilt1] ; modelfilt2 = df2[longfilt2]
         
         modelcolor = modelfilta - modelfiltb
         modelres = -1*modelfilt1+\
@@ -199,12 +226,19 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         modelres=modelres[synthcut]
         synthx,synthy,sigmamodel,yres,popt,pcov = itersigmacut_linefit(modelcolor,modelres,niter=1,nsigma=3)
         
+
         #CORRECT
         popt=jnp.array([popt[0] ,popt[1] +( off2-off1 - popt[0]* (offb-offa))])
         synthxs.append(synthx); synthys.append(synthy)
     
-        modelress.append(modelres.values +off2-off1)
-        modelcolors.append(modelcolor.values + offb-offa)
+        try:
+            modelress.append(modelres.values +off2-off1)
+            modelcolors.append(modelcolor.values + offb-offa)
+        except AttributeError:
+            modelress.append(modelres +off2-off1)
+            modelcolors.append(modelcolor + offb-offa)            
+            if "GAIA" not in surv1:
+                print(f"Model residual {surv1} - {surv2} is not stored in a pandas dataframe and may be wrong if you are seeing this error.")
         cats.append(catname)
         synthpopts.append(popt)
         synthpcovs.append(pcov)
@@ -240,9 +274,15 @@ def unwravel_params(params,surveynames,fixsurveynames):
             
             filt = snanafiltsr[survey][ofilt]
             #if ('PS1' not in survey) | (filt!='g'):
-            paramsdict[survey+'-'+filt+'_offset'] = params[i]
+            if 'GAIA' in survey:
+                pass
+            else:
+                paramsdict[survey+'-'+filt+'_offset'] = params[i]
+                paramsnames.append(survey+'-'+filt+'_offset')
             outofbounds= outofbounds | ((params[i]<-1.5) | (params[i]>1.5))
-            paramsnames.append(survey+'-'+filt+'_offset')
+            if 'GAIA' in reference_surveys: 
+                paramsdict['GAIA_'+survey+'-'+filt+'_offset'] = 0 #5/11/24 added to try and fix ?
+            #paramsnames.append(survey+'-'+filt+'_offset')
             i+=1
 
     for survey in fixsurveynames:
@@ -318,33 +358,39 @@ def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
     
 
 def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict,):
-    fig=plt.figure()
+    fig, ax = plt.subplots()
     plt.xlim(1e-3,.2)
     plt.ylim(-.1,.1)
 
+    colourz=['#111111', '#01417d', '#797677', '#c7b168', '#f1f1f1']
+
     errscale,errfloor=wdresults.errpars[filt]
-    line1=plt.errorbar(wdresults.errs[filt],wdresults.resids[filt],yerr=wdresults.errs[filt],fmt='bx',label=f'raw errors ({wdresults.resids[filt].size} points)')
+    line1=plt.errorbar(wdresults.errs[filt],wdresults.resids[filt],yerr=wdresults.errs[filt],fmt='o',label=f'raw errors ({wdresults.resids[filt].size} points)', c=colourz[1], alpha=0.5)
     errscale,errfloor=wdresults.errpars[filt]
     scalederr=np.hypot(errscale*wdresults.errs[filt],errfloor)
     
     mean=np.average((wdresults.resids)[filt],weights=1/(scalederr**2))
-    line1=plt.errorbar(np.clip(scalederr,*plt.xlim()),np.clip((wdresults.resids)[filt],*plt.ylim()),yerr=scalederr,fmt='rx',
+    line1=plt.errorbar(np.clip(scalederr,*plt.xlim()),np.clip((wdresults.resids)[filt],*plt.ylim()),yerr=scalederr,fmt='o', c=colourz[3], alpha=0.5,
                        label=f'rescaled errors\n$\sigma \leftarrow \sqrt{{({errscale:.2f}\sigma )^2 + {errfloor:.3f} ^2 }}$')
     chi2=((((wdresults.resids)[filt]-mean)/scalederr)**2).sum()
-    plt.axhline(mean,color='k',linestyle='--',label=f'WD mean: $\\chi^2$= {chi2:.2f}')
+    plt.axhline(mean,color='k',linestyle=':',label=f'WD mean: $\\chi^2$= {chi2:.2f}', alpha=0.5)
     if paramsdict is not None: 
         chi2=((((wdresults.resids)[filt]-paramsdict[filt+'_offset'])/scalederr)**2).sum()
-        plt.axhline(paramsdict[filt+'_offset'],color='g',linestyle='--',label=f'Derived offset: $\\chi^2$= {chi2:.2f}')
-    plt.plot(np.linspace(*plt.xlim(),100),mean+np.linspace(*plt.xlim(),100),'k-')
-    plt.plot(np.linspace(*plt.xlim(),100),mean-np.linspace(*plt.xlim(),100),'k-')
+        plt.axhline(paramsdict[filt+'_offset'],color='dimgrey',linestyle='--',label=f'Derived offset: $\\chi^2$= {chi2:.2f}')
+    plt.plot(np.linspace(*plt.xlim(),100),mean+np.linspace(*plt.xlim(),100),c='dimgrey', alpha=0.5)
+    plt.plot(np.linspace(*plt.xlim(),100),mean-np.linspace(*plt.xlim(),100),c='dimgrey', alpha=0.5)
     
     text=plt.text(.5,.2,'',transform=plt.gca().transAxes)
     plt.xscale('log')
-    plt.xlabel('Photo-error')
-    plt.ylabel('WD Residual off mean')
-    plt.legend(loc='upper left')
+    plt.xlabel('Photo-error', fontsize=15, color="dimgrey")
+    plt.ylabel('WD Residual off mean', fontsize=15, color="dimgrey")
+    plt.legend(loc='upper left', frameon=False)
     plt.title(filt)
     plt.tight_layout()
+    ax.spines[['top', 'right', 'bottom', 'left']].set_visible(False)
+    ax.tick_params(axis="both", which="both", labelsize=12, color="dimgrey")
+    [t.set_color('dimgrey') for t in ax.xaxis.get_ticklabels()]
+    [t.set_color('dimgrey') for t in ax.yaxis.get_ticklabels()]
     fname=f'whitedwarf_resids_{filt}.pdf'
     if outdir: outpath= path.join('plots',path.join(outdir, fname))
     else: outpath=path.join('plots',fname)
@@ -449,7 +495,7 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
             surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
             surv2s.extend([ 'CFA3S', 'CFA3S', 'CFA3S', 'CFA3S'])
             filtas.extend([     'g',     'g',     'g',     'g'])
-            filtbs.extend([     'r',     'i',     'i',     'i'])
+            filtbs.extend([     'i',     'i',     'i',     'i'])
             filt1s.extend([     'g',     'r',     'r',     'i'])
             filt2s.extend([     'B',     'V',    'R',     'I'])
     
@@ -580,39 +626,113 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
             filtbs.extend([    'r',         'i',       'i',      'i'])
             filt1s.extend([    'g',         'r',       'r',      'i'])
             filt2s.extend([    'B',         'V',       'r',      'i'])
-    if 'GAIA' in reference_surveys:
+
+    if 'GAIA' in reference_surveys: #Need to clean this up for the new GAIA stuff 
         if "DES" in surveys_for_chisq:
-            surv1s.extend([  'GAIA',  'GAIA',  'GAIA',  'GAIA']) #always GAIA
+            surv1s.extend([  'GAIA_DES',  'GAIA_DES',  'GAIA_DES',  'GAIA_DES']) #5/11/24 - new formatting frontier for Gaia integration 
             surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
-            filtas.extend([    'b',    'b',    'b',    'b']) #first filter for colour
-            filtbs.extend([    'r',    'r',    'r',    'r']) #second filter for colour
-            filt1s.extend([    'g',    'g',    'g',    'g']) # GAIA magnitude band
-            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
-
-        if "SDSS" in surveys_for_chisq:
-            surv1s.extend([  'GAIA',  'GAIA',  'GAIA',  'GAIA']) #always GAIA
-            surv2s.extend([  'SDSS',  'SDSS',  'SDSS',  'SDSS']) #Survey to compare
-            filtas.extend([    'b',    'b',    'b',    'b']) #first filter for colour
-            filtbs.extend([    'r',    'r',    'r',    'r']) #second filter for colour
-            filt1s.extend([    'g',    'g',    'g',    'g']) # GAIA magnitude band
-            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
-
-        if "PS1SN" in surveys_for_chisq:
-            surv1s.extend([  'GAIA',  'GAIA',  'GAIA',  'GAIA']) #always GAIA
-            surv2s.extend([  'PS1SN',  'PS1SN',  'PS1SN',  'PS1SN']) #Survey to compare
-            filtas.extend([    'b',    'b',    'b',    'b']) #first filter for colour
-            filtbs.extend([    'r',    'r',    'r',    'r']) #second filter for colour
-            filt1s.extend([    'g',    'g',    'g',    'g']) # GAIA magnitude band
-            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
-
-        if "SNLS" in surveys_for_chisq:
-            surv1s.extend([  'GAIA',  'GAIA',  'GAIA',  'GAIA']) #always GAIA
-            surv2s.extend([  'SNLS',  'SNLS',  'SNLS',  'SNLS']) #Survey to compare
-            filtas.extend([    'b',    'b',    'b',    'b']) #first filter for colour
-            filtbs.extend([    'r',    'r',    'r',    'r']) #second filter for colour
-            filt1s.extend([    'g',    'g',    'g',    'g']) # GAIA magnitude band
+            filtas.extend([    'g',    'g',    'g',    'g']) #first filter for colour
+            filtbs.extend([    'i',    'i',    'i',    'i']) #second filter for colour
+            filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
             filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
         
+        if "CSP" in surveys_for_chisq:
+            surv1s.extend([    'GAIA_CSP',    'GAIA_CSP',    'GAIA_CSP',    'GAIA_CSP',    'GAIA_CSP',   'GAIA_CSP',   'GAIA_CSP',   'GAIA_CSP'])
+            surv2s.extend([ 'CSP', 'CSP', 'CSP', 'CSP', 'CSP','CSP','CSP','CSP'])
+            filtas.extend([      'g',      'g',      'g',      'g',      'g',     'g',     'g',     'g'])
+            filtbs.extend([      'r',      'i',      'i',      'r',      'i',     'i',     'i',     'i'])
+            filt1s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
+            filt2s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
+    
+        if "PS1SN" in surveys_for_chisq:
+            surv1s.extend([  'GAIA_PS1SN',  'GAIA_PS1SN',  'GAIA_PS1SN',  'GAIA_PS1SN'])
+            surv2s.extend([ 'PS1SN', 'PS1SN', 'PS1SN', 'PS1SN'])
+            filtas.extend([    'g',    'g',    'g',    'r'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i',    'z'])
+            filt2s.extend([    'g',    'r',    'i',    'z'])
+    
+        if "Foundation" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
+            surv2s.extend([ 'Foundation', 'Foundation', 'Foundation', 'Foundation'])
+            filtas.extend([    'g',    'g',    'g',    'r'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i',    'z'])
+            filt2s.extend([    'g',    'r',    'i',    'z'])
+       
+        if "ZTF" in surveys_for_chisq:
+            surv1s.extend([  'GAIA_ZTF',  'GAIA_ZTF',  'GAIA_ZTF', 'GAIA_ZTF', 'GAIA_ZTF', 'GAIA_ZTF'])
+            surv2s.extend([  'ZTF',  'ZTF',  'ZTF', 'ZTF', 'ZTF', 'ZTF'])
+            filtas.extend([    'g',    'g',    'g', 'g', 'g', 'g'])
+            filtbs.extend([    'i',    'i',    'i', 'i', 'i', 'i'])
+            filt1s.extend([    'g',    'r',    'i', 'g', 'r', 'i'])
+            filt2s.extend([    'g',    'r',    'i', 'G', 'R', 'I'])
+    
+        if "ZTFD" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1'])
+            surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
+            filtas.extend([    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i'])
+            filt2s.extend([    'g',    'r',    'i'])
+    
+        if "ZTFS" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1'])
+            surv2s.extend([ 'ZTFS', 'ZTFS', 'ZTFS'])
+            filtas.extend([    'g',    'g',    'g'])
+            filtbs.extend([    'r',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i'])
+            filt2s.extend([    'g',    'r',    'i'])
+    
+    
+        if "SDSS" in surveys_for_chisq:
+            surv1s.extend([  'GAIA_SDSS',  'GAIA_SDSS',  'GAIA_SDSS',  'GAIA_SDSS'])
+            surv2s.extend([ 'SDSS', 'SDSS', 'SDSS', 'SDSS'])
+            filtas.extend([    'g',    'g',    'g',    'r'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i',    'z'])
+            filt2s.extend([    'g',    'r',    'i',    'z'])
+    
+        if "SNLS" in surveys_for_chisq:
+            surv1s.extend([  'GAIA_SNLS',  'GAIA_SNLS',  'GAIA_SNLS',  'GAIA_SNLS'])
+            surv2s.extend([ 'SNLS', 'SNLS', 'SNLS', 'SNLS'])
+            filtas.extend([    'g',    'g',    'g',    'r'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
+            filt1s.extend([    'g',    'r',    'i',    'z'])
+            filt2s.extend([    'g',    'r',    'i',    'z'])
+    
+        if "CFA3S" in surveys_for_chisq:
+            surv1s.extend([   'GAIA_CFA3S',   'GAIA_CFA3S',   'GAIA_CFA3S',   'GAIA_CFA3S'])
+            surv2s.extend([ 'CFA3S', 'CFA3S', 'CFA3S', 'CFA3S'])
+            filtas.extend([     'g',     'g',     'g',     'g'])
+            filtbs.extend([     'i',     'i',     'i',     'i'])
+            filt1s.extend([     'B',     'V',     'R',     'I'])
+            filt2s.extend([     'B',     'V',     'R',     'I'])
+    
+        if "CFA3K" in surveys_for_chisq:
+            surv1s.extend([   'GAIA_CFA3K',   'GAIA_CFA3K',   'GAIA_CFA3K',   'GAIA_CFA3K'])
+            surv2s.extend([ 'CFA3K', 'CFA3K', 'CFA3K', 'CFA3K'])
+            filtas.extend([     'g',     'g',     'g',     'g'])
+            filtbs.extend([     'i',     'i',     'i',     'i'])
+            filt1s.extend([     'B',     'V',     'r',     'i'])
+            filt2s.extend([     'B',     'V',     'r',     'i'])        
+    
+        if "CFA4P1" in surveys_for_chisq:
+            surv1s.extend([  'GAIA_CFA4P1',       'GAIA_CFA4P1',     'GAIA_CFA4P1',    'GAIA_CFA4P1'])
+            surv2s.extend(['CFA4P1', 'CFA4P1','CFA4P1','CFA4P1'])
+            filtas.extend([    'g',         'g',       'g',      'g'])
+            filtbs.extend([    'r',         'i',       'i',      'i'])
+            filt1s.extend([    'g',         'r',       'r',      'i'])
+            filt2s.extend([    'B',         'V',       'r',      'i'])
+        
+        if "CFA4P2" in surveys_for_chisq:
+            surv1s.extend([  'GAIA_CFA4P2',       'GAIA_CFA4P2',     'GAIA_CFA4P2',    'GAIA_CFA4P2'])
+            surv2s.extend(['CFA4P2', 'CFA4P2', 'CFA4P2','CFA4P2'])
+            filtas.extend([    'g',         'g',       'g',      'g'])
+            filtbs.extend([    'r',         'i',       'i',      'i'])
+            filt1s.extend([    'g',         'r',       'r',      'i'])
+            filt2s.extend([    'B',         'V',       'r',      'i'])
+
  
 
     totalchisq = 0
@@ -628,8 +748,14 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
     for surv1,surv2,filta,filtb,filt1,filt2 in zip(surv1s,surv2s,filtas,filtbs,filt1s,filt2s):
         allshifts=np.unique((surveydata[surv2]['shift'].values))
         for shift in allshifts:
+            if DEBUG: print(surv1, filta, surv2, filtb)
             passsurvey={surv2: surveydata[surv2][surveydata[surv2]['shift']==shift] }
-            chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
+            if "GAIA" in surv1:
+                chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
+                                    off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
+                                        offa=0,offb=0)
+            else:
+                chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
                                     off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
                                         offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
             if doplot: plot_forone(chi2results,subscript,outputdir,tableout,biasestimates)
@@ -756,7 +882,6 @@ def plot_forone(result,subscript, outputdir,tableout,biasestimates):
         if (biasestimates is None) or (len(biasestimates) == 0):
             preddiff,scatter=0,0
         else:
-            print(biasestimates.keys())
             preddiff,scatter=biasestimates[result.surv2+'-' + result.yfilt2+'-'+cat]
         tableout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%.4f\t%d\t%.3f+-%.3f\t%.3f+-%.3f\t%.3f\t%.3f\t%.1f\t%.1f\n'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,cat,offmean,result.datax.size,data_slope,data_slope_err,synth_slope,synth_slope_err, diff,preddiff, (diff-preddiff)/scatter,result.shift))
     fname='overlay_on_obs_%s_%s-%s_%s_%s_%s_%s_%s.png'%(result.surv1,result.colorfilta,result.colorfiltb,result.yfilt1,result.surv2,result.yfilt2,'all',subscript)
@@ -864,7 +989,7 @@ if __name__ == "__main__":
         whitedwarf_obs = None
         whitedwarf_seds= None
     if args.BIASCOR:
-        biasestimates=pd.read_csv('simbiases.txt',sep='\s+',index_col='FILTER' ) 
+        biasestimates=pd.read_csv('simbiases.txt',sep='\s+' ) 
         biasestimates={ x.FILTER+'-'+x.SPECLIB:(x.SLOPEBIAS,x.SLOPEERROR) for _,x in biasestimates.iterrows()}
         print('Bias corrections applied from simbiases.txt')
     else:
