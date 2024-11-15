@@ -1,11 +1,11 @@
 import pandas as pd
 
-filename = 'SNLS3_4shooter2_B.dat'
+filename = 'SNLS3_4shooter2_V.dat_weighted'
 # #wave(A) trans
 
 df = pd.read_csv(filename, sep=r'\s+', names=['#wave(A)', 'trans'])
 
-shiftval = -20
+shiftval = 30
 
 df['#wave(A)'] += shiftval
 

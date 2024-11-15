@@ -8,11 +8,11 @@ FILTSYSTEM: COUNT
 FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
 
 SURVEY: CFA3S
-FILTER: CFA3S-U SNLS3_4shooter2_U.dat      0.702  #i
-FILTER: CFA3S-B SNLS3_4shooter2_B.dat     -0.086 #j
-FILTER: CFA3S-V SNLS3_4shooter2_V.dat+-20 -0.018 #k
-FILTER: CFA3S-R SNLS3_4shooter2_R.dat      0.172  #l
-FILTER: CFA3S-I SNLS3_4shooter2_I.dat      0.404  #m
+FILTER: CFA3S-U SNLS3_4shooter2_U.dat               0.702  #i #we ignore U band
+FILTER: CFA3S-B SNLS3_4shooter2_B.dat_weighted+30     -0.086 #j
+FILTER: CFA3S-V SNLS3_4shooter2_V.dat_weighted+30     -0.018 #k
+FILTER: CFA3S-R SNLS3_4shooter2_R.dat_weighted      0.172  #l
+FILTER: CFA3S-I SNLS3_4shooter2_I.dat_weighted      0.404  #m
 
 
 # ***** Compute BD17 flux and ZP in each filter ***** 
