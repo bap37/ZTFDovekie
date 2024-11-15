@@ -1,8 +1,8 @@
 ##Which surveys mcmc.py will investigate
 
 #The proper dovekie
-surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'GAIA'] 
-reference_surveys: ['GAIA', 'PS1']
+surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'GAIA', 'CSP'] 
+reference_surveys: ['PS1', 'GAIA']
 
 #Dovekie wingspan
 #surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1']
@@ -27,7 +27,7 @@ whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
 survs: ['PS1',
         'DES',
         'ZTF',
-        'CSP_TAMU',
+        'CSP',
         'SDSS',
         'Foundation',
         'SNLS',
@@ -248,6 +248,7 @@ survmap4shift: {'PS1':'PS1',
                 'ATLAS':'ATLAS',
 }
 
+#formerly CSP_TAMU
 survfiltmap: {'PS1':'PS1',
               'DES':'DES',
               'ZTF':'ZTF',
@@ -615,7 +616,7 @@ filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_t
              ['G.dat','R.dat','I.dat','Z.dat','g.dat+15','r.dat','i.dat','z.dat'],
              ['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['effMEGACAM-g.dat+30','effMEGACAM-r.dat+30','effMEGACAM-i.dat+30','effMEGACAM-z.dat+30'],
-             ['SNLS3_4shooter2_B.dat', 'SNLS3_4shooter2_V.dat+-20', 'SNLS3_4shooter2_R.dat', 'SNLS3_4shooter2_I.dat'], 
+             ['SNLS3_4shooter2_B.dat_weighted+30', 'SNLS3_4shooter2_V.dat_weighted+30', 'SNLS3_4shooter2_R.dat_weighted', 'SNLS3_4shooter2_I.dat_weighted'], 
              ['SNLS3_Keplercam_B_modtran.dat', 'SNLS3_Keplercam_V_modtran.dat+-30', 'SNLS3_Keplercam_r_modtran.dat', 'SNLS3_Keplercam_i_modtran.dat'],
              ['ztfg1.dat+-15' ,'ztfr1.dat', 'ztfi1.dat'],
              ['ztfg2.dat' ,'ztfr2.dat', 'ztfi2.dat'],
@@ -638,7 +639,7 @@ filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_t
 #that are used in the SALT surfaces.
 waveshifts: {
            "CFA3K":{"U":20, "B":10, "V":15, "r":10, "i":10},
-           "CFA3S":{"U":20, "B":10, "V":10, "R":10, "I":10},
+           "CFA3S":{"U":20, "B":15, "V":15, "R":10, "I":10},
            "CSP":{"u":8, "B":7, "V":3, "g":8, "r":4, "i":2, "o":0, "m":0, "n":0},
            "SDSS":{"u":6, "g":8, "r":6, "i":6, "z":6},
            "SNLS":{"g":15, "r":15, "i":15, "z":15},
