@@ -125,6 +125,7 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
                           (obsdf['PS1-i']-obsdf['PS1-i_AV']) < survcolormax[survey]]
                     obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
                           (obsdf['PS1-i']-obsdf['PS1-i_AV']) > survcolormin[survey]]
+                    obsdf = obsdf.replace(-999, np.nan)
             except FileNotFoundError:
                 print(f'For whatever reason, {realdirname}+AV/{survname} does not exist.')
                 quit()
