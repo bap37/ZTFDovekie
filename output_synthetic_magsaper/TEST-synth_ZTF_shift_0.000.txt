@@ -1,0 +1,1 @@
+survey version standard standard_catagory shift ZTF-g ZTF-r ZTF-i ZTF-G ZTF-R ZTF-I 

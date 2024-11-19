@@ -719,11 +719,11 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
             filt2s.extend([     'B',     'V',     'r',     'i'])        
     
         if "CFA4P1" in surveys_for_chisq:
-            surv1s.extend([  'GAIA_CFA4P1',       'GAIA_CFA4P1',     'GAIA_CFA4P1',    'GAIA_CFA4P1'])
+            surv1s.extend(['GAIA_CFA4P1',       'GAIA_CFA4P1',     'GAIA_CFA4P1',    'GAIA_CFA4P1'])
             surv2s.extend(['CFA4P1', 'CFA4P1','CFA4P1','CFA4P1'])
             filtas.extend([    'g',         'g',       'g',      'g'])
             filtbs.extend([    'r',         'i',       'i',      'i'])
-            filt1s.extend([    'g',         'r',       'r',      'i'])
+            filt1s.extend([    'B',         'V',       'r',      'i'])
             filt2s.extend([    'B',         'V',       'r',      'i'])
         
         if "CFA4P2" in surveys_for_chisq:
@@ -731,7 +731,7 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
             surv2s.extend(['CFA4P2', 'CFA4P2', 'CFA4P2','CFA4P2'])
             filtas.extend([    'g',         'g',       'g',      'g'])
             filtbs.extend([    'r',         'i',       'i',      'i'])
-            filt1s.extend([    'g',         'r',       'r',      'i'])
+            filt1s.extend([    'B',         'V',       'r',      'i'])
             filt2s.extend([    'B',         'V',       'r',      'i'])
 
  
