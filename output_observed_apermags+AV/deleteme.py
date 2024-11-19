@@ -1,15 +1,19 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
-df = pd.read_csv("SDSS_observed.csv")
-df = df.loc[df['GAIA_SDSS-g'] > -900]
+df = pd.read_csv("CSP_observed.csv")
+df = df.loc[df['GAIA_CSP-B'] > -900]
 
 fig, ax = plt.subplots()
 
-ax.scatter(df['PS1-g'] - df['PS1-i'], df['PS1-g'] - df['SDSS-g'], c="orange", label="reference=PS1")
-ax.set_xlabel("PS1 g-i")
+#filter = 'CSP-V'
 
-ax.scatter(df['PS1-g'] - df['PS1-i'], df['GAIA_SDSS-g'] - df['SDSS-g'], c="blue", label="reference=GAIA")
+
+
+for filt in ['B', 'V', 'r', 'i', 'g', 'm', 'n', 'o']:
+    ax.scatter(df['PS1-g'] - df['PS1-i'], df[f'CSP-V'] - df[f'GAIA_CSP-{filt}'], label=f"{filt}")
+    print(np.std(df[f'CSP-V'] - df[f'GAIA_CSP-{filt}']), filt)
 #ax2.set_xlabel("GAIA DES g-i")
 
 plt.legend()

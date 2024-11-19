@@ -1,4 +1,4 @@
-survey version standard standard_catagory shift GAIA-g GAIA-b GAIA-r 
+survey version standard standard_catagory shift GAIA-X GAIA-X GAIA-X 
 GAIA GAIA spectra/stis_ngsl_v2/h_stis_ngsl_hd078316_v2.fits stis_ngsl_v2 0 5.3394 5.1868 5.6801
 GAIA GAIA spectra/stis_ngsl_v2/h_stis_ngsl_hd063700_v2.fits stis_ngsl_v2 0 3.1331 3.5951 2.6767
 GAIA GAIA spectra/stis_ngsl_v2/h_stis_ngsl_hd167278_v2.fits stis_ngsl_v2 0 8.2996 8.3942 8.2153
