@@ -43,7 +43,7 @@ def f_lam(l):
     f = (const.c.to('AA/s').value / 1e23) * ((l) ** -2) * 10 ** (-48.6 / 2.5) * 1e23
     return f
 
-def prep_filts(sampling, filters, filtpath, isgaia=True):
+def prep_filts(sampling, filters, filtpath, isgaia=True, shift=0):
 
     wav = sampling #sampling 
     band_weights=[]
@@ -55,7 +55,8 @@ def prep_filts(sampling, filters, filtpath, isgaia=True):
         if isgaia:
             R[:,0] *= 0.1
             R[:,1] *= 10
-        lam = R[:, 0]
+        R[:,0] += shift
+        lam = R[:, 0] 
         R[:,1]*=lam
 
         min_id=np.argmin((wav-np.min(R[:,0]))**2)
