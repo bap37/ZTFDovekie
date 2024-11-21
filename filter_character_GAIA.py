@@ -23,7 +23,6 @@ config = load_config(jsonload)
 
 #######################
 
-
 def integrate_spectrum(SOURCE_ID, filters, filtpath, sampling, surv='None', shift=0):
 
     #opening the relevant spectra (which has regular sampling)
@@ -82,10 +81,13 @@ if __name__ == '__main__':
     index = args.SURVEY
 
   shift = args.SHIFT/10 #converts to nm automatically 
-  for ind, surv,filtpath,kcor,filters,obsfilts in zip(
-        range(len(config['survs'])),config['survs'],config['filtpaths'],config['kcors'],config['filttranss'],config['obsfiltss']):
+  for ind, surv,filtpath,kcor,filters,obsfilts,kcorpath in zip(
+          range(len(config['survs'])),config['survs'],config['filtpaths'],config['kcors'],config['filttranss'],config['obsfiltss'], config['kcorpaths']):
     print(ind,surv)
     if ind != float(index): continue
+
+    # Brodie working space to get kcor shit right
+    filtdict = kcor_to_offset(kcorpath+kcor)
 
     #load in data, df, all that good stuff 
     df = pd.read_csv(f'output_observed_apermags+AV/{surv}_observed.csv')
@@ -106,7 +108,10 @@ if __name__ == '__main__':
             #print(integrated_vals)
             wrapout = [f'GAIA_{surv}-'+_ for _ in obsfilts]
             for _ in range(len(wrapout)):
-                df.loc[df.index[n], wrapout[_]] = integrated_vals[_]
+                if integrated_vals[_] == integrated_vals[_]:
+                    df.loc[df.index[n], wrapout[_]] = integrated_vals[_] - filtdict[surv+'-'+obsfilts[_]]
+                else:
+                    df.loc[df.index[n], wrapout[_]] = integrated_vals[_]
 
     print("Done!")
     df.to_csv(f'output_observed_apermags+AV/{surv}_observed.csv', header=True, index=False, float_format='%g')
