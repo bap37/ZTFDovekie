@@ -1,18 +1,18 @@
 ##Which surveys mcmc.py will investigate
 
 #The proper dovekie
-surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'GAIA', 'CSP'] 
+surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2', 'GAIA'] 
 reference_surveys: ['PS1', 'GAIA']
 
 #Dovekie wingspan
 #surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1']
 
 #Where the chains are saved to
-chainsfile: 'DOVEKIE.V4.npz'
+chainsfile: 'DOVEKIE.V5.npz'
 
 #We use WDs from Boyd et al. 2024 to help constrain our zeropoints
-whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
-#whitedwarf_obs_loc: False
+#whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
+whitedwarf_obs_loc: False
 
 ####### Below here, only madness lies, unless you want to add another survey. 
 ####### In which case go ahead, but it's ugly.
@@ -611,21 +611,21 @@ n_burnin : 2000
 
 filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
-             ['ztfg1.dat' ,'ztfr1.dat+20', 'ztfi1.dat', 'ztfg2.dat+20' ,'ztfr2.dat+25', 'ztfi2.dat'],
+             ['ztfg1.dat_atmo_1' ,'ztfr1.dat_atmo_1', 'ztfi1.dat_atmo_1', 'ztfg2.dat_atmo_1' ,'ztfr2.dat_atmo_1', 'ztfi2.dat_atmo_1'],
              ['u_tel_ccd_atm_ext_1.2.dat_mod','g_tel_ccd_atm_ext_1.2.dat_mod','r_tel_ccd_atm_ext_1.2.dat_mod','i_tel_ccd_atm_ext_1.2.dat_mod','B_tel_ccd_atm_ext_1.2.dat_mod_inv','V_LC9844_tel_ccd_atm_ext_1.2.dat_mod','V_LC9844_tel_ccd_atm_ext_1.2.dat_mod','V_LC9844_tel_ccd_atm_ext_1.2.dat_mod','V_LC9844_tel_ccd_atm_ext_1.2.dat_mod','Y_SWO_TAM_scan_atm.dat','Y_DUP_TAM_scan_atm.dat','Jrc1_SWO_TAM_scan_atm.dat','Jrc2_SWO_TAM_scan_atm.dat','H_SWO_TAM_scan_atm.dat','H_DUP_TAM_scan_atm.dat'],
              ['G.dat','R.dat','I.dat','Z.dat','g.dat+15','r.dat','i.dat','z.dat'],
              ['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['effMEGACAM-g.dat+30','effMEGACAM-r.dat+30','effMEGACAM-i.dat+30','effMEGACAM-z.dat+30'],
              ['SNLS3_4shooter2_B.dat_weighted+30', 'SNLS3_4shooter2_V.dat_weighted+30', 'SNLS3_4shooter2_R.dat_weighted', 'SNLS3_4shooter2_I.dat_weighted'], 
-             ['SNLS3_Keplercam_B_modtran.dat', 'SNLS3_Keplercam_V_modtran.dat+-30', 'SNLS3_Keplercam_r_modtran.dat', 'SNLS3_Keplercam_i_modtran.dat'],
+             ['SNLS3_Keplercam_U_modtran.dat','SNLS3_Keplercam_B_modtran.dat', 'SNLS3_Keplercam_V_modtran.dat+-30', 'SNLS3_Keplercam_r_modtran.dat', 'SNLS3_Keplercam_i_modtran.dat'],
              ['ztfg1.dat+-15' ,'ztfr1.dat', 'ztfi1.dat'],
              ['ztfg2.dat' ,'ztfr2.dat', 'ztfi2.dat'],
              ['astrodon_B.dat', 'astrodon_V.dat', 'astrodon_r.dat', 'astrodon_i.dat'],
              ['bssl-bx-004.txt', 'bssl-vx-022.txt', 'SDSS.rp.txt', 'SDSS.ip.txt'],
              ['U_UVOT_rev.txt', 'B_UVOT_rev.txt', 'V_UVOT_rev.txt', 'U_UVOT_rev.txt', 'U_UVOT_rev.txt', 'U_UVOT_rev.txt'],
              ['B_kait3.txt', 'V_kait3.txt', 'R_kait3.txt', 'I_kait3.txt', 'B_nickel1.txt', 'V_nickel1.txt', 'R_nickel1.txt', 'I_nickel1.txt', 'B_kait4.txt', 'V_kait4.txt', 'R_kait4.txt', 'I_kait4.txt', 'B_nickel2.txt', 'V_nickel2.txt', 'R_nickel2.txt', 'I_nickel2.txt', 'B_kait1_shifted.txt', 'V_kait1_shifted.txt', 'R_kait1_shifted.txt', 'I_kait1_shifted.txt', 'B_kait2_shifted.txt', 'V_kait2_shifted.txt', 'R_kait2_shifted.txt', 'I_kait2_shifted.txt'],
-             ['cfa4_B_p1_modtran.dat', 'cfa4_V_p1_modtran.dat', 'cfa4_r_p1_modtran.dat', 'cfa4_i_p1_modtran.dat'],
-             ['cfa4_B_p2_modtran.dat', 'cfa4_V_p2_modtran.dat', 'cfa4_r_p2_modtran.dat', 'cfa4_i_p2_modtran.dat'],
+             ['cfa4_B_p1_modtran.dat_weighted', 'cfa4_V_p1_modtran.dat_weighted', 'cfa4_r_p1_modtran.dat_weighted', 'cfa4_i_p1_modtran.dat_weighted'],
+             ['cfa4_B_p2_modtran.dat_weighted+-20', 'cfa4_V_p2_modtran.dat_weighted+20', 'cfa4_r_p2_modtran.dat_weighted+20', 'cfa4_i_p2_modtran.dat_weighted+20'],
              ['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['g.dat', 'b.dat', 'r.dat'],
              ['cyan.dat', 'orange.dat'],
