@@ -12,6 +12,7 @@ SN_SED: $SNDATA_ROOT/snsed/Hsiao07.dat   # see $SNDATA_ROOT/snsed
 BD17_SED:     /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/kcor/ZTF/fillme_ZTF.dat
 
 LAMBDA_RANGE: 2100 12000  # for SN templates
+#LAMBDA_RANGE: 4500 12000
 
 # specify filters
 MAGSYSTEM: BD17

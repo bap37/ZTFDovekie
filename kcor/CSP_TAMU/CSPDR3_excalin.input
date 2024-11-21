@@ -24,13 +24,13 @@ FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat_mod   -0.020
 FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat_mod   -0.006
 FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat_mod    0.002
 FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat_mod_inv   -0.132
-FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.028  # V V_LC9844_tel_ccd_atm_ext_1.2.dat originally
-FILTER: CSP-o  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.027  # V1
-FILTER: CSP-m  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.023  # V0
-FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod   -0.028  # V
+FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.028  
+FILTER: CSP-o  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.027  
+FILTER: CSP-m  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.023  
+FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod   -0.028  
 
 FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       0.617
-FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       0.630 # Ydw
+FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       0.630 
 
 # ***** Compute BD17 flux and ZP in each filter ***** 
 #                                            syn                    
