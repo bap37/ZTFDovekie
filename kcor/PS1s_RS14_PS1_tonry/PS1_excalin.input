@@ -6,10 +6,10 @@ FILTSYSTEM: COUNT
 FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/PS1s_RS14_PS1_tonry/
 
 SURVEY: PS1MD
-FILTER: PS1SN-g   g_filt_revised.txt 0-0.011 
-FILTER: PS1SN-r   r_filt_tonry.txt   0-0.012 
-FILTER: PS1SN-i   i_filt_tonry.txt   0-0.008
-FILTER: PS1SN-z   z_filt_tonry.txt   0-0.008
+FILTER: PS1SN-g   g_filt_revised.txt -0.011 
+FILTER: PS1SN-r   r_filt_tonry.txt   -0.012 
+FILTER: PS1SN-i   i_filt_tonry.txt   -0.008
+FILTER: PS1SN-z   z_filt_tonry.txt   -0.008
 FILTER: PS1SN-y   y_filt_tonry.txt   0.0
 
 
