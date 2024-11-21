@@ -59,7 +59,7 @@ if __name__ == "__main__":
    postoffsets = helpers.create_postoffsets_summary(c)
    helpers.create_latex("postoffsets.dat", "postoffsets-latex.tex")
 
-   surveydata = ll.get_all_shifts(surveys_for_chisq)
+   surveydata = ll.get_all_shifts(surveys_for_chisq, reference_surveys=['PS1'])
    obsdfs = ll.get_all_obsdfs(surveys_for_chisq, False, False)
 
    tablefile = "postproces.dat"
@@ -67,7 +67,8 @@ if __name__ == "__main__":
    tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
 
    full_likelihood_data= partial(ll.full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=None,whitedwarf_obs=None)
-   full_likelihood_data(postoffsets,subscript='postprocess',doplot=True, tableout=tableout)
+   full_likelihood_data(params=postoffsets,subscript='postprocess',doplot=True, tableout=tableout, reference_surveys=['PS1'])
+   print("Forced reference survey to PS1")
    tableout.close()
 
    print("Reached end of testing")
