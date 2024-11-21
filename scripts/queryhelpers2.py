@@ -39,6 +39,21 @@ jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries
 config = load_config(jsonload)
 survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,target_acceptance , n_burnin, bboyd_loc = prep_config(config)
 
+def kcor_to_offset(kcorpath):
+    filtdict = {}
+    #open the file 
+    with open(kcorpath, 'r') as file:
+        for line in file:
+            if line.startswith("FILTER"): #find the filters
+                line = line.strip().split() #format the string 
+                filtername = line[1] #filter name, always
+                filteroffset = line[-1] #filter mag offset, always
+                filtdict[filtername] = float(filteroffset)
+                    
+    #print(filtdict)
+    return filtdict
+
+
 def f_lam(l):
     f = (const.c.to('AA/s').value / 1e23) * ((l) ** -2) * 10 ** (-48.6 / 2.5) * 1e23
     return f
@@ -89,3 +104,4 @@ def get_model_mag(flux_grid, band_weights, zps):
 
     model_mag = -2.5 * np.log10(model_flux)+zps 
     return model_mag
+
