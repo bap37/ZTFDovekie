@@ -109,7 +109,7 @@ if __name__ == '__main__':
             wrapout = [f'GAIA_{surv}-'+_ for _ in obsfilts]
             for _ in range(len(wrapout)):
                 if integrated_vals[_] == integrated_vals[_]:
-                    df.loc[df.index[n], wrapout[_]] = integrated_vals[_] - filtdict[obsfilts]
+                    df.loc[df.index[n], wrapout[_]] = integrated_vals[_] - filtdict[surv+'-'+obsfilts[_]]
                 else:
                     df.loc[df.index[n], wrapout[_]] = integrated_vals[_]
 
