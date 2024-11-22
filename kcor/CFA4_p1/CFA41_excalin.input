@@ -7,10 +7,16 @@ FILTSYSTEM: COUNT
 FILTPATH:   $BRODIE_HOME/ZTF_CAL/filters/PS1_CFA4
 
 SURVEY: CFA4p1
-FILTER: CFA4P1-B/o cfa4_B_p1_modtran.dat_weighted -0.111
-FILTER: CFA4P1-V/p cfa4_V_p1_modtran.dat_weighted -0.017
-FILTER: CFA4P1-r/q cfa4_r_p1_modtran.dat_weighted -0.005
-FILTER: CFA4P1-i/r cfa4_i_p1_modtran.dat_weighted 0.007 
+FILTER: CFA4P1-B cfa4_B_p1_modtran.dat_weighted -0.111
+FILTER: CFA4P1-V cfa4_V_p1_modtran.dat_weighted -0.017
+FILTER: CFA4P1-r cfa4_r_p1_modtran.dat_weighted -0.005
+FILTER: CFA4P1-i cfa4_i_p1_modtran.dat_weighted 0.007 
+
+#SURVEY: CFA4p1
+#FILTER: CFA4P1-B/o cfa4_B_p1_modtran.dat_weighted -0.111
+#FILTER: CFA4P1-V/p cfa4_V_p1_modtran.dat_weighted -0.017
+#FILTER: CFA4P1-r/q cfa4_r_p1_modtran.dat_weighted -0.005
+#FILTER: CFA4P1-i/r cfa4_i_p1_modtran.dat_weighted 0.007 
 
 
 

@@ -8,10 +8,17 @@ FILTSYSTEM: COUNT
 FILTPATH:   $BRODIE_HOME/ZTF_CAL/filters/PS1_CFA4
 
 SURVEY: CFA4p2
-FILTER: CFA4P2-B/s cfa4_B_p2_modtran.dat_weighted+-20 -0.157
-FILTER: CFA4P2-V/t cfa4_V_p2_modtran.dat_weighted+20  -0.018
-FILTER: CFA4P2-r/u cfa4_r_p2_modtran.dat_weighted+20  -0.010
-FILTER: CFA4P2-i/v cfa4_i_p2_modtran.dat_weighted+20  0.007
+FILTER: CFA4P2-B cfa4_B_p2_modtran.dat_weighted+-20 -0.157
+FILTER: CFA4P2-V cfa4_V_p2_modtran.dat_weighted+20  -0.018
+FILTER: CFA4P2-r cfa4_r_p2_modtran.dat_weighted+20  -0.010
+FILTER: CFA4P2-i cfa4_i_p2_modtran.dat_weighted+20  0.007
+
+#SURVEY: CFA4p2
+#FILTER: CFA4P2-B/s cfa4_B_p2_modtran.dat_weighted+-20 -0.157
+#FILTER: CFA4P2-V/t cfa4_V_p2_modtran.dat_weighted+20  -0.018
+#FILTER: CFA4P2-r/u cfa4_r_p2_modtran.dat_weighted+20  -0.010
+#FILTER: CFA4P2-i/v cfa4_i_p2_modtran.dat_weighted+20  0.007
+
 
 # ***** Compute BD17 flux and ZP in each filter ***** 
 #                                            syn                    
