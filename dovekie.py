@@ -21,6 +21,7 @@ from jax import numpy as jnp
 from jax import random as random
 from jaxnuts.sampler import NUTS
 from jax.scipy import linalg as jlinalg
+from jax.scipy import special
 
 from collections import namedtuple
 from os import path
@@ -29,6 +30,7 @@ from os import path
 isshift = False
 global DEBUG
 DEBUG = False
+
 
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
@@ -41,7 +43,7 @@ filter_means = pd.read_csv('filter_means.csv')
 
 filter_means = filter_means.set_index(['SURVEYFILTER']).to_dict()['MEANLAMBDA ']
 
-chi2result=namedtuple('chi2result',['chi2','datax','datay','synthxs','synthys',
+chi2result=namedtuple('chi2result',['chi2','residuals','datax','datay','synthxs','synthys',
      'data_popt','data_pcov','cats','synthpopts',
      'synthpcovs','modelcolors','modelress','sigmasynth','sigmadata',
      'obslongfilt1','obslongfilt2','obslongfilta','obslongfiltb',
@@ -148,7 +150,6 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     df2 = surveydata[surv2]
 
     chi2 = 0
-
     #changed these back to dashes
     longfilta = 'PS1-'+colorfilta ; longfiltb = 'PS1-'+colorfiltb #11/5/24 changed survfiltmap[colorsurvab] to 'PS1'
     if "GAIA_" in surv1:
@@ -203,6 +204,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     if speclibrary is None: 
        libraries=['stis_ngsl_v2','calspec23']
     else: libraries=[speclibrary]
+    chi2=[]
+    resids=[]
     for i,catname in enumerate(libraries):
         cat=df2['standard_catagory'].values==catname
         if DEBUG: print(df2.keys(), surv2, surv1) 
@@ -245,14 +248,14 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         synthpcovs.append(pcov)
         
         dms = datares.values - line(datacolor.values,*popt)
-        #WHY IS THIS A MEAN
-        chires = jnp.mean(dms)
-        chireserrsq = (sigmadata/jnp.sqrt(dms.size ))**2+errfloors[surv2]**2
-        chi2 += (chires**2/chireserrsq)     
-   
+        resids+=[dms]
+        chires = dms 
+        chireserrsq = (sigmadata)**2+errfloors[surv2]**2
+        chi2+= [ (chires**2/chireserrsq).sum()    ] 
+    chi2= -2*special.logsumexp(-jnp.array(chi2)/2)
     chi2/=len(libraries)
     #print(chi2)
-    return chi2result(chi2=chi2,datax=datax,datay=datay,synthxs=synthxs,synthys=synthys,
+    return chi2result(chi2=chi2,residuals=resids,datax=datax,datay=datay,synthxs=synthxs,synthys=synthys,
      data_popt=data_popt,data_pcov=data_pcov,sigmadata=sigmadata, cats=cats,synthpopts=synthpopts,
      synthpcovs=synthpcovs,sigmasynth=sigmamodel,modelcolors=modelcolors,modelress=modelress,
      surv1=surv1,colorfilta=colorfilta,colorfiltb=colorfiltb,yfilt1=yfilt1,surv2=surv2,yfilt2=yfilt2,
@@ -416,324 +419,72 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
     #TODO - there's gotta be a better way to load this information
     # because this requires basically every survey to be used at once.
     #I think this fucked me up again :p
-
-    #Only documenting this one, the rest share the same setup. 
-    if 'PS1' in reference_surveys:
-        if "DES" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1']) #always PS1
-            surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
-            filtas.extend([    'g',    'g',    'g',    'g']) #first filter for colour
-            filtbs.extend([    'i',    'i',    'i',    'i']) #second filter for colour
-            filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
-            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
-        
-        if "CSP" in surveys_for_chisq:
-            surv1s.extend([    'PS1',    'PS1',    'PS1',    'PS1',    'PS1',   'PS1',   'PS1',   'PS1'])
-            surv2s.extend([ 'CSP', 'CSP', 'CSP', 'CSP', 'CSP','CSP','CSP','CSP'])
-            filtas.extend([      'g',      'g',      'g',      'g',      'g',     'g',     'g',     'g'])
-            filtbs.extend([      'r',      'i',      'i',      'r',      'i',     'i',     'i',     'i'])
-            filt1s.extend([      'g',      'r',      'i',      'g',      'r',     'r',     'r',     'r'])
-            filt2s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
-    
-        if "PS1SN" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend([ 'PS1SN', 'PS1SN', 'PS1SN', 'PS1SN'])
-            filtas.extend([    'g',    'g',    'g',    'r'])
-            filtbs.extend([    'i',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i',    'z'])
-            filt2s.extend([    'g',    'r',    'i',    'z'])
-    
-        if "Foundation" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend([ 'Foundation', 'Foundation', 'Foundation', 'Foundation'])
-            filtas.extend([    'g',    'g',    'g',    'r'])
-            filtbs.extend([    'i',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i',    'z'])
-            filt2s.extend([    'g',    'r',    'i',    'z'])
-       
-        if "ZTF" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1', 'PS1', 'PS1', 'PS1'])
-            surv2s.extend([  'ZTF',  'ZTF',  'ZTF', 'ZTF', 'ZTF', 'ZTF'])
-            filtas.extend([    'g',    'g',    'g', 'g', 'g', 'g'])
-            filtbs.extend([    'i',    'i',    'i', 'i', 'i', 'i'])
-            filt1s.extend([    'g',    'r',    'i', 'g', 'r', 'i'])
-            filt2s.extend([    'g',    'r',    'i', 'G', 'R', 'I'])
-    
-        if "ZTFD" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1'])
-            surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
-            filtas.extend([    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i'])
-            filt2s.extend([    'g',    'r',    'i'])
-    
-        if "ZTFS" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1'])
-            surv2s.extend([ 'ZTFS', 'ZTFS', 'ZTFS'])
-            filtas.extend([    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i'])
-            filt2s.extend([    'g',    'r',    'i'])
-    
-    
-        if "SDSS" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend([ 'SDSS', 'SDSS', 'SDSS', 'SDSS'])
-            filtas.extend([    'g',    'g',    'g',    'r'])
-            filtbs.extend([    'i',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i',    'z'])
-            filt2s.extend([    'g',    'r',    'i',    'z'])
-    
-        if "SNLS" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend([ 'SNLS', 'SNLS', 'SNLS', 'SNLS'])
-            filtas.extend([    'g',    'g',    'g',    'r'])
-            filtbs.extend([    'i',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i',    'z'])
-            filt2s.extend([    'g',    'r',    'i',    'z'])
-    
-        if "CFA3S" in surveys_for_chisq:
-            surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
-            surv2s.extend([ 'CFA3S', 'CFA3S', 'CFA3S', 'CFA3S'])
-            filtas.extend([     'g',     'g',     'g',     'g'])
-            filtbs.extend([     'i',     'i',     'i',     'i'])
-            filt1s.extend([     'g',     'r',     'r',     'i'])
-            filt2s.extend([     'B',     'V',    'R',     'I'])
-    
-        if "CFA3K" in surveys_for_chisq:
-            surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
-            surv2s.extend([ 'CFA3K', 'CFA3K', 'CFA3K', 'CFA3K'])
-            filtas.extend([     'g',     'g',     'g',     'g'])
-            filtbs.extend([     'r',     'i',     'i',     'i'])
-            filt1s.extend([     'g',     'r',     'r',     'i'])
-            filt2s.extend([     'B',     'V',     'r',     'i'])
-        
-        if "KAIT1MO" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['KAIT1MO','KAIT1MO','KAIT1MO','KAIT1MO'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'a',    'b',    'c',    'd'])
-        
-        if "KAIT2MO" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['KAIT2MO','KAIT2MO','KAIT2MO','KAIT2MO'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'e',    'f',    'g',    'h'])
-         
-        if "NICKEL1MO" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['NICKEL1MO','NICKEL1MO','NICKEL1MO','NICKEL1MO'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'I',    'J',    'K',    'L'])
-            surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
-    
-        if 'NICKEL2MO' in surveys_for_chisq:
-            surv2s.extend(['NICKEL2MO','NICKEL2MO','NICKEL2MO','NICKEL2MO'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'M',    'N',    'O',    'P'])
-    
-        if "KAIT3MO" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['KAIT3MO','KAIT3MO','KAIT3MO','KAIT3MO'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'A',    'B',    'C',    'D'])
-    
-        if "KAIT4MO" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['KAIT4MO','KAIT4MO','KAIT4MO','KAIT4MO'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'E',    'F',    'G',    'H'])
-        
-        if "KAIT3" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['KAIT3','KAIT3','KAIT3','KAIT3'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'A',    'B',    'C',    'D'])
-    
-        if "KAIT4" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['KAIT4','KAIT4','KAIT4','KAIT4'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'E',    'F',    'G',    'H'])
-        
-        if "NICKEL1" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['NICKEL1','NICKEL1','NICKEL1','NICKEL1'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'I',    'J',    'K',    'L'])
-    
-        if "NICKEL2" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
-            surv2s.extend(['NICKEL2','NICKEL2','NICKEL2','NICKEL2'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'M',    'N',    'O',    'P'])
-    
-        if "SWIFT" in surveys_for_chisq:
-            surv1s.extend([  'PS1',       'PS1'])
-            surv2s.extend(['SWIFT', 'SWIFT'])
-            filtas.extend([    'g',         'g'])
-            filtbs.extend([    'r',         'i'])
-            filt1s.extend([    'g',         'r'])
-            filt2s.extend([    'B',         'V'])
-    
-        if "ASASSN2" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['ASASSN2','ASASSN2','ASASSN2','ASASSN2'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'g',    'j',    'i',    'h'])
-    
-        if "ASASSN1" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend(['ASASSN1','ASASSN1','ASASSN1','ASASSN1'])
-            filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'r',    'i'])
-            filt2s.extend([    'a',    'b',    'd',    'c'])
-    
-        if "CFA4P1" in surveys_for_chisq:
-            surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
-            surv2s.extend(['CFA4P1', 'CFA4P1','CFA4P1','CFA4P1'])
-            filtas.extend([    'g',         'g',       'g',      'g'])
-            filtbs.extend([    'r',         'i',       'i',      'i'])
-            filt1s.extend([    'g',         'r',       'r',      'i'])
-            filt2s.extend([    'B',         'V',       'r',      'i'])
-        
-        if "CFA4P2" in surveys_for_chisq:
-            surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
-            surv2s.extend(['CFA4P2', 'CFA4P2', 'CFA4P2','CFA4P2'])
-            filtas.extend([    'g',         'g',       'g',      'g'])
-            filtbs.extend([    'r',         'i',       'i',      'i'])
-            filt1s.extend([    'g',         'r',       'r',      'i'])
-            filt2s.extend([    'B',         'V',       'r',      'i'])
-
-    if 'GAIA' in reference_surveys: #Need to clean this up for the new GAIA stuff 
-        if "DES" in surveys_for_chisq:
-            surv1s.extend([  'GAIA_DES',  'GAIA_DES',  'GAIA_DES',  'GAIA_DES']) #5/11/24 - new formatting frontier for Gaia integration 
-            surv2s.extend([  'DES',  'DES',  'DES',  'DES']) #Survey to compare
-            filtas.extend([    'g',    'g',    'g',    'g']) #first filter for colour
-            filtbs.extend([    'i',    'i',    'i',    'i']) #second filter for colour
-            filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
-            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
-        
-        if "CSP" in surveys_for_chisq:
-            surv1s.extend([    'GAIA_CSP',    'GAIA_CSP',    'GAIA_CSP',    'GAIA_CSP',    'GAIA_CSP',   'GAIA_CSP',   'GAIA_CSP',   'GAIA_CSP'])
-            surv2s.extend([ 'CSP', 'CSP', 'CSP', 'CSP', 'CSP','CSP','CSP','CSP'])
-            filtas.extend([      'g',      'g',      'g',      'g',      'g',     'g',     'g',     'g'])
-            filtbs.extend([      'r',      'i',      'i',      'r',      'i',     'i',     'i',     'i'])
-            filt1s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
-            filt2s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
-    
-        if "PS1SN" in surveys_for_chisq:
-            surv1s.extend([  'GAIA_PS1SN',  'GAIA_PS1SN',  'GAIA_PS1SN',  'GAIA_PS1SN'])
-            surv2s.extend([ 'PS1SN', 'PS1SN', 'PS1SN', 'PS1SN'])
-            filtas.extend([    'g',    'g',    'g',    'r'])
-            filtbs.extend([    'i',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i',    'z'])
-            filt2s.extend([    'g',    'r',    'i',    'z'])
-    
-        if "Foundation" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
-            surv2s.extend([ 'Foundation', 'Foundation', 'Foundation', 'Foundation'])
-            filtas.extend([    'g',    'g',    'g',    'r'])
-            filtbs.extend([    'i',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i',    'z'])
-            filt2s.extend([    'g',    'r',    'i',    'z'])
-       
-        if "ZTF" in surveys_for_chisq:
-            surv1s.extend([  'GAIA_ZTF',  'GAIA_ZTF',  'GAIA_ZTF', 'GAIA_ZTF', 'GAIA_ZTF', 'GAIA_ZTF'])
-            surv2s.extend([  'ZTF',  'ZTF',  'ZTF', 'ZTF', 'ZTF', 'ZTF'])
-            filtas.extend([    'g',    'g',    'g', 'g', 'g', 'g'])
-            filtbs.extend([    'i',    'i',    'i', 'i', 'i', 'i'])
-            filt1s.extend([    'g',    'r',    'i', 'g', 'r', 'i'])
-            filt2s.extend([    'g',    'r',    'i', 'G', 'R', 'I'])
-    
-        if "ZTFD" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1'])
-            surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
-            filtas.extend([    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i'])
-            filt2s.extend([    'g',    'r',    'i'])
-    
-        if "ZTFS" in surveys_for_chisq:
-            surv1s.extend([  'PS1',  'PS1',  'PS1'])
-            surv2s.extend([ 'ZTFS', 'ZTFS', 'ZTFS'])
-            filtas.extend([    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i'])
-            filt2s.extend([    'g',    'r',    'i'])
-    
-    
-        if "SDSS" in surveys_for_chisq:
-            surv1s.extend([  'GAIA_SDSS',  'GAIA_SDSS',  'GAIA_SDSS',  'GAIA_SDSS'])
-            surv2s.extend([ 'SDSS', 'SDSS', 'SDSS', 'SDSS'])
-            filtas.extend([    'g',    'g',    'g',    'r'])
-            filtbs.extend([    'i',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i',    'z'])
-            filt2s.extend([    'g',    'r',    'i',    'z'])
-    
-        if "SNLS" in surveys_for_chisq:
-            surv1s.extend([  'GAIA_SNLS',  'GAIA_SNLS',  'GAIA_SNLS',  'GAIA_SNLS'])
-            surv2s.extend([ 'SNLS', 'SNLS', 'SNLS', 'SNLS'])
-            filtas.extend([    'g',    'g',    'g',    'r'])
-            filtbs.extend([    'i',    'i',    'i',    'i'])
-            filt1s.extend([    'g',    'r',    'i',    'z'])
-            filt2s.extend([    'g',    'r',    'i',    'z'])
-    
-        if "CFA3S" in surveys_for_chisq:
-            surv1s.extend([   'GAIA_CFA3S',   'GAIA_CFA3S',   'GAIA_CFA3S',   'GAIA_CFA3S'])
-            surv2s.extend([ 'CFA3S', 'CFA3S', 'CFA3S', 'CFA3S'])
-            filtas.extend([     'g',     'g',     'g',     'g'])
-            filtbs.extend([     'i',     'i',     'i',     'i'])
-            filt1s.extend([     'B',     'V',     'R',     'I'])
-            filt2s.extend([     'B',     'V',     'R',     'I'])
-    
-        if "CFA3K" in surveys_for_chisq:
-            surv1s.extend([   'GAIA_CFA3K',   'GAIA_CFA3K',   'GAIA_CFA3K',   'GAIA_CFA3K'])
-            surv2s.extend([ 'CFA3K', 'CFA3K', 'CFA3K', 'CFA3K'])
-            filtas.extend([     'g',     'g',     'g',     'g'])
-            filtbs.extend([     'i',     'i',     'i',     'i'])
-            filt1s.extend([     'B',     'V',     'r',     'i'])
-            filt2s.extend([     'B',     'V',     'r',     'i'])        
-    
-        if "CFA4P1" in surveys_for_chisq:
-            surv1s.extend(['GAIA_CFA4P1',       'GAIA_CFA4P1',     'GAIA_CFA4P1',    'GAIA_CFA4P1'])
-            surv2s.extend(['CFA4P1', 'CFA4P1','CFA4P1','CFA4P1'])
-            filtas.extend([    'g',         'g',       'g',      'g'])
-            filtbs.extend([    'r',         'i',       'i',      'i'])
-            filt1s.extend([    'B',         'V',       'r',      'i'])
-            filt2s.extend([    'B',         'V',       'r',      'i'])
-        
-        if "CFA4P2" in surveys_for_chisq:
-            surv1s.extend([  'GAIA_CFA4P2',       'GAIA_CFA4P2',     'GAIA_CFA4P2',    'GAIA_CFA4P2'])
-            surv2s.extend(['CFA4P2', 'CFA4P2', 'CFA4P2','CFA4P2'])
-            filtas.extend([    'g',         'g',       'g',      'g'])
-            filtbs.extend([    'r',         'i',       'i',      'i'])
-            filt1s.extend([    'B',         'V',       'r',      'i'])
-            filt2s.extend([    'B',         'V',       'r',      'i'])
-
+    crosscomparison=namedtuple('crosscomparison',['refsurvey','survey','colorindexfilts','residualfilts'])
+    filtlists= { key:val.keys() for key,val in snanafilts.items() }
+    def getcrosscomparison(survey,refsurvey, filt):
+        print(survey,refsurvey,filt)
+        def throwerror(): raise ValueError(f"Requested cross-comparisons for {survey} against {refsurvey} in filter {filt}: doesn't exist")
+        if refsurvey =='GAIA':
+            #For Gaia, always compare to integrated photometry
+            if survey in ["DES","CSP","PS1SN","ZTF","SDSS","SNLS","CFA3S","CFA3K","CFA4P1",'CFA4P2']:
+                if filt in filtlists[survey]:
+                    return crosscomparison('GAIA_'+survey, survey, ('g','i'), (filt,filt))
+                else:  throwerror()
+            else:  throwerror()
+        elif refsurvey=='PS1':
+            if survey in ['DES','PS1SN','SNLS','SDSS','PS1']:
+                #These surveys share a similar filterset, easy comparison
+                if filt not in filtlists[survey]: throwerror()
+                return crosscomparison(refsurvey, survey, ('g','i'), (filt,filt))
+            elif survey =='ZTF':
+                #Compare GRI and gri both to gri
+                if filt not in 'griGRI': throwerror()
+                return crosscomparison(refsurvey, survey, ('g','i'), (filt.lower(),filt))
+            elif survey == 'CFA3K':
+                #Common color for everything, BVRI -> grri
+                try:  return crosscomparison(refsurvey,survey,('g','i'),(dict(zip('BVri','grri'))[filt],filt) ) 
+                except KeyError: throwerror()
+            elif survey == 'CFA3S':
+                #Common color for everything, BVRI -> grri
+                try:  return crosscomparison(refsurvey,survey,('g','i'),(dict(zip('BVRI','grri'))[filt],filt) ) 
+                except KeyError: throwerror()
+            elif survey == 'CSP':
+                #Unique filter set: griBVomn, last three of which are different V bands
+                try: return crosscomparison(refsurvey,survey,('g','i'),(dict(zip('griBVomn','grigrrrr'))[filt],filt) ) 
+                except KeyError:
+                    throwerror()
+            elif ('KAIT' in survey) or ('NICKEL' in survey):
+                #All LOSS surveys use BVRI under different characters
+                filtlist= {'KAIT1MO':'abcd', 'KAIT2MO':'efgh', 'KAIT3MO':'ABCD', 'KAIT4MO':'EFGH',
+                           'KAIT3': 'ABCD', 'KAIT4':'EFGH',
+                           'NICKEL1MO':'IJKL', 'NICKEL2MO':'MNOP',
+                            'NICKEL1': 'IJKL','NICKEL2':'MNOP',
+                           }[survey]
+                try: return crosscomparison(refsurvey,survey,('g','i'),(dict(zip(filtlist,'grri'))[filt],filt) ) 
+                except KeyError:
+                    throwerror()
+            elif survey == 'SWIFT':
+                #Swift has two optical filters
+                if filt=='B':
+                    return crosscomparison(refsurvey,survey,('g','i'), ('g','B') ) 
+                elif filt=='V':
+                    return crosscomparison(refsurvey,survey,('g','i'), ('r','V') ) 
+                else: 
+                    throwerror()
+            elif 'ASASSN' in survey: 
+                #Both ASASSN surveys use BVRI under different characters
+                filtlist= { 'ASASSN1':'abdc','ASASSN2':'gjih'
+                           }[survey]
+                try: return crosscomparison(refsurvey,survey,('g','i'),(dict(zip(filtlist,'grri'))[filt],filt) ) 
+                except KeyError:
+                    throwerror()
+            elif 'CFA4' in survey: 
+                #Both CFA4 surveys use BVRI filters
+                try: return crosscomparison(refsurvey,survey,('g','i'),(dict(zip('BVri','grri'))[filt],filt) ) 
+                except KeyError:
+                    raise throwerror()
+        else:
+            throwerror()
  
 
     totalchisq = 0
@@ -741,31 +492,46 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
 
     weightsum = 0
     chi2v = []
-
+    def getweighting(survey, filter):
+        return {'GAIA':0.5,'PS1':0.5}
 #     passsurvey={surv:{name: surveydata[surv][name].values for name in list(surveydata[surv])  if surveydata[surv][name].dtype in [np.dtype(int), np.dtype(float)] } for surv in surveydata}
 #     for surv in surveydata: 
 #         passsurvey[surv]['standard_catagory'] = surveydata[surv]['standard_catagory'] 
 #     passobsdfs={surv:{name: obsdfs[surv][name].values for name in list(obsdfs[surv]) if obsdfs[surv][name].dtype in [np.dtype(int), np.dtype(float)] } for surv in obsdfs}
-    for surv1,surv2,filta,filtb,filt1,filt2 in zip(surv1s,surv2s,filtas,filtbs,filt1s,filt2s):
-        allshifts=np.unique((surveydata[surv2]['shift'].values))
-        for shift in allshifts:
-            if DEBUG: print(surv1, filta, surv2, filtb)
-            passsurvey={surv2: surveydata[surv2][surveydata[surv2]['shift']==shift] }
-            if "GAIA" in surv1:
-                chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
-                                    off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
-                                        offa=0,offb=0)
+    for survey in surveys_for_chisq:
+        if survey in reference_surveys: continue
+        for filt in filtlists[survey]:
+            refchi2={}
+            refresiduals={}
+            for refsurvey in reference_surveys:
+                comparison=getcrosscomparison(survey, refsurvey, filt)
+                surv1,surv2,filta,filtb,filt1,filt2= comparison.refsurvey,comparison.survey, comparison.colorindexfilts[0],comparison.colorindexfilts[1], comparison.residualfilts[0], comparison.residualfilts[1]
+                allshifts=np.unique((surveydata[surv2]['shift'].values))
+                for shift in allshifts:
+                    if DEBUG: print(surv1, filta, surv2, filtb)
+                    passsurvey={surv2: surveydata[surv2][surveydata[surv2]['shift']==shift] }
+                    if "GAIA" in surv1:
+                        chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
+                                            off1=0,off2=paramsdict[surv2+'-'+filt2+'_offset'],
+                                                offa=0,offb=0)
+                    else:
+                        chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
+                                            off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
+                                                offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
+                        
+                    if doplot: plot_forone(chi2results,subscript,outputdir,tableout,biasestimates)
+                    chi2v.append(chi2results.chi2) #Would like to add the survey info as well
+                if len(allshifts)>1: 
+                    print('WARNING: Multiple shifts indicated, no chi2 calculated')
+                else:
+                    refchi2[refsurvey]= chi2results.chi2
+                    refresiduals[refsurvey]=chi2results.residuals,chi2results.sigmadata
+            #Weight each reference survey by some amount
+            if len(reference_surveys)>1:
+                weights=getweighting(survey,filt)
+                totalchisq+= -2*special.logsumexp(jnp.array([jnp.log(weights[ref])-refchi2[ref]/2 for ref in  refchi2]))
             else:
-                chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
-                                    off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
-                                        offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
-            if doplot: plot_forone(chi2results,subscript,outputdir,tableout,biasestimates)
-            chi2v.append(chi2results.chi2) #Would like to add the survey info as well
-        if len(allshifts)>1: 
-            print('WARNING: Multiple shifts indicated, no chi2 calculated')
-        else:
-            totalchisq+=chi2results.chi2
-    
+                totalchisq+=chi2results.chi2
     if not (whitedwarf_seds is None):
     
         whitedwarfresults=calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs)
