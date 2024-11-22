@@ -1,0 +1,21 @@
+import matplotlib.pyplot as plt
+import pandas as pd 
+import glob
+
+fig, axs = plt.subplots(3,1)
+
+#filles = glob.glob("*_atmo*")
+
+filles = ['ztfr1.dat_atmo_1', 'ztfg1.dat_atmo_1', 'ztfi1.dat_atmo_1']
+
+for n, f in enumerate(filles):
+    dfair = pd.read_csv(f, names=['wav', 'trans'], comment="#")
+    print(f.replace('_atmo_1', ''))
+    df    = pd.read_csv(f.replace('_atmo_1', ''), names=['wav', 'trans'], comment="#")
+
+    ax = axs[n]
+    ax.plot(df.wav.values, df.trans.values, ls=":")
+    ax.plot(dfair.wav.values, dfair.trans.values, label=f.split('.')[0])
+    ax.legend()
+
+plt.savefig("bla.pdf")
