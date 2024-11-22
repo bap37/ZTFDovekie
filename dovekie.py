@@ -930,7 +930,7 @@ def get_args():
 
     parser.add_argument('--speclibrary', help='Spectral library to use',type=str,default=None)
     parser.add_argument('--outputdir', help='Directory for all output',type=str,default=None)
-    parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=0.95)
+    parser.add_argument("--target_acceptance", help = "Target acceptance rate for hamiltonian MCMC", type=float, default=-9)
     
     parser.add_argument("--n_adaptive", help = "Number of steps to adapt MCMC hyperparameters", type=int, default=2000)
     parser.add_argument("--output", help = "Path to write output chains to (.npz format)", type=str, default=None)
@@ -946,6 +946,9 @@ if __name__ == "__main__":
 
     args = get_args()
     REDO, MCMC, DEBUG, FAKES = prep_config(args)
+    if args.target_acceptance != -9:
+        target_acceptance = args.target_acceptance
+        print(f"Using new acceptance rate of {target_acceptance}")
     if args.BIRD:
         with open("scripts/birds.txt", "rb") as f:
             for line in f:
@@ -1029,10 +1032,11 @@ if __name__ == "__main__":
         quit()
 
     key=random.PRNGKey(34581339453)
+    #key = random.PRNGKey(23490268954)
     initkey, samplekey= random.split(key)
     n_samples = 5000
     theta0 = random.normal(initkey, shape=(nparams,))*0.01
-    
+
     sampler = NUTS(theta0, logp=full_likelihood_data, target_acceptance=target_acceptance, M_adapt=n_burnin)
     key, samples, step_size = sampler.sample(n_samples, samplekey)
     loglikes=jax.vmap(full_likelihood_data,in_axes=0)(samples)
