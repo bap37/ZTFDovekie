@@ -2,19 +2,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-df = pd.read_csv("CSP_observed.csv")
-df = df.loc[df['GAIA_CSP-B'] > -900]
+df = pd.read_csv("DES_observed.csv")
+df = df.loc[df['GAIA_DES-r'] > -900]
 
-fig, ax = plt.subplots()
+print(len(df))
 
-#filter = 'CSP-V'
+mags = np.arange(14,20,1)
 
+for filt in ['GAIA_DES-g', 'GAIA_DES-r', 'GAIA_DES-i', 'GAIA_DES-z']:
 
-
-for filt in ['B', 'V', 'r', 'i', 'g', 'm', 'n', 'o']:
-    ax.scatter(df['PS1-g'] - df['PS1-i'], df[f'CSP-V'] - df[f'GAIA_CSP-{filt}'], label=f"{filt}")
-    print(np.std(df[f'CSP-V'] - df[f'GAIA_CSP-{filt}']), filt)
-#ax2.set_xlabel("GAIA DES g-i")
-
-plt.legend()
-plt.savefig("bla.pdf")
+    for n in range(len(mags)):
+        try:
+            dft = df.loc[(df[filt] >= mags[n]) & (df[filt] < mags[n+1])]
+            dft = dft.dropna()
+            scatter = np.std(dft[filt.replace('GAIA_', '')] - dft[filt].values)
+            print(f"For filter {filt}, between {mags[n]} and {mags[n+1]} mags, the scatter is {scatter} with {len(dft)} stars")
+        except IndexError:
+            continue
