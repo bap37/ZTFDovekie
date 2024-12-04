@@ -27,6 +27,15 @@ overridedict = {"CSP-g":   "CSP-g/A",
                 "CFA3K-V": "CFA3K-V/j",
                 "CFA3K-r": "CFA3K-r/k",
                 "CFA3K-i": "CFA3K-i/l",
+               "CFA4P1-B": "CFA41-B/D",
+               "CFA4P1-V": "CFA41-V/E",
+               "CFA4P1-r": "CFA41-r/F",
+               "CFA4P1-i": "CFA41-i/G",
+               "CFA4P2-B": "CFA42-B/P",
+               "CFA4P2-V": "CFA42-V/Q",
+               "CFA4P2-r": "CFA42-r/W",
+               "CFA4P2-i": "CFA42-i/T",
+
 }
 
 NREAL = 10
@@ -85,8 +94,9 @@ def create_kcor(OFF, OUTDIR):
             else:
                objs = line.split()
                surveyfilt = objs[1]
-               print(surveyfilt)
+               surveyfilt = surveyfilt.split("/")[0]
                offset = OFF.loc[OFF.SURVEYFILT == surveyfilt].OFFSET.values
+               print(surveyfilt, offset)
                if len(offset) < 1 :
                   offset = ''
                else:
@@ -173,9 +183,11 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          if surv == "PS1":
             continue
          if surv == "PS1SN": surv = "PS1MD"
+         if "CFA4" in surv: surv = surv.replace("P", "p")
          survband = labels[n]
          if surv == "PS1MD":
             survband = survband.replace("SN", '')
+#         if "CFA4" in surv: survband = survband.replace("P", "p")
          #doot overridedict
          try: 
             survband = overridedict[survband]
@@ -197,12 +209,14 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          if surv == "PS1SN": surv = "PS1MD"
          if surv == "PS1MD":
             survbandwrite = survbandwrite.replace("SN", '')
+         if "CFA4" in surv: surv.replace("P", "p")
          #doot overridedict
          try: 
             survbandwrite = overridedict[survbandwrite]
          except KeyError:
             pass
-         if "CFA" in surv: surv = "CFA3"
+         if "CFA3" in surv: surv = "CFA3"
+         if "CFA4" in surv: surv = surv.replace("P", "p")
          if surv == 'ZTF': surv = "ZTF_MSIP"
          buildstr = f'WAVESHIFT {surv} {survbandwrite} {np.around(np.random.normal(0,waveval),3)}'
          filew.write(buildstr+'\n')
