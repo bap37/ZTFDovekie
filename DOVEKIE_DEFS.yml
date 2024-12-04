@@ -1,8 +1,9 @@
 ##Which surveys mcmc.py will investigate
 
 #The proper dovekie
-surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2', 'GAIA'] 
-reference_surveys: ['PS1', 'GAIA']
+#surveys_for_dovekie: ['PS1', 'CFA3K', 'CFA3S']
+surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2'] 
+reference_surveys: ['PS1']
 
 #Dovekie wingspan
 #surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1']
@@ -11,8 +12,8 @@ reference_surveys: ['PS1', 'GAIA']
 chainsfile: 'DOVEKIE.V5.npz'
 
 #We use WDs from Boyd et al. 2024 to help constrain our zeropoints
-#whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
-whitedwarf_obs_loc: False
+whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
+#whitedwarf_obs_loc: False
 
 ####### Below here, only madness lies, unless you want to add another survey. 
 ####### In which case go ahead, but it's ugly.
@@ -616,7 +617,7 @@ filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_t
              ['G.dat','R.dat','I.dat','Z.dat','g.dat+15','r.dat','i.dat','z.dat'],
              ['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['effMEGACAM-g.dat+30','effMEGACAM-r.dat+30','effMEGACAM-i.dat+30','effMEGACAM-z.dat+30'],
-             ['SNLS3_4shooter2_B.dat_weighted+30', 'SNLS3_4shooter2_V.dat_weighted+30', 'SNLS3_4shooter2_R.dat_weighted', 'SNLS3_4shooter2_I.dat_weighted'], 
+             ['SNLS3_4shooter2_B.dat+30', 'SNLS3_4shooter2_V.dat', 'SNLS3_4shooter2_R.dat', 'SNLS3_4shooter2_I.dat'], 
              ['SNLS3_Keplercam_U_modtran.dat','SNLS3_Keplercam_B_modtran.dat', 'SNLS3_Keplercam_V_modtran.dat+-30', 'SNLS3_Keplercam_r_modtran.dat', 'SNLS3_Keplercam_i_modtran.dat'],
              ['ztfg1.dat+-15' ,'ztfr1.dat', 'ztfi1.dat'],
              ['ztfg2.dat' ,'ztfr2.dat', 'ztfi2.dat'],
