@@ -15,7 +15,7 @@ import astropy.units as u
 from scipy import interpolate
 from jax.scipy.optimize import minimize as jmin
 from jax import numpy as jnp
-
+import colorcet as cc
 
 def load_config(config_path):
     with open(config_path, "r") as cfgfile:
@@ -65,7 +65,7 @@ def query_irsa(row,col='NA'):
     avinterp = interpolate.interp1d(table['LamEff'][aa]*10000,table['A_SandF'][aa])
     rs = col.replace('_4shooter','S').replace('_keplercam','K').split('-')[0]
     if "CSP" in rs: rs = "CSP" ;
-    print(f"rs: {rs} \n col: {col}\n snanafiltsr:{snanafiltsr.keys()}")
+    #print(f"rs: {rs} \n col: {col}\n snanafiltsr:{snanafiltsr.keys()}")
     sys.stdout.flush()
     return avinterp(filter_means[revobssurvmap[rs]+snanafiltsr[revobssurvmapforsnana[rs]][col[-1]]])
 
@@ -156,17 +156,17 @@ def create_cov(labels, flat_samples):
     c = ChainConsumer()
     c.add_chain(flat_samples, parameters=labels)
     _,cov = c.analysis.get_covariance()
-    np.savez('DOVEKIE_COV_V1.0.npz',cov=cov,labels=labels)
+    np.savez('DOVEKIE_COV_V5.0.npz',cov=cov,labels=labels)
     fig, ax = plt.subplots(figsize=(14, 12))
 
     plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = True
     plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = False
 
-    im = ax.matshow(cov, cmap='cividis')
+    im = ax.matshow(cov, cmap='cet_CET_CBL1')
     
     cax = plt.axes((0.9, 0.1, 0.025, 0.89)) #x,y, widht, height
     
-    cbar = plt.colorbar(im, cax=cax, cmap='cividis', drawedges = False )
+    cbar = plt.colorbar(im, cax=cax, cmap='cet_CET_CBL1', drawedges = False )
     cbar.formatter.set_powerlimits((0, 0))
     cbar.ax.tick_params(labelsize=12)
 
@@ -193,8 +193,8 @@ def create_corr(c, labels):
     plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = True
     plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = False
 
-    im = ax.matshow(corr, cmap='cividis')
-    fig.colorbar(im, cmap='cividis')
+    im = ax.matshow(corr, cmap='cet_CET_CBL1')
+    fig.colorbar(im, cmap='cet_CET_CBL1')
 
     ax.set_xticks(np.arange(len(labels)))
     ax.set_yticks(np.arange(len(labels)))
