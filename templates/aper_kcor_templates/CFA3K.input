@@ -13,7 +13,7 @@ FILTPATH:  /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_nati
 SURVEY: CFA3K
 FILTER: CFA3K-U   SNLS3_Keplercam_U_modtran.dat   0.683&
 FILTER: CFA3K-B   SNLS3_Keplercam_B_modtran.dat   -0.106&
-FILTER: CFA3K-V   SNLS3_Keplercam_V_modtran.dat   -0.011&
+FILTER: CFA3K-V   SNLS3_Keplercam_V_modtran.dat+-30   -0.011&
 FILTER: CFA3K-r      SNLS3_Keplercam_r_modtran.dat   -0.004& 
 FILTER: CFA3K-i      SNLS3_Keplercam_i_modtran.dat   0.007&
 

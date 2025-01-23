@@ -95,6 +95,11 @@ def create_kcor(OFF, OUTDIR):
                objs = line.split()
                surveyfilt = objs[1]
                surveyfilt = surveyfilt.split("/")[0]
+               #print(surveyfilt, "AAAAAA")
+               if "PS1" in surveyfilt:
+                  surveyfilt = surveyfilt.replace("PS1", "PS1SN")
+               elif "CFA4" in surveyfilt:
+                  surveyfilt = surveyfilt.replace("CFA4", "CFA4P")
                offset = OFF.loc[OFF.SURVEYFILT == surveyfilt].OFFSET.values
                print(surveyfilt, offset)
                if len(offset) < 1 :
@@ -207,8 +212,6 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          survbandwrite = labels[n]
          waveval = waveshifts[surv][survband]
          if surv == "PS1SN": surv = "PS1MD"
-         if surv == "PS1MD":
-            survbandwrite = survbandwrite.replace("SN", '')
          if "CFA4" in surv: surv.replace("P", "p")
          #doot overridedict
          try: 
@@ -217,6 +220,8 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
             pass
          if "CFA3" in surv: surv = "CFA3"
          if "CFA4" in surv: surv = surv.replace("P", "p")
+         if surv == "PS1MD":
+            survbandwrite = survbandwrite.replace("SN", '')
          if surv == 'ZTF': surv = "ZTF_MSIP"
          buildstr = f'WAVESHIFT {surv} {survbandwrite} {np.around(np.random.normal(0,waveval),3)}'
          filew.write(buildstr+'\n')
