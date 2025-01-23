@@ -8,14 +8,14 @@ FILTPATH:   $SDSS_USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
 
 SURVEY: CSP
 FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat 10.518&
-FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat 9.6440&
-FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat 9.3520&
-FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat 9.2500&
-FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat 9.8960&
-FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat    9.494&  # V for snoopy
-FILTER: CSP-o  V_LC3009_tel_ccd_atm_ext_1.2.dat  9.488&  # V1
-FILTER: CSP-m  V_LC3014_tel_ccd_atm_ext_1.2.dat  9.492&  # V0
-FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat  9.494&  # V
+FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat_mod 9.6440&
+FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat_mod 9.3520&
+FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat_mod 9.2500&
+FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat_mod_inv 9.8960&
+FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    9.494&  # V for snoopy
+FILTER: CSP-o  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.488&  # V1
+FILTER: CSP-m  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.492&  # V0
+FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.494&  # V
 FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       8.632&
 FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       8.620&  # YdwFILTER: CSP-u/t  u_tel_ccd_atm_ext_1.2.dat 10.518&
 FILTER: CSP-J  Jrc1_SWO_TAM_scan_atm.dat    8.419
@@ -38,4 +38,4 @@ AV_OPTION:   2
 
 LAMBDA_RANGE: 2100 20000  # for SN templates
 
-OUTFILE: kcor_CSPDR3-TRAIN.fits
+OUTFILE: kcor_CSPDR3.fits

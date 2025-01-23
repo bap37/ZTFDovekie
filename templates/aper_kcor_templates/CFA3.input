@@ -7,21 +7,21 @@ FILTSYSTEM: COUNT
 FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
 
 SURVEY: CFA3S
-FILTER: CFA3S-U/a SNLS3_4shooter2_U.dat 9.72400+0.702&    #i
-FILTER: CFA3S-B/b SNLS3_4shooter2_B.dat 9.87400-0.086&   #j
-FILTER: CFA3S-V/c SNLS3_4shooter2_V.dat 9.47900-0.018&   #k
-FILTER: CFA3S-R/d SNLS3_4shooter2_R.dat 9.15500+0.172&    #l
-FILTER: CFA3S-I/e SNLS3_4shooter2_I.dat 8.85100+0.404&    #m
+FILTER: CFA3S-U/a SNLS3_4shooter2_U.dat    9.72400+0.702&    #i
+FILTER: CFA3S-B/b SNLS3_4shooter2_B.dat+30 9.87400-0.086&   #j
+FILTER: CFA3S-V/c SNLS3_4shooter2_V.dat    9.47900-0.018&   #k
+FILTER: CFA3S-R/d SNLS3_4shooter2_R.dat    9.15500+0.172&    #l
+FILTER: CFA3S-I/e SNLS3_4shooter2_I.dat    8.85100+0.404&    #m
 
 
 ######################
 
 SURVEY: CFA3K
-FILTER: CFA3K-U/f   SNLS3_Keplercam_U_modtran.dat   9.72400+0.683&
-FILTER: CFA3K-B/g   SNLS3_Keplercam_B_modtran.dat   9.88605-0.106&
-FILTER: CFA3K-V/h   SNLS3_Keplercam_V_modtran.dat   9.47432-0.011&
-FILTER: CFA3K-r/i   SNLS3_Keplercam_r_modtran.dat   9.35252+-0.004& 
-FILTER: CFA3K-i/j   SNLS3_Keplercam_i_modtran.dat   9.25465+0.007&
+FILTER: CFA3K-U/f   SNLS3_Keplercam_U_modtran.dat       9.72400+0.683&
+FILTER: CFA3K-B/g   SNLS3_Keplercam_B_modtran.dat       9.88605-0.106&
+FILTER: CFA3K-V/h   SNLS3_Keplercam_V_modtran.dat+-30   9.47432-0.011&
+FILTER: CFA3K-r/i   SNLS3_Keplercam_r_modtran.dat       9.35252+-0.004& 
+FILTER: CFA3K-i/j   SNLS3_Keplercam_i_modtran.dat       9.25465+0.007&
 
 ##############
 
@@ -43,15 +43,15 @@ FILTSYSTEM: COUNT
 FILTPATH:   $SDSS_USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
 
 SURVEY: CSP
-FILTER: CSP-u/t  u_tel_ccd_atm_ext_1.2.dat 10.5140-0.062&
-FILTER: CSP-g/A  g_tel_ccd_atm_ext_1.2.dat 9.64806-0.020&
-FILTER: CSP-r/L  r_tel_ccd_atm_ext_1.2.dat 9.35860-0.006&
-FILTER: CSP-i/C  i_tel_ccd_atm_ext_1.2.dat 9.24100+0.002&
-FILTER: CSP-B/u  B_tel_ccd_atm_ext_1.2.dat 9.88100-0.132&
-FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat    -0.028&  # V for snoopy model
-FILTER: CSP-o/v  V_LC3009_tel_ccd_atm_ext_1.2.dat  9.472-0.027&  # V1
-FILTER: CSP-m/w  V_LC3014_tel_ccd_atm_ext_1.2.dat  9.472-0.023&  # V0
-FILTER: CSP-n/x  V_LC9844_tel_ccd_atm_ext_1.2.dat    9.472-0.028&  # V
+FILTER: CSP-u/t  u_tel_ccd_atm_ext_1.2.dat_mod      10.5140-0.062&
+FILTER: CSP-g/A  g_tel_ccd_atm_ext_1.2.dat_mod      9.64806-0.020&
+FILTER: CSP-r/L  r_tel_ccd_atm_ext_1.2.dat_mod      9.35860-0.006&
+FILTER: CSP-i/C  i_tel_ccd_atm_ext_1.2.dat_mod      9.24100+0.002&
+FILTER: CSP-B/u  B_tel_ccd_atm_ext_1.2.dat_mod_inv  9.88100-0.132&
+FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  -0.028&  # V for snoopy model
+FILTER: CSP-o/v  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.472-0.027&  # V1
+FILTER: CSP-m/w  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.472-0.023&  # V0
+FILTER: CSP-n/x  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    9.472-0.028&  # V
 FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       0.617&
 FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       0.630&  # Ydw
 
