@@ -42,10 +42,16 @@ FILTER: CSP-m/h  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.472-0.023&  # V0
 FILTER: CSP-n/i  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    9.472-0.028&  # V
 FILTER: CSP-Y/j  Y_SWO_TAM_scan_atm.dat       0.617&
 FILTER: CSP-y/k  Y_DUP_TAM_scan_atm.dat       0.630&  # Ydw
+FILTER:  CSP-J/l              Jrc1_SWO_TAM_scan_atm.dat  8.419
+FILTER:  CSP-j/m              Jrc2_SWO_TAM_scan_atm.dat  8.426
+FILTER:  CSP-H/n              H_SWO_TAM_scan_atm.dat  8.125
+FILTER:  CSP-h/o              H_DUP_TAM_scan_atm.dat  8.126
+
 
 FILTPATH:   $BRODIE_HOME/ZTF_CAL/filters/PS1_CFA4
 
 SURVEY: CFA4p1
+FILTER:  CFA41-U/z            cfa4_U_p1.dat  9.724
 FILTER: CFA4P1-B/A cfa4_B_p1_modtran.dat_weighted -0.111&
 FILTER: CFA4P1-V/B cfa4_V_p1_modtran.dat_weighted -0.017&
 FILTER: CFA4P1-r/C cfa4_r_p1_modtran.dat_weighted -0.005&
@@ -71,7 +77,6 @@ AV_RANGE:   -6.0  6.0
 AV_BINSIZE:  0.5  
 AV_OPTION:   2   
 
-LAMBDA_RANGE: 2100 12500  # for SN templates
-
+LAMBDA_RANGE: 2100 20000
 
 OUTFILE: kcor_DES5YR_LOWZ.fits
