@@ -6,7 +6,7 @@ FILTSYSTEM: COUNT
 FILTPATH: $PS1_USERS/dscolnic/Excalibur_dillon/filters/PS1s_RS14_PS1_tonry
 
 SURVEY: PS1MD
-FILTER: PS1-g   g_filt_revised.txt 0-0.011&  
+FILTER: PS1-g   g_filt_tonry.txt 0-0.011&  
 FILTER: PS1-r   r_filt_tonry.txt   0-0.012& #FROM SNDATA_ROOT/kcor/PS1/Pantheon
 FILTER: PS1-i   i_filt_tonry.txt   0-0.008&
 FILTER: PS1-z   z_filt_tonry.txt   0-0.008&
