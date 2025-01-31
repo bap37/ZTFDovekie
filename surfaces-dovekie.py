@@ -98,7 +98,7 @@ def create_kcor(OFF, OUTDIR):
                #print(surveyfilt, "AAAAAA")
                if "PS1" in surveyfilt:
                   surveyfilt = surveyfilt.replace("PS1", "PS1SN")
-               elif "CFA4" in surveyfilt:
+               elif ("CFA4" in surveyfilt) & ("DES" not in kcorog):
                   surveyfilt = surveyfilt.replace("CFA4", "CFA4P")
                offset = OFF.loc[OFF.SURVEYFILT == surveyfilt].OFFSET.values
                print(surveyfilt, offset)
