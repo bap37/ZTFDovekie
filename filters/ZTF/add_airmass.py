@@ -14,9 +14,9 @@ atmo=1
 
 for f in filters:
     df = pd.read_csv(f, sep=r'\s+', comment="#", names=['wavelength', 'trans'])
-    
+
     aim = (interp(df.wavelength.values))
 
-    df['trans'] *= (1-aim*atmo)
+    df['trans'] *= 10**(-0.4*aim*atmo)
 
     df.to_csv(f"{f}_atmo_{atmo}", index=False, float_format='%g', header=False, sep=" ")
