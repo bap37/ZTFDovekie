@@ -6,14 +6,14 @@ FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/SDSS_Doi20
 
 
 SURVEY: SDSS
-FILTER: SDSS-g g.dat+15 -0.0073
-FILTER: SDSS-r r.dat -0.0088
-FILTER: SDSS-i i.dat -0.0090
-FILTER: SDSS-z z.dat -0.0094
-FILTER: SDSS-G G.dat -0.0073
-FILTER: SDSS-R R.dat -0.0088
-FILTER: SDSS-I I.dat -0.0090
-FILTER: SDSS-Z Z.dat -0.0094
+FILTER: SDSS-g g.dat+15 -0.005
+FILTER: SDSS-r r.dat +0.006
+FILTER: SDSS-i i.dat +0.007
+FILTER: SDSS-z z.dat +0.007
+FILTER: SDSS-G G.dat -0.005
+FILTER: SDSS-R R.dat +0.006
+FILTER: SDSS-I I.dat +0.007
+FILTER: SDSS-Z Z.dat +0.007
 
 
 # KEEP, first number is a correction cause sdss used an older version of calspecs than what I used for supercal

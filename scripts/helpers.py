@@ -156,7 +156,7 @@ def create_cov(labels, flat_samples):
     c = ChainConsumer()
     c.add_chain(flat_samples, parameters=labels)
     _,cov = c.analysis.get_covariance()
-    np.savez('DOVEKIE_COV_V5.0.npz',cov=cov,labels=labels)
+    np.savez('DOVEKIE_COV_V6.0.npz',cov=cov,labels=labels)
     fig, ax = plt.subplots(figsize=(14, 12))
 
     plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = True
