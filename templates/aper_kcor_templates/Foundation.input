@@ -1,7 +1,7 @@
 BD17_SED:    $PS1_USERS/dscolnic/Excalibur_dillon/kcor/PS1s_RS14_PS1_tonry/fillme.dat
 
 SN_SED:    Hsiao07.dat   # spectral template for SN
-MAGSYSTEM:  BD17
+MAGSYSTEM:  AB
 FILTSYSTEM: COUNT
 FILTPATH: $PS1_USERS/dscolnic/Excalibur_dillon/filters/PS1s_RS14_PS1_tonry
 
@@ -27,5 +27,5 @@ AV_OPTION:   2
 	     
 LAMBDA_RANGE: 2100 11300  # for SN templates
 
-OUTFILE:  .temp_bd.fits
+OUTFILE: kcor_Foundation.fits
 
