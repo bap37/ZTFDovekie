@@ -7,33 +7,33 @@ FILTSYSTEM: COUNT
 FILTPATH:   $SDSS_USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
 
 SURVEY: CSP
-FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat 10.518&
-FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat_mod 9.6440&
-FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat_mod 9.3520&
-FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat_mod 9.2500&
-FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat_mod_inv 9.8960&
-FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    9.494&  # V for snoopy
-FILTER: CSP-o  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.488&  # V1
-FILTER: CSP-m  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.492&  # V0
-FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.494&  # V
-FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       8.632&
-FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       8.620&  # YdwFILTER: CSP-u/t  u_tel_ccd_atm_ext_1.2.dat 10.518&
-FILTER: CSP-J  Jrc1_SWO_TAM_scan_atm.dat    8.419
-FILTER: CSP-j  Jrc2_SWO_TAM_scan_atm.dat    8.426
-FILTER: CSP-H  H_SWO_TAM_scan_atm.dat       8.125
-FILTER: CSP-h  H_DUP_TAM_scan_atm.dat       8.126  # Hdw
+FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat 10.51768&
+FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat_mod 9.644060&
+FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat_mod 9.351600&
+FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat_mod 9.250200&
+FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat_mod_inv 9.881638&
+FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    9.483876&  # V for snoopy
+FILTER: CSP-o  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.483876&  # V1
+FILTER: CSP-m  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.483876&  # V0
+FILTER: CSP-n  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.483876&  # V
+FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       8.625254&
+FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       8.613251&  # Ydw
+FILTER: CSP-J  Jrc1_SWO_TAM_scan_atm.dat    8.409110&
+FILTER: CSP-j  Jrc2_SWO_TAM_scan_atm.dat    8.418885&  # Jrc2
+FILTER: CSP-H  H_SWO_TAM_scan_atm.dat       8.123168&
+FILTER: CSP-h  H_DUP_TAM_scan_atm.dat       8.123465&  # Hdw
 
 
-# - - - - - - - - - 
-# Define generation grids. 
-REDSHIFT_RANGE:    0.0  0.1 
+# - - - - - - - - -
+# Define generation grids.
+REDSHIFT_RANGE:    0.0  0.1
 REDSHIFT_BINSIZE:  0.01
 
-# define AV grid. 
-RV:          3.1   A(V)/E(B-V) in LMC 
-AV_RANGE:   -6.0  6.0  
+# define AV grid.
+RV:          3.1   A(V)/E(B-V) in LMC
+AV_RANGE:   -6.0  6.0
 AV_BINSIZE:  0.5
-AV_OPTION:   2  
+AV_OPTION:   2
 
 
 LAMBDA_RANGE: 2100 20000  # for SN templates
