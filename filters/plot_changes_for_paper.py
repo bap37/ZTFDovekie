@@ -9,32 +9,56 @@ def DISCRETE_CMAP(CMAP, bins):
     colours = [matplotlib.colors.rgb2hex(cmap(i)) for i in range(cmap.N)]
     return colours
 
-og_files = ['CFA3_native/SNLS3_4shooter2_V.dat', 'CFA3_native/SNLS3_Keplercam_V_modtran.dat', 
+og_files = ['CFA3_native/SNLS3_Keplercam_V_modtran.dat', 
             'CSP_TAMU/B_tel_ccd_atm_ext_1.2.dat',
             'CSP_TAMU/V_LC9844_tel_ccd_atm_ext_1.2.dat',
+            'CFA3_native/SNLS3_4shooter2_B.dat',
+            'CFA3_native/SNLS3_4shooter2_V.dat',
+            'CFA3_native/SNLS3_4shooter2_R.dat',
+            'CFA3_native/SNLS3_4shooter2_I.dat',
             'SDSS_Doi2010_CCDAVG/g.dat',
             'SNLS3-Megacam/effMEGACAM-g.dat',
             'SNLS3-Megacam/effMEGACAM-r.dat',
             'SNLS3-Megacam/effMEGACAM-i.dat',
             'SNLS3-Megacam/effMEGACAM-z.dat',
+            'PS1_CFA4/cfa4_B_p1_modtran.dat',
+            'PS1_CFA4/cfa4_V_p1_modtran.dat',
+            'PS1_CFA4/cfa4_r_p1_modtran.dat',
+            'PS1_CFA4/cfa4_i_p1_modtran.dat',
+            'PS1_CFA4/cfa4_B_p2_modtran.dat',
+            'PS1_CFA4/cfa4_V_p2_modtran.dat',
+            'PS1_CFA4/cfa4_r_p2_modtran.dat',
+            'PS1_CFA4/cfa4_i_p2_modtran.dat',
 ]
 
-new_files = ['CFA3_native/SNLS3_4shooter2_V.dat+-20', 'CFA3_native/SNLS3_Keplercam_V_modtran.dat+-30', 
+new_files = ['CFA3_native/SNLS3_Keplercam_V_modtran.dat+-30', 
              'CSP_TAMU/B_tel_ccd_atm_ext_1.2.dat_mod_inv',
-             'CSP_TAMU/V_weighted.dat',
+             'CSP_TAMU/V_LC9844_tel_ccd_atm_ext_1.2.dat_mod',
+             'CFA3_native/SNLS3_4shooter2_B_atmo_1.dat',
+             'CFA3_native/SNLS3_4shooter2_V_atmo_1.dat',
+             'CFA3_native/SNLS3_4shooter2_R_atmo_1.dat',
+             'CFA3_native/SNLS3_4shooter2_I_atmo_1.dat',
              'SDSS_Doi2010_CCDAVG/g.dat+15',
              'SNLS3-Megacam/effMEGACAM-g.dat+30',
              'SNLS3-Megacam/effMEGACAM-r.dat+30',
              'SNLS3-Megacam/effMEGACAM-i.dat+30',
              'SNLS3-Megacam/effMEGACAM-z.dat+30',
-
+             'PS1_CFA4/cfa4_B_p1_modtran.dat_weighted',
+             'PS1_CFA4/cfa4_V_p1_modtran.dat_weighted',
+             'PS1_CFA4/cfa4_r_p1_modtran.dat_weighted',
+             'PS1_CFA4/cfa4_i_p1_modtran.dat_weighted',
+             'PS1_CFA4/cfa4_B_p2_modtran.dat_weighted+-20',
+             'PS1_CFA4/cfa4_V_p2_modtran.dat_weighted+20',
+             'PS1_CFA4/cfa4_r_p2_modtran.dat_weighted+20',
+             'PS1_CFA4/cfa4_i_p2_modtran.dat_weighted+20',
 ]
 
-labels = ['CfA3S-V', "CfA3K-V", "CSP-B", "CSP-V", "SDSS-g", "SNLS-g", "SNLS-r", "SNLS-i", "SNLS-z"]
+labels = ["CfA3K-V", "CSP-B", "CSP-V", "CfA3S-B", "CfA3S-V", "CfA3S-R", "CfA3S-I", "SDSS-g", "SNLS-g", "SNLS-r", "SNLS-i", "SNLS-z", 
+          'CfA4P1-B', 'CfA4P1-V', 'CfA4P1-r', 'CfA4P1-i', 'CfA4P2-B', 'CfA4P2-V', 'CfA4P2-r', 'CfA4P2-i',]
 
 colours = DISCRETE_CMAP('cet_CET_CBL1', 4)
 
-fig, axs = plt.subplots(2,5, figsize=(12,6))
+fig, axs = plt.subplots(3,6, figsize=(12,10))
 
 for n, ax in enumerate(axs.flat):
     try:
@@ -42,13 +66,17 @@ for n, ax in enumerate(axs.flat):
         new_filt = new_files[n]
 
     except IndexError:
+        ax.spines[['top', 'right', 'bottom', 'left']].set_visible(False)
+        ax.tick_params(axis="both", which="both", bottom=False, top=False, left=False, right=False)
+        ax.set_yticks([])
+        ax.set_xticks([])
         continue
 
     oldf = pd.read_csv(old_filt, names=['wave', 'trans'], sep=r'\s+', comment="#")
     newf = pd.read_csv(new_filt, names=['wave', 'trans'], sep=r'\s+', comment="#")
 
-    ax.plot(oldf.wave, oldf.trans, c='#b19d59', lw=3, ls='--', zorder=4)
-    ax.plot(newf.wave, newf.trans, c=colours[1], lw=3, zorder=3)
+    ax.plot(oldf.wave, oldf.trans/np.amax(oldf.trans), c='#b19d59', lw=3, ls='--', zorder=4)
+    ax.plot(newf.wave, newf.trans/np.amax(newf.trans), c=colours[1], lw=3, zorder=3)
 
     ax.plot(oldf.wave, oldf.trans, alpha=0, c="white", label=labels[n], zorder=1)
 
@@ -74,5 +102,5 @@ ax.set_ylim([-0.1, 0.1])
 ax.set_yticks([])
 ax.set_xticks([])
 
-plt.subplots_adjust(wspace=0.3, hspace=0.3)
+plt.subplots_adjust(wspace=0.3, hspace=0.5)
 plt.savefig("Filter_changes.pdf", bbox_inches="tight")
