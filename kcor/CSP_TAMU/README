@@ -1,0 +1,150 @@
+20250226 Aaron Do:
+The zero points are determined as follows.
+CSP-I DR3 (https://iopscience.iop.org/article/10.3847/1538-3881/aa8df0) was calibrated to Landolt (1992)
+and Smith et al. (2002) secondary standards in the optical, and Persson et al. (1998) secondary standards in the NIR.
+The color transformation equations are eqns 9-14 (inclusive) with color coefficients from Table 4.
+The Swope+SITE3 {uBgVri}_nat natural magnitudes are related to the catalog values as follows:
+
+u_nat = u' - (0.046 ± 0.017)*(u' - g')
+g_nat = g' + (0.014 ± 0.011)*(g' - r')
+r_nat = r' + (0.016 ± 0.015)*(r' - i')
+i_nat = i' + (0.002 ± 0.015)*(r' - i')
+B_nat = B  - (0.061 ± 0.012)*(B  - V )
+V_nat = V  + (0.058 ± 0.011)*(V  - i')
+
+The catalog values for BD+17 4708 come from Landolt & Uomoto 2007 (https://iopscience.iop.org/article/10.1086/510485)
+  V = 9.464 +/- 0.0026
+B-V = 0.443 +/- 0.0015
+and from Smith et al. 2002 (https://iopscience.iop.org/article/10.1086/339311)
+   r' = 9.350 +/- 0.001
+u'-g' = 0.920 +/- 0.001
+g'-r' = 0.290 +/- 0.001
+r'-i' = 0.100 +/- 0.001
+
+Using these color transformations and assuming the errors are independent,
+the natural magnitude (m_nat) in each bandpass is
+u = 10.51768 +/- 0.01574
+B =  9.87998 +/- 0.00611
+g =  9.64406 +/- 0.00349
+V =  9.47641 +/- 0.00351
+r =  9.35160 +/- 0.00180
+i =  9.25020 +/- 0.00206
+which is consistent with the listed BD+17 natural magnitudes on the CSP site
+(u=10.518, g=9.644, r=9.352, i=9.250)
+
+The synthetic fluxes and magnitudes are calculated in SNANA using:
+wl = the uniformly sampled wavelengths of Hsiao07.dat's Ia model
+dwl = the 10 A spacing of wl
+flux_lam = CALSPEC's bd_17d4708_stisnic_007.fits linearly interpolated to match wl
+trans = bandpass transmission functions similarly linearly interpolated
+c = 2.99792458e18 A / s
+h = 6.62607015e-27 erg s
+F_AB = 3631 Jy = 3.631e-20 erg / s / cm^2 / Hz
+Note: This makes 2.5log10(F_AB) -48.6 + 6.56e-5
+
+The following numbers depend on the transmission function, so multiple sets are provided.
+V corresponds to V_LC9844, V1 to V_LC3009, and V2 to V_LC3014
+
+The photon fluxes (photon_flux) in Nph/s/cm^2 are given by
+1/(c*h) * sum(trans * flux_lam * wl**3 * dwl / (wl**2 - 0.25 * dwl**2))
+in the limit of small dwl, this converges to
+1/(c*h) * int(trans * flux_lam * wl * dwl)
+
+For the *.dat files
+The photon fluxes in each bandpass is
+u  =   9.88652
+g  = 154.572
+r  = 165.872
+i  = 153.427
+B  =  60.0312
+V  =  95.9508
+V1 =  92.5007
+V2 =  95.8974
+for the *.dat_mod files
+u  =   9.96370
+g  = 153.427
+r  = 165.373
+i  = 130.127
+B  =  59.8529
+V  =  95.7159
+V1 =  91.7448
+V2 =  95.7436
+for the *.dat_mod_inv files
+u  =   9.83023
+g  = 156.991
+r  = 167.041
+i  = 130.746
+B  =  60.5603
+V  =  96.4887
+V1 =  93.5864
+V2 =  96.4092
+
+
+The synthetic magnitudes (m_syn) are given by
+m_syn = 2.5*log10(F_AB) - 2.5*log10(photon_flux / weight)
+where
+weight = 1/h * sum(trans * wl * dwl / (wl**2 - 0.25*dwl**2))
+in the limit of small dwl, this converges to
+1/h * int(trans * dwl / wl)
+
+For the *.dat files
+The synthetic magnitude in each bandpass is
+u  = 10.4387
+g  =  9.6194
+r  =  9.3481
+i  =  9.6320
+B  =  9.7571
+V  =  9.4638
+V1 =  9.4586
+V2 =  9.4664
+for the *.dat_mod files
+u  = 10.4477
+g  =  9.6320
+r  =  9.3505
+i  =  9.2617
+B  =  9.7703
+V  =  9.4670
+V1 =  9.4621
+V2 =  9.4703
+for the *.dat_mod_inv files
+u  = 10.4298
+g  =  9.6073
+r  =  9.3458
+i  =  9.2605
+B  =  9.7442
+V  =  9.4606
+V1 =  9.4550
+V2 =  9.4625
+
+Finally, SNANA calculates a final offset term as m_nat - m_syn
+For the *.dat files
+The offset term for each bandpass is
+u  =  0.0790
+g  =  0.0247
+r  =  0.0035
+i  = -0.3818
+B  =  0.1229
+V  =  0.0126
+V1 =  0.0179
+V2 =  0.0100
+for the *.dat_mod files
+u  =  0.0700
+g  =  0.0121
+r  =  0.0011
+i  = -0.0115
+B  =  0.1097
+V  =  0.0094
+V1 =  0.0144
+V2 =  0.0061
+for the *.dat_mod_inv files
+u  =  0.0879
+g  =  0.0368
+r  =  0.0058
+i  = -0.0103
+B  =  0.1358
+V  =  0.0158
+V1 =  0.0214
+V2 =  0.0139
+
+Note: Using -48.6 instead of 2.5log10(F_AB) probably causes some offsets to round 0.0001 higher.
+For consistency, the offsets use the F_AB term rather than the exact -48.6 term.
