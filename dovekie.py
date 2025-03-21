@@ -19,11 +19,13 @@ from functools import partial
 import jax
 from jax import numpy as jnp
 from jax import random as random
-from jaxnuts.sampler import NUTS
+from sampler import NUTS
 from jax.scipy import linalg as jlinalg
-
+import jax.scipy.stats as jstats
 from collections import namedtuple
 from os import path
+from jax.scipy.special import logsumexp
+# jax.config.update("jax_disable_jit", True)
 
 #search for "TODO"
 isshift = False
@@ -41,11 +43,38 @@ filter_means = pd.read_csv('filter_means.csv')
 
 filter_means = filter_means.set_index(['SURVEYFILTER']).to_dict()['MEANLAMBDA ']
 
-chi2result=namedtuple('chi2result',['chi2','datax','datay','synthxs','synthys',
+chi2result=namedtuple('chi2result',['likelihood','chi2','datax','datay','synthxs','synthys',
      'data_popt','data_pcov','cats','synthpopts',
      'synthpcovs','modelcolors','modelress','sigmasynth','sigmadata',
      'obslongfilt1','obslongfilt2','obslongfilta','obslongfiltb',
      'surv1','colorfilta','colorfiltb','yfilt1','surv2','yfilt2','shift'])
+
+
+def efficient_multivariate_normal_logpdf(dms, sigmadata, errfloors_surv2):
+    """LLM Generated code to compute the log PDF of a multivariate normal distribution with covariance consisting of a constant + diagonal matrix."""
+    n = dms.size
+    
+    # Construct the precision matrix efficiently using the Woodbury matrix identity
+    # For a matrix of the form (sigma^2 * I + err^2 * 11^T)
+    sigma2 = sigmadata**2#+errfloors_surv2
+    err2 = errfloors_surv2**2
+    
+    # Compute determinant efficiently using matrix determinant lemma
+    # det(sigma^2 * I + err^2 * 11^T) = sigma^2n * (1 + n*err^2/sigma^2)
+    logdet = jnp.log(1 + n * err2 / sigma2)+jnp.log(sigma2)*n
+    
+    # Compute quadratic form efficiently
+    # x^T (sigma^2 * I + err^2 * 11^T)^-1 x
+    # = (1/sigma^2) * x^T x - (err^2/sigma^4) * (x^T 1)^2 / (1 + n*err^2/sigma^2)
+    sum_dms = jnp.sum(dms)
+    dms_sq_sum = jnp.sum(dms**2)
+    
+    quad_term = dms_sq_sum / sigma2 - (err2 / sigma2**2) * sum_dms**2 / (1 + n * err2 / sigma2)
+    
+    # Compute log PDF
+    log_pdf = -0.5 * (n * jnp.log(2 * jnp.pi) + logdet + quad_term)
+    
+    return log_pdf
 
 def get_whitedwarf_synths(surveys):
     whitedwarfsynths={}
@@ -140,11 +169,8 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
     return surveydfs_wext
 
 
-def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colorfiltb,yfilt1,yfilt2,
-                  filtshift=0,off1=0,off2=0,offa=0,offb=0,
-                  calspecslope=0,calspecmeanlambda=4383.15,ngslslope=0,ngslmeanlambda=5507.09,
-                  doplot=False,subscript='', outputdir='synthetic',speclibrary=None): #where the magic happens I suppose
-    ssurv2 = survmap[surv2]
+def getlikelihood_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colorfiltb,yfilt1,yfilt2,
+                  filtshift=0,off1=0,off2=0,offa=0,offb=0,speclibrary=None): #where the magic happens I suppose
     df2 = surveydata[surv2]
 
     chi2 = 0
@@ -197,9 +223,8 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
     datax,datay,sigmadata,yresd,data_popt,data_pcov = itersigmacut_linefit(datacolor,
                                                          datares,# np.ones(datacut.sum(),dtype=bool),
                                                          niter=2,nsigma=3)
-
     synthxs,synthys, cats,synthpopts,synthpcovs,modelcolors,modelress =  ([] for i in range(7))
-
+    likelihood=[]
     if speclibrary is None: 
        libraries=['stis_ngsl_v2','calspec23']
     else: libraries=[speclibrary]
@@ -248,11 +273,17 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
         #WHY IS THIS A MEAN
         chires = jnp.mean(dms)
         chireserrsq = (sigmadata/jnp.sqrt(dms.size ))**2+errfloors[surv2]**2
-        chi2 += (chires**2/chireserrsq)     
-   
+        chi2 += (chires**2/chireserrsq) 
+        likelihood+=[efficient_multivariate_normal_logpdf(dms,sigmadata, errfloors[surv2])]
+    
+    if len(likelihood)>1:
+        likelihood=logsumexp(jnp.array(likelihood))
+    else:
+        likelihood=likelihood[0]
+    
     chi2/=len(libraries)
     #print(chi2)
-    return chi2result(chi2=chi2,datax=datax,datay=datay,synthxs=synthxs,synthys=synthys,
+    return chi2result(likelihood=likelihood,chi2=chi2,datax=datax,datay=datay,synthxs=synthxs,synthys=synthys,
      data_popt=data_popt,data_pcov=data_pcov,sigmadata=sigmadata, cats=cats,synthpopts=synthpopts,
      synthpcovs=synthpcovs,sigmasynth=sigmamodel,modelcolors=modelcolors,modelress=modelress,
      surv1=surv1,colorfilta=colorfilta,colorfiltb=colorfiltb,yfilt1=yfilt1,surv2=surv2,yfilt2=yfilt2,
@@ -262,7 +293,7 @@ def getchi_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfilta,colo
 
 #plotcomp2 used to live here
 
-def unwravel_params(params,surveynames,fixsurveynames):
+def unwravel_params(params,surveynames,fixsurveynames,reference_surveys):
     i = 0
     outofbounds = False
     paramsdict = {}
@@ -398,10 +429,9 @@ def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict,):
     plt.savefig(outpath)
     print(f'writing white dwarf residuals to {outpath}')
 
-def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference_surveys, params,doplot=False,subscript='',outputdir='',tableout=None, whitedwarf_seds=None,whitedwarf_obs= None,biasestimates=None,speclibrary=None):
+def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference_surveys, params,doplot=False,subscript='',outputdir='',tableout=None, whitedwarf_seds=None,whitedwarf_obs= None,biasestimates=None,speclibrary=None):
 
-    chisqtot=0
-    paramsdict,outofbounds,paramsnames = unwravel_params(params,surveys_for_chisq,fixsurveynames)
+    paramsdict,outofbounds,paramsnames = unwravel_params(params,surveys_for_chisq,fixsurveynames,reference_surveys)
     if doplot and tableout is None: raise ValueError('No table file provided')
     lp= jax.lax.cond(outofbounds, lambda : -np.inf, lambda :0.)
     
@@ -736,11 +766,9 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
 
  
 
-    totalchisq = 0
+    totallikelihood = 0
 
 
-    weightsum = 0
-    chi2v = []
 
 #     passsurvey={surv:{name: surveydata[surv][name].values for name in list(surveydata[surv])  if surveydata[surv][name].dtype in [np.dtype(int), np.dtype(float)] } for surv in surveydata}
 #     for surv in surveydata: 
@@ -752,31 +780,30 @@ def full_likelihood(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,referenc
             if DEBUG: print(surv1, filta, surv2, filtb)
             passsurvey={surv2: surveydata[surv2][surveydata[surv2]['shift']==shift] }
             if "GAIA" in surv1:
-                chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
+                likeresults = getlikelihood_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
                                     off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
                                         offa=0,offb=0)
             else:
-                chi2results = getchi_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
+                likeresults = getlikelihood_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
                                     off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
                                         offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
-            if doplot: plot_forone(chi2results,subscript,outputdir,tableout,biasestimates)
-            chi2v.append(chi2results.chi2) #Would like to add the survey info as well
+            if doplot: plot_forone(likeresults,subscript,outputdir,tableout,biasestimates)
         if len(allshifts)>1: 
             print('WARNING: Multiple shifts indicated, no chi2 calculated')
         else:
-            totalchisq+=chi2results.chi2
+            totallikelihood+=likeresults.likelihood
     
     if not (whitedwarf_seds is None):
     
         whitedwarfresults=calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs)
-        totalchisq+=whitedwarfresults.chi2
+        totallikelihood-=0.5*whitedwarfresults.chi2
         if doplot:
             for filt in whitedwarfresults.resids:
                 plotwhitedwarfresids(filt, outputdir, whitedwarfresults,paramsdict)
             
     
     lp += lnprior(paramsdict)
-    return lp -.5*totalchisq
+    return lp +totallikelihood
 
 
 def lnprior(paramsdict):
@@ -941,8 +968,8 @@ def get_args():
     args = parser.parse_args()
     return args
 
-
 if __name__ == "__main__":
+    print('debug',__name__)
 
     args = get_args()
     REDO, MCMC, DEBUG, FAKES = prep_config(args)
@@ -1014,10 +1041,10 @@ if __name__ == "__main__":
                 pos.append(0)
     
     
-    full_likelihood_data= partial(full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference_surveys, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs, speclibrary=args.speclibrary)
-    full_likelihood_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=(args.outputdir if args.outputdir is not None else  (f'fakes_{path.split(FAKES)[1]}' if FAKES else None) ),biasestimates=biasestimates)
+    full_posterior_data= partial(full_posterior,surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference_surveys, whitedwarf_seds=whitedwarf_seds,whitedwarf_obs= whitedwarf_obs, speclibrary=args.speclibrary)
+    initlogp=full_posterior_data(pos,subscript='preprocess',doplot=True,tableout=tableout,outputdir=(args.outputdir if args.outputdir is not None else  (f'fakes_{path.split(FAKES)[1]}' if FAKES else None) ),biasestimates=biasestimates)
 
-    _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames)
+    _,_,labels=unwravel_params(pos,surveys_for_chisq,fixsurveynames,reference_surveys)
 
     tableout.close()
 
@@ -1037,14 +1064,14 @@ if __name__ == "__main__":
     n_samples = 5000
     theta0 = random.normal(initkey, shape=(nparams,))*0.01
 
-    sampler = NUTS(theta0, logp=full_likelihood_data, target_acceptance=target_acceptance, M_adapt=n_burnin)
+    sampler = NUTS(theta0, logp=lambda x: full_posterior_data(x)- initlogp, target_acceptance=target_acceptance, M_adapt=n_burnin)
     key, samples, step_size = sampler.sample(n_samples, samplekey)
-    loglikes=jax.vmap(full_likelihood_data,in_axes=0)(samples)
+    loglikes=jax.vmap(full_posterior_data,in_axes=0)(samples)
     if args.outputdir and not ( '/' in outname): outname= path.join(args.outputdir,outname)
     np.savez(outname,samples=samples,labels=labels,surveys_for_chisq=surveys_for_chisq)
     final=np.mean(samples,axis=0)
     if args.FAKES: sys.exit(0)
-    paramsdict=unwravel_params(final,surveys_for_chisq,fixsurveynames)[0]
+    paramsdict=unwravel_params(final,surveys_for_chisq,fixsurveynames,reference_surveys)[0]
     whitedwarfresults=calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs)
     for filt in whitedwarfresults.resids:
         plotwhitedwarfresids(filt, '', whitedwarfresults,paramsdict)
