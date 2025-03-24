@@ -570,14 +570,14 @@ relativeweights: {
 
 errfloors: {
     'DES' :     .005,
-    'PS1'    :    0.005,
+    'PS1'    :    0.00,
     'ZTF'    :    0.005,
     'CFA3S':    .01,
     'CFA3K':    .01,
     'CSP':   .01,
     'SDSS':    .005,
-    'Foundation': 0.005,
-    'PS1SN': 0.005,
+    'Foundation': 0.003,
+    'PS1SN':     0.003,
     'ZTFS'  : 0.005,
     'ZTFD'  : 0.005,
     'SNLS'  : 0.005,
