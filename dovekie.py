@@ -809,61 +809,27 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
 def lnprior(paramsdict):
 
     priordict = { 
-        'PS1-g_offset':[0,.02],
-        'PS1-r_offset':[0,.02],
-        'PS1-i_offset':[0,.02],
-        'PS1-z_offset':[0,.02],
-        'PS1SN-g_offset':[0,.01],
-        'PS1SN-r_offset':[0,.01],
-        'PS1SN-i_offset':[0,.01],
-        'PS1SN-z_offset':[0,.01],
-        'DES-g_offset':[0,.01],
-        'DES-r_offset':[0,.01],
-        'DES-i_offset':[0,.01],
-        'DES-z_offset':[0,.01],
-        }
-    
-#        'DES-g_offset':[0,.01],
-#        'DES-r_offset':[0,.01],
-#        'DES-i_offset':[0,.01],
-#        'DES-z_offset':[0,.01],
-
-    '''
-        'DES_g_lamshift':[0,20],
-        'DES_r_lamshift':[0,20],
-        'DES_i_lamshift':[0,20],
-        'DES_z_lamshift':[0,20],
-
-        'SDSS_g_offset':[0,.02],
-        'SDSS_r_offset':[0,.02],
-        'SDSS_i_offset':[0,.02],
-        'SDSS_z_offset':[0,.02],
-        'SDSS_g_lamshift':[0,50],
-        'SDSS_r_lamshift':[0,50],
-        'SDSS_i_lamshift':[0,50],
-        'SDSS_z_lamshift':[0,50],
-
-        'SNLS_g_offset':[0,.01],
-        'SNLS_r_offset':[0,.01],
-        'SNLS_i_offset':[0,.01],
-        'SNLS_z_offset':[0,.01],
-        'SNLS_g_lamshift':[0,20],
-        'SNLS_r_lamshift':[0,20],
-        'SNLS_i_lamshift':[0,20],
-        'SNLS_z_lamshift':[0,20],
-    
-    '''
-    
+        'PS1':[0,.01],
+        'PS1SN':[0,.01],
+        'Foundation':[0,0.01],
+        'CFA3S':[0,0.1],
+        'CFA3K':[0,0.1],
+        'CFA4P1':[0,0.1],
+        'CFA4P2':[0,0.1],
+        'CSP':[0,0.1],
+        'SNLS':[0,0.01],
+        'SDSS':[0,0.01],
+        'DES':[0,.01],
+        }    
 
     lp = 0
-    for priorparam,prior in priordict.items():
+    for paramname,val in paramsdict.items():
         try:
-            mu = prior[0]
-            sigma = prior[1]
-            lp += -0.5*(paramsdict[priorparam]-mu)**2/sigma**2
+            survey=paramname.split('_')[0].split('-')[0]
+            mu,sigma=priordict[survey]
+            lp += -0.5*(val-mu)**2/sigma**2
         except KeyError:
-            raise ValueError(f'Missed parameter {priorparam}, missing a survey')
-
+            raise ValueError(f'No prior for parameter {paramname}')
     return lp
 
 ##Put old ugly code with plotting in here
