@@ -1,4 +1,4 @@
-![alt text](https://github.com/bap37/ZTFDovekie/blob/main/Dov_w_shoesjpg?raw=true)
+![alt text](https://github.com/bap37/ZTFDovekie/blob/main/Dov_w_shoes.jpg?raw=true)
 
 
 
