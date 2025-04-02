@@ -1,3 +1,7 @@
+![alt text](https://github.com/bap37/ZTFDovekie/blob/main/Dov_w_shoes.jpg?raw=true)
+
+
+
 Original code comes from https://arxiv.org/abs/2112.03864
 
 This is the cleaned, upgraded version. Less WIP. 
