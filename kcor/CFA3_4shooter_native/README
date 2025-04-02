@@ -5,11 +5,11 @@ for the 4Shooter UBVRI bandpasses.
 The color transformation equations are in Table 2, reproduced here for convenience.
 
 Detector/Filters    Color Term  Value   Night
-U − B/both periods (u − b)/(U − B) 0.9981 ± 0.0209 17
-B − V /period one (b − v)/(B − V ) 0.9294 ± 0.0026 38
-V /both periods (v − V )/(B − V ) 0.0233 ± 0.0018 63
-V − r′/period one (v − r)/(V − r ′) 1.0684 ± 0.0028 38
-V − i′/both periods (v − i)/(V − i ′) 1.0239 ± 0.0016 63
+4Shooter/UBVRI  (u − b)/(U − B) 0.9912 ± 0.0078 16
+4Shooter/UBVRI  (b − v)/(B − V) 0.8928 ± 0.0019 16
+4Shooter/UBVRI  (v − V)/(B − V) 0.0336 ± 0.0020 16
+4Shooter/UBVRI  (v − r)/(V − R) 1.0855 ± 0.0058 16
+4Shooter/UBVRI  (v − i)/(V − I) 1.0166 ± 0.0067 16
 
 Lower-case filters correspond to the natural bandpasses and upper-case to the catalog values.
 The catalog values for BD+17 4708 come from Landolt & Uomoto 2007 (https://iopscience.iop.org/article/10.1086/510485)
@@ -17,17 +17,16 @@ The catalog values for BD+17 4708 come from Landolt & Uomoto 2007 (https://iopsc
 B-V = 0.443 +/- 0.0015
 U-B = 0.183 +/- 0.0021
 V-R = 0.298 +/- 0.0011
-and from Smith et al. 2002 (https://iopscience.iop.org/article/10.1086/339311)
-   r' = 9.350 +/- 0.001
-r'-i' = 0.100 +/- 0.001
+R-I = 0.320 +/- 0.0009
+V-I = 0.618 +/- 0.0013
 
 Using these color transformations and assuming the errors are independent,
 the natural magnitude (m_nat) in each bandpass is
-U =  9.70339 +/- 0.00545
-B =  9.88605 +/- 0.00327
-V =  9.47432 +/- 0.00272
-r =  9.15594 +/- 0.00404
-i =  8.84155 +/- 0.00409
+U = 9.69301 +/- 0.00405
+B = 9.87440 +/- 0.00317
+V = 9.47888 +/- 0.00275
+R = 9.15541 +/- 0.00346
+I = 8.85063 +/- 0.00514
 
 The synthetic fluxes and magnitudes are calculated in SNANA using:
 wl = the uniformly sampled wavelengths of Hsiao07.dat's Ia model
@@ -39,25 +38,17 @@ h = 6.62607015e-27 erg s
 F_AB = 3631 Jy = 3.631e-20 erg / s / cm^2 / Hz
 Note: This makes 2.5log10(F_AB) -48.6 + 6.56e-5
 
-The following numbers depend on the transmission function, so multiple sets are provided.
-
 The photon fluxes (photon_flux) in Nph/s/cm^2 are given by
 1/(c*h) * sum(trans * flux_lam * wl**3 * dwl / (wl**2 - 0.25 * dwl**2))
 in the limit of small dwl, this converges to
 1/(c*h) * int(trans * flux_lam * wl * dwl)
 
-For cfa4_U_p1.dat and the cfa4_{BVri}_p1_modtran.dat files
 The photon fluxes in each bandpass is
 U =  64.1594
-B = 122.306
-V = 141.437
-R = 200.948
-I = 167.590
-and for the cfa4_{BVri}_p1_modtran.dat_weighted files
-B =  99.7917
-V = 176.600
-R = 201.153
-I = 166.166
+B = 120.167
+V = 136.119
+R = 207.186
+I = 173.811
 
 The synthetic magnitudes (m_syn) are given by
 m_syn = 2.5*log10(F_AB) - 2.5*log10(photon_flux / weight)
@@ -66,33 +57,19 @@ weight = 1/h * sum(trans * wl * dwl / (wl**2 - 0.25*dwl**2))
 in the limit of small dwl, this converges to
 1/h * int(trans * dwl / wl)
 
-For cfa4_U_p1.dat and the cfa4_{BVri}_p1_modtran.dat files
 The synthetic magnitude in each bandpass is
 U = 10.4413
-B =  9.7754
-V =  9.4571
-R =  9.3473
-I =  9.2617
-and for the cfa4_{BVri}_p1_modtran.dat_weighted files
-B = 9.7600
-V = 9.4529
-r = 9.3444
-i = 9.2611
+B = 9.79061
+V = 9.46123
+R = 9.32622
+I = 9.25511
 
 Finally, SNANA calculates a final offset term as m_nat - m_syn
-For cfa4_U_p1.dat and the cfa4_{BVri}_p1_modtran.dat files
 The offset term for each bandpass is
-U = -0.7379
-B =  0.1106
-V =  0.0173
-R =  0.0052
-I = -0.0065
-and for the cfa4_{BVri}_p1_modtran.dat_weighted files
-B =  0.1260
-V =  0.0214
-R =  0.0081
-I = -0.0058
-
-Note: Using -48.6 instead of 2.5log10(F_AB) causes all offsets to round 0.0001 higher except for the V offsets
-for the normal and weighted versions, and the i offset of the weighted version.
+U = -0.7483
+B = 0.0838
+V = 0.0177
+R = -0.1708
+I = -0.4045
+Note: Using -48.6 instead of 2.5log10(F_AB) causes all offsets to round 0.0001 higher except for the V offset.
 For consistency, the offsets use the F_AB term rather than the exact -48.6 term.
