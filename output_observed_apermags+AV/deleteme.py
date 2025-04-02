@@ -2,20 +2,30 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-df = pd.read_csv("DES_observed.csv")
-df = df.loc[df['GAIA_DES-r'] > -900]
+#df = pd.read_pickle("/project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/surveydfsaper/save_irsa_newPS1.pkl")
 
-print(len(df))
+#df2 = pd.read_pickle("/project2/rkessler/SURVEYS/PS1MD/USERS/dscolnic/Excalibur_dillon/surveydfsaper/save_irsa_oldPS1.pkl")
 
-mags = np.arange(14,20,1)
+df = pd.read_csv("PS1SN_observed.csv")
 
-for filt in ['GAIA_DES-g', 'GAIA_DES-r', 'GAIA_DES-i', 'GAIA_DES-z']:
+#survey,PS1SN-g,PS1SN-r,PS1SN-i,PS1SN-z,PS1-g,PS1-r,PS1-i,PS1-z,RA,DEC,PS1SN-g_AV,PS1SN-r_AV,PS1SN-i_AV,PS1SN-z_AV,PS1-g_AV,PS1-r_AV,PS1-i_AV,PS1-z_AV
 
-    for n in range(len(mags)):
-        try:
-            dft = df.loc[(df[filt] >= mags[n]) & (df[filt] < mags[n+1])]
-            dft = dft.dropna()
-            scatter = np.std(dft[filt.replace('GAIA_', '')] - dft[filt].values)
-            print(f"For filter {filt}, between {mags[n]} and {mags[n+1]} mags, the scatter is {scatter} with {len(dft)} stars")
-        except IndexError:
-            continue
+plt.figure()
+
+plt.scatter(df['PS1SN-g'], df['PS1SN-g'] - df['PS1-g'], label="g")
+plt.scatter(df['PS1SN-g'], df['PS1SN-r'] - df['PS1-r'], label="r")
+plt.scatter(df['PS1SN-g'], df['PS1SN-i'] - df['PS1-i'], label="i")
+plt.scatter(df['PS1SN-g'], df['PS1SN-z'] - df['PS1-z'], label="z")
+
+print('g band difference',np.median(df['PS1SN-g'] - df['PS1-g']))
+print('r band difference',np.median(df['PS1SN-r'] - df['PS1-r']))
+print('i band difference',np.median(df['PS1SN-i'] - df['PS1-i']))
+print('z band difference',np.median(df['PS1SN-z'] - df['PS1-z']))
+
+plt.axhline(0, c='k')
+
+plt.xlabel("PSF g")
+plt.ylabel("PSF - AP band")
+plt.legend()
+
+plt.savefig("bla.pdf")
