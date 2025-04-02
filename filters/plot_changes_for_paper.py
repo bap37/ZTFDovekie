@@ -10,12 +10,9 @@ def DISCRETE_CMAP(CMAP, bins):
     return colours
 
 og_files = ['CFA3_native/SNLS3_Keplercam_V_modtran.dat', 
+            'CFA3_native/SNLS3_4shooter2_B.dat',
             'CSP_TAMU/B_tel_ccd_atm_ext_1.2.dat',
             'CSP_TAMU/V_LC9844_tel_ccd_atm_ext_1.2.dat',
-            'CFA3_native/SNLS3_4shooter2_B.dat',
-            'CFA3_native/SNLS3_4shooter2_V.dat',
-            'CFA3_native/SNLS3_4shooter2_R.dat',
-            'CFA3_native/SNLS3_4shooter2_I.dat',
             'SDSS_Doi2010_CCDAVG/g.dat',
             'SNLS3-Megacam/effMEGACAM-g.dat',
             'SNLS3-Megacam/effMEGACAM-r.dat',
@@ -32,12 +29,9 @@ og_files = ['CFA3_native/SNLS3_Keplercam_V_modtran.dat',
 ]
 
 new_files = ['CFA3_native/SNLS3_Keplercam_V_modtran.dat+-30', 
-             'CSP_TAMU/B_tel_ccd_atm_ext_1.2.dat_mod_inv',
-             'CSP_TAMU/V_LC9844_tel_ccd_atm_ext_1.2.dat_mod',
-             'CFA3_native/SNLS3_4shooter2_B_atmo_1.dat',
-             'CFA3_native/SNLS3_4shooter2_V_atmo_1.dat',
-             'CFA3_native/SNLS3_4shooter2_R_atmo_1.dat',
-             'CFA3_native/SNLS3_4shooter2_I_atmo_1.dat',
+             'CFA3_native/SNLS3_4shooter2_B.dat+70',
+             'CSP_TAMU/B_tel_ccd_atm_ext_1.2.dat+70',
+             'CSP_TAMU/V_LC9844_tel_ccd_atm_ext_1.2.dat+-50',
              'SDSS_Doi2010_CCDAVG/g.dat+15',
              'SNLS3-Megacam/effMEGACAM-g.dat+30',
              'SNLS3-Megacam/effMEGACAM-r.dat+30',
@@ -53,7 +47,7 @@ new_files = ['CFA3_native/SNLS3_Keplercam_V_modtran.dat+-30',
              'PS1_CFA4/cfa4_i_p2_modtran.dat_weighted+20',
 ]
 
-labels = ["CfA3K-V", "CSP-B", "CSP-V", "CfA3S-B", "CfA3S-V", "CfA3S-R", "CfA3S-I", "SDSS-g", "SNLS-g", "SNLS-r", "SNLS-i", "SNLS-z", 
+labels = ["CfA3K-V", "CfA3S-B", "CSP-B", "CSP-V", "SDSS-g", "SNLS-g", "SNLS-r", "SNLS-i", "SNLS-z", 
           'CfA4P1-B', 'CfA4P1-V', 'CfA4P1-r', 'CfA4P1-i', 'CfA4P2-B', 'CfA4P2-V', 'CfA4P2-r', 'CfA4P2-i',]
 
 colours = DISCRETE_CMAP('cet_CET_CBL1', 4)
@@ -80,7 +74,7 @@ for n, ax in enumerate(axs.flat):
 
     ax.plot(oldf.wave, oldf.trans, alpha=0, c="white", label=labels[n], zorder=1)
 
-    ax.legend(frameon=False, fontsize=15, loc='best')
+    ax.legend(frameon=False, fontsize=14, loc='center')
 
     #aesthetics
     ax.spines[['top', 'right', 'bottom', 'left']].set_visible(False)
