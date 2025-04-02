@@ -1,0 +1,57 @@
+
+BD17_SED:    /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/kcor/CFA3_4shooter_native/fillme.dat
+
+SN_SED: Hsiao07.dat
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+
+FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
+
+SURVEY: CFA3S
+FILTER: CFA3S-U SNLS3_4shooter2_U.dat             0.702
+FILTER: CFA3S-B SNLS3_4shooter2_B.dat     -0.086
+FILTER: CFA3S-V SNLS3_4shooter2_V.dat     -0.018
+FILTER: CFA3S-R SNLS3_4shooter2_R.dat      0.172
+FILTER: CFA3S-I SNLS3_4shooter2_I.dat      0.404
+
+
+#Offsets here come from kcor_orig.input (or whatever) and are the difference between what CfA3 observed and what BD17 _should_ be 
+# ***** Compute BD17 flux and ZP in each filter *****
+#                                            syn
+#                                flux        BD17     system  final
+#         filter      (system) (Nph/s/cm^2)  mag      ZPoff    ZP
+#  ------------------------------------------------------------------
+#           CFA3S-U/i (  BD17)   5.927e+01  10.3947   9.693  -0.702
+#           CFA3S-B/j (  BD17)   1.571e+02   9.7875   9.874   0.086
+#           CFA3S-V/k (  BD17)   1.593e+02   9.4611   9.479   0.018
+#           CFA3S-R/l (  BD17)   2.322e+02   9.3275   9.155  -0.172
+#           CFA3S-I/m (  BD17)   1.755e+02   9.2549   8.851  -0.404
+#  -----------------------------------------------------------------
+
+
+#FILTER: CFA3S-U/i SNLS3_4shooter2_U.dat 9.6930
+#FILTER: CFA3S-B/j SNLS3_4shooter2_B.dat 9.87400
+#FILTER: CFA3S-V/k SNLS3_4shooter2_V.dat 9.47900
+#FILTER: CFA3S-R/l SNLS3_4shooter2_R.dat 9.15500
+#FILTER: CFA3S-I/m SNLS3_4shooter2_I.dat 8.85100
+
+
+# 1st filter is rest-frame.
+# 2nd filter is observer-frame.
+# 3rd arg is short-hand name for table storage.
+
+
+# Define generation grids.
+REDSHIFT_RANGE:    0.0  0.46
+REDSHIFT_BINSIZE:  0.02
+
+# define AV grid.
+RV:          3.1   A(V)/E(B-V) in LMC
+AV_RANGE:   -6.0  6.0
+AV_BINSIZE:  0.5
+AV_OPTION:   2
+
+LAMBDA_RANGE: 2100 12500  # for SN templates
+
+
+OUTFILE: .kcor_CFA3s.fits

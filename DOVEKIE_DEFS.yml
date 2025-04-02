@@ -1,8 +1,8 @@
 ##Which surveys mcmc.py will investigate
 
 #The proper dovekie
-surveys_for_dovekie: ['PS1', 'D3YR', 'DES', 'SDSS', 'PS1SN']
-#surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2'] 
+#surveys_for_dovekie: ['PS1', 'DES', 'SDSS', 'PS1SN', 'CFA4P1']
+surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2', 'D3YR'] 
 reference_surveys: ['PS1']
 
 #Dovekie wingspan
@@ -128,7 +128,7 @@ shiftfiltss: [['g','r','i','z'],
               ['g', 'r', 'i', 'z'],
               ['g', 'r', 'i', 'z'],
               ['B', 'V', 'R', 'I'],
-              ['U','B','V','r','i'],
+              ['B','V','r','i'],
               ['g', 'r', 'i'],
               ['g', 'r', 'i'],
               ['g','j','i','h'],
@@ -151,7 +151,7 @@ namedfiltss: [['g','r','i','z'],
               ['G','R','I','Z','g','r','i','z'],
               ['g', 'r', 'i', 'z'],  
               ['B', 'V', 'R', 'I'],
-              ['U','B','V','r','i'],
+              ['B','V','r','i'],
               ['g', 'r', 'i'],
               ['g', 'r', 'i'],
               ['B','V','r','i'],
@@ -175,7 +175,7 @@ obsfiltss: [['g','r','i','z'],
             ['g','r','i','z'],
             ['g','r','i','z'],
             ['B', 'V', 'R', 'I'],
-            ['U','B','V','r','i'],
+            ['B','V','r','i'],
             ['g', 'r', 'i'],
             ['g', 'r', 'i'],
             ['g','j','i','h'],
@@ -637,8 +637,8 @@ filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_t
              ['G.dat','R.dat','I.dat','Z.dat','g.dat+15','r.dat','i.dat','z.dat'],
              ['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['effMEGACAM-g.dat+30','effMEGACAM-r.dat+30','effMEGACAM-i.dat+30','effMEGACAM-z.dat+30'],
-             ['SNLS3_4shooter2_B.dat+70', 'SNLS3_4shooter2_V.dat', 'SNLS3_4shooter2_R.dat', 'SNLS3_4shooter2_I.dat'], 
-             ['SNLS3_Keplercam_U_modtran.dat','SNLS3_Keplercam_B_modtran.dat', 'SNLS3_Keplercam_V_modtran.dat+-30', 'SNLS3_Keplercam_r_modtran.dat', 'SNLS3_Keplercam_i_modtran.dat'],
+             ['4sh_B_modtran.dat+70', '4sh_V_modtran.dat', '4sh_R_modtran.dat', '4sh_I_modtran.dat'], 
+             ['KC_B_modtran.dat+70', 'KC_V_modtran.dat', 'KC_r_modtran.dat', 'KC_i_modtran.dat'],
              ['ztfg1.dat+-15' ,'ztfr1.dat', 'ztfi1.dat'],
              ['ztfg2.dat' ,'ztfr2.dat', 'ztfi2.dat'],
              ['astrodon_B.dat', 'astrodon_V.dat', 'astrodon_r.dat', 'astrodon_i.dat'],
@@ -658,17 +658,33 @@ filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_t
 #################################################
 
 # The standard deviations for the random mean filter response shifts
-#that are used in the SALT surfaces.
-waveshifts: {
-           "CFA3K":{"U":20, "B":10, "V":15, "r":10, "i":10},
-           "CFA3S":{"U":20, "B":15, "V":15, "R":10, "I":10},
-           "CSP":{"u":8, "B":7, "V":3, "g":8, "r":4, "i":2, "o":0, "m":0, "n":0},
-           "SDSS":{"u":6, "g":8, "r":6, "i":6, "z":6},
-           "SNLS":{"g":15, "r":15, "i":15, "z":15},
-           "DES":{"g":6, "r":6, "i":6, "z":6},
-           "PS1SN":{"g":7, "r":7, "i":7, "z":7},
-           "Foundation":{"g":7, "r":7, "i":7, "z":7},
-           "ZTF":{"g":10, "r":5, "i":5, "G":10, "R":5, "I":5},
-           "ZTFS":{"g":10, "r":5, "i":5},
-           "ZTFD":{"g":10, "r":5, "i":5}
-}
+# that are used in the SALT surfaces.
+
+waveshifts: {"CFA3K":{"U":15, "B":15, "V":15, "r":20, "i":20},
+             "CFA3S":{"U":20, "B":15, "V":15, "R":20, "I":20},
+             "CSP":{"u":8, "B":8, "V":10, "g":10, "r":15, "i":20, "o":0, "m":0, "n":0},
+             "SDSS":{"u":6, "g":10, "r":10, "i":15, "z":20},
+             "SNLS":{"g":5, "r":20, "i":15, "z":20},
+             "DES":{"g":5, "r":5, "i":10, "z":30},
+             "PS1SN":{"g":5, "r":10, "i":15, "z":20},
+             "Foundation":{"g":5, "r":10, "i":15, "z":20},
+             "CFA4P1":{"B":20, "V":15, "r":10, "i":15},
+             "CFA4P2":{"B":20, "V":15, "r":15, "i":15},
+             "ZTF":{"g":10, "r":5, "i":5, "G":10, "R":5, "I":5},
+             "ZTFS":{"g":10, "r":5, "i":5},
+             "ZTFD":{"g":10, "r":5, "i":5}
+} 
+
+#waveshifts_old: {
+#           "CFA3K":{"U":20, "B":10, "V":15, "r":10, "i":10},
+#           "CFA3S":{"U":20, "B":15, "V":15, "R":10, "I":10},
+#           "CSP":{"u":8, "B":7, "V":3, "g":8, "r":4, "i":2, "o":0, "m":0, "n":0},
+#           "SDSS":{"u":6, "g":8, "r":6, "i":6, "z":6},
+#           "SNLS":{"g":15, "r":15, "i":15, "z":15},
+#           "DES":{"g":6, "r":6, "i":6, "z":6},
+#           "PS1SN":{"g":7, "r":7, "i":7, "z":7},
+#           "Foundation":{"g":7, "r":7, "i":7, "z":7},
+#           "ZTF":{"g":10, "r":5, "i":5, "G":10, "R":5, "I":5},
+#           "ZTFS":{"g":10, "r":5, "i":5},
+#           "ZTFD":{"g":10, "r":5, "i":5}
+#}

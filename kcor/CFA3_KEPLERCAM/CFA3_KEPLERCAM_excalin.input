@@ -16,11 +16,13 @@ MAGSYSTEM: BD17
 FILTSYSTEM: COUNT    ("ENERGY" => Trans -> Trans/lambda)
 FILTPATH:  /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
 SURVEY: CFA3K
-FILTER: CFA3K-B   KC_B_modtran.dat       -0.0881
+FILTER: CFA3K-B   KC_B_modtran.dat+70    -0.1260
 FILTER: CFA3K-V   KC_V_modtran.dat       -0.0093
 FILTER: CFA3K-r   KC_r_modtran.dat       -0.0033
 FILTER: CFA3K-i   KC_i_modtran.dat        0.0072
 
+
+#FILTER: CFA3K-B   KC_B_modtran.dat      -0.0881
 REDSHIFT_RANGE:   0.0  0.09
 REDSHIFT_BINSIZE: 0.005
 
@@ -28,8 +30,8 @@ REDSHIFT_BINSIZE: 0.005
 RV:          3.1   A(V)/E(B-V) in LMC
 AV_RANGE:   -6.0  6.0
 AV_BINSIZE:  6.0
-AV_OPTION:   2   [1 => use AV at avg lambda in filter  (with CCM89)]
-                 [2 => convolve spectrum and extinction with CCM89 law]
+AV_OPTION:   2   #[1 => use AV at avg lambda in filter  (with CCM89)]
+                 #[2 => convolve spectrum and extinction with CCM89 law]
 
 
 # define lambda range for SN templates;

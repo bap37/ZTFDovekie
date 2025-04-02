@@ -1,0 +1,33 @@
+
+# Prepare SNANA calibration file with command:
+#   kcor.exe  kcor_SMT_ATLAS.input
+#
+# The output ".fits" file is the KCOR_FILE argument
+# in the simulation and fitting program.
+#
+# ======================== BEGIN INPUT  =========================
+
+# specify spectral template for supernova
+SN_SED: Hsiao07.dat   # see $SNDATA_ROOT/snsed
+
+
+# specify filters
+MAGSYSTEM: AB     # define mag system for filters below)
+FILTSYSTEM: COUNT
+FILTPATH:  $SNDATA_ROOT/filters/SMT
+SURVEY: SMT
+FILTER: SMT-u   SMT_u.dat   0.0  (name, file, zero-point)
+FILTER: SMT-g   SMT_g.dat   0.0  
+FILTER: SMT-r   SMT_r.dat   0.0
+FILTER: SMT-i   SMT_i.dat   0.0
+FILTER: SMT-z   SMT_z.dat   0.0
+
+FILTER: ATLAS-c atlas-c.txt    0.0
+FILTER: ATLAS-o atlas-o.txt    0.0
+# define lambda range for SN templates; 
+# template lambda binning is used internally
+LAMBDA_RANGE: 2100 12000
+
+# define output file
+OUTFILE: kcor_SMT_ATLAS.fits
+

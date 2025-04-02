@@ -8,12 +8,14 @@ FILTSYSTEM: COUNT
 FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
 
 SURVEY: CFA3S
-FILTER: CFA3S-U cfa2_U.dat              0.7483
-FILTER: CFA3S-B cfa2_B_modtran.dat     -0.0838
-FILTER: CFA3S-V cfa2_V_modtran.dat     -0.0177
-FILTER: CFA3S-R cfa2_R_modtran.dat      0.1708
-FILTER: CFA3S-I cfa2_I_modtran.dat      0.4045
+FILTER: CFA3S-U 4sh_U_modtran.dat      0.7483
+FILTER: CFA3S-B 4sh_B_modtran.dat+70  -0.1216
+FILTER: CFA3S-V 4sh_V_modtran.dat     -0.0177
+FILTER: CFA3S-R 4sh_R_modtran.dat      0.1708
+FILTER: CFA3S-I 4sh_I_modtran.dat      0.4045
 
+
+#FILTER: CFA3S-B 4sh_B_modtran.dat  -0.0838 
 # Define generation grids.
 REDSHIFT_RANGE:    0.0  0.46
 REDSHIFT_BINSIZE:  0.02

@@ -19,36 +19,22 @@ FILTSYSTEM: COUNT
 FILTPATH:   /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
 
 SURVEY: CSP
-# FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat        -0.0790
-# FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat        -0.0247
-# FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat        -0.0035
-# FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat         0.3818
-# FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat        -0.1229
-# FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat -0.0126
-# FILTER: CSP-o  V_LC3009_tel_ccd_atm_ext_1.2.dat -0.0179
-# FILTER: CSP-m  V_LC3014_tel_ccd_atm_ext_1.2.dat -0.0100
 
-FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat_mod        -0.0700
-FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat_mod        -0.0121
-FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat_mod        -0.0011
-FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat_mod         0.0115
-# FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat_mod        -0.1097
-FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod -0.0094
-FILTER: CSP-o  V_LC3009_tel_ccd_atm_ext_1.2.dat_mod -0.0144
-FILTER: CSP-m  V_LC3014_tel_ccd_atm_ext_1.2.dat_mod -0.0061
+FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat             -0.0700
+FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat             -0.0121
+FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat             -0.0011
+FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat              0.0115
+FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat+-50  -0.0016
+FILTER: CSP-o  V_LC3009_tel_ccd_atm_ext_1.2.dat      -0.0144
+FILTER: CSP-m  V_LC3014_tel_ccd_atm_ext_1.2.dat      -0.0061
+FILTER: CSP-n  V_LC3014_tel_ccd_atm_ext_1.2.dat      -0.0061
+FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat+50          -0.1475
+# There are no NIR measurements of BD+17. Who put these here? Who knows...
+FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       0.617
+FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       0.630
 
-# FILTER: CSP-u  u_tel_ccd_atm_ext_1.2.dat_mod_inv         -0.0879
-# FILTER: CSP-g  g_tel_ccd_atm_ext_1.2.dat_mod_inv         -0.0368
-# FILTER: CSP-r  r_tel_ccd_atm_ext_1.2.dat_mod_inv         -0.0058
-# FILTER: CSP-i  i_tel_ccd_atm_ext_1.2.dat_mod_inv          0.0103
-FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat_mod_inv         -0.1358
-# FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod_inv  -0.0158
-# FILTER: CSP-o  V_LC3009_tel_ccd_atm_ext_1.2.dat_mod_inv  -0.0214
-# FILTER: CSP-m  V_LC3014_tel_ccd_atm_ext_1.2.dat_mod_inv  -0.0139
-
-# There are no NIR measurements of BD+17. Who put these here?
-# FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       0.617
-# FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       0.630
+#FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat+-50  -0.0094
+#FILTER: CSP-B  B_tel_ccd_atm_ext_1.2.dat+50          -0.1358
 
 # Define generation grids.
 REDSHIFT_RANGE:    0.0  0.1
