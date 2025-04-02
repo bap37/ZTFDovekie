@@ -1,15 +1,15 @@
 ##Which surveys mcmc.py will investigate
 
 #The proper dovekie
-#surveys_for_dovekie: ['PS1', 'CFA3K', 'CFA3S']
-surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2'] 
+surveys_for_dovekie: ['PS1', 'D3YR', 'DES', 'SDSS', 'PS1SN']
+#surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2'] 
 reference_surveys: ['PS1']
 
 #Dovekie wingspan
 #surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1']
 
 #Where the chains are saved to
-chainsfile: 'DOVEKIE.V5.npz'
+chainsfile: 'DOVEKIE.V8.npz'
 
 #We use WDs from Boyd et al. 2024 to help constrain our zeropoints
 whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
@@ -45,6 +45,7 @@ survs: ['PS1',
         'PS1SN',
         'GAIA',
         'ATLAS',
+        'D3YR',
 ]
 
 kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
@@ -67,6 +68,7 @@ kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
             'kcor/PS1s_RS14_PS1_tonry/',
             'kcor/GAIA_DR3/',
             'kcor/ATLAS/',
+            'kcor/DES/',
 ]
 
 ##PS1_excalinaper_+30A.input originally for PS1 AP
@@ -89,7 +91,8 @@ kcors: ['PS1_excalinaper.input',
         'CFA42_excalin.input',
         'PS1_excalin.input',
         'GAIA_excalin.input',
-        'ATLAS_excalin.input'
+        'ATLAS_excalin.input',
+        'DECam_excalin.input',
 ]
 
 #Used to be PS1_excalin_+30A.input for PS1 :O
@@ -114,6 +117,7 @@ filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
             'filters/PS1s_RS14_PS1_tonry/',
             'filters/GAIA_DR3/',
             'filters/ATLAS/',
+            'filters/DES-SN3YR_DECam/',
 ]
 
 shiftfiltss: [['g','r','i','z'],
@@ -136,6 +140,7 @@ shiftfiltss: [['g','r','i','z'],
               ['g','r','i','z'],
               ['g', 'b', 'r'],
               ['c', 'o'],
+              ['g','r','i','z'],
 ]
 
 
@@ -158,6 +163,7 @@ namedfiltss: [['g','r','i','z'],
               ['g','r','i','z'],
               ['g', 'b', 'r'],
               ['c', 'o'],
+              ['g','r','i','z'],
 ]
 
 
@@ -181,6 +187,7 @@ obsfiltss: [['g','r','i','z'],
             ['g','r','i','z'],
             ['g', 'b', 'r'],
             ['c', 'o'],
+            ['g','r','i','z'],
 ]
 
 ###############################################
@@ -216,6 +223,7 @@ survmap: {'PS1':'PS1',
           'CFA4P2':'CFA4P2',
           'GAIA':'GAIA',
           'ATLAS':'ATLAS',
+          'D3YR':'D3YR',
 }
 
 survmap4shift: {'PS1':'PS1',
@@ -247,6 +255,7 @@ survmap4shift: {'PS1':'PS1',
                 'CFA4P2':'CFA4P2',
                 'GAIA':'GAIA',
                 'ATLAS':'ATLAS',
+                'D3YR':'D3YR',
 }
 
 #formerly CSP_TAMU
@@ -279,6 +288,7 @@ survfiltmap: {'PS1':'PS1',
               'CFA4P2':'CFA4P2',
               'GAIA':'GAIA',
               'ATLAS':'ATLAS',
+              'D3YR':'D3YR',
 }
 
 obssurvmap: {'PS1':'PS1',
@@ -311,6 +321,7 @@ obssurvmap: {'PS1':'PS1',
              'CFA4P2':'CFA4P2',
              'GAIA':'GAIA',
              'ATLAS':'ATLAS',
+             'D3YR':'D3YR',
 } 
 #removed KAIT1 ^
 
@@ -343,6 +354,7 @@ revobssurvmap: {'PS1':'PS1',
                 'CFA4P2':'CFA4P2',
                 'GAIA':'GAIA',
                 'ATLAS':'ATLAS',
+                'D3YR':'D3YR',
 }
 #formerly a CSPDR3nat
 
@@ -375,6 +387,7 @@ revobssurvmapforsnana: { 'PS1':'PS1',
                          'CFA4P2':'CFA4P2',
                          'GAIA':'GAIA',
                          'ATLAS':'ATLAS',
+                         'D3YR':'D3YR',
 }
 #formerly a CSPDR3nat
 survcolormin: {'DES':.075,
@@ -405,6 +418,7 @@ survcolormin: {'DES':.075,
                'CFA4P1':0,
                'GAIA':0,
                'ATLAS': 0,
+               'D3YR':.075,
 }
 
 survcolormax: {'DES':10.075,
@@ -435,6 +449,7 @@ survcolormax: {'DES':10.075,
                'CFA4P1':10,
                'GAIA':10,
                'ATLAS':10,
+               'D3YR':10.075,
 }
 
 synth_gi_range: {'calspec23':[-9.25,9.5],
@@ -469,6 +484,7 @@ obsfilts: {'PS1':  ['g','r','i','z'],
            'CFA4P2': ['B','V','r','i'],
            'GAIA': ['g', 'b', 'r'],
            'ATLAS': ['c', 'o'], 
+           'D3YR':  ['g','r','i','z'],
 }
 
 snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
@@ -500,6 +516,7 @@ snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
              'CFA4P2': {'B':'B','V':'V','r':'r','i':'i'},
              'GAIA': {'g':'g', 'r':'r', 'b':'b'},
              'ATLAS': {'c':'c', 'o':'o'},
+             'D3YR' : {'g':'g','r':'r','i':'i','z':'z'},
 }
 #            
 
@@ -532,6 +549,7 @@ snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
               'CFA4P2': {'B':'B','V':'V','r':'r','i':'i'},
               'GAIA': {'g':'g', 'r':'r', 'b':'b'},
               'ATLAS': {'c':'c', 'o':'o'},
+              'D3YR' : {'g':'g','r':'r','i':'i','z':'z'},
 }
 
 #Will need to fix the ZTFS/ZTFD weights at some point
@@ -565,6 +583,7 @@ relativeweights: {
     'CFA4P2': .5,
     'GAIA': 1,
     'ATLAS':1,
+    'D3YR':1,
 }
 
 
@@ -598,6 +617,7 @@ errfloors: {
     'CFA4P2': .01,
     'GAIA':, 0.01,
     'ATLAS':0.01,
+    'D3YR' :  .005,
 }
 
 target_acceptance: 0.9
@@ -613,11 +633,11 @@ n_burnin : 2000
 filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
              ['ztfg1.dat_atmo_1' ,'ztfr1.dat_atmo_1', 'ztfi1.dat_atmo_1', 'ztfg2.dat_atmo_1' ,'ztfr2.dat_atmo_1', 'ztfi2.dat_atmo_1'],
-             ['u_tel_ccd_atm_ext_1.2.dat_mod','g_tel_ccd_atm_ext_1.2.dat_mod','r_tel_ccd_atm_ext_1.2.dat_mod','i_tel_ccd_atm_ext_1.2.dat_mod','B_tel_ccd_atm_ext_1.2.dat_mod_inv','V_LC9844_tel_ccd_atm_ext_1.2.dat_mod','V_LC9844_tel_ccd_atm_ext_1.2.dat_mod','V_LC9844_tel_ccd_atm_ext_1.2.dat_mod','V_LC9844_tel_ccd_atm_ext_1.2.dat_mod','Y_SWO_TAM_scan_atm.dat','Y_DUP_TAM_scan_atm.dat','Jrc1_SWO_TAM_scan_atm.dat','Jrc2_SWO_TAM_scan_atm.dat','H_SWO_TAM_scan_atm.dat','H_DUP_TAM_scan_atm.dat'],
+             ['u_tel_ccd_atm_ext_1.2.dat','g_tel_ccd_atm_ext_1.2.dat','r_tel_ccd_atm_ext_1.2.dat','i_tel_ccd_atm_ext_1.2.dat','B_tel_ccd_atm_ext_1.2.dat+50','V_LC9844_tel_ccd_atm_ext_1.2.dat+-50','V_LC9844_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','V_LC9844_tel_ccd_atm_ext_1.2.dat','Y_SWO_TAM_scan_atm.dat','Y_DUP_TAM_scan_atm.dat'],
              ['G.dat','R.dat','I.dat','Z.dat','g.dat+15','r.dat','i.dat','z.dat'],
              ['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['effMEGACAM-g.dat+30','effMEGACAM-r.dat+30','effMEGACAM-i.dat+30','effMEGACAM-z.dat+30'],
-             ['SNLS3_4shooter2_B.dat+30', 'SNLS3_4shooter2_V.dat', 'SNLS3_4shooter2_R.dat', 'SNLS3_4shooter2_I.dat'], 
+             ['SNLS3_4shooter2_B.dat+70', 'SNLS3_4shooter2_V.dat', 'SNLS3_4shooter2_R.dat', 'SNLS3_4shooter2_I.dat'], 
              ['SNLS3_Keplercam_U_modtran.dat','SNLS3_Keplercam_B_modtran.dat', 'SNLS3_Keplercam_V_modtran.dat+-30', 'SNLS3_Keplercam_r_modtran.dat', 'SNLS3_Keplercam_i_modtran.dat'],
              ['ztfg1.dat+-15' ,'ztfr1.dat', 'ztfi1.dat'],
              ['ztfg2.dat' ,'ztfr2.dat', 'ztfi2.dat'],
@@ -630,6 +650,7 @@ filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_t
              ['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['g.dat', 'b.dat', 'r.dat'],
              ['cyan.dat', 'orange.dat'],
+             ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
 ]
 
 #################################################

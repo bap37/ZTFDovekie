@@ -457,11 +457,19 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
             filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
         
+        if "D3YR" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1']) #always PS1
+            surv2s.extend([  'D3YR',  'D3YR',  'D3YR',  'D3YR']) #Survey to compare
+            filtas.extend([    'g',    'g',    'g',    'g']) #first filter for colour
+            filtbs.extend([    'i',    'i',    'i',    'i']) #second filter for colour
+            filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
+            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
+
         if "CSP" in surveys_for_chisq:
             surv1s.extend([    'PS1',    'PS1',    'PS1',    'PS1',    'PS1',   'PS1',   'PS1',   'PS1'])
             surv2s.extend([ 'CSP', 'CSP', 'CSP', 'CSP', 'CSP','CSP','CSP','CSP'])
             filtas.extend([      'g',      'g',      'g',      'g',      'g',     'g',     'g',     'g'])
-            filtbs.extend([      'r',      'i',      'i',      'r',      'i',     'i',     'i',     'i'])
+            filtbs.extend([      'i',      'i',      'i',      'i',      'i',     'i',     'i',     'i'])
             filt1s.extend([      'g',      'r',      'i',      'g',      'r',     'r',     'r',     'r'])
             filt2s.extend([      'g',      'r',      'i',      'B',      'V',     'o',     'm',     'n'])
     
@@ -493,7 +501,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1'])
             surv2s.extend([ 'ZTFD', 'ZTFD', 'ZTFD'])
             filtas.extend([    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'i'])
             filt2s.extend([    'g',    'r',    'i'])
     
@@ -501,7 +509,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1'])
             surv2s.extend([ 'ZTFS', 'ZTFS', 'ZTFS'])
             filtas.extend([    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'i'])
             filt2s.extend([    'g',    'r',    'i'])
     
@@ -534,7 +542,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([   'PS1',   'PS1',   'PS1',   'PS1'])
             surv2s.extend([ 'CFA3K', 'CFA3K', 'CFA3K', 'CFA3K'])
             filtas.extend([     'g',     'g',     'g',     'g'])
-            filtbs.extend([     'r',     'i',     'i',     'i'])
+            filtbs.extend([     'i',     'i',     'i',     'i'])
             filt1s.extend([     'g',     'r',     'r',     'i'])
             filt2s.extend([     'B',     'V',     'r',     'i'])
         
@@ -542,7 +550,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['KAIT1MO','KAIT1MO','KAIT1MO','KAIT1MO'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'a',    'b',    'c',    'd'])
         
@@ -550,7 +558,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['KAIT2MO','KAIT2MO','KAIT2MO','KAIT2MO'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'e',    'f',    'g',    'h'])
          
@@ -558,7 +566,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['NICKEL1MO','NICKEL1MO','NICKEL1MO','NICKEL1MO'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'I',    'J',    'K',    'L'])
             surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
@@ -566,7 +574,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
         if 'NICKEL2MO' in surveys_for_chisq:
             surv2s.extend(['NICKEL2MO','NICKEL2MO','NICKEL2MO','NICKEL2MO'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'M',    'N',    'O',    'P'])
     
@@ -574,7 +582,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['KAIT3MO','KAIT3MO','KAIT3MO','KAIT3MO'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'A',    'B',    'C',    'D'])
     
@@ -582,7 +590,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['KAIT4MO','KAIT4MO','KAIT4MO','KAIT4MO'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'E',    'F',    'G',    'H'])
         
@@ -590,7 +598,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['KAIT3','KAIT3','KAIT3','KAIT3'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'A',    'B',    'C',    'D'])
     
@@ -598,7 +606,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['KAIT4','KAIT4','KAIT4','KAIT4'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'E',    'F',    'G',    'H'])
         
@@ -606,7 +614,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['NICKEL1','NICKEL1','NICKEL1','NICKEL1'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'I',    'J',    'K',    'L'])
     
@@ -614,7 +622,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1', 'PS1',  'PS1'])
             surv2s.extend(['NICKEL2','NICKEL2','NICKEL2','NICKEL2'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'M',    'N',    'O',    'P'])
     
@@ -622,7 +630,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',       'PS1'])
             surv2s.extend(['SWIFT', 'SWIFT'])
             filtas.extend([    'g',         'g'])
-            filtbs.extend([    'r',         'i'])
+            filtbs.extend([    'i',         'i'])
             filt1s.extend([    'g',         'r'])
             filt2s.extend([    'B',         'V'])
     
@@ -630,7 +638,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['ASASSN2','ASASSN2','ASASSN2','ASASSN2'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'g',    'j',    'i',    'h'])
     
@@ -638,7 +646,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1'])
             surv2s.extend(['ASASSN1','ASASSN1','ASASSN1','ASASSN1'])
             filtas.extend([    'g',    'g',    'g',    'g'])
-            filtbs.extend([    'r',    'i',    'i',    'i'])
+            filtbs.extend([    'i',    'i',    'i',    'i'])
             filt1s.extend([    'g',    'r',    'r',    'i'])
             filt2s.extend([    'a',    'b',    'd',    'c'])
     
@@ -646,7 +654,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
             surv2s.extend(['CFA4P1', 'CFA4P1','CFA4P1','CFA4P1'])
             filtas.extend([    'g',         'g',       'g',      'g'])
-            filtbs.extend([    'r',         'i',       'i',      'i'])
+            filtbs.extend([    'i',         'i',       'i',      'i'])
             filt1s.extend([    'g',         'r',       'r',      'i'])
             filt2s.extend([    'B',         'V',       'r',      'i'])
         
@@ -654,7 +662,7 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             surv1s.extend([  'PS1',       'PS1',     'PS1',    'PS1'])
             surv2s.extend(['CFA4P2', 'CFA4P2', 'CFA4P2','CFA4P2'])
             filtas.extend([    'g',         'g',       'g',      'g'])
-            filtbs.extend([    'r',         'i',       'i',      'i'])
+            filtbs.extend([    'i',         'i',       'i',      'i'])
             filt1s.extend([    'g',         'r',       'r',      'i'])
             filt2s.extend([    'B',         'V',       'r',      'i'])
 
@@ -820,6 +828,7 @@ def lnprior(paramsdict):
         'SNLS':[0,0.01],
         'SDSS':[0,0.01],
         'DES':[0,.01],
+        'D3YR':[0,.01],
         }    
 
     lp = 0
