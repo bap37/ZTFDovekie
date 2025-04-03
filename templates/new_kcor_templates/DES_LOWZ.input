@@ -1,0 +1,82 @@
+SN_SED:       Hsiao07.dat
+BD17_SED:     bd_17d4708_stisnic_007.dat
+
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+
+FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
+
+SURVEY: CFA3S, CFA3
+FILTER: CFA3S-U/u 4sh_U_modtran.dat    9.6930&   
+FILTER: CFA3S-B/v 4sh_B_modtran.dat+70 9.87400&   
+FILTER: CFA3S-V/w 4sh_V_modtran.dat    9.47900&   
+FILTER: CFA3S-R/x 4sh_R_modtran.dat    9.15500&    
+FILTER: CFA3S-I/y 4sh_I_modtran.dat    8.85100&    
+
+
+######################
+
+SURVEY: CFA3K, CFA3
+FILTER: CFA3K-U/p   KC_U_modtran.dat       9.724&
+FILTER: CFA3K-B/q   KC_B_modtran.dat+70    9.88605&
+FILTER: CFA3K-V/r   KC_V_modtran.dat       9.47432&
+FILTER: CFA3K-r/s   KC_r_modtran.dat       9.35252& 
+FILTER: CFA3K-i/t   KC_i_modtran.dat       9.25465&
+
+
+#####################
+
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+FILTPATH:   $SDSS_USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
+
+SURVEY: CSP
+FILTER: CSP-u/a  u_tel_ccd_atm_ext_1.2.dat            10.518&
+FILTER: CSP-g/b  g_tel_ccd_atm_ext_1.2.dat             9.644&
+FILTER: CSP-r/c  r_tel_ccd_atm_ext_1.2.dat             9.352&
+FILTER: CSP-i/d  i_tel_ccd_atm_ext_1.2.dat             9.250&
+FILTER: CSP-B/e  B_tel_ccd_atm_ext_1.2.dat+50          9.896&
+FILTER: CSP-V/f  V_LC9844_tel_ccd_atm_ext_1.2.dat+-50  9.494&  # V for snoopy model
+FILTER: CSP-o/g  V_LC9844_tel_ccd_atm_ext_1.2.dat      9.488&  # V1
+FILTER: CSP-m/h  V_LC9844_tel_ccd_atm_ext_1.2.dat      9.492&  # V0
+FILTER: CSP-n/i  V_LC9844_tel_ccd_atm_ext_1.2.dat      9.494&  # V
+FILTER: CSP-Y/j  Y_SWO_TAM_scan_atm.dat                8.632
+FILTER: CSP-y/k  Y_DUP_TAM_scan_atm.dat                8.620  # Ydw
+FILTER: CSP-J/l  Jrc1_SWO_TAM_scan_atm.dat             8.419
+FILTER: CSP-j/m  Jrc2_SWO_TAM_scan_atm.dat             8.426
+FILTER: CSP-H/n  H_SWO_TAM_scan_atm.dat                8.125
+FILTER: CSP-h/o  H_DUP_TAM_scan_atm.dat                8.126
+
+
+FILTPATH:   $BRODIE_HOME/ZTF_CAL/filters/PS1_CFA4
+
+SURVEY: CFA4p1
+FILTER:  CFA41-U/z            cfa4_U_p1.dat  9.724
+FILTER: CFA4P1-B/A cfa4_B_p1_modtran.dat_weighted   9.88605&
+FILTER: CFA4P1-V/B cfa4_V_p1_modtran.dat_weighted   9.47432&
+FILTER: CFA4P1-r/C cfa4_r_p1_modtran.dat_weighted   9.35252&
+FILTER: CFA4P1-i/D cfa4_i_p1_modtran.dat_weighted   9.25465&
+
+
+FILTPATH:   $BRODIE_HOME/ZTF_CAL/filters/PS1_CFA4
+
+SURVEY: CFA4p2
+FILTER: CFA4P2-B/E cfa4_B_p2_modtran.dat_weighted+-20  9.86124&
+FILTER: CFA4P2-V/F cfa4_V_p2_modtran.dat_weighted+20   9.47432&
+FILTER: CFA4P2-r/G cfa4_r_p2_modtran.dat_weighted+20   9.35730&
+FILTER: CFA4P2-i/H cfa4_i_p2_modtran.dat_weighted+20   9.25521&
+
+
+# Define generation grids. 
+REDSHIFT_RANGE:    0.0  0.46 
+REDSHIFT_BINSIZE:  0.02      
+
+# define AV grid. 
+RV:          3.1   A(V)/E(B-V) in LMC 
+AV_RANGE:   -6.0  6.0  
+AV_BINSIZE:  0.5  
+AV_OPTION:   2   
+
+LAMBDA_RANGE: 2100 20000
+
+OUTFILE: kcor_DES5YR_LOWZ.fits

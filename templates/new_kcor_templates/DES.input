@@ -1,0 +1,22 @@
+# ------------------------------------------
+# specify spectral template for SNIa
+SN_SED:    Hsiao07.dat 
+BD17_SED:  bd_17d4708_stisnic_007.dat
+VEGA_SED:  alpha_lyr_stis_003.dat   
+
+# specify filters :  
+MAGSYSTEM: AB
+FILTSYSTEM: COUNT
+FILTPATH:   /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/DES-SN3YR_DECamY3A2
+SURVEY: DES
+FILTER:  DES-g   DECam_g.dat   0.0-0.003&
+FILTER:  DES-r   DECam_r.dat   0.0-0.003&
+FILTER:  DES-i   DECam_i.dat   0.0-0.002&
+FILTER:  DES-z   DECam_z.dat   0.0+0.001&
+
+# wavelength range for filters and primary ref
+LAMBDA_RANGE: 2100 12000
+
+# define output file to store calibration info
+OUTFILE: kcor_DES.fits
+

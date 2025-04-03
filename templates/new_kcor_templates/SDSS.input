@@ -1,0 +1,71 @@
+SN_SED: Hsiao07.dat
+AB_SED: flatnu.dat
+BD17_SED:     bd_17d4708_stisnic_007.dat
+
+MAGSYSTEM:  AB
+FILTSYSTEM: COUNT
+FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/SDSS_Doi2010_CCDAVG/
+
+
+SURVEY: SDSS
+FILTER: SDSS-u u.dat     0
+FILTER: SDSS-g g.dat+15 -0.005&
+FILTER: SDSS-r r.dat    +0.006&
+FILTER: SDSS-i i.dat    +0.007&
+FILTER: SDSS-z z.dat    +0.007&
+FILTER: SDSS-U U.dat     0
+FILTER: SDSS-G G.dat    -0.005&
+FILTER: SDSS-R R.dat    +0.006&
+FILTER: SDSS-I I.dat    +0.007&
+FILTER: SDSS-Z Z.dat    +0.007&
+
+##################################
+
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+FILTPATH:   $SDSS_USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
+
+SURVEY: CSP
+FILTER: CSP-u/t  u_tel_ccd_atm_ext_1.2.dat_mod 10.5140-0.062&
+FILTER: CSP-g/A  g_tel_ccd_atm_ext_1.2.dat_mod 9.64806-0.020&
+FILTER: CSP-r/L  r_tel_ccd_atm_ext_1.2.dat_mod 9.35860-0.006&
+FILTER: CSP-i/C  i_tel_ccd_atm_ext_1.2.dat_mod 9.24100+0.002&
+FILTER: CSP-B/u  B_tel_ccd_atm_ext_1.2.dat_mod_inv 9.88100-0.132&
+FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    -0.028&  # V for snoopy model
+FILTER: CSP-o/v  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.472-0.027&  # V1
+FILTER: CSP-m/w  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod  9.472-0.023&  # V0
+FILTER: CSP-n/x  V_LC9844_tel_ccd_atm_ext_1.2.dat_mod    9.472-0.028&  # V
+FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat       0.617&
+FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat       0.630&  # Ydw
+
+###########################
+
+####################################
+# Start filters for VERSION = CFA3K
+MAGSYSTEM:   BD17
+FILTSYSTEM:  COUNT
+FILTPATH:    /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
+SURVEY: LOWZ,CFA3K
+FILTER: CFA3K-U/f   SNLS3_Keplercam_U_modtran.dat   9.72400+0.683&
+FILTER: CFA3K-B/h   SNLS3_Keplercam_B_modtran.dat   9.88605-0.106&
+FILTER: CFA3K-V/j   SNLS3_Keplercam_V_modtran.dat   9.47432-0.011&
+FILTER: CFA3K-r/k   SNLS3_Keplercam_r_modtran.dat   9.35252+-0.004& 
+FILTER: CFA3K-i/l   SNLS3_Keplercam_i_modtran.dat   9.25465+0.007&
+
+###########################
+
+# Define generation grids. 
+REDSHIFT_RANGE:    0.0  0.46 
+REDSHIFT_BINSIZE:  0.02      
+
+# define AV grid. 
+RV:          3.1   A(V)/E(B-V) in LMC 
+AV_RANGE:   -6.0  6.0  
+AV_BINSIZE:  0.5  
+AV_OPTION:   2   
+
+LAMBDA_RANGE: 2100 12500  # for SN templates
+
+
+OUTFILE: kcor_SDSS.fits
+

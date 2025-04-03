@@ -1,0 +1,27 @@
+SN_SED: Hsiao07.dat
+BD17_SED:    bd17_stisnic_007.dat
+
+MAGSYSTEM:  AB
+FILTSYSTEM: COUNT
+FILTPATH:   /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/SNLS3-Megacam
+SURVEY: SNLS
+FILTER: SNLS-g effMEGACAM-g.dat+30 0-0.005&
+FILTER: SNLS-r effMEGACAM-r.dat+30 0+0.006&
+FILTER: SNLS-i effMEGACAM-i.dat+30 0+0.007&
+FILTER: SNLS-z effMEGACAM-z.dat+30 0+0.007&
+
+
+# Define generation grids. 
+REDSHIFT_RANGE:    0.0  0.46 
+REDSHIFT_BINSIZE:  0.02      
+
+# define AV grid. 
+RV:          3.1   A(V)/E(B-V) in LMC 
+AV_RANGE:   -6.0  6.0  
+AV_BINSIZE:  0.5  
+AV_OPTION:   2   
+
+LAMBDA_RANGE: 2100 12600  # for SN templates
+
+
+OUTFILE: kcor_SNLS.fits
