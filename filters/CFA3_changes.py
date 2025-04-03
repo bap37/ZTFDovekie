@@ -10,49 +10,31 @@ def DISCRETE_CMAP(CMAP, bins):
     return colours
 
 og_files = ['CFA3_native/SNLS3_Keplercam_B_modtran.dat', 
+            'CFA3_native/SNLS3_Keplercam_V_modtran.dat', 
+            'CFA3_native/SNLS3_Keplercam_r_modtran.dat',
+            'CFA3_native/SNLS3_Keplercam_i_modtran.dat',
             'CFA3_native/SNLS3_4shooter2_B.dat',
-            'CSP_TAMU/B_tel_ccd_atm_ext_1.2.dat',
-            'CSP_TAMU/V_LC9844_tel_ccd_atm_ext_1.2.dat',
-            'SDSS_Doi2010_CCDAVG/g.dat',
-            'SNLS3-Megacam/effMEGACAM-g.dat',
-            'SNLS3-Megacam/effMEGACAM-r.dat',
-            'SNLS3-Megacam/effMEGACAM-i.dat',
-            'SNLS3-Megacam/effMEGACAM-z.dat',
-            'PS1_CFA4/cfa4_B_p1_modtran.dat',
-            'PS1_CFA4/cfa4_V_p1_modtran.dat',
-            'PS1_CFA4/cfa4_r_p1_modtran.dat',
-            'PS1_CFA4/cfa4_i_p1_modtran.dat',
-            'PS1_CFA4/cfa4_B_p2_modtran.dat',
-            'PS1_CFA4/cfa4_V_p2_modtran.dat',
-            'PS1_CFA4/cfa4_r_p2_modtran.dat',
-            'PS1_CFA4/cfa4_i_p2_modtran.dat',
+            'CFA3_native/SNLS3_4shooter2_V.dat',
+            'CFA3_native/SNLS3_4shooter2_R.dat',
+            'CFA3_native/SNLS3_4shooter2_I.dat',
 ]
 
-new_files = ['CFA3_native/KC_B_modtran.dat+70', 
-             'CFA3_native/4sh_B_modtran.dat+70',
-             'CSP_TAMU/B_tel_ccd_atm_ext_1.2.dat+50',
-             'CSP_TAMU/V_LC9844_tel_ccd_atm_ext_1.2.dat+-50',
-             'SDSS_Doi2010_CCDAVG/g.dat+15',
-             'SNLS3-Megacam/effMEGACAM-g.dat+30',
-             'SNLS3-Megacam/effMEGACAM-r.dat+30',
-             'SNLS3-Megacam/effMEGACAM-i.dat+30',
-             'SNLS3-Megacam/effMEGACAM-z.dat+30',
-             'PS1_CFA4/cfa4_B_p1_modtran.dat_weighted',
-             'PS1_CFA4/cfa4_V_p1_modtran.dat_weighted',
-             'PS1_CFA4/cfa4_r_p1_modtran.dat_weighted',
-             'PS1_CFA4/cfa4_i_p1_modtran.dat_weighted',
-             'PS1_CFA4/cfa4_B_p2_modtran.dat_weighted+-20',
-             'PS1_CFA4/cfa4_V_p2_modtran.dat_weighted+20',
-             'PS1_CFA4/cfa4_r_p2_modtran.dat_weighted+20',
-             'PS1_CFA4/cfa4_i_p2_modtran.dat_weighted+20',
+new_files = ['CFA3_native/KC_B_modtran.dat', 
+             'CFA3_native/KC_V_modtran.dat', 
+             'CFA3_native/KC_r_modtran.dat', 
+             'CFA3_native/KC_i_modtran.dat', 
+             'CFA3_native/4sh_B_modtran.dat',
+             'CFA3_native/4sh_V_modtran.dat',
+             'CFA3_native/4sh_R_modtran.dat',
+             'CFA3_native/4sh_I_modtran.dat',
 ]
 
-labels = ["CfA3K-B", "CfA3S-B", "CSP-B", "CSP-V", "SDSS-g", "SNLS-g", "SNLS-r", "SNLS-i", "SNLS-z", 
-          'CfA4P1-B', 'CfA4P1-V', 'CfA4P1-r', 'CfA4P1-i', 'CfA4P2-B', 'CfA4P2-V', 'CfA4P2-r', 'CfA4P2-i',]
+labels = ['CFA3K-B', 'CFA3K-V', 'CFA3K-r', 'CFA3K-i',
+          'CFA3S-B', 'CFA3S-V', 'CFA3S-R', 'CFA3S-I']
 
 colours = DISCRETE_CMAP('cet_CET_CBL1', 4)
 
-fig, axs = plt.subplots(3,6, figsize=(12,10))
+fig, axs = plt.subplots(3,3, figsize=(10,10))
 
 for n, ax in enumerate(axs.flat):
     try:
@@ -97,4 +79,4 @@ ax.set_yticks([])
 ax.set_xticks([])
 
 plt.subplots_adjust(wspace=0.3, hspace=0.5)
-plt.savefig("Filter_changes.pdf", bbox_inches="tight")
+plt.savefig("Filter_changes_CFA3.pdf", bbox_inches="tight")
