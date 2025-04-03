@@ -55,7 +55,7 @@ if __name__ == '__main__':
     index = args.SURVEY
 
   if args.SHIFT != "-9":
-    shifts = eval(args.SHIFT)
+    shifts = [int(args.SHIFT)]
   else:
     shifts = [0]
 
@@ -81,10 +81,13 @@ if __name__ == '__main__':
       allfiles.extend(dillon_calspec_files)
       speccats = [fn.split('/')[1] for fn in allfiles]
 
-      bd=open('output_synthetic_magsaper/synth_%s_shift_%.3f.txt'%(surv,shift),'w')
+      bd=open('output_synthetic_magsaper/synth_%s_shift_0.000.txt'%(surv),'w')
       bd.write(' '.join(['survey','version','standard','standard_catagory','shift','']))
       for fff in obsfilts:
-        bd.write(version+'-'+fff+' ')
+          if surv == 'CSP':
+              bd.write(version+'_TAMU-'+fff+' ')
+          else:
+              bd.write(version+'-'+fff+' ')
       bd.write('\n')
 
       for ngslf,cat in zip(allfiles,speccats):
