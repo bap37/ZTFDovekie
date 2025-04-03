@@ -1,0 +1,75 @@
+SN_SED:       Hsiao07.dat
+BD17_SED:     bd_17d4708_stisnic_007.dat
+
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+
+FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
+
+#                                      m_BD17 + Dovekie
+SURVEY: CFA3S
+FILTER: CFA3S-U/a 4sh_U_modtran.dat    9.72400&    #i
+FILTER: CFA3S-B/b 4sh_B_modtran.dat+70 9.87400&    #j
+FILTER: CFA3S-V/c 4sh_V_modtran.dat    9.47900&    #k
+FILTER: CFA3S-R/d 4sh_R_modtran.dat    9.15500&    #l
+FILTER: CFA3S-I/e 4sh_I_modtran.dat    8.85100&    #m
+
+
+######################
+
+#                                          m_BD17 + Dovekie
+SURVEY: CFA3K
+FILTER: CFA3K-U/f   KC_U_modtran.dat       9.72400&
+FILTER: CFA3K-B/h   KC_B_modtran.dat+70    9.88000&
+FILTER: CFA3K-V/j   KC_V_modtran.dat       9.47200&
+FILTER: CFA3K-r/k   KC_r_modtran.dat       9.35200& 
+FILTER: CFA3K-i/l   KC_i_modtran.dat       9.25400&
+
+##############
+
+# Start filters for VERSION = PS1s_CFA1_JRK07_DS16
+MAGSYSTEM:   BD17
+FILTSYSTEM:  COUNT
+FILTPATH:    $SNDATA_ROOT/filters/PS1/Pantheon/SNLS3-Landolt
+SURVEY: LOWZ
+FILTER:  Bessell-U/U          sux-shifted.dat_5A  9.72400
+FILTER:  Bessell-B/B          sb-shifted.dat_5A  9.90700
+FILTER:  Bessell-V/V          sv-shifted.dat_5A  9.46400
+FILTER:  Bessell-R/R          sr-shifted.dat_5A  9.16600
+FILTER:  Bessell-I/I          si-shifted.dat_5A  8.84600
+
+#####################
+
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+FILTPATH:   $SDSS_USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
+
+SURVEY: CSP
+FILTER: CSP-u/t  u_tel_ccd_atm_ext_1.2.dat            10.518&
+FILTER: CSP-g/A  g_tel_ccd_atm_ext_1.2.dat             9.6440&
+FILTER: CSP-r/L  r_tel_ccd_atm_ext_1.2.dat             9.3520&
+FILTER: CSP-i/C  i_tel_ccd_atm_ext_1.2.dat             9.2500&
+FILTER: CSP-B/u  B_tel_ccd_atm_ext_1.2.dat+50          9.8960&
+FILTER: CSP-V  V_LC9844_tel_ccd_atm_ext_1.2.dat+-50    9.494&
+FILTER: CSP-o/v  V_LC9844_tel_ccd_atm_ext_1.2.dat      9.488&  # V1
+FILTER: CSP-m/w  V_LC9844_tel_ccd_atm_ext_1.2.dat      9.492&  # V0
+FILTER: CSP-n/x  V_LC9844_tel_ccd_atm_ext_1.2.dat      9.494&  # V
+FILTER: CSP-Y  Y_SWO_TAM_scan_atm.dat                  8.632&
+FILTER: CSP-y  Y_DUP_TAM_scan_atm.dat                  8.620&  # Ydw
+
+
+
+# Define generation grids. 
+REDSHIFT_RANGE:    0.0  0.46 
+REDSHIFT_BINSIZE:  0.02      
+
+# define AV grid. 
+RV:          3.1   A(V)/E(B-V) in LMC 
+AV_RANGE:   -6.0  6.0  
+AV_BINSIZE:  0.5  
+AV_OPTION:   2   
+
+LAMBDA_RANGE: 2100 12500  # for SN templates
+
+
+OUTFILE: kcor_CFA3-TRAIN.fits

@@ -1,0 +1,31 @@
+
+# Prepare SNANA calibration file with command:
+#   kcor.exe  kcor_ZTF.input
+#
+# The output ".fits" file is the KCOR_FILE argument
+# in the simulation and fitting program.
+#
+# ======================== BEGIN INPUT  =========================
+
+# specify spectral template for supernova
+SN_SED: $SNDATA_ROOT/snsed/Hsiao07.dat   # see $SNDATA_ROOT/snsed
+BD17_SED:     /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/kcor/ZTF/fillme_ZTF.dat
+
+LAMBDA_RANGE: 2100 12000  # for SN templates
+
+# specify filters
+MAGSYSTEM: AB
+FILTSYSTEM: COUNT
+SURVEY: ZTF_MSIP
+FILTPATH:  /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/ZTF
+FILTER: ZTF-g   ztfg1.dat+-15   0.0&
+FILTER: ZTF-r   ztfr1.dat       0.0&
+FILTER: ZTF-i   ztfi1.dat       0.0&
+FILTER: ZTF-G   ztfg2.dat       0.0&
+FILTER: ZTF-R   ztfr2.dat       0.0&
+FILTER: ZTF-I   ztfi2.dat       0.0&
+
+
+
+# define output file
+OUTFILE: kcor_ZTF.fits
