@@ -82,7 +82,7 @@ def create_kcor(OFF, OUTDIR):
    #replace the "&" values in these kcor with the appropriate thingo
    #example line
    #FILTER: SNLS-z effMEGACAM-z.dat 0+0.007&
-   kcor_ogs = glob("templates/aper_kcor_templates/*.input")
+   kcor_ogs = glob("templates/new_kcor_templates/*.input")
    for kcorog in kcor_ogs:
       print(f"starting {kcorog.split('/')[-1]}")
       tmptxtt = ""
@@ -199,6 +199,7 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          except KeyError:
             pass
          if "CFA3" in surv: surv = "CFA3"
+         if surv == "Foundation": surv = "PS1"
          if surv == 'ZTF': surv = "ZTF_MSIP"
          buildstr = f'MAGSHIFT {surv} {survband} {np.around(params[n], 3)}'
          filew.write(buildstr+'\n')
