@@ -1,0 +1,32 @@
+
+BD17_SED: bd_17d4708_stisnic_007.dat
+
+SN_SED: Hsiao07.dat
+MAGSYSTEM:  BD17
+FILTSYSTEM: COUNT
+
+FILTPATH: /project2/rkessler/SURVEYS/SDSS/USERS/BAP37/ZTF_CAL/filters/CFA3_native
+
+SURVEY: CFA3S
+FILTER: CFA3S-U 4sh_U_modtran.dat    9.6930
+FILTER: CFA3S-B 4sh_B_modtran.dat+70 9.87400
+FILTER: CFA3S-V 4sh_V_modtran.dat    9.47900
+FILTER: CFA3S-R 4sh_R_modtran.dat    9.15500
+FILTER: CFA3S-I 4sh_I_modtran.dat    8.85100
+
+
+#FILTER: CFA3S-B 4sh_B_modtran.dat  -0.0838 
+# Define generation grids.
+REDSHIFT_RANGE:    0.0  0.46
+REDSHIFT_BINSIZE:  0.02
+
+# define AV grid.
+RV:          3.1   A(V)/E(B-V) in LMC
+AV_RANGE:   -6.0  6.0
+AV_BINSIZE:  0.5
+AV_OPTION:   2
+
+LAMBDA_RANGE: 2100 12500  # for SN templates
+
+
+OUTFILE: .kcor_CFA3s.fits
