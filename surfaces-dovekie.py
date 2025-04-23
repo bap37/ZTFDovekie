@@ -35,7 +35,6 @@ overridedict = {"CSP-g":   "CSP-g/A",
                "CFA4P2-V": "CFA42-V/Q",
                "CFA4P2-r": "CFA42-r/W",
                "CFA4P2-i": "CFA42-i/T",
-
 }
 
 NREAL = 10
@@ -102,6 +101,8 @@ def create_kcor(OFF, OUTDIR):
                   surveyfilt = surveyfilt.replace("CFA4", "CFA4P")
                offset = OFF.loc[OFF.SURVEYFILT == surveyfilt].OFFSET.values
                print(surveyfilt, offset)
+               if "D3YR" in line:
+                  line = line.replace("D3YR", "DES")
                if len(offset) < 1 :
                   offset = ''
                else:
@@ -187,6 +188,7 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          surv = labels[n].split("-")[0]
          if surv == "PS1":
             continue
+         if surv == 'DES': continue
          if surv == "PS1SN": surv = "PS1MD"
          if "CFA4" in surv: surv = surv.replace("P", "p")
          survband = labels[n]
@@ -199,9 +201,11 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          except KeyError:
             pass
          if "CFA3" in surv: surv = "CFA3"
-         if surv == "Foundation": surv = "PS1"
          if surv == 'ZTF': surv = "ZTF_MSIP"
-         buildstr = f'MAGSHIFT {surv} {survband} {np.around(params[n], 3)}'
+         if surv == "D3YR": surv = "DES"
+         if surv == "Foundation":
+            surv = "FOUNDATION" ; survband = survband.replace("Foundation", "PS1")
+         buildstr = f'MAGSHIFT {surv} {survband.replace("D3YR", "DES")} {np.around(params[n], 3)}' #hacky ugly
          filew.write(buildstr+'\n')
       filew.write("\n")
       for n in range(len(labels)):
@@ -211,6 +215,7 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
             continue
          survband = labels[n].split("-")[-1]
          survbandwrite = labels[n]
+         if surv == "D3YR": continue 
          waveval = waveshifts[surv][survband]
          if surv == "PS1SN": surv = "PS1MD"
          if "CFA4" in surv: surv.replace("P", "p")
@@ -224,6 +229,8 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          if surv == "PS1MD":
             survbandwrite = survbandwrite.replace("SN", '')
          if surv == 'ZTF': surv = "ZTF_MSIP"
+         if surv == "Foundation":
+            surv = "FOUNDATION" ; survbandwrite = survbandwrite.replace("Foundation", "PS1")
          buildstr = f'WAVESHIFT {surv} {survbandwrite} {np.around(np.random.normal(0,waveval),3)}'
          filew.write(buildstr+'\n')
    return print(f"Done writing this iteration of SALTShaker Training files at {OUTDIR}")

@@ -25,7 +25,7 @@ MAGSYSTEM:  BD17
 FILTSYSTEM: COUNT
 FILTPATH:   $SDSS_USERS/BAP37/ZTF_CAL/filters/CSP_TAMU/
 SURVEY: CSP
-SURVEY: CSP
+
 FILTER: CSP-u/t  u_tel_ccd_atm_ext_1.2.dat            10.518&
 FILTER: CSP-g/A  g_tel_ccd_atm_ext_1.2.dat             9.644&
 FILTER: CSP-r/L  r_tel_ccd_atm_ext_1.2.dat             9.352&

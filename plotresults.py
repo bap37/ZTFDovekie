@@ -46,6 +46,8 @@ if __name__ == "__main__":
       print(f'You gave {filename}, but this file does not exist. Quitting.')
       quit()
 
+   version = (filename.split('.')[1])
+
    #initialise
    labels = helpers.create_labels(filename)
    samples = np.load(filename,allow_pickle=True)['samples']
@@ -55,7 +57,7 @@ if __name__ == "__main__":
 
    #starts the plotting 
    helpers.create_chains(labels, samples) #10 dimensions by default
-   c = helpers.create_cov(labels, flat_samples)
+   c = helpers.create_cov(labels, flat_samples, version)
    postoffsets = helpers.create_postoffsets_summary(c)
    helpers.create_latex("postoffsets.dat", "postoffsets-latex.tex")
 
@@ -66,9 +68,9 @@ if __name__ == "__main__":
    tableout = open(tablefile,'w')
    tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
 
-   full_likelihood_data= partial(ll.full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=None,whitedwarf_obs=None)
-   full_likelihood_data(params=postoffsets,subscript='postprocess',doplot=True, tableout=tableout, reference_surveys=['PS1'])
-   print("Forced reference survey to PS1")
+   #full_likelihood_data= partial(ll.full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=None,whitedwarf_obs=None)
+   #full_likelihood_data(params=postoffsets,subscript='postprocess',doplot=True, tableout=tableout, reference_surveys=['PS1'])
+   #print("Forced reference survey to PS1")
    tableout.close()
 
    print("Reached end of testing")

@@ -19,7 +19,7 @@ FILTER: CFA3S-I/e 4sh_I_modtran.dat       8.85100&    #m
 
 #                                          m_BD17 + Dovekie
 SURVEY: CFA3K
-FILTER: CFA3K-U/f   KC_U_modtran.dat       9.724&
+FILTER: CFA3K-U/f   KC_U_modtran.dat    9.724&
 FILTER: CFA3K-B/g   KC_B_modtran.dat+70    9.880&
 FILTER: CFA3K-V/h   KC_V_modtran.dat       9.472&
 FILTER: CFA3K-r/i   KC_r_modtran.dat       9.352&
