@@ -7,7 +7,7 @@ from gaiaxpy import plot_spectra
 import matplotlib.pyplot as plt
 import sys
 sys.path.insert(1, 'scripts/')
-from queryhelpers2 import *
+from queryhelpers import *
 import argparse
 import re
 

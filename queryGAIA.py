@@ -7,7 +7,7 @@ from gaiaxpy import plot_spectra
 import matplotlib.pyplot as plt
 import sys
 sys.path.insert(1, 'scripts/')
-from queryhelpers2 import *
+from queryhelpers import *
 import argparse
 
 from astroquery.gaia import Gaia
@@ -33,10 +33,11 @@ def GAIA_query(RA,DEC, radius=2*0.000277778):
     SOURCE_ID = r['SOURCE_ID'].value[0]
 
     query = f"SELECT TOP 1 \
-    source_id, ra, dec, pmra, pmdec, parallax \
+    source_id, ra, dec, pmra, pmdec, parallax, phot_g_mean_mag \
     FROM gaiadr3.gaia_source \
     WHERE gaiadr3.gaia_source.source_id = {SOURCE_ID} \
-    AND has_xp_continuous = 'True'"
+    AND has_xp_continuous = 'True' \
+    AND phot_g_mean_mag < 17"
 
     job     = Gaia.launch_job_async(query)
     results = job.get_results()
@@ -111,6 +112,7 @@ if __name__ == '__main__':
         print(f"Did not find {surv} in spectra/. Making the directory now.")
 
     #load in data, df, all that good stuff 
+    if surv == "CSP_TAMU": surv = "CSP"
     df = pd.read_csv(f'output_observed_apermags+AV/{surv}_observed.csv')
     df['SOURCEID'] = -999
     for tempfilt in obsfilts:

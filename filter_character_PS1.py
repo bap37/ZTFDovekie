@@ -6,7 +6,7 @@ from glob import glob
 import os, sys
 from scipy import interpolate
 sys.path.insert(1, 'scripts/')
-from queryhelpers2 import *
+from queryhelpers import *
 import argparse
 
 jsonload = "DOVEKIE_DEFS.yml"

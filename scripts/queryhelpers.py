@@ -1,209 +1,107 @@
-from astropy.io import ascii
-from astropy.table import Table
-import pandas as pd
-import sys
-import re
+import pandas as pd 
 import numpy as np
-import pylab
-import json
-import os
-import requests
-import pickle
-from astropy.table import Table, vstack
-
-try: # Python 3.x
-    from urllib.parse import quote as urlencode
-    from urllib.request import urlretrieve
-except ImportError:  # Python 2.x
-    from urllib import pathname2url as urlencode
-    from urllib import urlretrieve
-
-try: # Python 3.x
-    import http.client as httplib 
-except ImportError:  # Python 2.x
-    import httplib   
+from gaiaxpy import calibrate
+import astropy.constants as const
+from scipy.integrate import simpson
+from gaiaxpy import plot_spectra
+import matplotlib.pyplot as plt
+import yaml, os
 
 
-def ps1cone(ra,dec,radius,table="mean",release="dr1",format="csv",columns=None,
-           baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs", verbose=False,
-           **kw):
-    """Do a cone search of the PS1 catalog
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+
+def load_config(config_path):
+    with open(config_path, "r") as cfgfile:
+        config = yaml.load(cfgfile, Loader=yaml.FullLoader)
+    return config
+
+def prep_config(config):
+    survmap = config['survmap'] 
+    survmap4shift = config['survmap4shift']
+    survfiltmap = config['survfiltmap']
+    obssurvmap = config['obssurvmap']
+    revobssurvmap = config['revobssurvmap']
+    revobssurvmapforsnana = config['revobssurvmapforsnana']
+    survcolormin = config['survcolormin']
+    survcolormax = config['survcolormax']
+    synth_gi_range = config['synth_gi_range']
+    obsfilts = config['obsfilts']
+    snanafilts = config['snanafilts']
+    snanafiltsr = config['snanafiltsr']
+    relativeweights = config['relativeweights']
+    errfloors = config['errfloors']
+    whitedwarf_obs_loc = config['whitedwarf_obs_loc']
+    return survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,  config['target_acceptance'] , config['n_burnin'], whitedwarf_obs_loc
+
+
+jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
+config = load_config(jsonload)
+survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,target_acceptance , n_burnin, bboyd_loc = prep_config(config)
+
+def kcor_to_offset(kcorpath):
+    filtdict = {}
+    #open the file 
+    with open(kcorpath, 'r') as file:
+        for line in file:
+            if line.startswith("FILTER"): #find the filters
+                line = line.strip().split() #format the string 
+                filtername = line[1] #filter name, always
+                filteroffset = line[-1] #filter mag offset, always
+                filtdict[filtername] = float(filteroffset)
+                    
+    #print(filtdict)
+    return filtdict
+
+
+def f_lam(l):
+    f = (const.c.to('AA/s').value / 1e23) * ((l) ** -2) * 10 ** (-48.6 / 2.5) * 1e23
+    return f
+
+def prep_filts(sampling, filters, filtpath, isgaia=True, shift=0):
+
+    wav = sampling #sampling 
+    band_weights=[]
+    zps=[]
+    for i,filt in enumerate(filters):
+        R = np.loadtxt(os.path.join(filtpath,filt))
+        T = np.zeros(len(wav))
+
+        if isgaia:
+            R[:,0] *= 0.1
+            R[:,1] *= 10
+        R[:,0] += shift
+        lam = R[:, 0] 
+        R[:,1]*=lam
+
+        min_id=np.argmin((wav-np.min(R[:,0]))**2)
+        max_id=np.argmin((wav-np.max(R[:,0]))**2)
     
-    Parameters
-    ----------
-    ra (float): (degrees) J2000 Right Ascension
-    dec (float): (degrees) J2000 Declination
-    radius (float): (degrees) Search radius (<= 0.5 degrees)
-    table (string): mean, stack, or detection
-    release (string): dr1 or dr2
-    format: csv, votable, json
-    columns: list of column names to include (None means use defaults)
-    baseurl: base URL for the request
-    verbose: print info about request
-    **kw: other parameters (e.g., 'nDetections.min':2)
-    """
-    
-    data = kw.copy()
-    data['ra'] = ra
-    data['dec'] = dec
-    data['radius'] = radius
-    return ps1search(table=table,release=release,format=format,columns=columns,
-                    baseurl=baseurl, verbose=verbose, **data)
+        #T[min_id:max_id]= np.interp(wav[min_id:max_id], R[:, 0], R[:, 1])
+        T = np.interp(wav, R[:, 0], R[:, 1], left=0, right=0)
 
+        dlambda = np.diff(wav)
+        dlambda = np.r_[dlambda, dlambda[-1]]
 
-def ps1search(table="mean",release="dr1",format="csv",columns=None,
-           baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs", verbose=False,
-           **kw):
-    """Do a general search of the PS1 catalog (possibly without ra/dec/radius)
-    
-    Parameters
-    ----------
-    table (string): mean, stack, or detection
-    release (string): dr1 or dr2
-    format: csv, votable, json
-    columns: list of column names to include (None means use defaults)
-    baseurl: base URL for the request
-    verbose: print info about request
-    **kw: other parameters (e.g., 'nDetections.min':2).  Note this is required!
-    """
-    
-    data = kw.copy()
-    if not data:
-        raise ValueError("You must specify some parameters for search")
-    checklegal(table,release)
-    if format not in ("csv","votable","json"):
-        raise ValueError("Bad value for format")
-    url = "{baseurl}/{release}/{table}.{format}".format(**locals())
-    if columns:
-        # check that column values are legal
-        # create a dictionary to speed this up
-        dcols = {}
-        for col in ps1metadata(table,release)['name']:
-            dcols[col.lower()] = 1
-        badcols = []
-        for col in columns:
-            if col.lower().strip() not in dcols:
-                badcols.append(col)
-        if badcols:
-            raise ValueError('Some columns not found in table: {}'.format(', '.join(badcols)))
-        # two different ways to specify a list of column values in the API
-        # data['columns'] = columns
-        data['columns'] = '[{}]'.format(','.join(columns))
+        num =  T * dlambda
+        denom = np.sum(num)
+        band_weight = num / denom
+        band_weights.append(band_weight)
 
-    r = requests.get(url, params=data)
+        zp_sed = f_lam(lam)
 
-    if verbose:
-        print(r.url)
-    r.raise_for_status()
-    if format == "json":
-        return r.json()
-    else:
-        return r.text
+        int1 = simpson( zp_sed * R[:, 1], lam)
+        int2 = simpson( R[:, 1], lam)
+        zp = 2.5 * np.log10(int1 / int2)
+        zps.append(zp)
 
+    band_weights = np.array(band_weights)
+    zps = np.array(zps)
+    return band_weights, zps
 
-def checklegal(table,release):
-    """Checks if this combination of table and release is acceptable
-    
-    Raises a VelueError exception if there is problem
-    """
-    
-    releaselist = ("dr1", "dr2")
-    if release not in ("dr1","dr2"):
-        raise ValueError("Bad value for release (must be one of {})".format(', '.join(releaselist)))
-    if release=="dr1":
-        tablelist = ("mean", "stack")
-    else:
-        tablelist = ("mean", "stack", "detection")
-    if table not in tablelist:
-        raise ValueError("Bad value for table (for {} must be one of {})".format(release, ", ".join(tablelist)))
+def get_model_mag(flux_grid, band_weights, zps):
+    model_flux = band_weights @ flux_grid
 
+    model_mag = -2.5 * np.log10(model_flux)+zps 
+    return model_mag
 
-def ps1metadata(table="mean",release="dr1",
-           baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs"):
-    """Return metadata for the specified catalog and table
-    
-    Parameters
-    ----------
-    table (string): mean, stack, or detection
-    release (string): dr1 or dr2
-    baseurl: base URL for the request
-    
-    Returns an astropy table with columns name, type, description
-    """
-    
-    checklegal(table,release)
-    url = "{baseurl}/{release}/{table}/metadata".format(**locals())
-    r = requests.get(url)
-    r.raise_for_status()
-    v = r.json()
-    # convert to astropy table
-    tab = Table(rows=[(x['name'],x['type'],x['description']) for x in v],
-               names=('name','type','description'))
-    return tab
-
-
-def mastQuery(request):
-    """Perform a MAST query.
-
-    Parameters
-    ----------
-    request (dictionary): The MAST request json object
-
-    Returns head,content where head is the response HTTP headers, and content is the returned data
-    """
-    
-    server='mast.stsci.edu'
-
-    # Grab Python Version 
-    version = ".".join(map(str, sys.version_info[:3]))
-
-    # Create Http Header Variables
-    headers = {"Content-type": "application/x-www-form-urlencoded",
-               "Accept": "text/plain",
-               "User-agent":"python-requests/"+version}
-
-    # Encoding the request as a json string
-    requestString = json.dumps(request)
-    requestString = urlencode(requestString)
-    
-    # opening the https connection
-    conn = httplib.HTTPSConnection(server)
-
-    # Making the query
-    conn.request("POST", "/api/v0/invoke", "request="+requestString, headers)
-
-    # Getting the response
-    resp = conn.getresponse()
-    head = resp.getheaders()
-    content = resp.read().decode('utf-8')
-
-    # Close the https connection
-    conn.close()
-
-    return head,content
-
-
-def resolve(name):
-    """Get the RA and Dec for an object using the MAST name resolver
-    
-    Parameters
-    ----------
-    name (str): Name of object
-
-    Returns RA, Dec tuple with position"""
-
-    resolverRequest = {'service':'Mast.Name.Lookup',
-                       'params':{'input':name,
-                                 'format':'json'
-                                },
-                      }
-    headers,resolvedObjectString = mastQuery(resolverRequest)
-    resolvedObject = json.loads(resolvedObjectString)
-    # The resolver returns a variety of information about the resolved object, 
-    # however for our purposes all we need are the RA and Dec
-    try:
-        objRa = resolvedObject['resolvedCoordinate'][0]['ra']
-        objDec = resolvedObject['resolvedCoordinate'][0]['decl']
-    except IndexError as e:
-        raise ValueError("Unknown object '{}'".format(name))
-    return (objRa, objDec)
