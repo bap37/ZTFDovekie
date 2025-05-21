@@ -1,1 +1,0 @@
-sed -i 's\PS1_\PS1-\g' *.csv
