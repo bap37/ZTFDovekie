@@ -1,4 +1,4 @@
-![alt text](https://github.com/bap37/ZTFDovekie/blob/main/Dov_w_shoes.jpg?raw=true)
+![This is an Icelandic dovekie](https://github.com/bap37/ZTFDovekie/blob/main/Dov_w_shoes.jpg?raw=true)
 
 
 
@@ -7,6 +7,13 @@ Original code comes from https://arxiv.org/abs/2112.03864
 This is the cleaned, upgraded version. Less WIP. 
 
 --------------------------
+There are many scripts in this directory for different tasks needed in the calibration process
+
+the various scripts named "query*.py" are used to collect data from various surveys.
+
+generatesimulatedstars.py is used to generate simulated, fake data for use in validating and testing the pipeline. simanalysis.py is used to generate summary statistics from an ensemble of simulations.
+
+"BBOYD_SEDS.py" as well as "loopsyntheticmags_commandlineaper.py" are both used to calculate synthetic magnitudes based on filter functions, with spectral energy distributions from Boyd et al. 2025 and HST spectral libraries, respectively.
 
 dovekie.py collects the relevant data and calculates the colour/magnitude slope for each band. It will also run a NUTS mcmc process to determine the best offsets, if asked. 
 
