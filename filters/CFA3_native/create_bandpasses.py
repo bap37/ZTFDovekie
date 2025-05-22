@@ -6,7 +6,7 @@ airmass = 1
 filters_4sh = pd.read_csv("table5.dat", sep=r"\s+", header=None, usecols=[0, 1, 5], names=['bp', 'wl', 'trans'])
 atmosphere = pd.read_csv("modtran_atm_stubbs_Jan21.dat", sep=r"\s+", header=None, names=['wl', 'trans', '?', 'trans_again?'])
 
-bps_4sh = 'UBVRI'
+bps_4sh = 'U'
 
 tck = splrep(atmosphere['wl']*10, atmosphere['trans'])
 
@@ -21,7 +21,7 @@ for bp in bps_4sh:
         filt.loc[:, 'trans'] *= splev(filt['wl'].values, tck)**airmass
     filt.to_csv(f"4sh_{bp}_modtran.dat", index=False, columns=['wl', 'trans'], float_format='%g', header=False, sep=" ")
 
-bps_KC = 'BVri'
+bps_KC = 'U'
 filters_KC = pd.read_csv('keplercam.passbands.dat', header=None, comment='n', skiprows=2, delimiter='\s+', names=['wl', 'trans'])
 # all in two columns with lines ("nm {bp} band") to separate things.
 # Detecting new bandpass when wl decreases
