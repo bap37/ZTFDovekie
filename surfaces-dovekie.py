@@ -188,7 +188,7 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
          surv = labels[n].split("-")[0]
          if surv == "PS1":
             continue
-         if surv == 'DES': continue
+         if surv == 'D3YR': continue
          if surv == "PS1SN": surv = "PS1MD"
          if "CFA4" in surv: surv = surv.replace("P", "p")
          survband = labels[n]
@@ -202,7 +202,7 @@ def WRITE_ACTUAL(params, labels, OUTDIR, n, config):
             pass
          if "CFA3" in surv: surv = "CFA3"
          if surv == 'ZTF': surv = "ZTF_MSIP"
-         if surv == "D3YR": surv = "DES"
+#         if surv == "D3YR": surv = "DES"
          if surv == "Foundation":
             surv = "FOUNDATION" ; survband = survband.replace("Foundation", "PS1")
          buildstr = f'MAGSHIFT {surv} {survband.replace("D3YR", "DES")} {np.around(params[n], 3)}' #hacky ugly

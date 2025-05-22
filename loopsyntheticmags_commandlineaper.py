@@ -33,6 +33,8 @@ def clean_surveys(surv):
     surv = "KAIT_2018"
   elif "SWIFT" in surv:
     surv = "SWIFTnat"
+  elif surv == "CSP_TAMU":
+    surv = "CSP"
   return surv
 
 parallel = '1'
@@ -64,7 +66,7 @@ if __name__ == '__main__':
     if kcorpath[-1] == '/': kcorpath=kcorpath[:-1]
     
     #for shift in np.arange(-30,40,10):
-    for shift in shifts:
+    for shift in [0]:
       version = surv
       print(f'starting shift = {shift}')
 
@@ -118,8 +120,10 @@ if __name__ == '__main__':
           #else:
           filtshiftstring += ' '+filt+' '+str(shift)+' '
         try:
-          print('kcor.exe %s/%s %s OUTFILE %s/.in_%s.fits%s BD17_SED %s/fillme_%s.dat > logs/kcor_%s.log'%(kcorpath,kcor,filtshiftstring,kcorpath,surv,parallel,kcorpath,surv,surv))
-          os.system('kcor.exe %s/%s %s OUTFILE %s/.in_%s.fits%s BD17_SED %s/fillme_%s.dat > logs/kcor_%s.log'%(kcorpath,kcor,filtshiftstring,kcorpath,surv,parallel,kcorpath,surv,surv))
+          print('kcor.exe %s/%s OUTFILE %s/.in_%s.fits%s BD17_SED %s/fillme_%s.dat > logs/kcor_%s.log'%(kcorpath,kcor,kcorpath,surv,parallel,kcorpath,surv,surv))
+          os.system('kcor.exe %s/%s OUTFILE %s/.in_%s.fits%s BD17_SED %s/fillme_%s.dat > logs/kcor_%s.log'%(kcorpath,kcor,kcorpath,surv,parallel,kcorpath,surv,surv))
+#          print('kcor.exe %s/%s %s OUTFILE %s/.in_%s.fits%s BD17_SED %s/fillme_%s.dat > logs/kcor_%s.log'%(kcorpath,kcor,filtshiftstring,kcorpath,surv,parallel,kcorpath,surv,surv))
+#          os.system('kcor.exe %s/%s %s OUTFILE %s/.in_%s.fits%s BD17_SED %s/fillme_%s.dat > logs/kcor_%s.log'%(kcorpath,kcor,filtshiftstring,kcorpath,surv,parallel,kcorpath,surv,surv))
           #os.system('kcor.exe %s/%s > logs/kcor_%s.log'%(kcorpath,kcor,surv))
         except:
           print('this ^^^ spectrum failed kcor')

@@ -224,17 +224,14 @@ class survey:
         #Determine excess variance of observed populations
         data=np.array([obs[x] for x in filtnames]+ [obs['PS1'+x] for x in 'griz'])
         #Use factor analysis on observed data
-        
         _,_,self.slopes_data,noise,self.intrinsic_data,fout=decomposedata(data,magcolorinds,outlierwidth)
         self.variance=noise**2
         self.fout=fout
-        
         #If it's a PS1 survey, the synthetic photometry will be identical to PS1, so don't regress on identical data
         if self.isps1survey: 
             mags=np.array([survsynth[x] for x in filtnames])
         else:
             mags=np.array([survsynth[x] for x in filtnames]+ [ps1synth['PS1'+x] for x in 'griz'])
-        
         #Use factor analysis to reduce the dimensionality of the synthetic photometry
         _,_,self.slopes,_,self.intrinsic,_=decomposedata(mags,magcolorinds)
         
@@ -311,7 +308,7 @@ def generatesurveyoffsets():
     survoffsets[name]= np.random.normal(0,0.01,4)
     
     name='CFA3K'
-    filts=[name+x for x in 'UBVri']
+    filts=[name+x for x in 'BVri']
     survoffsets[name]= np.random.normal(0,0.01,len(filts))
     
     name='CFA3S'
@@ -333,6 +330,11 @@ def generatesurveyoffsets():
     name='DES'
     filts=[name+x for x in 'griz']
     survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
+    name='D3YR'
+    filts=[name+x for x in 'griz']
+    survoffsets[name]= np.random.normal(0,0.01,len(filts))
+
 
     name='ZTFS'
     filts=[name+x for x in 'gri']
@@ -395,11 +397,11 @@ def generatesurveyoffsets():
     survoffsets[name]= np.random.normal(0,0.01,len(filts))
 
     name='CFA4P1'
-    filts=[name+x for x in 'BVRI']
+    filts=[name+x for x in 'BVri']
     survoffsets[name]= np.random.normal(0,0.01,len(filts))
 
     name='CFA4P2'
-    filts=[name+x for x in 'BVRI']
+    filts=[name+x for x in 'BVri']
     survoffsets[name]= np.random.normal(0,0.01,len(filts))
 
 
@@ -426,17 +428,11 @@ def generatesurvey(name,survoffsets,forcereload=False,speclibrary='calspec23'):
               (0,1),[name+x for x in 'griz'],obs, synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'] , .2)
     
     elif name=='CFA3K':
-        filts=[name+x for x in 'UBVri']
+        filts=[name+x for x in 'BVri']
         synth,obs=getdata(name)
-        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA3KU']-obs['CFA3KB'] > -.5) & (obs['CFA3KU']-obs['CFA3KB'] < 20)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['CFA3Kr']-obs['CFA3Ki'] > -.5) & (obs['CFA3Kr']-obs['CFA3Ki'] < 20)
         surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['CFA3KB']).resample(1)[0][0],  stats.exponnorm(.001,loc=.2,scale=.3).rvs ,
               (1,2),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'] ,.15 )
-        ####HACK####
-        #Fitted values were not sensible, replacing manually
-        surv.variance=np.array([4.9850158e-04, 1.1771034e-03, 1.9280605e-04, 5.5639852e-05,
-                      2.2119776e-04, 5.4853701e-04, 5.2283016e-05, 1.6486361e-04,
-                      4.0391181e-04])
-        surv.fout=.05
 
     elif name=='CFA3S':
         filts=[name+x for x in 'BVRI']
@@ -459,6 +455,14 @@ def generatesurvey(name,survoffsets,forcereload=False,speclibrary='calspec23'):
         obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['DESg']-obs['DESr'] > .2)& (obs['DESg']-obs['DESr'] <1)
         surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['DESg']).resample(1)[0][0],  stats.exponnorm(1e-2,loc=.2,scale=.3).rvs,    
               (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.1 )
+
+    elif name=='D3YR':
+        filts=[name+x for x in 'griz']
+        synth,obs=getdata(name)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['D3YRg']-obs['D3YRr'] > .2)& (obs['D3YRg']-obs['D3YRr'] <1)
+        surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['D3YRg']).resample(1)[0][0],  stats.exponnorm(1e-2,loc=.2,scale=.3).rvs,    
+              (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.1 )
+
     
     elif name=='Foundation':
         filts=[name+x for x in 'griz']
@@ -497,7 +501,7 @@ def generatesurvey(name,survoffsets,forcereload=False,speclibrary='calspec23'):
     elif name=='SWIFT':
         filts=[name+x for x in 'BV']
         synth,obs=getdata(name)
-        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['SWIFTB']-obs['SWIFTR'] > -.2)& (obs['SWIFTR']-obs['SWIFTR'] > .3)
+        obscut=(~reduce(lambda x,y: x|y,[np.abs(obs[x])>30 for x in filts],False) )& (obs['SWIFTB']-obs['SWIFTV'] > .3)
         surv=survey(name,lambda obs=obs[obscut]: stats.gaussian_kde(obs['SWIFTB']).resample(1)[0][0],  stats.exponnorm(1e-4,loc=.2,scale=.3).rvs ,   
               (0,1),filts,obs[obscut], synth[cut],ps1synth[cut], survoffsets[name],survoffsets['PS1'],.4 )
 
@@ -638,8 +642,8 @@ def generatewhitedwarfs(survoffsets):
 
 def getsurveygenerators(*args,**kwargs):
 
-    names='SNLS','SDSS','CFA3K','CFA3S','CSP','DES','Foundation','PS1SN','ZTFD','ZTFS'
-    names ='SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1'
+    names='SNLS','SDSS','CFA3K','CFA3S','CSP','DES','Foundation','PS1SN', "CFA4P1", "CFA4P2" ,'ZTFS', 'ZTFD', 'D3YR'
+    #names ='SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1'
     #names='ZTFD','ZTFS'
     for name in names:
         yield name,generatesurvey(name,*args,**kwargs)
@@ -674,19 +678,20 @@ def main():
                 out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames])
                 for row in simdata:
                     out.writerow([name]+list(row)+[99,99]+ [0]*len(row))
-        double,single=surveys['ZTFD'],surveys['ZTFS']
-        with open(outputdir+'/ZTF_observed.csv', 'w') as csvfile:
-            out = csv.writer(csvfile, delimiter=',')
-            dashednames=[(x[:-1]+'-'+x[-1]).replace('D-','-').replace('S-','-') for x in (single.filtnames+[x.upper() for x in double.filtnames] + ['PS1'+x for x in 'griz'])]
-            out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames] + [])
-            simdata=single.genstar(single.nobs)
-            for row in simdata:
-                row=list(row)
-                out.writerow(['ZTF']+list(row[:3])+([-999]*3)+list(row[3:])+[99,99]+ [0]*(len(row)+3))
-            simdata=double.genstar(double.nobs)
-            for row in simdata:
-                row=list(row)
-                out.writerow(['ZTF']+([-999]*3)+list(row[:3])+list(row[3:])+[99,99]+ [0]*(len(row)+3))
+        if 'ZTF' in surveys:
+            double,single=surveys['ZTFD'],surveys['ZTFS']
+            with open(outputdir+'/ZTF_observed.csv', 'w') as csvfile:
+                out = csv.writer(csvfile, delimiter=',')
+                dashednames=[(x[:-1]+'-'+x[-1]).replace('D-','-').replace('S-','-') for x in (single.filtnames+[x.upper() for x in double.filtnames] + ['PS1'+x for x in 'griz'])]
+                out.writerow( ['survey']+dashednames+['RA','DEC']+[x+'_AV' for x in dashednames] + [])
+                simdata=single.genstar(single.nobs)
+                for row in simdata:
+                    row=list(row)
+                    out.writerow(['ZTF']+list(row[:3])+([-999]*3)+list(row[3:])+[99,99]+ [0]*(len(row)+3))
+                simdata=double.genstar(double.nobs)
+                for row in simdata:
+                    row=list(row)
+                    out.writerow(['ZTF']+([-999]*3)+list(row[:3])+list(row[3:])+[99,99]+ [0]*(len(row)+3))
         with open(outputdir+'/simmedoffsets.json','w') as file:
             file.write(json.dumps({name:list(survoffsets[name]) for name in survoffsets}))
     

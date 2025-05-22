@@ -2,14 +2,14 @@
 
 #The proper dovekie
 #surveys_for_dovekie: ['PS1', 'DES', 'SDSS', 'PS1SN', 'CFA4P1']
-surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2', 'D3YR'] 
+surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2', 'D3YR', 'Foundation'] 
 reference_surveys: ['PS1']
 
 #Dovekie wingspan
 #surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1']
 
 #Where the chains are saved to
-chainsfile: 'DOVEKIE.V8.npz'
+chainsfile: 'DOVEKIE.V9.npz'
 
 #We use WDs from Boyd et al. 2024 to help constrain our zeropoints
 whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
@@ -675,16 +675,18 @@ waveshifts: {"CFA3K":{"U":15, "B":15, "V":15, "r":20, "i":20},
              "ZTFD":{"g":10, "r":5, "i":5}
 } 
 
-#waveshifts_old: {
-#           "CFA3K":{"U":20, "B":10, "V":15, "r":10, "i":10},
-#           "CFA3S":{"U":20, "B":15, "V":15, "R":10, "I":10},
-#           "CSP":{"u":8, "B":7, "V":3, "g":8, "r":4, "i":2, "o":0, "m":0, "n":0},
-#           "SDSS":{"u":6, "g":8, "r":6, "i":6, "z":6},
-#           "SNLS":{"g":15, "r":15, "i":15, "z":15},
-#           "DES":{"g":6, "r":6, "i":6, "z":6},
-#           "PS1SN":{"g":7, "r":7, "i":7, "z":7},
-#           "Foundation":{"g":7, "r":7, "i":7, "z":7},
-#           "ZTF":{"g":10, "r":5, "i":5, "G":10, "R":5, "I":5},
-#           "ZTFS":{"g":10, "r":5, "i":5},
-#           "ZTFD":{"g":10, "r":5, "i":5}
-#}
+waveshifts_new: {
+           "CFA3K":{"U":20, "B":10, "V":15, "r":10, "i":10},
+           "CFA3S":{"U":20, "B":15, "V":15, "R":10, "I":10},
+           "CSP":{"u":8, "B":7, "V":3, "g":8, "r":4, "i":2, "o":0, "m":0, "n":0},
+           "SDSS":{"u":6, "g":8, "r":6, "i":6, "z":6},
+           "SNLS":{"g":15, "r":15, "i":15, "z":15},
+           "DES":{"g":6, "r":6, "i":6, "z":6},
+           "PS1SN":{"g":7, "r":7, "i":7, "z":7},
+           "Foundation":{"g":7, "r":7, "i":7, "z":7},
+            "CFA4P1":{"B":20, "V":15, "r":10, "i":15},
+            "CFA4P2":{"B":20, "V":15, "r":15, "i":15},
+           "ZTF":{"g":10, "r":5, "i":5, "G":10, "R":5, "I":5},
+           "ZTFS":{"g":10, "r":5, "i":5},
+           "ZTFD":{"g":10, "r":5, "i":5}
+}

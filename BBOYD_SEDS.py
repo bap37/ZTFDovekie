@@ -69,7 +69,7 @@ if __name__ == '__main__':
       print(f'starting shift = {shift}')
 
       #Here we open the bboyd seds
-      allfiles = np.load('spectra/bboyd/wd_seds.npz')
+      allfiles = np.load('spectra/bboyd/wd_seds_new.npz')
 
       bd=open('output_synthetic_magsaper/bboyd_synth_%s_shift_%.3f.txt'%(surv,shift),'w')
       bd.write(' '.join(['survey','version','standard','shift',' ']))

@@ -55,5 +55,5 @@ for filename in listsurveys:
     df = pd.read_csv(filename)
     df.to_csv(f'{filename}.bak', header=True, index=False, float_format='%g')
 
-    GAIA_merge(df)
+    df = GAIA_merge(df)
     df.to_csv(f'{filename}', header=True, index=False, float_format='%g')

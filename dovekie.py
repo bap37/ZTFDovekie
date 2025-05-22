@@ -395,6 +395,7 @@ def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict,):
     plt.ylim(-.1,.1)
 
     colourz=['#111111', '#01417d', '#797677', '#c7b168', '#f1f1f1']
+    #colourz=['k','k','k','k','k']
 
     errscale,errfloor=wdresults.errpars[filt]
     line1=plt.errorbar(wdresults.errs[filt],wdresults.resids[filt],yerr=wdresults.errs[filt],fmt='o',label=f'raw errors ({wdresults.resids[filt].size} points)', c=colourz[1], alpha=0.5)
@@ -408,7 +409,7 @@ def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict,):
     plt.axhline(mean,color='k',linestyle=':',label=f'WD mean: $\\chi^2$= {chi2:.2f}', alpha=0.5)
     if paramsdict is not None: 
         chi2=((((wdresults.resids)[filt]-paramsdict[filt+'_offset'])/scalederr)**2).sum()
-        plt.axhline(paramsdict[filt+'_offset'],color='dimgrey',linestyle='--',label=f'Derived offset: $\\chi^2$= {chi2:.2f}')
+        plt.axhline(paramsdict[filt+'_offset'],color='k',linestyle='--',label=f'Derived offset: $\\chi^2$= {chi2:.2f}')
     plt.plot(np.linspace(*plt.xlim(),100),mean+np.linspace(*plt.xlim(),100),c='dimgrey', alpha=0.5)
     plt.plot(np.linspace(*plt.xlim(),100),mean-np.linspace(*plt.xlim(),100),c='dimgrey', alpha=0.5)
     
@@ -1036,7 +1037,7 @@ if __name__ == "__main__":
     key=random.PRNGKey(34581339453)
     #key = random.PRNGKey(23490268954)
     initkey, samplekey= random.split(key)
-    n_samples = 5000
+    n_samples = 7000
     theta0 = random.normal(initkey, shape=(nparams,))*0.01
 
     sampler = NUTS(theta0, logp=lambda x: full_posterior_data(x)- initlogp, target_acceptance=target_acceptance, M_adapt=n_burnin)

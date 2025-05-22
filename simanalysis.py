@@ -11,6 +11,10 @@ import json
 from scipy import stats
 import matplotlib.pyplot as plt 
 
+def load_config(config_path):
+    with open(config_path, "r") as cfgfile:
+        config = yaml.load(cfgfile, Loader=yaml.FullLoader)
+    return config
 
 # In[3]:
 
@@ -20,11 +24,12 @@ dirs=glob.glob('plots/fakes_*/')
 
 # In[5]:
 
+notsimmed = ('ASASSN1',  'ASASSN2', 'SWIFT',  'KAIT1MO', 'KAIT2MO',  'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4',  'NICKEL1',  'NICKEL2', 'ZTFD', 'ZTFS')
 
 simmap={ 'PS1':'griz', 
     'SNLS':'griz',
     'SDSS':'griz',
-    'CFA3K':'UBVri',
+    'CFA3K':'BVri',
     'CFA3S': 'BVRI'  ,  
     'CSP':'BVgri',
     'PS1SN':'griz',    
@@ -34,11 +39,16 @@ simmap={ 'PS1':'griz',
     'CFA4P1':'BVri',
     'CFA4P2':'BVri',
     'ZTF':'griGRI',
+    'Foundation':'griz',
+    'D3YR':'griz',
 }
+
+chainsfile=load_config('DOVEKIE_DEFS.yml')['chainsfile']
+
 outdir=f'plots/fakes_calspeconly_fitboth_0'
 result=np.genfromtxt(path.join(outdir,'preprocess_dovekie.dat'),dtype=None,names=True,encoding='utf-8')
 result=result[result['SPECLIB']=='calspec23']
-outfile=np.load(path.join(outdir,'DOVEKIE.V4.npz'))
+outfile=np.load(path.join(outdir,chainsfile))
     
 simmap_indexes={}
 label=outfile['labels'][0]
@@ -72,12 +82,15 @@ for i in range(100):
         outdir=outdirfstring.format(i=i)
         result=np.genfromtxt(path.join(outdir,'preprocess_dovekie.dat'),dtype=None,names=True,encoding='utf-8')
         result=result[result['SPECLIB']==fitlib]
-        outfile=np.load(path.join(outdir,'DOVEKIE.V4.npz'))
+        outfile=np.load(path.join(outdir,chainsfile))
     
         offsetsamples=outfile['samples']
         offsets,offseterrs=np.mean(offsetsamples,axis=0),np.std(offsetsamples,axis=0)
         with open(f'output_simulated_apermags+AV/{inputlib}_{i}/simmedoffsets.json') as file: 
             simmedoffsets=(json.loads(file.read()))
+            for k in notsimmed:
+                simmedoffsets.pop(k, None)
+
         trueoffsets=np.array([simmedoffsets[(idx:=simmap_indexes[label])[0]][idx[1]] for label in outfile['labels']])
         pval=np.sum(offsetsamples>trueoffsets[np.newaxis,:],axis=0)/offsetsamples.shape[0]
         slopes,errs=list((splittuple(result['D_SLOPE'])))
@@ -190,7 +203,7 @@ with open('simbiases.txt','w') as file:
                 meanzscore= np.mean((offsets[:,idx]-trueoffsets[:,idx])/offseterrs[:,idx])
                 offerrest,offerrobs=np.sqrt(np.mean(offseterrs[:,idx]**2)), np.std((offsets[:,idx]-trueoffsets[:,idx]))
                 kspval=stats.kstest(pval[:,idx[0]],lambda x: x).pvalue
-            else: meanbias , meanzscore,offerrest,offerrobs, kspval = ['NA']*3
+            else: meanbias , meanzscore,offerrest,offerrobs, kspval = ['NA']*5 #Formerly 3?
             idx=np.where(filt==slopelabels)[0]
             if len(idx):
                 idx=idx[0]
