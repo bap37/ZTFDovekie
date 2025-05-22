@@ -56,6 +56,15 @@ if __name__ == '__main__':
   else:
     shifts = [0]
 
+  allfiles = {}
+
+  # Loop through each file, split up to avoid hitting filesize limits on github
+  for file_path in glob('spectra/bboyd/wd_seds_new_subset*.npz'):
+        with np.load(file_path) as data:
+           for key in data:
+              assert(key not in allfiles)
+              allfiles[key]=data[key]
+
   for ind, surv,kcorpath,kcor,shiftfilts,obsfilts in zip(
         range(len(config['survs'])),config['survs'],config['kcorpaths'],config['kcors'],config['shiftfiltss'],config['obsfiltss']):
     print(ind,surv)
@@ -69,7 +78,6 @@ if __name__ == '__main__':
       print(f'starting shift = {shift}')
 
       #Here we open the bboyd seds
-      allfiles = np.load('spectra/bboyd/wd_seds_new.npz')
 
       bd=open('output_synthetic_magsaper/bboyd_synth_%s_shift_%.3f.txt'%(surv,shift),'w')
       bd.write(' '.join(['survey','version','standard','shift',' ']))
@@ -82,7 +90,8 @@ if __name__ == '__main__':
           continue
         ngslf = key
         for entry in range(98):
-          x=open('%s/fillme_%s.dat'%(kcorpath,surv),'w')
+          filename1='%s/fillme_%s.dat'%(kcorpath,surv)
+          x=open(filename1,'w')
           f = interpolate.interp1d(allfiles['wave'], allfiles[key][entry,:])
           w = [0]
           f = [0.0]
@@ -103,11 +112,11 @@ if __name__ == '__main__':
             x.write(str(co)+' '+str(interp(co))+'\n')
           x.close()
 
-          x=open('textfiles/%s.txt'%ngslf,'w')
+          filename2='textfiles/%s.txt'%ngslf
+          x=open(filename2,'w')
           for co in range(0,len(allfiles['wave'])):
             x.write(str(allfiles['wave'][co])+' '+str(allfiles[key][entry,:][co])+'\n')
           x.close()
-
 
           filtshiftstring = ' FILTER_LAMSHIFT '
           for filt in shiftfilts:
@@ -138,6 +147,8 @@ if __name__ == '__main__':
           if vals[0]!='99':
             bd.write(' '.join([surv,version,ngslf,str(round(shift,4)),'']))
             bd.write(' '.join(vals.astype(str))+'\n')
+          os.remove(filename1)
+          os.remove(filename2)
   bd.close()
   print("The magnitudes you saw may appear to have been negative. They should have been written out as positive values.")
     
