@@ -121,7 +121,7 @@ if __name__ == '__main__':
         sampling = fluxfile['wav']
         #sampling = np.arange(4500, 12000, 10)
         
-        band_weights, zps = prep_filts(sampling, filters, filtpath, isgaia = False)
+        band_weights, zps = prep_filts(sampling, filters, filtpath, isgaia = False, shift=shift)
         
         seds = get_model_mag(fluxfile['flux'],band_weights, zps)
 
