@@ -81,7 +81,7 @@ if __name__ == '__main__':
       allfiles.extend(dillon_calspec_files)
       speccats = [fn.split('/')[1] for fn in allfiles]
 
-      bd=open('output_synthetic_magsaper/synth_%s_shift_0.000.txt'%(surv),'w')
+      bd=open('output_synthetic_magsaper/synth_%s_shift_%s.000.txt'%(surv,shift),'w')
       bd.write(' '.join(['survey','version','standard','standard_catagory','shift','']))
       for fff in obsfilts:
           if surv == 'CSP':
