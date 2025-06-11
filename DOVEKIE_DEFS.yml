@@ -1,19 +1,19 @@
 ##Which surveys mcmc.py will investigate
 
 #The proper dovekie
-#surveys_for_dovekie: ['PS1', 'DES', 'SDSS', 'PS1SN', 'CFA4P1']
-surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2', 'D3YR', 'Foundation'] 
+surveys_for_dovekie: ['PS1', 'DEBASS']
+#surveys_for_dovekie: ['PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CFA3K', 'CFA3S', 'CSP', 'CFA4P1', 'CFA4P2', 'D3YR', 'Foundation'] 
 reference_surveys: ['PS1']
 
 #Dovekie wingspan
 #surveys_for_dovekie: ['SWIFT', 'KAIT1MO', 'KAIT2MO', 'KAIT3MO', 'KAIT4MO', 'NICKEL1MO', 'NICKEL2MO', 'KAIT3', 'KAIT4', 'NICKEL1', 'NICKEL2', 'ASASSN1', 'ASASSN2', 'PS1', 'PS1SN', 'DES', 'SNLS', 'SDSS', 'CSP', 'CFA3K', 'CFA3S', 'CFA4P2', 'CFA4P1']
 
 #Where the chains are saved to
-chainsfile: 'DOVEKIE.V9.npz'
+chainsfile: 'DOVEKIE.V9_SMALL_COLOUR.npz'
 
 #We use WDs from Boyd et al. 2024 to help constrain our zeropoints
-whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
-#whitedwarf_obs_loc: False
+#whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
+whitedwarf_obs_loc: False
 
 ####### Below here, only madness lies, unless you want to add another survey. 
 ####### In which case go ahead, but it's ugly.
@@ -46,6 +46,7 @@ survs: ['PS1',
         'GAIA',
         'ATLAS',
         'D3YR',
+        'DEBASS',
 ]
 
 kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
@@ -68,6 +69,7 @@ kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
             'kcor/PS1s_RS14_PS1_tonry/',
             'kcor/GAIA_DR3/',
             'kcor/ATLAS/',
+            'kcor/DES/',
             'kcor/DES/',
 ]
 
@@ -92,6 +94,7 @@ kcors: ['PS1_excalinaper.input',
         'PS1_excalin.input',
         'GAIA_excalin.input',
         'ATLAS_excalin.input',
+        'DECam_excalin.input',
         'DECam_excalin.input',
 ]
 
@@ -118,6 +121,7 @@ filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
             'filters/GAIA_DR3/',
             'filters/ATLAS/',
             'filters/DES-SN3YR_DECam/',
+            'filters/DES-SN3YR_DECam/',
 ]
 
 shiftfiltss: [['g','r','i','z'],
@@ -141,6 +145,7 @@ shiftfiltss: [['g','r','i','z'],
               ['g', 'b', 'r'],
               ['c', 'o'],
               ['g','r','i','z'],
+              ['g','r','i','z']
 ]
 
 
@@ -163,6 +168,7 @@ namedfiltss: [['g','r','i','z'],
               ['g','r','i','z'],
               ['g', 'b', 'r'],
               ['c', 'o'],
+              ['g','r','i','z'],
               ['g','r','i','z'],
 ]
 
@@ -188,6 +194,7 @@ obsfiltss: [['g','r','i','z'],
             ['g', 'b', 'r'],
             ['c', 'o'],
             ['g','r','i','z'],
+            ['g','r','i','z']
 ]
 
 ###############################################
@@ -224,6 +231,7 @@ survmap: {'PS1':'PS1',
           'GAIA':'GAIA',
           'ATLAS':'ATLAS',
           'D3YR':'D3YR',
+          'DEBASS':'DEBASS',
 }
 
 survmap4shift: {'PS1':'PS1',
@@ -256,6 +264,7 @@ survmap4shift: {'PS1':'PS1',
                 'GAIA':'GAIA',
                 'ATLAS':'ATLAS',
                 'D3YR':'D3YR',
+                'DEBASS':'DEBASS',
 }
 
 #formerly CSP_TAMU
@@ -289,6 +298,7 @@ survfiltmap: {'PS1':'PS1',
               'GAIA':'GAIA',
               'ATLAS':'ATLAS',
               'D3YR':'D3YR',
+              'DEBASS':'DEBASS',
 }
 
 obssurvmap: {'PS1':'PS1',
@@ -322,6 +332,7 @@ obssurvmap: {'PS1':'PS1',
              'GAIA':'GAIA',
              'ATLAS':'ATLAS',
              'D3YR':'D3YR',
+             'DEBASS':'DEBASS',
 } 
 #removed KAIT1 ^
 
@@ -355,6 +366,7 @@ revobssurvmap: {'PS1':'PS1',
                 'GAIA':'GAIA',
                 'ATLAS':'ATLAS',
                 'D3YR':'D3YR',
+                'DEBASS':'DEBASS',
 }
 #formerly a CSPDR3nat
 
@@ -388,6 +400,7 @@ revobssurvmapforsnana: { 'PS1':'PS1',
                          'GAIA':'GAIA',
                          'ATLAS':'ATLAS',
                          'D3YR':'D3YR',
+                         'DEBASS':'DEBASS',
 }
 #formerly a CSPDR3nat
 survcolormin: {'DES':.075,
@@ -419,6 +432,7 @@ survcolormin: {'DES':.075,
                'GAIA':0,
                'ATLAS': 0,
                'D3YR':.075,
+               'DEBASS':.075,
 }
 
 survcolormax: {'DES':10.075,
@@ -450,6 +464,7 @@ survcolormax: {'DES':10.075,
                'GAIA':10,
                'ATLAS':10,
                'D3YR':10.075,
+               'DEBASS':10.075,
 }
 
 synth_gi_range: {'calspec23':[-9.25,9.5],
@@ -485,6 +500,7 @@ obsfilts: {'PS1':  ['g','r','i','z'],
            'GAIA': ['g', 'b', 'r'],
            'ATLAS': ['c', 'o'], 
            'D3YR':  ['g','r','i','z'],
+           'DEBASS':  ['g','r','i','z'],
 }
 
 snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
@@ -517,6 +533,7 @@ snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
              'GAIA': {'g':'g', 'r':'r', 'b':'b'},
              'ATLAS': {'c':'c', 'o':'o'},
              'D3YR' : {'g':'g','r':'r','i':'i','z':'z'},
+             'DEBASS': {'g':'g','r':'r','i':'i','z':'z'},
 }
 #            
 
@@ -550,6 +567,7 @@ snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
               'GAIA': {'g':'g', 'r':'r', 'b':'b'},
               'ATLAS': {'c':'c', 'o':'o'},
               'D3YR' : {'g':'g','r':'r','i':'i','z':'z'},
+              'DEBASS': {'g':'g','r':'r','i':'i','z':'z'},
 }
 
 #Will need to fix the ZTFS/ZTFD weights at some point
@@ -584,6 +602,7 @@ relativeweights: {
     'GAIA': 1,
     'ATLAS':1,
     'D3YR':1,
+    'DEBASS':1,
 }
 
 
@@ -618,6 +637,7 @@ errfloors: {
     'GAIA':, 0.01,
     'ATLAS':0.01,
     'D3YR' :  .005,
+    'DEBASS': .005,
 }
 
 target_acceptance: 0.9
@@ -650,6 +670,7 @@ filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_t
              ['g_filt_revised.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_tonry.txt'],
              ['g.dat', 'b.dat', 'r.dat'],
              ['cyan.dat', 'orange.dat'],
+             ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
              ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
 ]
 
