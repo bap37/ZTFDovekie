@@ -47,6 +47,7 @@ survs: ['PS1',
         'ATLAS',
         'D3YR',
         'DEBASS',
+        'SSS',
 ]
 
 kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
@@ -71,6 +72,7 @@ kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
             'kcor/ATLAS/',
             'kcor/DES/',
             'kcor/DES/',
+            'kcor/SSS/,
 ]
 
 ##PS1_excalinaper_+30A.input originally for PS1 AP
@@ -96,6 +98,7 @@ kcors: ['PS1_excalinaper.input',
         'ATLAS_excalin.input',
         'DECam_excalin.input',
         'DECam_excalin.input',
+        'SSS_excalin.input',
 ]
 
 #Used to be PS1_excalin_+30A.input for PS1 :O
@@ -122,6 +125,7 @@ filtpaths: ['filters/PS1s_RS14_PS1_tonry/',
             'filters/ATLAS/',
             'filters/DES-SN3YR_DECam/',
             'filters/DES-SN3YR_DECam/',
+            'filters/SSS/',
 ]
 
 shiftfiltss: [['g','r','i','z'],
@@ -145,7 +149,8 @@ shiftfiltss: [['g','r','i','z'],
               ['g', 'b', 'r'],
               ['c', 'o'],
               ['g','r','i','z'],
-              ['g','r','i','z']
+              ['g','r','i','z'],
+              ['u','g','r','i','V','B'],
 ]
 
 
@@ -170,6 +175,7 @@ namedfiltss: [['g','r','i','z'],
               ['c', 'o'],
               ['g','r','i','z'],
               ['g','r','i','z'],
+              ['u','g','r','i','V','B'],
 ]
 
 
@@ -194,7 +200,8 @@ obsfiltss: [['g','r','i','z'],
             ['g', 'b', 'r'],
             ['c', 'o'],
             ['g','r','i','z'],
-            ['g','r','i','z']
+            ['g','r','i','z'],
+            ['u','g','r','i','V','B'],
 ]
 
 ###############################################
@@ -232,6 +239,7 @@ survmap: {'PS1':'PS1',
           'ATLAS':'ATLAS',
           'D3YR':'D3YR',
           'DEBASS':'DEBASS',
+          'SSS':'SSS',
 }
 
 survmap4shift: {'PS1':'PS1',
@@ -265,6 +273,7 @@ survmap4shift: {'PS1':'PS1',
                 'ATLAS':'ATLAS',
                 'D3YR':'D3YR',
                 'DEBASS':'DEBASS',
+                'SSS':'SSS',
 }
 
 #formerly CSP_TAMU
@@ -299,6 +308,7 @@ survfiltmap: {'PS1':'PS1',
               'ATLAS':'ATLAS',
               'D3YR':'D3YR',
               'DEBASS':'DEBASS',
+              'SSS':'SSS',
 }
 
 obssurvmap: {'PS1':'PS1',
@@ -333,6 +343,7 @@ obssurvmap: {'PS1':'PS1',
              'ATLAS':'ATLAS',
              'D3YR':'D3YR',
              'DEBASS':'DEBASS',
+             'SSS':'SSS',
 } 
 #removed KAIT1 ^
 
@@ -367,6 +378,7 @@ revobssurvmap: {'PS1':'PS1',
                 'ATLAS':'ATLAS',
                 'D3YR':'D3YR',
                 'DEBASS':'DEBASS',
+                'SSS':'SSS',
 }
 #formerly a CSPDR3nat
 
@@ -401,6 +413,7 @@ revobssurvmapforsnana: { 'PS1':'PS1',
                          'ATLAS':'ATLAS',
                          'D3YR':'D3YR',
                          'DEBASS':'DEBASS',
+                         'SSS':'SSS',
 }
 #formerly a CSPDR3nat
 survcolormin: {'DES':.075,
@@ -433,6 +446,7 @@ survcolormin: {'DES':.075,
                'ATLAS': 0,
                'D3YR':.075,
                'DEBASS':.075,
+               'SSS':0,
 }
 
 survcolormax: {'DES':10.075,
@@ -465,6 +479,7 @@ survcolormax: {'DES':10.075,
                'ATLAS':10,
                'D3YR':10.075,
                'DEBASS':10.075,
+               'SSS':10,
 }
 
 synth_gi_range: {'calspec23':[-9.25,9.5],
@@ -501,6 +516,7 @@ obsfilts: {'PS1':  ['g','r','i','z'],
            'ATLAS': ['c', 'o'], 
            'D3YR':  ['g','r','i','z'],
            'DEBASS':  ['g','r','i','z'],
+           'SSS':  ['u','g','r','i','V','B'],
 }
 
 snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
@@ -534,6 +550,7 @@ snanafilts: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
              'ATLAS': {'c':'c', 'o':'o'},
              'D3YR' : {'g':'g','r':'r','i':'i','z':'z'},
              'DEBASS': {'g':'g','r':'r','i':'i','z':'z'},
+             'SSS': {'g':'g','r':'r','i':'i','B':'B','V':'V','u':'u'},
 }
 #            
 
@@ -568,6 +585,7 @@ snanafiltsr: {'PS1': {'g':'g','r':'r','i':'i','z':'z'},
               'ATLAS': {'c':'c', 'o':'o'},
               'D3YR' : {'g':'g','r':'r','i':'i','z':'z'},
               'DEBASS': {'g':'g','r':'r','i':'i','z':'z'},
+              'SSS': {'g':'g','r':'r','i':'i','B':'B','V':'V','u':'u'},
 }
 
 #Will need to fix the ZTFS/ZTFD weights at some point
@@ -603,6 +621,7 @@ relativeweights: {
     'ATLAS':1,
     'D3YR':1,
     'DEBASS':1,
+    'SSS':1,
 }
 
 
@@ -638,6 +657,7 @@ errfloors: {
     'ATLAS':0.01,
     'D3YR' :  .005,
     'DEBASS': .005,
+    'SSS':0.01,
 }
 
 target_acceptance: 0.9
@@ -672,6 +692,7 @@ filttranss: [['g_filt_tonry.txt','r_filt_tonry.txt','i_filt_tonry.txt','z_filt_t
              ['cyan.dat', 'orange.dat'],
              ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
              ['DECam_g.dat','DECam_r.dat','DECam_i.dat','DECam_z.dat'],
+             ['u_CSP2_tel_ccd_atm_ext_1.2.dat','g_CSP2_tel_ccd_atm_ext_1.2.dat','r_CSP2_tel_ccd_atm_ext_1.2.dat','i_CSP2_tel_ccd_atm_ext_1.2.dat','V_CSP2_tel_ccd_atm_ext_1.2.dat','B_CSP2_tel_ccd_atm_ext_1.2.dat'],
 ]
 
 #################################################
