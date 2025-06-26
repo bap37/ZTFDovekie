@@ -72,7 +72,7 @@ kcorpaths: ['kcor/PS1s_RS14_PS1_tonry/',
             'kcor/ATLAS/',
             'kcor/DES/',
             'kcor/DES/',
-            'kcor/SSS/,
+            'kcor/SSS/',
 ]
 
 ##PS1_excalinaper_+30A.input originally for PS1 AP
