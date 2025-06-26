@@ -98,7 +98,7 @@ def get_all_shifts(surveys, reference_surveys): #acquires all the surveys and co
                 tdf = pd.read_csv(f,sep=" ") #formerly delim_whitespace      
                 if 'PS1_' in f:
                     tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])>.25]
-                    tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])<1.6]
+                    tdf = tdf[(tdf['PS1-g']-tdf['PS1-i'])<1.6] #normally 1.6
                     tdf = tdf[(tdf['PS1-g']-tdf['PS1-r'])>.25]
                 dfl.append(tdf)
             except:
@@ -407,6 +407,7 @@ def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict,):
                        label=f'rescaled errors\n$\sigma \leftarrow \sqrt{{({errscale:.2f}\sigma )^2 + {errfloor:.3f} ^2 }}$')
     chi2=((((wdresults.resids)[filt]-mean)/scalederr)**2).sum()
     plt.axhline(mean,color='k',linestyle=':',label=f'WD mean: $\\chi^2$= {chi2:.2f}', alpha=0.5)
+    #plt.text(x=0.05, y=0.001, s=f"mean = {np.around(mean,3)}", color="dimgrey")
     if paramsdict is not None: 
         chi2=((((wdresults.resids)[filt]-paramsdict[filt+'_offset'])/scalederr)**2).sum()
         plt.axhline(paramsdict[filt+'_offset'],color='k',linestyle='--',label=f'Derived offset: $\\chi^2$= {chi2:.2f}')
@@ -667,6 +668,14 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             filt1s.extend([    'g',         'r',       'r',      'i'])
             filt2s.extend([    'B',         'V',       'r',      'i'])
 
+        if "SSS" in surveys_for_chisq:
+            surv1s.extend([    'PS1',    'PS1',    'PS1',    'PS1',    'PS1',     ])
+            surv2s.extend([ 'SSS', 'SSS', 'SSS', 'SSS', 'SSS'])
+            filtas.extend([      'g',      'g',      'g',      'g',      'g',     ])
+            filtbs.extend([      'i',      'i',      'i',      'i',      'i',     ])
+            filt1s.extend([      'g',      'r',      'i',      'g',      'r',     ])
+            filt2s.extend([      'g',      'r',      'i',      'B',      'V',     ])
+
     if 'GAIA' in reference_surveys: #Need to clean this up for the new GAIA stuff 
         if "DES" in surveys_for_chisq:
             surv1s.extend([  'GAIA_DES',  'GAIA_DES',  'GAIA_DES',  'GAIA_DES']) #5/11/24 - new formatting frontier for Gaia integration 
@@ -830,6 +839,7 @@ def lnprior(paramsdict):
         'SDSS':[0,0.01],
         'DES':[0,.01],
         'D3YR':[0,.01],
+        'SSS':[0,0.1],
         }    
 
     lp = 0
