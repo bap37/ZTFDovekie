@@ -60,7 +60,10 @@ def getoffsetforuniversalslope(surv,filt,slope,meanlambda):
 def query_irsa(row,col='NA'):
     newrow = row
     coo = coord.SkyCoord(row['RA']*u.deg,row['DEC']*u.deg, frame='icrs')
-    table = IrsaDust.get_extinction_table(coo)
+    try:
+        table = IrsaDust.get_extinction_table(coo)
+    except:
+        return [-999]*len(row)
     aa = np.argsort(table['LamEff'])
     avinterp = interpolate.interp1d(table['LamEff'][aa]*10000,table['A_SandF'][aa])
     rs = col.replace('_4shooter','S').replace('_keplercam','K').split('-')[0]
@@ -76,10 +79,35 @@ def get_extinction(survdict):
             correctedmags[col+'_AV'] = survdict.apply(query_irsa,col=col,axis=1)
     return correctedmags
 
+def get_extinction_local(df, survey):
+    #get names correct
+    filter_root = obssurvmap[survey] ; obs_filts = obsfilts[survey]
+
+    #load only what filters/information we are interested in
+    survey_filts = [filter_root+'-'+filt for filt in obs_filts]
+    to_collect = survey_filts + ['PS1-g', 'PS1-r', 'PS1-i', 'PS1-z', 'RA', 'DEC']
+    to_collect.insert(0, 'survey')
+    df = df[to_collect]
+
+    #prepare filters to get lambda effective
+    to_collect = to_collect[1:-2] ; filt_labels = [f.replace('-','') for f in to_collect]
+
+    #load in SFDmap
+    import sfdmap
+    import extinction
+    m = sfdmap.SFDMap('sfddata-master/')
+    ebv = m.ebv(df.RA.values, df.DEC.values)
+    for n,filb in enumerate(filt_labels):
+        temp = []        
+        for e in ebv:
+            temp.append(extinction.fitzpatrick99(np.array([filter_means[filb]]), 3.1*e)[0])
+        df[str(to_collect[n])+"_AV"] = np.array(temp)
+    return df
+
+
 def myround(x, base=5):
     return base * round(x/base)
-    
-    
+        
 def itersigmacut_linefit_jax(x,y,cut,niter=3,nsigma=4):
     returnx = x
     returny = y
@@ -159,10 +187,15 @@ def create_cov(labels, flat_samples, version):
     np.savez(f'DOVEKIE_COV_{version}.0.npz',cov=cov,labels=labels)
     fig, ax = plt.subplots(figsize=(14, 12))
 
+    #words = [w.replace('[br]', '<br />') for w in words]
+    labels = [lab.replace("CSP-m", "CSP-V1") for lab in labels]
+    labels = [lab.replace("CSP-n", "CSP-V2") for lab in labels]
+    labels = [lab.replace("CSP-o", "CSP-V3") for lab in labels]
+
     plt.rcParams['xtick.bottom'] = plt.rcParams['xtick.labelbottom'] = True
     plt.rcParams['xtick.top'] = plt.rcParams['xtick.labeltop'] = False
 
-    im = ax.matshow(cov, cmap='cet_CET_CBL1')
+    im = ax.matshow(cov, cmap='cet_CET_CBL1', vmax = 0.3e-4)
     
     cax = plt.axes((0.9, 0.1, 0.025, 0.89)) #x,y, widht, height
     

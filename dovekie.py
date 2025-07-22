@@ -129,7 +129,7 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
             print(f"Starting IRSA query for {survey}. If nothing is printing that's probably fine.")
             obsdf = pd.read_csv(f'{realdirname}/{survname}_observed.csv')
             surveydfs[survey] = obsdf
-            surveydfs_wext[survey] = get_extinction(surveydfs[survey])
+            surveydfs_wext[survey] = get_extinction_local(surveydfs[survey], survey)
             obsdf = surveydfs_wext[survey]
             print(f"Finished performing IRSA query for {survey}")
             obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV']-obsdf['PS1-i']+obsdf['PS1-i_AV'])<1.]
