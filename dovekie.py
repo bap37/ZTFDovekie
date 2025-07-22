@@ -149,7 +149,13 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
                 if fakes:
                     obsdf = pd.read_csv(f'{fakes}/{survname}_observed.csv')
                 else:
-                    obsdf = pd.read_csv(f'{realdirname}+AV/{survname}_observed.csv')
+                    obsdf = pd.read_csv(f'{realdirname}+AV/{survname}_observed.csv', nrows=5000)
+                    obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV']-obsdf['PS1-i']+obsdf['PS1-i_AV'])<1.]
+                    obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV']-obsdf['PS1-i']+obsdf['PS1-i_AV'])>.25]
+                    obsdf = obsdf[obsdf['PS1-g']-obsdf['PS1-g_AV']>14.3] #from dan via eddy schlafly
+                    obsdf = obsdf[obsdf['PS1-r']-obsdf['PS1-r_AV']>14.4]
+                    obsdf = obsdf[obsdf['PS1-i']-obsdf['PS1-i_AV']>14.6]
+                    obsdf = obsdf[obsdf['PS1-z']-obsdf['PS1-z_AV']>14.1]
                     obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
                           (obsdf['PS1-i']-obsdf['PS1-i_AV']) < survcolormax[survey]]
                     obsdf = obsdf[(obsdf['PS1-g']-obsdf['PS1-g_AV'])-
@@ -193,6 +199,7 @@ def getlikelihood_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfil
     else:
         longfilt1 = survfiltmap[surv1]+'-'+yfilt1 ; longfilt2 = survfiltmap[surv2]+'-'+yfilt2
         obslongfilt1 = obssurvmap[surv1]+'-'+yfilt1
+
         if ('CSP' in surv2.upper()):
             obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2.replace('o','V').replace('m','V').replace('n','V')
         elif ('KAIT' in surv2.upper()) | ('NICKEL' in surv2.upper()):
@@ -203,10 +210,11 @@ def getlikelihood_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfil
             obslongfilt2 = obssurvmap[surv2]+'-'+yfilt2 #
         obslongfilta = obssurvmap[colorsurvab]+'-'+colorfilta ; obslongfiltb = obssurvmap[colorsurvab]+'-'+colorfiltb
 
+
     #JAXX stuff starts here 
     obsdf = obsdfs[surv2] #grabs the observed points from the relevant survey
-    #if DEBUG: print(obsdf.keys(), surv2)
-    #if DEBUG: print(obssurvmap.keys(),surv1,yfilt1, surv2, yfilt2)
+    if DEBUG: print(obsdf.keys(), surv2)
+    if DEBUG: print(obssurvmap.keys(),surv1,yfilt1, surv2, yfilt2)
     yr=obsdf[obslongfilt1]-obsdf[obslongfilt2] #observed filter1 - observed filter 2 
     datacut = np.abs(yr)<1 #only uses things lower than 1
     if "GAIA_" in obslongfilt1:
@@ -219,10 +227,17 @@ def getlikelihood_forone(pars,surveydata,obsdfs,colorsurvab,surv1,surv2,colorfil
         datares = (obsdf[obslongfilt2]-obsdf[obslongfilt2+'_AV'])-(obsdf[obslongfilt1]-obsdf[obslongfilt1+'_AV']) #need to add Gaia in here
     datacolor=datacolor[datacut]
     datares=datares[datacut]
-    if DEBUG: print(np.std(datacolor), np.std(datares))
-    datax,datay,sigmadata,yresd,data_popt,data_pcov = itersigmacut_linefit(datacolor,
+    if DEBUG: print((datacolor), (datares))
+
+    #atlas c0 is always -999, and therefore, empty ...
+
+    try:
+        datax,datay,sigmadata,yresd,data_popt,data_pcov = itersigmacut_linefit(datacolor,
                                                          datares,# np.ones(datacut.sum(),dtype=bool),
                                                          niter=2,nsigma=3)
+    except ValueError:
+        datax,datay,sigmadata,yresd,data_popt,data_pcov = (-9 for i in range(6))
+
     synthxs,synthys, cats,synthpopts,synthpcovs,modelcolors,modelress =  ([] for i in range(7))
     likelihood=[]
     if speclibrary is None: 
@@ -329,16 +344,30 @@ def unwravel_params(params,surveynames,fixsurveynames,reference_surveys):
 wdresult=namedtuple('wdresult',['chi2','resids','errs', 'errpars','covariance','filts'])
 
 def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
+
     if storedvals is None:
         for surv in whitedwarf_seds: whitedwarf_seds[surv]=whitedwarf_seds[surv].rename(columns={'standard':'Object'})
         
+        #Drops synthetic DA WD from surveys that are not in the list of calibrating surveys
+        unwanted = set(list(whitedwarf_seds.keys())) - set(surveys_for_chisq)
+        for unwanted_key in unwanted: del whitedwarf_seds[unwanted_key]
+
+        #Drops observed DA WD from surveys that are not in the list of calibrating surveys
         wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
+        wdsurveys = list(filter(lambda x: x in wdsurveys , list(whitedwarf_seds.keys())))
+
         accum=whitedwarf_seds[wdsurveys[0]]
         for key in wdsurveys[1:]:
             accum=pd.merge(accum, whitedwarf_seds[key], left_index=True, right_index=True,suffixes=('','_y'))
             accum=accum.drop(
                 accum.filter(regex='_y$').columns, axis=1)       
-        filts=[(survey+'-' + filt) for filt in 'griz' for survey in wdsurveys ]
+
+        filts = []
+        for survey in wdsurveys:
+            for filt in obsfilts[survmap[survey]]:
+                filts.append(survey+"-"+filt)
+#        filts=[(survey+'-' + filt) for filt in obsfilts[survmap[survey]] for survey in wdsurveys ]
+
         isbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
         print(f'{(isbad).sum():d} bad SED samples' )
         accum=accum[~isbad]
@@ -346,7 +375,9 @@ def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
         covsbyobject= [np.cov(grouped.get_group(group)[filts].values.T) for group in grouped.groups]
         overallcov=np.mean([x for x,group in  zip(covsbyobject,grouped.groups)],axis=0)
     #     plt.imshow(overallcov)
+
         whitedwarftotal=pd.merge(whitedwarf_obs,grouped[filts].mean(),left_index=True,right_index=True,suffixes=('_obs','_synth'))
+
         whitedwarftotal=whitedwarftotal.replace(-999.,np.nan)
         resids={}
         errs={}
@@ -390,6 +421,10 @@ def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
     
 
 def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict,):
+
+    if len(wdresults.resids[filt]) == 0:
+        return
+
     fig, ax = plt.subplots()
     plt.xlim(1e-3,.2)
     plt.ylim(-.1,.1)
@@ -398,6 +433,7 @@ def plotwhitedwarfresids(filt, outdir, wdresults,paramsdict,):
     #colourz=['k','k','k','k','k']
 
     errscale,errfloor=wdresults.errpars[filt]
+
     line1=plt.errorbar(wdresults.errs[filt],wdresults.resids[filt],yerr=wdresults.errs[filt],fmt='o',label=f'raw errors ({wdresults.resids[filt].size} points)', c=colourz[1], alpha=0.5)
     errscale,errfloor=wdresults.errpars[filt]
     scalederr=np.hypot(errscale*wdresults.errs[filt],errfloor)
@@ -668,6 +704,14 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             filt1s.extend([    'g',         'r',       'r',      'i'])
             filt2s.extend([    'B',         'V',       'r',      'i'])
 
+        if "DEBASS" in surveys_for_chisq:
+            surv1s.extend([  'PS1',  'PS1',  'PS1',  'PS1']) #always PS1
+            surv2s.extend([  'DEBASS',  'DEBASS',  'DEBASS',  'DEBASS']) #Survey to compare
+            filtas.extend([    'g',    'g',    'g',    'g']) #first filter for colour
+            filtbs.extend([    'i',    'i',    'i',    'i']) #second filter for colour
+            filt1s.extend([    'g',    'r',    'i',    'z']) # PS1 magnitude band
+            filt2s.extend([    'g',    'r',    'i',    'z']) # DES magnitude band
+
         if "SSS" in surveys_for_chisq:
             surv1s.extend([    'PS1',    'PS1',    'PS1',    'PS1',    'PS1',     ])
             surv2s.extend([ 'SSS', 'SSS', 'SSS', 'SSS', 'SSS'])
@@ -675,6 +719,15 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             filtbs.extend([      'i',      'i',      'i',      'i',      'i',     ])
             filt1s.extend([      'g',      'r',      'i',      'g',      'r',     ])
             filt2s.extend([      'g',      'r',      'i',      'B',      'V',     ])
+
+        if "ATLAS" in surveys_for_chisq: #Shortened because of the 16 ATLAS filters
+            surv1s.extend(16*['PS1'])
+            surv2s.extend(16*['ATLAS'])
+            filtas.extend(16*['g']) #first filter for colour 
+            filtbs.extend(16*['i']) #second filter for colour
+            filt1s.extend(8*['g','r']) #PS1 magnitude band
+            filt2s.extend(['c0', 'o0', 'c1', 'o1',  'c2',   'o2',    'c3',    'o3', 'c4',    'o4',    'c5',    'o5',     'c6',   'o6',    'c7',  'o7',  ])
+
 
     if 'GAIA' in reference_surveys: #Need to clean this up for the new GAIA stuff 
         if "DES" in surveys_for_chisq:
@@ -805,7 +858,12 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
                 likeresults = getlikelihood_forone(paramsdict,passsurvey, obsdfs,surv1,surv1,surv2,filta,filtb,filt1,filt2,filtshift=shift,
                                     off1=paramsdict[surv1+'-'+filt1+'_offset'],off2=paramsdict[surv2+'-'+filt2+'_offset'],
                                         offa=paramsdict[surv1+'-'+filta+'_offset'],offb=paramsdict[surv1+'-'+filtb+'_offset'])
-            if doplot: plot_forone(likeresults,subscript,outputdir,tableout,biasestimates)
+            if doplot: 
+                if type(likeresults.datay) == int: #wtf I hate this
+                    pass
+                else:
+                    plot_forone(likeresults,subscript,outputdir,tableout,biasestimates)
+
         if len(allshifts)>1: 
             print('WARNING: Multiple shifts indicated, no chi2 calculated')
         else:
@@ -819,7 +877,6 @@ def full_posterior(surveys_for_chisq, fixsurveynames,surveydata,obsdfs,reference
             for filt in whitedwarfresults.resids:
                 plotwhitedwarfresids(filt, outputdir, whitedwarfresults,paramsdict)
             
-    
     lp += lnprior(paramsdict)
     return lp +totallikelihood
 
@@ -839,7 +896,9 @@ def lnprior(paramsdict):
         'SDSS':[0,0.01],
         'DES':[0,.01],
         'D3YR':[0,.01],
+        'DEBASS':[0,.01],
         'SSS':[0,0.1],
+        'ATLAS':[0,0.1]
         }    
 
     lp = 0

@@ -68,8 +68,10 @@ if __name__ == "__main__":
    tableout = open(tablefile,'w')
    tableout.write('COLORSURV COLORFILT1 COLORFILT2 OFFSETFILT1 OFFSETSURV OFFSETFILT2 SPECLIB OFFSET NDATA D_SLOPE S_SLOPE SIGMA SHIFT\n')
 
-   #full_likelihood_data= partial(ll.full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=None,whitedwarf_obs=None)
-   #full_likelihood_data(params=postoffsets,subscript='postprocess',doplot=True, tableout=tableout, reference_surveys=['PS1'])
+
+   ll.full_posterior(surveys_for_chisq, [],surveydata,obsdfs,['PS1'], postoffsets,doplot=True,subscript='postprocess',outputdir=None,tableout=tableout, whitedwarf_seds=None,whitedwarf_obs= None,biasestimates=None,speclibrary=None)
+#   full_likelihood_data= partial(ll.full_likelihood,surveys_for_chisq, fixsurveynames,surveydata,obsdfs, whitedwarf_seds=None,whitedwarf_obs=None)
+#   full_likelihood_data(params=postoffsets,subscript='postprocess',doplot=True, tableout=tableout, reference_surveys=['PS1'])
    #print("Forced reference survey to PS1")
    tableout.close()
 
