@@ -353,8 +353,13 @@ def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
         for unwanted_key in unwanted: del whitedwarf_seds[unwanted_key]
 
         #Drops observed DA WD from surveys that are not in the list of calibrating surveys
-        wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x])
-        wdsurveys = list(filter(lambda x: x in wdsurveys , list(whitedwarf_seds.keys())))
+        wdsurveys=np.unique([x.split('-')[0] for x in list(whitedwarf_obs) if '-' in x]).tolist()
+        print(wdsurveys)
+        for _ in wdsurveys:
+            if _ not in whitedwarf_seds.keys(): wdsurveys.remove(_)
+        wdsurveys = np.array(wdsurveys)
+        
+        print(wdsurveys)
 
         accum=whitedwarf_seds[wdsurveys[0]]
         for key in wdsurveys[1:]:
@@ -366,7 +371,6 @@ def calc_wd_chisq(paramsdict,whitedwarf_seds,whitedwarf_obs, storedvals=None):
         for survey in wdsurveys:
             for filt in obsfilts[survmap[survey]]:
                 filts.append(survey+"-"+filt)
-#        filts=[(survey+'-' + filt) for filt in obsfilts[survmap[survey]] for survey in wdsurveys ]
 
         isbad=(((np.isnan(accum[filts])| (accum[filts]<-20)).sum(axis=1))>0)
         print(f'{(isbad).sum():d} bad SED samples' )
