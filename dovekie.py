@@ -32,9 +32,11 @@ isshift = False
 global DEBUG
 DEBUG = False
 
+global dustlaw #fuck you 
+
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
-survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors ,target_acceptance , n_burnin, whitedwarf_obs_loc = prep_config(config)
+survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors ,target_acceptance , n_burnin, whitedwarf_obs_loc, dustlaw = prep_config(config)
 
 
 obscolors_by_survey = {'PS1':['PS1-g','PS1-i']} #dodgy, feel like this should be tonry

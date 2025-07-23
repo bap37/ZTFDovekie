@@ -38,12 +38,13 @@ def prep_config(config):
     relativeweights = config['relativeweights']
     errfloors = config['errfloors']
     whitedwarf_obs_loc = config['whitedwarf_obs_loc']
-    return survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,  config['target_acceptance'] , config['n_burnin'], whitedwarf_obs_loc
+    dustlaw = config['dustlaw']
+    return survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,  config['target_acceptance'] , config['n_burnin'], whitedwarf_obs_loc, dustlaw
 
 
 jsonload = 'DOVEKIE_DEFS.yml' #where all the important but unwieldy dictionaries live
 config = load_config(jsonload)
-survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,target_acceptance , n_burnin, bboyd_loc = prep_config(config)
+survmap, survmap4shift, survfiltmap, obssurvmap, revobssurvmap, revobssurvmapforsnana, survcolormin, survcolormax, synth_gi_range, obsfilts, snanafilts, snanafiltsr, relativeweights, errfloors,target_acceptance , n_burnin, bboyd_loc, dustlaw = prep_config(config)
 
 filter_means = pd.read_csv('filter_means.csv') 
 
@@ -79,6 +80,25 @@ def get_extinction(survdict):
             correctedmags[col+'_AV'] = survdict.apply(query_irsa,col=col,axis=1)
     return correctedmags
 
+def sort_dustlaw(lambda_eff, ebv, dustlaw):
+    import extinction
+
+    if dustlaw == "f99":
+        return extinction.fitzpatrick99(np.array([lambda_eff]), 3.1*ebv)[0]
+    elif dustlaw == "F99":
+        return extinction.Fitzpatrick99(np.array([lambda_eff]), 3.1*ebv)[0]
+    elif dustlaw == "CCM89":
+        return extinction.ccm89(np.array([lambda_eff]), 3.1*ebv)[0]
+    elif dustlaw == "ODONNEL94":
+        return extinction.odonnel94(np.array([lambda_eff]), 3.1*ebv)[0]
+    elif dustlaw == "CALZETTI00":
+        return extinction.calzetti00(np.array([lambda_eff]), 3.1*ebv)[0]
+    elif dustlaw == "FM07":
+        return extinction.fm07(np.array([lambda_eff]), 3.1*ebv)[0]
+    else:
+        print(f"{dustlaw} is not a valid dust law. Crashing.")
+        return "blep"
+
 def get_extinction_local(df, survey):
     #get names correct
     filter_root = obssurvmap[survey] ; obs_filts = obsfilts[survey]
@@ -100,7 +120,8 @@ def get_extinction_local(df, survey):
     for n,filb in enumerate(filt_labels):
         temp = []        
         for e in ebv:
-            temp.append(extinction.fitzpatrick99(np.array([filter_means[filb]]), 3.1*e)[0])
+            #temp.append(extinction.fitzpatrick99(np.array([filter_means[filb]]), 3.1*e)[0])
+            temp.append(sort_dustlaw(filter_means[filb], e, dustlaw))
         df[str(to_collect[n])+"_AV"] = np.array(temp)
     return df
 
