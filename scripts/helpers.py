@@ -88,11 +88,11 @@ def sort_dustlaw(lambda_eff, ebv, dustlaw):
     elif dustlaw == "F99":
         return extinction.Fitzpatrick99(np.array([lambda_eff]), 3.1*ebv)[0]
     elif dustlaw == "CCM89":
-        return extinction.ccm89(np.array([lambda_eff]), 3.1*ebv)[0]
-    elif dustlaw == "ODONNEL94":
-        return extinction.odonnel94(np.array([lambda_eff]), 3.1*ebv)[0]
+        return extinction.ccm89(np.array([lambda_eff]), 3.1*ebv, 3.1)[0]
+    elif dustlaw == "ODONNELL94":
+        return extinction.odonnell94(np.array([float(lambda_eff)]), 3.1*ebv, 3.1)[0]
     elif dustlaw == "CALZETTI00":
-        return extinction.calzetti00(np.array([lambda_eff]), 3.1*ebv)[0]
+        return extinction.calzetti00(np.array([lambda_eff]), 3.1*ebv, 3.1)[0]
     elif dustlaw == "FM07":
         return extinction.fm07(np.array([lambda_eff]), 3.1*ebv)[0]
     else:
