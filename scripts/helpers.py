@@ -80,24 +80,33 @@ def get_extinction(survdict):
             correctedmags[col+'_AV'] = survdict.apply(query_irsa,col=col,axis=1)
     return correctedmags
 
-def sort_dustlaw(lambda_eff, ebv, dustlaw):
-    import extinction
-
-    if dustlaw == "f99":
-        return extinction.fitzpatrick99(np.array([lambda_eff]), 3.1*ebv)[0]
-    elif dustlaw == "F99":
-        return extinction.Fitzpatrick99(np.array([lambda_eff]), 3.1*ebv)[0]
+def sort_dustlaw(dustlaw):
+    if dustlaw == "F99":
+        from dust_extinction.parameter_averages import F99
+        mod = F99(Rv=3.1)
+    elif dustlaw == "G23":
+        from dust_extinction.parameter_averages import G23
+        mod = G23(Rv=3.1)
     elif dustlaw == "CCM89":
-        return extinction.ccm89(np.array([lambda_eff]), 3.1*ebv, 3.1)[0]
-    elif dustlaw == "ODONNELL94":
-        return extinction.odonnell94(np.array([float(lambda_eff)]), 3.1*ebv, 3.1)[0]
-    elif dustlaw == "CALZETTI00":
-        return extinction.calzetti00(np.array([lambda_eff]), 3.1*ebv, 3.1)[0]
-    elif dustlaw == "FM07":
-        return extinction.fm07(np.array([lambda_eff]), 3.1*ebv)[0]
-    else:
-        print(f"{dustlaw} is not a valid dust law. Crashing.")
-        return "blep"
+        from dust_extinction.parameter_averages import CCM89
+        mod = CCM89(Rv=3.1)
+    elif dustlaw == "O94":
+        from dust_extinction.parameter_averages import O94
+        mod = O94(Rv=3.1)
+    elif dustlaw == "F04":
+        from dust_extinction.parameter_averages import F04
+        mod = F04(Rv=3.1)
+    elif dustlaw == "VCG04":
+        from dust_extinction.parameter_averages import VCG04
+        mod = VCG04(Rv=3.1)
+    elif dustlaw == "GCC09":
+        from dust_extinction.parameter_averages import GCC09
+        mod = GCC09(Rv=3.1)
+    elif dustlaw == "M14":
+        from dust_extinction.parameter_averages import M14
+        mod = M14(Rv=3.1)
+    return mod
+
 
 def get_extinction_local(df, survey):
     #get names correct
@@ -117,13 +126,27 @@ def get_extinction_local(df, survey):
     import extinction
     m = sfdmap.SFDMap('sfddata-master/')
     ebv = m.ebv(df.RA.values, df.DEC.values)
-    for n,filb in enumerate(filt_labels):
-        temp = []        
-        for e in ebv:
-            #temp.append(extinction.fitzpatrick99(np.array([filter_means[filb]]), 3.1*e)[0])
-            temp.append(sort_dustlaw(filter_means[filb], e, dustlaw))
-        df[str(to_collect[n])+"_AV"] = np.array(temp)
-    return df
+
+    #load dustlaw model
+    dustmodel = sort_dustlaw(dustlaw)
+
+    waveeffs = [filter_means[fb] for fb in filt_labels]
+
+    #prepare column names for the df that will contain all the AV corrections 
+    future_df = np.copy(to_collect) ; future_df = [lab+"_AV" for lab in future_df]
+
+    for e in ebv:
+        # Unfortunately this package uses inverse wavelengths, in microns (scream)
+        rowval = (e*3.1)*dustmodel(10000.0/np.array(waveeffs))
+        future_df = np.vstack( (future_df, rowval) )
+
+    #create dataframe with the labels, convert from string to float (????)
+    future_df = pd.DataFrame(data=future_df[1:,:], columns=future_df[0,:]) 
+    future_df = future_df.apply(pd.to_numeric)
+    
+    dfM = pd.concat([df, future_df], axis=1)
+
+    return dfM
 
 
 def myround(x, base=5):

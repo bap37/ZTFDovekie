@@ -128,7 +128,7 @@ def get_all_obsdfs(surveys, redo=False, fakes=False):
         elif survey == "GAIA": continue
         realdirname = 'output_observed_apermags'
         if redo:
-            print(f"Starting IRSA query for {survey}. If nothing is printing that's probably fine.")
+            print(f"Starting dustlookup query for {survey}, with dust law = {dustlaw}. ")
             obsdf = pd.read_csv(f'{realdirname}/{survname}_observed.csv')
             surveydfs[survey] = obsdf
             surveydfs_wext[survey] = get_extinction_local(surveydfs[survey], survey)

@@ -16,9 +16,10 @@ whitedwarf_obs_loc: 'spectra/bboyd/DA_WD_actual.csv'
 #whitedwarf_obs_loc: False
 
 #Nominal dust law 
-#Available dust laws from https://extinction.readthedocs.io/en/latest/
-#F99, CCM89, ODONNEL94, CALZETTI00, FM07, f99
-dustlaw: "f99"
+#Available dust laws from https://dust-extinction.readthedocs.io/en/latest/dust_extinction/reference_api.html#module-dust_extinction.parameter_averages
+#F99, CCM89, O94, F04, VCG04, GCC09, M14, G23
+#We have not implemented any of the models that require additional, non-Rv parameters.
+dustlaw: "F99"
 
 ####### Below here, only madness lies, unless you want to add another survey. 
 ####### In which case go ahead, but it's ugly.
